@@ -38,7 +38,7 @@ public:
   
   typedef std::vector<Person> Persons;
 
-  explicit Subject(Labyrinth*);
+  explicit Subject(const Labyrinth&);
   virtual ~Subject() { CheckOut(); }
   Subject(const Subject&) =delete;
 
@@ -58,7 +58,7 @@ protected:
 
   bool        dead_;
   Person      type_;    // see note #3
-  Labyrinth*  cave_;
+  const Labyrinth&  cave_;
   Room*       curr_room_;
 };
 

@@ -32,10 +32,10 @@ int main(int argc, char* argv[])
 
   anshub::Interaction game;
   anshub::Labyrinth cave(kCaveSize);
-  anshub::Wump wump(&cave);
-  anshub::Bat bats(&cave);
-  anshub::Pit pit(&cave);
-  anshub::Player player(&cave);
+  anshub::Wump wump(cave);
+  anshub::Bat bats(cave);
+  anshub::Pit pit(cave);
+  anshub::Player player(cave);
 
   game.SayIntro();
 

@@ -13,7 +13,10 @@ namespace anshub {
 class Pit : public Enemy
 {
 public:
-  explicit Pit(Labyrinth* cave) : Enemy(cave) { type_ = PIT; }
+  explicit Pit(const Labyrinth& cave)
+  : Enemy(cave)
+  { type_ = PIT; }
+  
   std::string FeelsRepresent() const override;
 };
 

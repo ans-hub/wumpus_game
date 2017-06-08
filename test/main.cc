@@ -22,11 +22,11 @@ namespace anshub {
 
 struct TestSubject : Subject
 {
-  TestSubject(Labyrinth* cave, int start)
+  TestSubject(const Labyrinth& cave, int start)
   : Subject(cave)
   , start_room_{start}
   {
-    curr_room_ = cave->GetRoom(start_room_);
+    curr_room_ = cave.GetRoom(start_room_);
   }
   int start_room_;
 };
@@ -35,7 +35,7 @@ struct TestSubject : Subject
 
 struct TestEnemy : Enemy
 {
-  TestEnemy(Labyrinth* cave) : Enemy(cave) { }
+  TestEnemy(const Labyrinth& cave) : Enemy(cave) { }
   std::string FeelsRepresent() const override { return ""; }
 };
 
@@ -127,7 +127,7 @@ void test_subject_static_moving()
   constexpr int kStartRoom {0};
 
   Labyrinth cave(kCaveSize);
-  TestSubject person(&cave, kStartRoom);
+  TestSubject person(cave, kStartRoom);
 
   std::cout << "Check subject static moving:" << '\n';
 
@@ -155,7 +155,7 @@ void test_subject_dynamic_moving()
   constexpr int kCaveSize {20};
   constexpr int kSteps {10000};
   Labyrinth cave(kCaveSize);
-  TestEnemy person(&cave);
+  TestEnemy person(cave);
 
   std::cout << "Check dynamic moving:" << '\n';
 
@@ -195,9 +195,9 @@ void test_subject_random_placing()
 
     std::vector<Subject*> subjects;
     for (int m = 0; m < kItems; ++m) {
-      subjects.push_back(new TestEnemy(&cave));
+      subjects.push_back(new TestEnemy(cave));
     }
-    subjects.push_back(new Player(&cave));
+    subjects.push_back(new Player(cave));
 
     // Get nums of not empty rooms
 
@@ -229,9 +229,9 @@ void test_subject_examine_room()
   constexpr int kCaveSize {20};
   Labyrinth cave(kCaveSize);
 
-  TestEnemy e1(&cave);
-  TestEnemy e2(&cave);
-  Player p1(&cave);
+  TestEnemy e1(cave);
+  TestEnemy e2(cave);
+  Player p1(cave);
 
   int start_room = p1.GetCurrRoomNum();
   
@@ -300,7 +300,7 @@ void test_subject_check_in_and_out_1()
 
     std::vector<Subject*> subjects;
     for (int m = 0; m < kItems; ++m) {
-      subjects.push_back(new TestEnemy(&cave));
+      subjects.push_back(new TestEnemy(cave));
     }
 
     // Move them randomly
@@ -351,7 +351,7 @@ void test_subject_check_in_and_out_2()
   constexpr int kCaveSize {20};
   constexpr int kSteps {10000};
   Labyrinth cave(kCaveSize);
-  TestEnemy person(&cave);
+  TestEnemy person(cave);
 
   std::cout << "Check check-ins and check-outs (part 2):" << '\n';
 
@@ -401,10 +401,10 @@ void test_player_feels()
   int i = 0;
   int k = 0;
   do {
-    Wump wump(&cave);
-    Bat bat(&cave);
-    Pit pit(&cave);
-    Player player(&cave);
+    Wump wump(cave);
+    Bat bat(cave);
+    Pit pit(cave);
+    Player player(cave);
     Player::Persons result = player.Feels();
     for (auto const x:result) {
       if ((x < 4)) {
@@ -423,8 +423,8 @@ void test_player_shot()
   constexpr int kCaveSize {20};
   
   Labyrinth cave(kCaveSize);
-  Wump wump(&cave);
-  Player player(&cave);
+  Wump wump(cave);
+  Player player(cave);
 
   std::string msg{""};
   wump.Teleport(0, msg);

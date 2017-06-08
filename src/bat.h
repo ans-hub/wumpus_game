@@ -13,7 +13,10 @@ namespace anshub {
 class Bat : public Enemy
 {
 public:
-  explicit Bat(Labyrinth* cave) : Enemy(cave) { type_ = BAT; }
+  explicit Bat(const Labyrinth& cave)
+  : Enemy(cave)
+  { type_ = BAT; }
+  
   std::string FeelsRepresent() const override;
 };
 

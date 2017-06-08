@@ -31,11 +31,11 @@ Player::Persons Player::Feels() const
 
 Subject::Person Player::Shot(int room) const
 {
-  if (!cave_->IsNeighbors (curr_room_->num_, room) ) {
+  if (!cave_.IsNeighbors (curr_room_->num_, room) ) {
     return EMPTY;
   }
   else {
-    std::vector<Subject*> persons = cave_->GetRoom(room)->persons_;
+    std::vector<Subject*> persons = cave_.GetRoom(room)->persons_;
     bool wump_shot {false};
     for (auto const& s:persons) {
       if (s->GetType() == WUMP) {

@@ -13,8 +13,12 @@ namespace anshub {
 class Player : public Subject
 {
 public:
-  explicit Player(Labyrinth* cave) : Subject(cave) { type_ = PLAYER; }
+  explicit Player(const Labyrinth& cave)
+  : Subject(cave)
+  { type_ = PLAYER; }
+  
   ~Player() { }
+  
   Persons Feels() const;
   Person  Shot(int) const;
 };

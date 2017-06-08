@@ -13,17 +13,12 @@ namespace anshub {
 class Enemy : public Subject
 {
 public:
-  explicit Enemy(Labyrinth* cave)
+  explicit Enemy(const Labyrinth& cave)
   : Subject(cave)
   { type_ = ENEMY; }
-  // Enemy(Labyrinth* cave) : Subject(cave) { CheckIn(); type_ = ENEMY; }
+
   ~Enemy(){ }
-  // ~Enemy() { CheckOut(); }
-  // Person ExamineRoom() const override;
   virtual std::string FeelsRepresent() const =0;
-protected:
-  // void CheckIn() override { curr_room_->enemy_ = this; }
-  // void CheckOut() override { curr_room_->enemy_ = nullptr; }
 };
 
 }

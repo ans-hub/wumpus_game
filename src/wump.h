@@ -13,7 +13,10 @@ namespace anshub {
 class Wump : public Enemy
 {
 public:
-  explicit Wump(Labyrinth* cave) : Enemy(cave) , worried_{false} { type_ = WUMP; }
+  explicit Wump(const Labyrinth& cave)
+  : Enemy(cave)
+  , worried_{false}
+  { type_ = WUMP; }
   
   std::string FeelsRepresent() const override;
   bool Worried() const { return worried_; }

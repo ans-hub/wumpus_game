@@ -10,24 +10,24 @@
 
 namespace anshub {
 
-Subject::Subject(Labyrinth* cave)
+Subject::Subject(const Labyrinth& cave)
 : dead_{false}
 , type_{UNKNOWN}
 , cave_{cave}
 , curr_room_{nullptr}
 {
-  curr_room_ = cave->GetRoom(0);    // see note #1
+  curr_room_ = cave.GetRoom(0);    // see note #1
   CheckIn();
   TeleportRandom();
 }
 
 bool Subject::Move(int room, std::string& msg)
 {
-  if (room >= cave_->GetSize()) {
+  if (room >= cave_.GetSize()) {
     msg = "Wrong room number";
     return false;
   }
-  else if (cave_->IsNeighbors(room, curr_room_->num_)) {
+  else if (cave_.IsNeighbors(room, curr_room_->num_)) {
     return Teleport(room, msg);
   }
   else {
@@ -38,7 +38,7 @@ bool Subject::Move(int room, std::string& msg)
 
 bool Subject::Teleport(int room, std::string& msg)
 {
-  if (room >= cave_->GetSize()) {
+  if (room >= cave_.GetSize()) {
     msg = "Wrong room number";
     return false;
   }
@@ -49,7 +49,7 @@ bool Subject::Teleport(int room, std::string& msg)
   else {
     msg = "Succesfull";
     CheckOut();
-    curr_room_ = cave_->GetRoom(room);
+    curr_room_ = cave_.GetRoom(room);
     CheckIn();
     return true;
   } 
@@ -72,8 +72,8 @@ bool Subject::MoveRandom()
 bool Subject::TeleportRandom()
 {
   do {
-    int rand_room = GetRandomInt(0, cave_->GetSize()-1);
-    if (cave_->GetRoom(rand_room)->IsEmpty()) {
+    int rand_room = GetRandomInt(0, cave_.GetSize()-1);
+    if (cave_.GetRoom(rand_room)->IsEmpty()) {
       std::string msg{};
       return Teleport(rand_room, msg);
     }
