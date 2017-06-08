@@ -1,0 +1,8 @@
+# Executables
+*.o
+*.out
+*.app
+
+# Temporary
+*.tmp
+*.ghc
