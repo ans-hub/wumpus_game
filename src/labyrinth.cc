@@ -34,7 +34,6 @@ Labyrinth::~Labyrinth()
   for (auto r : rooms_) {
     if (r) delete r;
   }
-  rooms_.clear();
 }
 
 // Creates some new rooms and store its pointers 

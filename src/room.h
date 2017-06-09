@@ -2,8 +2,10 @@
 // Excercise #12 from Stroustrup`s book
 // Topic: vectors and arrays (game "Hunt the Wumpus")
 // Description: room of labyrinth interface
-//
-// Note #1 : contains subjects are currently placed in this room
+// 
+// Note #1 : slicing. More right way to do this data member private, and
+// implement interface to push and pop elements
+// Note #2 : contains subjects are currently placed in this room
 
 #include <vector>
 
@@ -16,7 +18,7 @@ class Subject;
 
 struct Room
 {
-  typedef std::vector<Subject*> Vsubjects;
+  typedef std::vector<const Subject*> Vsubjects;  // see note #1
 
   Room() : Room(int()) { }
   explicit Room(int num)
@@ -33,7 +35,7 @@ struct Room
   Room*     left_;
   Room*     right_;
   Room*     back_;
-  Vsubjects persons_;   // see note #1
+  Vsubjects persons_;   // see note #2
 };
 
 }

@@ -96,7 +96,7 @@ void Subject::CheckIn()
 
 void Subject::CheckOut()
 {
-  std::vector<Subject*>& p = curr_room_->persons_;
+  std::vector<const Subject*>& p = curr_room_->persons_;
   p.erase (
     std::remove (p.begin(), p.end(), this), p.end()
   );
