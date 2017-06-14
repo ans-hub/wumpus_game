@@ -1,5 +1,5 @@
 CC = clang++
-CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++1y -g
+CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
 OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o interaction.o
 
 main.out : $(OBJECTS) main.cc

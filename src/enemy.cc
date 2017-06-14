@@ -1,20 +1,10 @@
-// enemy.cc: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: enemy abstract class
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: implementation of the abstract Enemy class
 
 #include "enemy.h"
 
 namespace anshub {
 
-// Subject::Person Enemy::ExamineRoom() const
-// {
-//   if (!curr_room_->player_) {
-//     return EMPTY;
-//   }
-//   else {
-//     return PLAYER;
-//   }
-// }
-
-}
+}  // namespace anshub

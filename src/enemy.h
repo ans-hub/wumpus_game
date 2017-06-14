@@ -1,7 +1,7 @@
-// enemy.h: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: enemy abstract class
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: interface to the abstract Enemy class
 
 #ifndef ENEMY_H
 #define ENEMY_H
@@ -16,11 +16,13 @@ public:
   explicit Enemy(const Labyrinth& cave)
   : Subject(cave)
   { type_ = ENEMY; }
-
   ~Enemy(){ }
+  
+  // Represents what feels others if near placed the Enemy
+
   virtual std::string FeelsRepresent() const =0;
 };
 
-}
+}  // namespace anshub
 
-#endif
+#endif  // ENEMY_H

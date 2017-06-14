@@ -1,21 +1,13 @@
-// subject.h: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: subject abstract class
-//
-// Note # 1 : msg contains the reason why Move() and Teleport() returns true
-// or false values
-//
-// Note # 2 : performing check-in and check-out of subject in the room its
-// stay by placing/removing its pointer to the container of current room instance
-//
-// Note # 3 : needs to define a subject type, setted in ctors of derived classes 
-
-#include <string>
-#include <experimental/random>
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: interface to the Subject abstract class
 
 #ifndef SUBJECT_H
 #define SUBJECT_H
+
+#include <string>
+#include "3rdparty/rand_toolkit.h"
 
 #include "labyrinth.h"
 
@@ -42,7 +34,7 @@ public:
   virtual ~Subject() { CheckOut(); }
   Subject(const Subject&) =delete;
 
-  bool    Move(int room, std::string& msg);     // see note #1
+  bool    Move(int room, std::string& msg);     // see note #1 after code
   bool    Teleport(int room, std::string& msg);
   bool    MoveRandom();
   bool    TeleportRandom();
@@ -53,17 +45,25 @@ public:
   void    Kill() { dead_ = true; }
 
 protected:
-  void    CheckIn();    // see note #2
+  void    CheckIn();    // see note #2 after code
   void    CheckOut();
 
-  bool        dead_;
-  Person      type_;    // see note #3
-  const Labyrinth&  cave_;
-  Room*       curr_room_;
+  bool    dead_;
+  Person  type_;        // see note #3 after code
+  Room*   curr_room_;
+  const   Labyrinth& cave_;
 };
 
-int GetRandomInt(int, int);
+}  // namespace anshub
 
-}
+#endif  // SUBJECT_H
 
-#endif
+// Interface notes:
+//
+// #1 : msg contains the reason why Move() and Teleport() returns true
+// or false values
+//
+// #2 : performing check-in and check-out of subject in the room its
+// stayed by placing/removing its pointer to the container of current room instance
+//
+// #3 : needs to define a subject type, setted in ctors of derived classes 

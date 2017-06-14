@@ -1,15 +1,15 @@
-// labyrinth.cc: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: labyrinth interface
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: interface to the Labyrinth class
+
+#ifndef LABYRINTH_H
+#define LABYRINTH_H
 
 #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
-
-#ifndef LABYRINTH_H
-#define LABYRINTH_H
 
 #include "room.h"
 
@@ -39,6 +39,6 @@ protected:
   Vrooms  rooms_;
 };
 
-}
+}  // namespace anshub
 
-#endif
+#endif  // LABYRINTH_H

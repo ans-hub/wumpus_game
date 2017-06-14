@@ -1,16 +1,14 @@
-// main.cc: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: main game app
-// 
-// Note #1 : just enum typedefs
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: main app of wumpus_game
 
 #include <iostream>
 #include <vector>
 #include <string>
 
 #include "interaction.h"
-#include "room.h" 
+#include "room.h"
 #include "labyrinth.h"
 #include "player.h"
 #include "wump.h"
@@ -24,9 +22,9 @@ bool is_debug(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-  typedef anshub::Subject::Person is;               //  see note #1
-  typedef anshub::Interaction::GameOverCause its;
-  typedef anshub::Interaction::Actions act;
+  typedef anshub::Subject::Person is;               // 
+  typedef anshub::Interaction::GameOverCause its;   // just enums typedefs
+  typedef anshub::Interaction::Actions act;         //
 
   constexpr int kCaveSize {20};
 

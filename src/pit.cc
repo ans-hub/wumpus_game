@@ -1,7 +1,7 @@
-// pit.cc: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: the bottomless pit class
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: implementations of the bottomless Pit class
 
 #include "pit.h"
 
@@ -12,4 +12,4 @@ std::string Pit::FeelsRepresent() const
   return "FEELS: You feel the cold (possible the bottomless pit is near)";
 }
 
-}
+}  // namespace anshub

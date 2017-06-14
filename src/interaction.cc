@@ -1,7 +1,7 @@
-// interaction.cc: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: user interaction class
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: implementation of the class that represents interaction with user
 
 #include "interaction.h"
 
@@ -79,4 +79,4 @@ Interaction::Actions Interaction::InputActions(int& room) const
   return QUIT;
 }
 
-}
+}  // namespace anshub

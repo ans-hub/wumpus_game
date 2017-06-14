@@ -1,7 +1,7 @@
-// bat.h: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: bat class
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: interface to the Bat class
 
 #ifndef BAT_H
 #define BAT_H
@@ -20,6 +20,6 @@ public:
   std::string FeelsRepresent() const override;
 };
 
-}
+}  // namespace anshub
 
-#endif
+#endif  // BAT_H

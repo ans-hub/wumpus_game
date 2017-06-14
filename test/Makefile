@@ -1,9 +1,9 @@
 CC = clang++
-CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++1y -g
-OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o interaction.o
+CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
+OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o interaction.o test_cases.o
 
 main.out : $(OBJECTS) main.cc
-	$(CC) $(CFLAGS) main.cc -o main.out $(OBJECTS)
+	$(CC) $(CFLAGS) -o0 main.cc -o main.out $(OBJECTS)
 
 room.o : ../src/room.h ../src/room.cc ../src/subject.h ../src/subject.cc
 	$(CC) $(CFLAGS) -c ../src/room.cc
@@ -31,6 +31,9 @@ pit.o : ../src/pit.h ../src/pit.cc ../src/enemy.h ../src/enemy.cc
 
 interaction.o : ../src/interaction.h ../src/interaction.cc
 	$(CC) $(CFLAGS) -c ../src/interaction.cc
+
+test_cases.o : test_cases.h test_cases.cc
+	$(CC) $(CFLAGS) -c test_cases.cc
 
 clean : 
 	rm ${OBJECTS} main.out

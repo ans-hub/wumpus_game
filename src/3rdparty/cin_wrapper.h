@@ -1,8 +1,7 @@
-// cin_wrapper.h
-// Anton Novoselov
-// Description: std::cin wrapper with checking input
-// More info see at https://github.com/ans-hub/cin_wrapper
-// Version: 0.5
+// Package: cin_wrapper (v0.3)
+// Description: https://github.com/ans-hub/cin_wrapper
+// Author: Anton Novoselov, 2017
+// File: implementations of cin_wrapper package
 
 #ifndef CIN_WRAPPER_H
 #define CIN_WRAPPER_H
@@ -111,6 +110,6 @@ template <typename T> bool cin_get(T &value, std::string msg, std::vector<T> lis
   });
 }
 
-}
+}  // namespace anshub
 
-#endif
+#endif  // CIN_WRAPPER_H

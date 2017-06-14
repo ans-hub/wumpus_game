@@ -1,7 +1,7 @@
-// labyrinth.cc: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: labyrinth implementation
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: implementation of the Labyrinth class
 //
 // Note #1 : Implementation of labyrinth based on directed graph with the
 // degree of valency of all vertexes equal 3 (every vertex is connected by
@@ -16,8 +16,6 @@
 // "outer" and "inner". Center path consists of size/2 rooms, outer and inner
 // pathes consists of size/4 rooms. Manually creating was avoided by me as
 // not extentable. Scheme of connecting see in the /src/graph.jpg
-//
-// Note #3 : Setted already when k was equal 0
 
 #include "labyrinth.h"
 
@@ -25,8 +23,8 @@ namespace anshub {
 
 Labyrinth::Labyrinth(int size) : size_{size}, rooms_{}
 {
-  CreateRooms();    // see note #1
-  ConnectRooms();   // see note #2
+  CreateRooms();    // create graph (see note #1)
+  ConnectRooms();   // connect vertexes of graph (see note #2)
 }
 
 Labyrinth::~Labyrinth()
@@ -70,7 +68,7 @@ void Labyrinth::ConnectRooms()
     rooms_[k]->right_ = right_neighbor;
     left_neighbor->back_ = rooms_[k];
     if (k != halfsize-1) {
-      right_neighbor->back_ = rooms_[k];  // see note #3
+      right_neighbor->back_ = rooms_[k];  // setted already when k was eq 0
     }
   }
 
@@ -130,5 +128,4 @@ void Labyrinth::DebugOutput(std::ostream& oss)
   }
 }
 
-
-}
+}  // namespace anshub

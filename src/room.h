@@ -1,16 +1,12 @@
-// room.h: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: room of labyrinth interface
-// 
-// Note #1 : slicing. More right way to do this data member private, and
-// implement interface to push and pop elements
-// Note #2 : contains subjects are currently placed in this room
-
-#include <vector>
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: interface to the Room class
 
 #ifndef ROOM_H
 #define ROOM_H
+
+#include <vector>
 
 namespace anshub {
 
@@ -18,7 +14,7 @@ class Subject;
 
 struct Room
 {
-  typedef std::vector<const Subject*> Vsubjects;  // see note #1
+  typedef std::vector<const Subject*> Vsubjects;  // see note #1 after code
 
   Room() : Room(int()) { }
   explicit Room(int num)
@@ -35,9 +31,16 @@ struct Room
   Room*     left_;
   Room*     right_;
   Room*     back_;
-  Vsubjects persons_;   // see note #2
+  Vsubjects persons_;   // see note #2 after code
 };
 
-}
+}  // namespace anshub
 
-#endif
+#endif  // ROOM_H
+
+// Implementation notes:
+//
+// #1: slicing. More right way to do this data member private, and
+// implement interface to push and pop elements
+//
+// #2: contains subjects are currently placed in this room

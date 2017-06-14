@@ -1,16 +1,14 @@
-// interaction.h: Anton Novoselov @ 2017
-// Excercise #12 from Stroustrup`s book
-// Topic: vectors and arrays (game "Hunt the Wumpus")
-// Description: user interaction class
-//
-// Note #1 : used in InputActions() to simplify coding of user input
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: interface to the class that represents interaction with user
 
 #ifndef INTERACTION_H
 #define INTERACTION_H
 
 #include <iostream>
 #include <ios>
-#include "3rdparty/cin_wrapper.h"    // see note #1
+#include "3rdparty/cin_wrapper.h"    // used in InputActions()
 
 namespace anshub {
 
@@ -23,7 +21,6 @@ struct Interaction
     HELP,
     QUIT
   };
-
   enum GameOverCause
   {
     NONE = 0,
@@ -34,18 +31,21 @@ struct Interaction
   };
 
   Interaction() : game_over_cause_{NONE} { }
-  void    GameOver(GameOverCause somewho) { game_over_cause_ = somewho; }
-  bool    GameOver() const { return game_over_cause_; }
+  
   void    Say(const std::string& msg) const;
   void    SayIntro() const;
   void    SayRoomNeighbors(int, std::vector<int>) const;
   void    SayGameOver() const;
+  
   void    OfferActions() const;
   Actions InputActions(int& room) const;
-
+  
+  void    GameOver(GameOverCause somewho) { game_over_cause_ = somewho; }
+  bool    GameOver() const { return game_over_cause_; }
+  
   GameOverCause game_over_cause_;
 };
 
-}
+}  // namespace anshub
 
-#endif
+#endif  // INTERACTION_H
