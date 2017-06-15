@@ -5,7 +5,7 @@
 # in depending of return code of tested application and memcheck app.
 #
 # Project: https://github.com/ans-hub/test_toolkit
-# Version: 0.21
+# Version: 0.22
 #__________________________________________________________________
 
 
@@ -51,8 +51,9 @@ function init_app_vars()
 
   memcheck_temp="$(get_workdir)/~"${memcheck_fname}".tmp"
   memcheck_cmd="${memcheck_fname} --leak-check=full 
-                                  --show-leak-kinds=all
+                                  --show-leak-kinds=all 
                                   --track-origins=yes 
+                                  --error-exitcode=500 
                                   "${testable_file}" "
 
   readonly testable_fname
