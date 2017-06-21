@@ -34,8 +34,8 @@ public:
   virtual ~Subject() { CheckOut(); }
   Subject(const Subject&) =delete;
 
-  bool    Move(int room, std::string& msg);     // see note #1 after code
-  bool    Teleport(int room, std::string& msg);
+  bool    Move(int, std::string&);     // see note #1 after code
+  bool    Teleport(int, std::string&);
   bool    MoveRandom();
   bool    TeleportRandom();
   Persons ExamineRoom() const;

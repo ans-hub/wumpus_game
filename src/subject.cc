@@ -19,14 +19,16 @@ Subject::Subject(const Labyrinth& cave)
   TeleportRandom();
 }
 
-bool Subject::Move(int room, std::string& msg)
+bool Subject::Move(int to_room, std::string& msg)
 {
-  if (room >= cave_.GetSize()) {
+  int from_room = curr_room_->num_;
+
+  if (to_room >= cave_.GetSize()) {
     msg = "Wrong room number";
     return false;
   }
-  else if (cave_.IsNeighbors(room, curr_room_->num_)) {
-    return Teleport(room, msg);
+  else if (labyrinth::is_neighbors(to_room, from_room, cave_)) {
+    return Teleport(to_room, msg);
   }
   else {
     msg = "Not neighbor room";
@@ -34,20 +36,22 @@ bool Subject::Move(int room, std::string& msg)
   }
 }
 
-bool Subject::Teleport(int room, std::string& msg)
+bool Subject::Teleport(int to_room, std::string& msg)
 {
-  if (room >= cave_.GetSize()) {
+  int from_room = curr_room_->num_;
+
+  if (to_room >= cave_.GetSize()) {
     msg = "Wrong room number";
     return false;
   }
-  else if (room == curr_room_->num_) {
+  else if (to_room == from_room) {
     msg = "Already here";
     return false;
   }
   else {
     msg = "Succesfull";
     CheckOut();
-    curr_room_ = cave_.GetRoom(room);
+    curr_room_ = cave_.GetRoom(to_room);
     CheckIn();
     return true;
   } 

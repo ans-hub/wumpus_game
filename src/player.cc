@@ -29,13 +29,15 @@ Player::Persons Player::Feels() const
   return res;
 }
 
-Subject::Person Player::Shot(int room) const
+Subject::Person Player::Shot(int to_room) const
 {
-  if (!cave_.IsNeighbors (curr_room_->num_, room) ) {
+  int from_room = curr_room_->num_;
+
+  if (!labyrinth::is_neighbors(to_room, from_room, cave_)) {
     return EMPTY;
   }
   else {
-    std::vector<const Subject*>& persons = cave_.GetRoom(room)->persons_;
+    std::vector<const Subject*>& persons = cave_.GetRoom(to_room)->persons_;
     bool wump_shot {false};
     for (auto const& s:persons) {
       if (s->GetType() == WUMP) {

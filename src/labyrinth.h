@@ -27,7 +27,7 @@ public:
 
   Room*   GetRoom(int num) const;
   int     GetSize() const { return size_; };
-  bool    IsNeighbors(int, int) const;
+  // bool    IsNeighbors(int, int) const;
   Vint    GetNeighbors(int) const;
   void    DebugOutput(std::ostream& oss);
 
@@ -38,6 +38,12 @@ protected:
   int     size_;
   Vrooms  rooms_;
 };
+
+namespace labyrinth {
+
+  bool is_neighbors(int, int, const Labyrinth&);
+
+}  // namespace labyrinth
 
 }  // namespace anshub
 

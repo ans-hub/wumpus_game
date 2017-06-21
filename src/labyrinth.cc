@@ -100,17 +100,6 @@ Room* Labyrinth::GetRoom(int num) const
   return num >= size_ ? nullptr : rooms_[num];
 }
 
-bool Labyrinth::IsNeighbors(int room_1, int room_2) const
-{
-  if (room_1 >= size_) return false;
-  if (room_2 >= size_) return false;
-  if (room_1 == room_2) return false;
-  if (rooms_[room_1]->left_->num_ == room_2) return true;
-  if (rooms_[room_1]->right_->num_ == room_2) return true;
-  if (rooms_[room_1]->back_->num_ == room_2) return true;
-  return false;
-}
-
 std::vector<int> Labyrinth::GetNeighbors(int room) const
 {
   return { rooms_[room]->left_->num_
@@ -127,5 +116,28 @@ void Labyrinth::DebugOutput(std::ostream& oss)
     oss << "\n";
   }
 }
+
+// NON-MEMBER HELPERS REALISATION
+
+namespace labyrinth {
+
+// Returns bool if room num_1 and room num_2 is neighbors
+
+bool is_neighbors(int num_1, int num_2, const Labyrinth& cave)
+{
+  if (num_1 == num_2) return false;
+  if (num_1 >= cave.GetSize()) return false;
+  if (num_2 >= cave.GetSize()) return false;
+  
+  Room* room = cave.GetRoom(num_1);
+  
+  if (room->left_->num_ == num_2) return true;
+  if (room->right_->num_ == num_2) return true;
+  if (room->back_->num_ == num_2) return true;
+  
+  return false;
+}
+
+}  // namespace labyrinth
 
 }  // namespace anshub
