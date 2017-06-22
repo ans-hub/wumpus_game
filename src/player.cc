@@ -33,7 +33,7 @@ Subject::Person Player::Shot(int to_room) const
 {
   int from_room = curr_room_->num_;
 
-  if (!labyrinth::is_neighbors(to_room, from_room, cave_)) {
+  if (!labyrinth::is_neighboring_rooms(to_room, from_room, cave_)) {
     return EMPTY;
   }
   else {

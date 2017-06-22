@@ -27,7 +27,7 @@ bool Subject::Move(int to_room, std::string& msg)
     msg = "Wrong room number";
     return false;
   }
-  else if (labyrinth::is_neighbors(to_room, from_room, cave_)) {
+  else if (labyrinth::is_neighboring_rooms(to_room, from_room, cave_)) {
     return Teleport(to_room, msg);
   }
   else {

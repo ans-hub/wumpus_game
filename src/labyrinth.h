@@ -18,7 +18,6 @@ namespace anshub {
 class Labyrinth
 {
 public:
-  typedef std::vector<int>   Vint;
   typedef std::vector<Room*> Vrooms;
   
   explicit Labyrinth(int);
@@ -26,10 +25,7 @@ public:
   Labyrinth(const Labyrinth&) =delete;
 
   Room*   GetRoom(int num) const;
-  int     GetSize() const { return size_; };
-  // bool    IsNeighbors(int, int) const;
-  Vint    GetNeighbors(int) const;
-  void    DebugOutput(std::ostream& oss);
+  int     GetSize() const { return size_; }
 
 protected:
   void    CreateRooms();
@@ -41,7 +37,9 @@ protected:
 
 namespace labyrinth {
 
-  bool is_neighbors(int, int, const Labyrinth&);
+  void debug_output(std::ostream&, const Labyrinth&);
+  bool is_neighboring_rooms(int, int, const Labyrinth&);
+  std::vector<int> get_neighboring_rooms(int, const Labyrinth&);
 
 }  // namespace labyrinth
 

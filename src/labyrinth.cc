@@ -100,42 +100,46 @@ Room* Labyrinth::GetRoom(int num) const
   return num >= size_ ? nullptr : rooms_[num];
 }
 
-std::vector<int> Labyrinth::GetNeighbors(int room) const
-{
-  return { rooms_[room]->left_->num_
-         , rooms_[room]->right_->num_
-         , rooms_[room]->back_->num_
-  };
-}
-
-void Labyrinth::DebugOutput(std::ostream& oss)
-{
-  oss << "\nDebug cave:\n";
-  for (auto const r : rooms_) {
-    oss << r->num_ << ": " << r->persons_.size();
-    oss << "\n";
-  }
-}
-
 // NON-MEMBER HELPERS REALISATION
 
 namespace labyrinth {
 
+// Returns neighbor room numbers 
+
+std::vector<int> get_neighboring_rooms(int room_num, const Labyrinth& cave)
+{
+  Room* room = cave.GetRoom(room_num);
+  return { room->left_->num_
+         , room->right_->num_
+         , room->back_->num_
+  };
+}
+
 // Returns bool if room num_1 and room num_2 is neighbors
 
-bool is_neighbors(int num_1, int num_2, const Labyrinth& cave)
+bool is_neighboring_rooms(int num_1, int num_2, const Labyrinth& cave)
 {
   if (num_1 == num_2) return false;
-  if (num_1 >= cave.GetSize()) return false;
-  if (num_2 >= cave.GetSize()) return false;
-  
-  Room* room = cave.GetRoom(num_1);
-  
-  if (room->left_->num_ == num_2) return true;
-  if (room->right_->num_ == num_2) return true;
-  if (room->back_->num_ == num_2) return true;
-  
+
+  auto neighbors = get_neighboring_rooms(num_1, cave);
+  auto result = std::find(std::begin(neighbors), std::end(neighbors), num_2);
+
+  if (result != std::end(neighbors)) {
+    return true;
+  }
   return false;
+}
+
+// Sends debug status of the labyrinth to std::ostream
+
+void debug_output(std::ostream& oss, const Labyrinth& cave)
+{
+  oss << "\nDebug cave:\n";
+  for (auto i = 0; i < cave.GetSize(); ++i) {
+    Room* r = cave.GetRoom(i);
+    oss << r->num_ << ": " << r->persons_.size();
+    oss << "\n";
+  }
 }
 
 }  // namespace labyrinth
