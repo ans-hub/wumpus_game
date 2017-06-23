@@ -8,7 +8,7 @@
 
 #include "enemy.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 class Wump : public Enemy
 {
@@ -25,6 +25,6 @@ protected:
   bool worried_;
 };
 
-}  // namespace anshub
+}  // namespace wumpus_game
 
 #endif  // WUMP_H

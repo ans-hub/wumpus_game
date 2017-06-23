@@ -14,6 +14,7 @@
 #include "wump.h"
 #include "bat.h"
 #include "pit.h"
+#include "helpers.h"
 
 bool is_debug(int argc, char* argv[])
 {
@@ -22,28 +23,30 @@ bool is_debug(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-  typedef anshub::Subject::Person is;               // 
-  typedef anshub::Interaction::GameOverCause its;   // just enums typedefs
-  typedef anshub::Interaction::Actions act;         //
+  using namespace wumpus_game;
+  
+  typedef Subject::Person is;               // 
+  typedef Interaction::GameOverCause its;   // just enums typedefs
+  typedef Interaction::Actions act;         //
 
   constexpr int kCaveSize {20};
 
-  anshub::Interaction game;
-  anshub::Labyrinth cave(kCaveSize);
-  anshub::Wump wump(cave);
-  anshub::Bat bats(cave);
-  anshub::Pit pit(cave);
-  anshub::Player player(cave);
+  Interaction game;
+  Labyrinth cave(kCaveSize);
+  Wump wump(cave);
+  Bat bats(cave);
+  Pit pit(cave);
+  Player player(cave);
 
   game.SayIntro();
 
   do {
     if (is_debug(argc, argv)) {
-      cave.DebugOutput(std::cout);
+      std::cout << cave << '\n';
     }
 
     auto curr_room = player.GetCurrRoomNum();
-    auto neighbor_rooms = cave.GetNeighbors(curr_room);
+    auto neighbor_rooms = helpers::get_neighboring_rooms(curr_room, cave);
     game.SayRoomNeighbors (curr_room, neighbor_rooms);
 
     auto player_sees = player.ExamineRoom();
@@ -85,7 +88,7 @@ int main(int argc, char* argv[])
         else {
           int wump_room = wump.GetCurrRoomNum();
           int player_room = player.GetCurrRoomNum();
-          if (cave.IsNeighbors(wump_room, player_room)) {
+          if (helpers::is_neighboring_rooms(wump_room, player_room, cave)) {
             wump.Worried(true);
           }
         }

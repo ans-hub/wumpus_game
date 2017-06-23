@@ -5,6 +5,6 @@
 
 #include "enemy.h"
 
-namespace anshub {
+namespace wumpus_game {
 
-}  // namespace anshub
+}  // namespace wumpus_game

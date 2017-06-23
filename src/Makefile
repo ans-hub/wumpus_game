@@ -1,36 +1,39 @@
 CC = clang++
-CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
-OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o interaction.o
+CFLAGS = -I  -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
+OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o interaction.o helpers.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) main.cc -o main.out $(OBJECTS)
 
-room.o : ../src/room.h ../src/room.cc ../src/subject.h ../src/subject.cc
-	$(CC) $(CFLAGS) -c ../src/room.cc
+room.o : room.h room.cc subject.o
+	$(CC) $(CFLAGS) -c room.cc
 
-labyrinth.o : ../src/room.h ../src/room.cc ../src/labyrinth.h ../src/labyrinth.cc 
-	$(CC) $(CFLAGS) -c ../src/labyrinth.cc
+labyrinth.o : labyrinth.h labyrinth.cc room.o
+	$(CC) $(CFLAGS) -c labyrinth.cc
 
-subject.o : ../src/labyrinth.h ../src/labyrinth.cc ../src/subject.h ../src/subject.cc
-	$(CC) $(CFLAGS) -c ../src/subject.cc
+subject.o : subject.h subject.cc labyrinth.o
+	$(CC) $(CFLAGS) -c subject.cc
 
-enemy.o : ../src/enemy.h ../src/enemy.cc ../src/subject.h ../src/subject.cc
-	$(CC) $(CFLAGS) -c ../src/enemy.cc
+enemy.o : enemy.h enemy.cc subject.o
+	$(CC) $(CFLAGS) -c enemy.cc
 	
-player.o : ../src/player.h ../src/player.cc ../src/subject.h ../src/subject.cc
-	$(CC) $(CFLAGS) -c ../src/player.cc
+player.o : player.h player.cc subject.o
+	$(CC) $(CFLAGS) -c player.cc
 
-wump.o : ../src/wump.h ../src/wump.cc ../src/enemy.h ../src/enemy.cc
-	$(CC) $(CFLAGS) -c ../src/wump.cc
+wump.o : wump.h wump.cc enemy.o
+	$(CC) $(CFLAGS) -c wump.cc
 
-bat.o : ../src/bat.h ../src/bat.cc ../src/enemy.h ../src/enemy.cc
-	$(CC) $(CFLAGS) -c ../src/bat.cc
+bat.o : bat.h bat.cc enemy.o
+	$(CC) $(CFLAGS) -c bat.cc
 
-pit.o : ../src/pit.h ../src/pit.cc ../src/enemy.h ../src/enemy.cc
-	$(CC) $(CFLAGS) -c ../src/pit.cc
+pit.o : pit.h pit.cc enemy.o
+	$(CC) $(CFLAGS) -c pit.cc
 
-interaction.o : ../src/interaction.h ../src/interaction.cc ../src/3rdparty/cin_wrapper.h
-	$(CC) $(CFLAGS) -c ../src/interaction.cc
+interaction.o : interaction.h interaction.cc 3rdparty/cin_wrapper.h
+	$(CC) $(CFLAGS) -c interaction.cc
+
+helpers.o : helpers.h helpers.cc
+	$(CC) $(CFLAGS) -c helpers.cc
 
 clean : 
 	rm ${OBJECTS} main.out

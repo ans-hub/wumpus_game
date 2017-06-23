@@ -1,38 +1,42 @@
 CC = clang++
+SRC = ../src/
 CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
-OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o interaction.o test_cases.o
+OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o interaction.o helpers.o test_cases.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc -o main.out $(OBJECTS)
 
-room.o : ../src/room.h ../src/room.cc ../src/subject.h ../src/subject.cc
-	$(CC) $(CFLAGS) -c ../src/room.cc
+room.o : $(SRC)room.h $(SRC)room.cc subject.o
+	$(CC) $(CFLAGS) -c $(SRC)room.cc
 
-labyrinth.o : ../src/room.h ../src/room.cc ../src/labyrinth.h ../src/labyrinth.cc 
-	$(CC) $(CFLAGS) -c ../src/labyrinth.cc
+labyrinth.o : $(SRC)labyrinth.h $(SRC)labyrinth.cc room.o 
+	$(CC) $(CFLAGS) -c $(SRC)labyrinth.cc
 
-subject.o : ../src/labyrinth.h ../src/labyrinth.cc ../src/subject.h ../src/subject.cc
-	$(CC) $(CFLAGS) -c ../src/subject.cc
+subject.o : $(SRC)subject.h $(SRC)subject.cc labyrinth.o helpers.o
+	$(CC) $(CFLAGS) -c $(SRC)subject.cc
 
-enemy.o : ../src/enemy.h ../src/enemy.cc ../src/subject.h ../src/subject.cc
-	$(CC) $(CFLAGS) -c ../src/enemy.cc
-	
-player.o : ../src/player.h ../src/player.cc ../src/subject.h ../src/subject.cc
-	$(CC) $(CFLAGS) -c ../src/player.cc
+player.o : $(SRC)player.h $(SRC)player.cc subject.o helpers.o
+	$(CC) $(CFLAGS) -c $(SRC)player.cc
 
-wump.o : ../src/wump.h ../src/wump.cc ../src/enemy.h ../src/enemy.cc
-	$(CC) $(CFLAGS) -c ../src/wump.cc
+enemy.o : $(SRC)enemy.h $(SRC)enemy.cc subject.o
+	$(CC) $(CFLAGS) -c $(SRC)enemy.cc	
 
-bat.o : ../src/bat.h ../src/bat.cc ../src/enemy.h ../src/enemy.cc
-	$(CC) $(CFLAGS) -c ../src/bat.cc
+wump.o : $(SRC)wump.h $(SRC)wump.cc enemy.o
+	$(CC) $(CFLAGS) -c $(SRC)wump.cc
 
-pit.o : ../src/pit.h ../src/pit.cc ../src/enemy.h ../src/enemy.cc
-	$(CC) $(CFLAGS) -c ../src/pit.cc
+bat.o : $(SRC)bat.h $(SRC)bat.cc enemy.o
+	$(CC) $(CFLAGS) -c $(SRC)bat.cc
 
-interaction.o : ../src/interaction.h ../src/interaction.cc
-	$(CC) $(CFLAGS) -c ../src/interaction.cc
+pit.o : $(SRC)pit.h $(SRC)pit.cc enemy.o
+	$(CC) $(CFLAGS) -c $(SRC)pit.cc
 
-test_cases.o : test_cases.h test_cases.cc
+interaction.o : $(SRC)interaction.h $(SRC)interaction.cc
+	$(CC) $(CFLAGS) -c $(SRC)interaction.cc
+
+helpers.o : $(SRC)helpers.h $(SRC)helpers.cc
+	$(CC) $(CFLAGS) -c $(SRC)helpers.cc
+
+test_cases.o : test_cases.h test_cases.cc helpers.o
 	$(CC) $(CFLAGS) -c test_cases.cc
 
 clean : 

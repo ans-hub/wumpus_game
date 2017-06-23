@@ -5,7 +5,7 @@
 
 #include "interaction.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 void Interaction::Say(const std::string& msg) const
 {
@@ -60,7 +60,7 @@ Interaction::Actions Interaction::InputActions(int& room) const
   std::string msg {"INPUT: (m)ove, (s)hot, (h)elp or (q)uit: "};
   std::vector<std::string> list { "m", "move", "s", "shot", "h", "help", "q", "quit"};
   do {
-  } while (!cin_get(x, msg, list));
+  } while (!anshub::cin_get(x, msg, list));
   
   if ((x == "h") || (x == "help")) return HELP;
   if ((x == "q") || (x == "quit")) return QUIT;
@@ -71,7 +71,7 @@ Interaction::Actions Interaction::InputActions(int& room) const
   int max = 19;
   msg = "ROOM:  input room number (0-19): ";
   do {
-  } while (!cin_get(room, msg, min, max));
+  } while (!anshub::cin_get(room, msg, min, max));
 
   if ((x == "m") || (x == "move")) return MOVE;
   if ((x == "s") || (x == "shot")) return SHOT;
@@ -79,4 +79,4 @@ Interaction::Actions Interaction::InputActions(int& room) const
   return QUIT;
 }
 
-}  // namespace anshub
+}  // namespace wumpus_game

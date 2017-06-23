@@ -7,7 +7,7 @@
 
 int main()
 {
-  using namespace anshub;
+  using namespace wumpus_game;
   
   int status{0};
 

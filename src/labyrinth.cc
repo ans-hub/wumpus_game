@@ -19,7 +19,7 @@
 
 #include "labyrinth.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 Labyrinth::Labyrinth(int size) : size_{size}, rooms_{}
 {
@@ -100,39 +100,9 @@ Room* Labyrinth::GetRoom(int num) const
   return num >= size_ ? nullptr : rooms_[num];
 }
 
-// NON-MEMBER HELPERS REALISATION
+// NON-MEMBER FUNCTIONS
 
-namespace labyrinth {
-
-// Returns neighbor room numbers 
-
-std::vector<int> get_neighboring_rooms(int room_num, const Labyrinth& cave)
-{
-  Room* room = cave.GetRoom(room_num);
-  return { room->left_->num_
-         , room->right_->num_
-         , room->back_->num_
-  };
-}
-
-// Returns bool if room num_1 and room num_2 is neighbors
-
-bool is_neighboring_rooms(int num_1, int num_2, const Labyrinth& cave)
-{
-  if (num_1 == num_2) return false;
-
-  auto neighbors = get_neighboring_rooms(num_1, cave);
-  auto result = std::find(std::begin(neighbors), std::end(neighbors), num_2);
-
-  if (result != std::end(neighbors)) {
-    return true;
-  }
-  return false;
-}
-
-// Sends debug status of the labyrinth to std::ostream
-
-void debug_output(std::ostream& oss, const Labyrinth& cave)
+std::ostream& operator<<(std::ostream& oss, const Labyrinth& cave)
 {
   oss << "\nDebug cave:\n";
   for (auto i = 0; i < cave.GetSize(); ++i) {
@@ -140,8 +110,7 @@ void debug_output(std::ostream& oss, const Labyrinth& cave)
     oss << r->num_ << ": " << r->persons_.size();
     oss << "\n";
   }
+  return oss;
 }
 
-}  // namespace labyrinth
-
-}  // namespace anshub
+}  // namespace wumpus_game

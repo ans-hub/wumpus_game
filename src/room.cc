@@ -5,11 +5,11 @@
 
 #include "room.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 bool Room::IsEmpty() const
 {
   return (persons_.empty()) ? true : false;
 }
 
-}  // namespace anshub
+}  // namespace wumpus_game

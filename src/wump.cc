@@ -5,11 +5,11 @@
 
 #include "wump.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 std::string Wump::FeelsRepresent() const
 {
   return "FEELS: It`s smeels like Wumpus (possible the Wumpus is near)";
 }
 
-}  // namespace anshub
+}  // namespace wumpus_game

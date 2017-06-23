@@ -5,11 +5,11 @@
 
 #include "pit.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 std::string Pit::FeelsRepresent() const
 {
   return "FEELS: You feel the cold (possible the bottomless pit is near)";
 }
 
-}  // namespace anshub
+}  // namespace wumpus_game

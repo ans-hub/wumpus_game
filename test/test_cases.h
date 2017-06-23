@@ -23,8 +23,9 @@
 #include "wump.h"
 #include "pit.h"
 #include "bat.h"
+#include "helpers.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 // Helper struct to place subject in concrete room not random
 
@@ -76,6 +77,6 @@ namespace test_player_behavior {
 
 }
 
-}  // namespace anshub
+}  // namespace wumpus_game
 
 #endif  // TEST_CASES_H

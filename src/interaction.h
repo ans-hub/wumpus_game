@@ -10,7 +10,7 @@
 #include <ios>
 #include "3rdparty/cin_wrapper.h"    // used in InputActions()
 
-namespace anshub {
+namespace wumpus_game {
 
 struct Interaction
 {
@@ -46,6 +46,6 @@ struct Interaction
   GameOverCause game_over_cause_;
 };
 
-}  // namespace anshub
+}  // namespace wumpus_game
 
 #endif  // INTERACTION_H

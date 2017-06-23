@@ -8,7 +8,7 @@
 
 #include "subject.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 class Enemy : public Subject
 {
@@ -23,6 +23,6 @@ public:
   virtual std::string FeelsRepresent() const =0;
 };
 
-}  // namespace anshub
+}  // namespace wumpus_game
 
 #endif  // ENEMY_H

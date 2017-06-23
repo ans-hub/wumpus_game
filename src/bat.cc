@@ -5,11 +5,11 @@
 
 #include "bat.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 std::string Bat::FeelsRepresent() const
 {
   return "FEELS: You feel the wind (possible the bats is near)";
 }
 
-}  // namespace anshub
+}  // namespace wumpus_game

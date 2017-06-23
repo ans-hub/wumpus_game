@@ -8,7 +8,7 @@
 
 #include "enemy.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 class Pit : public Enemy
 {
@@ -20,6 +20,6 @@ public:
   std::string FeelsRepresent() const override;
 };
 
-}  // namespace anshub
+}  // namespace wumpus_game
 
 #endif  // PIT_H

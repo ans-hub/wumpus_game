@@ -8,7 +8,7 @@
 
 #include "subject.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 class Player : public Subject
 {
@@ -22,6 +22,6 @@ public:
   Person  Shot(int) const;
 };
 
-}  // namespace anshub
+}  // namespace wumpus_game
 
 #endif  // PLAYER_H

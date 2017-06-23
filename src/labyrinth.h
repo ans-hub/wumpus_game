@@ -13,7 +13,7 @@
 
 #include "room.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 class Labyrinth
 {
@@ -35,14 +35,8 @@ protected:
   Vrooms  rooms_;
 };
 
-namespace labyrinth {
+std::ostream& operator<<(std::ostream&, const Labyrinth&);
 
-  void debug_output(std::ostream&, const Labyrinth&);
-  bool is_neighboring_rooms(int, int, const Labyrinth&);
-  std::vector<int> get_neighboring_rooms(int, const Labyrinth&);
-
-}  // namespace labyrinth
-
-}  // namespace anshub
+}  // namespace wumpus_game
 
 #endif  // LABYRINTH_H

@@ -8,7 +8,7 @@
 
 #include <vector>
 
-namespace anshub {
+namespace wumpus_game {
 
 class Subject;
 
@@ -34,7 +34,7 @@ struct Room
   Vsubjects persons_;   // see note #2 after code
 };
 
-}  // namespace anshub
+}  // namespace wumpus_game
 
 #endif  // ROOM_H
 

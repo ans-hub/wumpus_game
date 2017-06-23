@@ -5,7 +5,7 @@
 
 #include "subject.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 Subject::Subject(const Labyrinth& cave)
 : dead_{false}
@@ -27,7 +27,7 @@ bool Subject::Move(int to_room, std::string& msg)
     msg = "Wrong room number";
     return false;
   }
-  else if (labyrinth::is_neighboring_rooms(to_room, from_room, cave_)) {
+  else if (helpers::is_neighboring_rooms(to_room, from_room, cave_)) {
     return Teleport(to_room, msg);
   }
   else {
@@ -104,4 +104,4 @@ void Subject::CheckOut()
   );
 }
 
-}  // namespace anshub
+}  // namespace wumpus_game

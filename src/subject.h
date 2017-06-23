@@ -10,8 +10,9 @@
 #include "3rdparty/rand_toolkit.h"
 
 #include "labyrinth.h"
+#include "helpers.h"
 
-namespace anshub {
+namespace wumpus_game {
 
 struct Room;
 
@@ -54,7 +55,7 @@ protected:
   const   Labyrinth& cave_;
 };
 
-}  // namespace anshub
+}  // namespace wumpus_game
 
 #endif  // SUBJECT_H
 
