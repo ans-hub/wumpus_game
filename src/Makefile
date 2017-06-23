@@ -1,9 +1,11 @@
 CC = clang++
 CFLAGS = -I  -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
+# CFLAGS = -I  -ansi -pedantic-errors -Wall -Wextra -std=c++11 `fltk-config --cxxflags` -g
 OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o interaction.o helpers.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) main.cc -o main.out $(OBJECTS)
+	# $(CC) $(CFLAGS) main.cc -o main.out $(OBJECTS) `fltk-config --ldflags`
 
 room.o : room.h room.cc subject.o
 	$(CC) $(CFLAGS) -c room.cc
@@ -31,6 +33,9 @@ pit.o : pit.h pit.cc enemy.o
 
 interaction.o : interaction.h interaction.cc 3rdparty/cin_wrapper.h
 	$(CC) $(CFLAGS) -c interaction.cc
+
+# gui.o : gui.h gui.cc
+# 	$(CC) $(CFLAGS) -c gui.cc 
 
 helpers.o : helpers.h helpers.cc
 	$(CC) $(CFLAGS) -c helpers.cc
