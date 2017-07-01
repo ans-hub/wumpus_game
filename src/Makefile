@@ -34,9 +34,6 @@ pit.o : pit.h pit.cc enemy.o
 interaction.o : interaction.h interaction.cc 3rdparty/cin_wrapper.h
 	$(CC) $(CFLAGS) -c interaction.cc
 
-# gui.o : gui.h gui.cc
-# 	$(CC) $(CFLAGS) -c gui.cc 
-
 helpers.o : helpers.h helpers.cc
 	$(CC) $(CFLAGS) -c helpers.cc
 

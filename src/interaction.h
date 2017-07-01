@@ -9,7 +9,7 @@
 #include <iostream>
 #include <ios>
 #include "3rdparty/cin_wrapper.h"    // used in InputActions()
-#include "gui.h"
+// #include "gui.h"
 
 namespace wumpus_game {
 
