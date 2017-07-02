@@ -3,10 +3,10 @@
 
 namespace mvc_set {
 
-bool CliController::IncomingNotify(int& n, int& m) const
+bool CliCtrl::IncomingNotify(Message& msg, int& m) const
 {
   if (!istream_) { return false; }
-  if(istream_ >> n)
+  if(istream_ >> m)
   {
     m = 6;
     return true;
