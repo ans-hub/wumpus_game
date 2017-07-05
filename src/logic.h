@@ -8,65 +8,52 @@
 
 #include <stdexcept>
 #include <string>
+#include <algorithm>
+
+#include "entities/room.h"
+#include "entities/labyrinth.h"
+#include "entities/player.h"
+#include "entities/wump.h"
+#include "entities/bat.h"
+#include "entities/pit.h"
 
 
-#include "interaction.h"
-#include "room.h"
-#include "labyrinth.h"
-#include "player.h"
-#include "wump.h"
-#include "bat.h"
-#include "pit.h"
+#include "3rdparty/observer.h"
+#include "3rdparty/observable.h"
+#include "events.h"
 #include "helpers.h"
 
-#include "ui/abc/observable.h"
-#include "ui/message.h"
-
 namespace wumpus_game {
- 
-class Logic 
-: public mvc_set::Observable<mvc_set::Message, mvc_set::Message&, int&>  // see note #1 after code
+
+class Logic
+: public mvc_set::Observable<mvc_set::Show, mvc_set::Input&, int&>
 {
 public:
-  typedef Subject::Person is;               // 
-
-  enum class GameOverCause
-  {
-    NONE = 0,
-    PLAYER,
-    WUMP,
-    PIT,
-    USER
-  };
+  typedef Subject::Person Person;
 
   Logic();
   void Run();
+  void Rebuild();
   void StartGame();
-
-private:
 
   Labyrinth cave_;
   Wump wump_;
   Bat bats_;
   Pit pit_;
   Player player_;
-  bool game_over_cause_;
-  
+  Person game_over_cause_;
 
-  // Realisation
-
+private:
   void PlayerTurn();
   void EnemyTurn();
-  void IfBattle();
-  void RebuildCave();
+  void Battle();
 
-  // View methods
-
-  void ShowNeighborRooms();
-  void ShowPlayerFeels();
+  void PlayerDoShot(int);
+  void PlayerDoMove(int);
+  void GetUserInput(::mvc_set::Input&, int&);
 };
 
-}  // namespace mvc_set
+}  // namespace wumpus_game
 
 #endif  // LOGIC_Р
 

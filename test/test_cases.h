@@ -12,17 +12,18 @@
 
 #include <iostream>
 #include <algorithm>
+
 #include "3rdparty/test_toolkit.h"
 #include "3rdparty/rand_toolkit.h"
 
-#include "labyrinth.h"
-#include "room.h"
-#include "subject.h"
-#include "enemy.h"
-#include "player.h"
-#include "wump.h"
-#include "pit.h"
-#include "bat.h"
+#include "entities/labyrinth.h"
+#include "entities/room.h"
+#include "entities/subject.h"
+#include "entities/enemy.h"
+#include "entities/player.h"
+#include "entities/wump.h"
+#include "entities/pit.h"
+#include "entities/bat.h"
 #include "helpers.h"
 
 namespace wumpus_game {

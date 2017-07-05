@@ -8,21 +8,25 @@
 
 #include <istream>
 
-#include "../abc/observer.h"
-#include "../message.h"
-#include "../../logic.h"
+#include "../3rdparty/observer.h"
+#include "../events.h"
+#include "../logic.h"
 
 namespace mvc_set {
 
-class CliCtrl : public Observer<Message&, int&>
+class CliCtrl : public Observer<Input&, int&>
 {
 public:
   CliCtrl(std::istream& ist) : istream_{ist} { }
   ~CliCtrl() { }
-  bool IncomingNotify(Message& msg, int& n) const override;
+  bool IncomingNotify(Input& msg, int& n) override;
 private:
   std::istream& istream_;
 };
+
+namespace cli_helpers {
+
+}  // namespace cli_helpers
 
 }  // namespace mvc_set
 

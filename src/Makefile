@@ -1,56 +1,58 @@
-CC = g++
-CFLAGS = -I  -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
-# CFLAGS = -I  -ansi -pedantic-errors -Wall -Wextra -std=c++11 `fltk-config --cxxflags` -g
+CC = clang++
+# CFLAGS = -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
+CFLAGS = -ansi -pedantic-errors -Wall -Wextra -std=c++11 `fltk-config --cxxflags` -g
 OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
-helpers.o cli_controller.o cli_view.o logic.o
+helpers.o cli_controller.o cli_view.o logic.o gui.o
+ENT = entities/
 
 main.out : $(OBJECTS) main.cc
-	$(CC) $(CFLAGS) main.cc -o main.out $(OBJECTS)
+	$(CC) $(CFLAGS) main.cc $(OBJECTS) `fltk-config --ldflags` -lfltk_images -lfltk_png -lz -o main.out
 
-	# $(CC) $(CFLAGS) main.cc -o main.out $(OBJECTS) `fltk-config --ldflags`
+# -lz flag for png 
+	# $(CC) $(CFLAGS) main.cc -o main.out $(OBJECTS)
 
 # Main game files
 
-room.o : room.h room.cc subject.o
-	$(CC) $(CFLAGS) -c room.cc
+room.o : $(ENT)room.h $(ENT)room.cc subject.o
+	$(CC) $(CFLAGS) -c $(ENT)room.cc
 
-labyrinth.o : labyrinth.h labyrinth.cc room.o
-	$(CC) $(CFLAGS) -c labyrinth.cc
+labyrinth.o : $(ENT)labyrinth.h $(ENT)labyrinth.cc room.o
+	$(CC) $(CFLAGS) -c $(ENT)labyrinth.cc
 
-subject.o : subject.h subject.cc labyrinth.o
-	$(CC) $(CFLAGS) -c subject.cc
+subject.o : $(ENT)subject.h $(ENT)subject.cc labyrinth.o
+	$(CC) $(CFLAGS) -c $(ENT)subject.cc
 
-enemy.o : enemy.h enemy.cc subject.o
-	$(CC) $(CFLAGS) -c enemy.cc
+enemy.o : $(ENT)enemy.h $(ENT)enemy.cc subject.o
+	$(CC) $(CFLAGS) -c $(ENT)enemy.cc
 	
-player.o : player.h player.cc subject.o
-	$(CC) $(CFLAGS) -c player.cc
+player.o : $(ENT)player.h $(ENT)player.cc subject.o
+	$(CC) $(CFLAGS) -c $(ENT)player.cc
 
-wump.o : wump.h wump.cc enemy.o
-	$(CC) $(CFLAGS) -c wump.cc
+wump.o : $(ENT)wump.h $(ENT)wump.cc enemy.o
+	$(CC) $(CFLAGS) -c $(ENT)wump.cc
 
-bat.o : bat.h bat.cc enemy.o
-	$(CC) $(CFLAGS) -c bat.cc
+bat.o : $(ENT)bat.h $(ENT)bat.cc enemy.o
+	$(CC) $(CFLAGS) -c $(ENT)bat.cc
 
-pit.o : pit.h pit.cc enemy.o
-	$(CC) $(CFLAGS) -c pit.cc
+pit.o : $(ENT)pit.h $(ENT)pit.cc enemy.o
+	$(CC) $(CFLAGS) -c $(ENT)pit.cc
 
-logic.o : logic.h logic.cc ui/abc/observable.h
+logic.o : logic.h logic.cc 3rdparty/observable.h events.h
 	$(CC) $(CFLAGS) -c logic.cc
-
-# interaction.o : interaction.h interaction.cc 3rdparty/cin_wrapper.h
-	# $(CC) $(CFLAGS) -c interaction.cc
 
 helpers.o : helpers.h helpers.cc
 	$(CC) $(CFLAGS) -c helpers.cc
 
 # Interface
 
-cli_controller.o : ui/cli/controller.h ui/cli/controller.cc ui/abc/observer.h
-	$(CC) $(CFLAGS) -c ui/cli/controller.cc -o cli_controller.o
+cli_controller.o : cli/controller.h cli/controller.cc 3rdparty/observer.h logic.o events.h
+	$(CC) $(CFLAGS) -c cli/controller.cc -o cli_controller.o
 
-cli_view.o : ui/cli/view.h ui/cli/view.cc ui/abc/observer.h
-	$(CC) $(CFLAGS) -c ui/cli/view.cc -o cli_view.o
+cli_view.o : cli/view.h cli/view.cc 3rdparty/observer.h logic.o events.h
+	$(CC) $(CFLAGS) -c cli/view.cc -o cli_view.o 
+
+gui.o : gui/gui.h gui/gui.cc 3rdparty/observer.h logic.o events.h gui/coords.h gui/room_button.h
+	$(CC) $(CFLAGS) -c gui/gui.cc
 
 clean : 
 	rm ${OBJECTS} main.out

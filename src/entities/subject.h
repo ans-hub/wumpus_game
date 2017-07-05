@@ -7,10 +7,10 @@
 #define SUBJECT_H
 
 #include <string>
-#include "3rdparty/rand_toolkit.h"
+#include "../3rdparty/rand_toolkit.h"
 
 #include "labyrinth.h"
-#include "helpers.h"
+#include "../helpers.h"
 
 namespace wumpus_game {
 
@@ -44,6 +44,7 @@ public:
   Person  GetType() const { return type_; }
   int     GetCurrRoomNum() const { return curr_room_->num_; }
   void    Kill() { dead_ = true; }
+  void    Alive() { dead_ = false; }
 
 protected:
   void    CheckIn();    // see note #2 after code

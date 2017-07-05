@@ -20,8 +20,8 @@ public:
   void RegisterView(Observer<T>&);
   void RegisterController(Observer<U...>&);
   void UnregisterView(Observer<T>&);
-  void NotifyViews(T) const;
-  void RequestController(U ... args) const;
+  void NotifyViews(T);
+  void RequestController(U ... args);
 protected:
   Observable() : controller_{ }, views_{ } { }
   // Observable() { }
@@ -57,18 +57,18 @@ void Observable<T,U...>::UnregisterView(Observer<T>& observer)
 }
 
 template<class T, class ... U>
-void Observable<T,U...>::NotifyViews(T args) const
+void Observable<T,U...>::NotifyViews(T args)
 {
-  for (const Observer<T>& observer : views_) {
+  for (Observer<T>& observer : views_) {
     // observer->IncomingNotify(std::forward<U>(args)...);
     observer.IncomingNotify(args);
   }
 }
 
 template<class T, class ... U>
-void Observable<T,U...>::RequestController(U ... args) const
+void Observable<T,U...>::RequestController(U ... args)
 {
-  for (const Observer<U...>& observer : controller_) {
+  for (Observer<U...>& observer : controller_) {
     // observer->IncomingNotify(std::forward<U>(args)...);
     observer.IncomingNotify(args...);
   }

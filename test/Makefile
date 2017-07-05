@@ -1,37 +1,35 @@
 CC = clang++
 SRC = ../src/
+ENT = $(SRC)entities/
 CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
-OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o interaction.o helpers.o test_cases.o
+OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o helpers.o test_cases.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc -o main.out $(OBJECTS)
 
-room.o : $(SRC)room.h $(SRC)room.cc subject.o
-	$(CC) $(CFLAGS) -c $(SRC)room.cc
+room.o : $(ENT)room.h $(ENT)room.cc subject.o
+	$(CC) $(CFLAGS) -c $(ENT)room.cc
 
-labyrinth.o : $(SRC)labyrinth.h $(SRC)labyrinth.cc room.o 
-	$(CC) $(CFLAGS) -c $(SRC)labyrinth.cc
+labyrinth.o : $(ENT)labyrinth.h $(ENT)labyrinth.cc room.o 
+	$(CC) $(CFLAGS) -c $(ENT)labyrinth.cc
 
-subject.o : $(SRC)subject.h $(SRC)subject.cc labyrinth.o helpers.o
-	$(CC) $(CFLAGS) -c $(SRC)subject.cc
+subject.o : $(ENT)subject.h $(ENT)subject.cc labyrinth.o helpers.o
+	$(CC) $(CFLAGS) -c $(ENT)subject.cc
 
-player.o : $(SRC)player.h $(SRC)player.cc subject.o helpers.o
-	$(CC) $(CFLAGS) -c $(SRC)player.cc
+player.o : $(ENT)player.h $(ENT)player.cc subject.o helpers.o
+	$(CC) $(CFLAGS) -c $(ENT)player.cc
 
-enemy.o : $(SRC)enemy.h $(SRC)enemy.cc subject.o
-	$(CC) $(CFLAGS) -c $(SRC)enemy.cc	
+enemy.o : $(ENT)enemy.h $(ENT)enemy.cc subject.o
+	$(CC) $(CFLAGS) -c $(ENT)enemy.cc	
 
-wump.o : $(SRC)wump.h $(SRC)wump.cc enemy.o
-	$(CC) $(CFLAGS) -c $(SRC)wump.cc
+wump.o : $(ENT)wump.h $(ENT)wump.cc enemy.o
+	$(CC) $(CFLAGS) -c $(ENT)wump.cc
 
-bat.o : $(SRC)bat.h $(SRC)bat.cc enemy.o
-	$(CC) $(CFLAGS) -c $(SRC)bat.cc
+bat.o : $(ENT)bat.h $(ENT)bat.cc enemy.o
+	$(CC) $(CFLAGS) -c $(ENT)bat.cc
 
-pit.o : $(SRC)pit.h $(SRC)pit.cc enemy.o
-	$(CC) $(CFLAGS) -c $(SRC)pit.cc
-
-interaction.o : $(SRC)interaction.h $(SRC)interaction.cc
-	$(CC) $(CFLAGS) -c $(SRC)interaction.cc
+pit.o : $(ENT)pit.h $(ENT)pit.cc enemy.o
+	$(CC) $(CFLAGS) -c $(ENT)pit.cc
 
 helpers.o : $(SRC)helpers.h $(SRC)helpers.cc
 	$(CC) $(CFLAGS) -c $(SRC)helpers.cc

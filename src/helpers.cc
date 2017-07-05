@@ -37,6 +37,19 @@ bool is_neighboring_rooms(int num_1, int num_2, const Labyrinth& cave)
   return false;
 }
 
+// Represents std::vector<int> in std::string
+
+std::string vint_to_string(const std::vector<int> &v, std::string delim)
+{
+  std::stringstream sst;
+  for (std::size_t i = 0; i < v.size(); ++i) {
+    if (i != 0) sst << delim;
+    sst << v.at(i);
+  }
+  return sst.str();
+}
+
+
 }  // namespace helpers
 
 }  // namespace wumpus_game

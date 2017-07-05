@@ -12,7 +12,7 @@ struct Observer
   virtual ~Observer() { }
   Observer(const Observer&) =delete;
   Observer& operator=(const Observer&) =delete;
-  virtual bool IncomingNotify(T...) const =0;
+  virtual bool IncomingNotify(T...) =0;
 };
 
 }  // namespace mvc_set

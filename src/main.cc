@@ -6,14 +6,21 @@
 #include <iostream>
 
 #include "logic.h"
-#include "ui/cli/view.h"
-#include "ui/cli/controller.h"
+#include "gui/gui.h"
+#include "cli/view.h"
+#include "cli/controller.h"
 
 int main()
 { 
-  wumpus_game::Logic  model {};
-  mvc_set::CliView    view {std::cout, model};
-  mvc_set::CliCtrl    ctrl {std::cin};
+  using namespace wumpus_game;
+  using namespace mvc_set;
+
+  Logic model{};
+  Gui view{model};
+  Gui& ctrl = view;
+  // return (Fl::run());
+  // CliView view {std::cout, model};
+  // CliCtrl ctrl {std::cin};
 
   model.RegisterView(view);
   model.RegisterController(ctrl);
