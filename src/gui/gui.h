@@ -46,7 +46,7 @@ private:
   void StartGame();
   void CreateRoomsButtons();
 
-  // This move to the functions
+  // This move to the functions, since here all only 
   void TuneInterfaceView();
   void RefreshRoomsButtons();
   void TuneRoomsButtons();

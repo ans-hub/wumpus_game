@@ -60,18 +60,18 @@ void Gui::SetCallbacks()
   btn_help_->callback((cb_btnhelp), (void*)this);
 }
 
-void Gui::cb_btnstart(Fl_Widget* widget, void* gui)
+void Gui::cb_btnstart(Fl_Widget*, void* gui)
 {
   // gui_helpers::enable_rooms_buttons(((Gui*)gui)->rooms_);
   ((Gui*)gui)->StartGame();
 }
 
-void Gui::cb_btnquit(Fl_Widget* widget, void* gui)
+void Gui::cb_btnquit(Fl_Widget*, void* gui)
 {
   ((Gui*)gui)->window_->hide();
 }
 
-void Gui::cb_btnhelp(Fl_Widget* widget, void* gui)
+void Gui::cb_btnhelp(Fl_Widget*, void* gui)
 {
   gui_helpers::show_intro(((Gui*)gui)->output_);
 }
@@ -230,6 +230,7 @@ void Gui::StartGame()
   RefreshRoomsButtons();
   gui_helpers::show_subject_pos(rooms_, model_.player_);
   model_.StartGame();
+}
 
 namespace gui_helpers {
 
@@ -242,7 +243,7 @@ bool find_room_button(const std::vector<RoomButton*>& r, Fl_Widget* w)
   return false;
 }
 
-void show_prompt(Fl_Text_Buffer* output)
+void show_prompt(Fl_Text_Buffer*)
 {
   // output->insert(0, ">$ Move or shot?\n");
   // Fl::flush();
@@ -313,7 +314,7 @@ void show_feels(Fl_Text_Buffer* output, const wumpus_game::Player& player)
   }
 }
 
-void show_neighbors(Fl_Text_Buffer* output, const wumpus_game::Logic& model)
+void show_neighbors(Fl_Text_Buffer*, const wumpus_game::Logic&)
 {
   using namespace wumpus_game;
   
@@ -324,7 +325,8 @@ void show_moved_bats(Fl_Text_Buffer* output)
   output->insert(0, "You have been moved by the Bats to another room\n");
 }
 
-void clear_subject_pos(std::vector<RoomButton*>& rooms, wumpus_game::Subject& subj)
+// make here subject pos, which search subject here and clear
+void clear_subject_pos(std::vector<RoomButton*>& rooms, wumpus_game::Subject&)
 {
   for (auto& v : rooms) {
     v->label("");

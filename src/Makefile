@@ -1,17 +1,23 @@
 CC = clang++
-# CFLAGS = -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
-CFLAGS = -ansi -pedantic-errors -Wall -Wextra -std=c++11 `fltk-config --cxxflags` -g
-OBJECTS = labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
-helpers.o cli_controller.o cli_view.o logic.o gui.o
-ENT = entities/
 
-main.out : $(OBJECTS) main.cc
-	$(CC) $(CFLAGS) main.cc $(OBJECTS) `fltk-config --ldflags` -lfltk_images -lfltk_png -lz -o main.out
+# Pathes
 
-# -lz flag for png 
-	# $(CC) $(CFLAGS) main.cc -o main.out $(OBJECTS)
+ENT 			= entities/
+
+# Flags
+
+CFLAGS 		= -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
+FLTKFLAGS = `fltk-config --ldflags` -lfltk_images -lfltk_png -lz
+
+# Objects
+
+OBJECTS 	= labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o \
+						wump.o helpers.o cli_controller.o cli_view.o logic.o gui.o
 
 # Main game files
+
+main.out : $(OBJECTS) main.cc
+	$(CC) $(CFLAGS) main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
 
 room.o : $(ENT)room.h $(ENT)room.cc subject.o
 	$(CC) $(CFLAGS) -c $(ENT)room.cc
@@ -53,6 +59,8 @@ cli_view.o : cli/view.h cli/view.cc 3rdparty/observer.h logic.o events.h
 
 gui.o : gui/gui.h gui/gui.cc 3rdparty/observer.h logic.o events.h gui/coords.h gui/room_button.h
 	$(CC) $(CFLAGS) -c gui/gui.cc
+
+# Others
 
 clean : 
 	rm ${OBJECTS} main.out

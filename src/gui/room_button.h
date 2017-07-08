@@ -13,11 +13,12 @@ namespace mvc_set {
 struct RoomButton : Fl_Light_Button
 {
   RoomButton(int num, int x, int y, int w, int h, wumpus_game::Logic& model)
-    : num_{num}
+    : Fl_Light_Button(x, y, w, h)
+    , num_{num}
     , model_{model}
-    , Fl_Light_Button(x, y, w, h)
     { }
   int handle(int) override;
+  
   int num_;
   wumpus_game::Logic& model_;
 };
