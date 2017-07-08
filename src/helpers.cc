@@ -7,13 +7,13 @@
 
 namespace wumpus_game {
 
-// LABYRINTH HELPERS
+// MAP HELPERS
 
 namespace helpers {
 
 // Returns neighbor room numbers 
 
-std::vector<int> get_neighboring_rooms(int room_num, const Labyrinth& cave)
+std::vector<int> get_neighboring_rooms(int room_num, const Map& cave)
 {
   Room* room = cave.GetRoom(room_num);
   return { room->left_->num_
@@ -24,7 +24,7 @@ std::vector<int> get_neighboring_rooms(int room_num, const Labyrinth& cave)
 
 // Returns bool if room num_1 and room num_2 is neighbors
 
-bool is_neighboring_rooms(int num_1, int num_2, const Labyrinth& cave)
+bool is_neighboring_rooms(int num_1, int num_2, const Map& cave)
 {
   if (num_1 == num_2) return false;
 

@@ -13,7 +13,7 @@ namespace wumpus_game {
 class Pit : public Enemy
 {
 public:
-  explicit Pit(const Labyrinth& cave)
+  explicit Pit(const Map& cave)
   : Enemy(cave)
   { type_ = PIT; }
   

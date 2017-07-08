@@ -12,15 +12,15 @@
 #include <sstream>
 #include <algorithm>
 
-#include "entities/labyrinth.h"
+#include "entities/map.h"
 #include "entities/room.h"
 
 namespace wumpus_game {
 
 namespace helpers {
 
-  bool is_neighboring_rooms(int, int, const Labyrinth&);
-  std::vector<int> get_neighboring_rooms(int, const Labyrinth&);
+  bool is_neighboring_rooms(int, int, const Map&);
+  std::vector<int> get_neighboring_rooms(int, const Map&);
   std::string vint_to_string(const std::vector<int> &v, std::string delim = ",");
 
 }  // namespace helpers

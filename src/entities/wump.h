@@ -13,7 +13,7 @@ namespace wumpus_game {
 class Wump : public Enemy
 {
 public:
-  explicit Wump(const Labyrinth& cave)
+  explicit Wump(const Map& cave)
   : Enemy(cave)
   , worried_{false}
   { type_ = WUMP; }

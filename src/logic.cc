@@ -170,7 +170,7 @@ void Logic::Battle()
 
 // void Logic::RebuildCave()
 // {
-//   // cave_ = Labyrinth(20);
+//   // cave_ = Map(20);
 //   // wump_(cave_);
 //   // bats_(cave_);
 //   // pit_(cave_);

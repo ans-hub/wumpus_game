@@ -13,7 +13,7 @@ namespace wumpus_game {
 class Enemy : public Subject
 {
 public:
-  explicit Enemy(const Labyrinth& cave)
+  explicit Enemy(const Map& cave)
   : Subject(cave)
   { type_ = ENEMY; }
   ~Enemy(){ }

@@ -16,7 +16,7 @@
 #include "3rdparty/test_toolkit.h"
 #include "3rdparty/rand_toolkit.h"
 
-#include "entities/labyrinth.h"
+#include "entities/map.h"
 #include "entities/room.h"
 #include "entities/subject.h"
 #include "entities/enemy.h"
@@ -24,6 +24,7 @@
 #include "entities/wump.h"
 #include "entities/pit.h"
 #include "entities/bat.h"
+// #include "entities/level.h"
 #include "helpers.h"
 
 namespace wumpus_game {
@@ -32,7 +33,7 @@ namespace wumpus_game {
 
 struct TestSubject : Subject
 {
-  TestSubject(const Labyrinth& cave, int start);
+  TestSubject(const Map& cave, int start);
   int start_room_;
 };
 
@@ -40,21 +41,21 @@ struct TestSubject : Subject
 
 struct TestEnemy : Enemy
 {
-  TestEnemy(const Labyrinth& cave) : Enemy(cave) { }
+  TestEnemy(const Map& cave) : Enemy(cave) { }
   std::string FeelsRepresent() const override { return ""; }
 };
 
 // Helper struct to give access to the rooms directly
 
-struct TestCave : Labyrinth
+struct TestCave : Map
 {
-  TestCave(int size) : Labyrinth(size) { }
+  TestCave(int size) : Map(size) { }
   std::vector<Room*> GetAllRooms() const { return rooms_; }
 };
 
 // Collection of function to test behavior of wumpus_package
 
-namespace test_labyrinth_behavior {
+namespace test_map_behavior {
 
   int creating();
 

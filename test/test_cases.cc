@@ -7,19 +7,19 @@
 
 namespace wumpus_game {
 
-TestSubject::TestSubject(const Labyrinth& cave, int start)
+TestSubject::TestSubject(const Map& cave, int start)
 : Subject(cave)
 , start_room_{start}
 {
   curr_room_ = cave.GetRoom(start_room_);
 }
 
-namespace test_labyrinth_behavior {
+namespace test_map_behavior {
 
   int creating()
   {
     constexpr int kCaveSize {20};
-    Labyrinth cave(kCaveSize);
+    Map cave(kCaveSize);
     
     std::cerr << "Check rooms connecting:" << '\n';
     
@@ -92,7 +92,7 @@ namespace test_labyrinth_behavior {
     return result;
   }
 
-}  // namespace test_labyrinth_behavior
+}  // namespace test_map_behavior
 
 namespace test_subject_behavior {
 
@@ -101,7 +101,7 @@ namespace test_subject_behavior {
     constexpr int kCaveSize {20};
     constexpr int kStartRoom {0};
 
-    Labyrinth cave(kCaveSize);
+    Map cave(kCaveSize);
     TestSubject person(cave, kStartRoom);
 
     std::cerr << "Check subject static moving:" << '\n';
@@ -133,7 +133,7 @@ namespace test_subject_behavior {
   {
     constexpr int kCaveSize {20};
     constexpr int kSteps {10000};
-    Labyrinth cave(kCaveSize);
+    Map cave(kCaveSize);
     TestEnemy person(cave);
 
     std::cerr << "Check dynamic moving:" << '\n';
@@ -174,7 +174,7 @@ namespace test_subject_behavior {
     int result{0};
 
     do {
-      Labyrinth cave(kCaveSize);
+      Map cave(kCaveSize);
       
       // Fill labirint with subjects
 
@@ -214,7 +214,7 @@ namespace test_subject_behavior {
     std::cerr << "Subjects examine room:" << '\n';
     
     constexpr int kCaveSize {20};
-    Labyrinth cave(kCaveSize);
+    Map cave(kCaveSize);
 
     TestEnemy e1(cave);
     TestEnemy e2(cave);
@@ -342,7 +342,7 @@ namespace test_subject_behavior {
   {
     constexpr int kCaveSize {20};
     constexpr int kSteps {10000};
-    Labyrinth cave(kCaveSize);
+    Map cave(kCaveSize);
     TestEnemy person(cave);
 
     std::cerr << "Check check-ins and check-outs (part 2):" << '\n';
@@ -396,7 +396,7 @@ namespace test_player_behavior {
     constexpr int kCaveSize {20};
     constexpr int kSteps {10000};
     
-    Labyrinth cave(kCaveSize);
+    Map cave(kCaveSize);
 
     int i{0};
     int k{0};
@@ -426,7 +426,7 @@ namespace test_player_behavior {
     
     constexpr int kCaveSize {20};
     
-    Labyrinth cave(kCaveSize);
+    Map cave(kCaveSize);
     Wump wump(cave);
     Player player(cave);
 

@@ -11,7 +11,7 @@
 #include <algorithm>
 
 #include "entities/room.h"
-#include "entities/labyrinth.h"
+#include "entities/map.h"
 #include "entities/player.h"
 #include "entities/wump.h"
 #include "entities/bat.h"
@@ -36,7 +36,7 @@ public:
   void Rebuild();
   void StartGame();
 
-  Labyrinth cave_;
+  Map cave_;
   Wump wump_;
   Bat bats_;
   Pit pit_;

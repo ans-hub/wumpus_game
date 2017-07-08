@@ -11,8 +11,10 @@ int main()
   
   int status{0};
 
-  status += test_labyrinth_behavior::creating();
+  status += test_map_behavior::creating();
 
+  // status += test_level_behavior::create();
+  
   status += test_subject_behavior::static_moving();
   status += test_subject_behavior::dynamic_moving();
   status += test_subject_behavior::random_placing();
@@ -22,6 +24,7 @@ int main()
   
   status += test_player_behavior::feels();
   status += test_player_behavior::shot();
+
 
   return status;
 }

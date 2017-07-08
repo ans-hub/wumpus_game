@@ -7,7 +7,7 @@
 
 namespace wumpus_game {
 
-Subject::Subject(const Labyrinth& cave)
+Subject::Subject(const Map& cave)
 : dead_{false}
 , type_{UNKNOWN}
 , curr_room_{nullptr}

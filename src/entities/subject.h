@@ -9,7 +9,7 @@
 #include <string>
 #include "../3rdparty/rand_toolkit.h"
 
-#include "labyrinth.h"
+#include "map.h"
 #include "../helpers.h"
 
 namespace wumpus_game {
@@ -31,7 +31,7 @@ public:
   
   typedef std::vector<Person> Persons;
 
-  explicit Subject(const Labyrinth&);
+  explicit Subject(const Map&);
   virtual ~Subject() { CheckOut(); }
   Subject(const Subject&) =delete;
 
@@ -53,7 +53,7 @@ protected:
   bool    dead_;
   Person  type_;        // see note #3 after code
   Room*   curr_room_;
-  const   Labyrinth& cave_;
+  const   Map& cave_;
 };
 
 }  // namespace wumpus_game

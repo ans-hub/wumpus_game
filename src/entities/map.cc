@@ -1,13 +1,13 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: implementation of the Labyrinth class
+// File: implementation of the Map class
 //
-// Note #1 : Implementation of labyrinth based on directed graph with the
+// Note #1 : Implementation of map based on directed graph with the
 // degree of valency of all vertexes equal 3 (every vertex is connected by
-// edges with 3 other vertex. In meaning of this app the Labyrinth is the
+// edges with 3 other vertex. In meaning of this app the Map is the
 // Graph, the Rooms are vertexes and the tunnels are edges, the size is the
-// Rooms count in the Labyrinth.
+// Rooms count in the Map.
 //
 // Note #2 : Connecting of the Rooms is auto-processed and based on plane
 // projection of regular dodecahedron using Schlegel diagram. Neighbors
@@ -17,17 +17,17 @@
 // pathes consists of size/4 rooms. Manually creating was avoided by me as
 // not extentable. Scheme of connecting see in the /src/graph.jpg
 
-#include "labyrinth.h"
+#include "map.h"
 
 namespace wumpus_game {
 
-Labyrinth::Labyrinth(int size) : size_{size}, rooms_{}
+Map::Map(int size) : size_{size}, rooms_{}
 {
   CreateRooms();    // create graph (see note #1)
   ConnectRooms();   // connect vertexes of graph (see note #2)
 }
 
-Labyrinth::~Labyrinth()
+Map::~Map()
 {
   for (auto r : rooms_) {
     if (r) delete r;
@@ -36,7 +36,7 @@ Labyrinth::~Labyrinth()
 
 // Creates some new rooms and store its pointers 
 
-void Labyrinth::CreateRooms()
+void Map::CreateRooms()
 {
   rooms_.reserve(size_);
   for (int i = 0; i < size_; ++i) {
@@ -46,7 +46,7 @@ void Labyrinth::CreateRooms()
 
 // Connects the rooms stored in vector
 
-void Labyrinth::ConnectRooms()
+void Map::ConnectRooms()
 {
   int halfsize = size_/2;
   Room* left_neighbor = nullptr;
@@ -95,14 +95,14 @@ void Labyrinth::ConnectRooms()
   rooms_[size_-1]->right_ = rooms_[halfsize+1];
 }
 
-Room* Labyrinth::GetRoom(int num) const
+Room* Map::GetRoom(int num) const
 {
   return num >= size_ ? nullptr : rooms_[num];
 }
 
 // NON-MEMBER FUNCTIONS
 
-std::ostream& operator<<(std::ostream& oss, const Labyrinth& cave)
+std::ostream& operator<<(std::ostream& oss, const Map& cave)
 {
   oss << "\nDebug cave:\n";
   for (auto i = 0; i < cave.GetSize(); ++i) {
