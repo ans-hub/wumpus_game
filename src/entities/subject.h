@@ -19,7 +19,7 @@ struct Room;
 class Subject
 {
 public:
-  enum Person {
+  enum Person { // remake in Type
     UNKNOWN = 0,
     EMPTY,
     PLAYER,
@@ -28,7 +28,7 @@ public:
     PIT,
     BAT
   };
-  
+
   typedef std::vector<Person> Persons;
 
   explicit Subject(const Map&);

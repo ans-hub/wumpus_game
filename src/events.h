@@ -8,7 +8,7 @@
 
 namespace mvc_set {
 
-  enum class Show
+  enum class Show   // Event
   {
     WINDOW = 0,
     INTRO,
@@ -22,7 +22,7 @@ namespace mvc_set {
     PLAYER_MOVED
   };
 
-  enum class Input
+  enum class Input  // Action
   { 
     UNKNOWN,
     HELP,

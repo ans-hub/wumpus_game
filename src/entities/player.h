@@ -15,7 +15,7 @@ class Player : public Subject
 public:
   explicit Player(const Map& cave)
   : Subject(cave)
-  { type_ = PLAYER; }
+  { type_ = Person::PLAYER; }
   ~Player() { }
   
   Persons Feels() const;

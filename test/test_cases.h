@@ -24,8 +24,9 @@
 #include "entities/wump.h"
 #include "entities/pit.h"
 #include "entities/bat.h"
-// #include "entities/level.h"
+#include "entities/level.h"
 #include "helpers.h"
+#include "test_helpers.h"
 
 namespace wumpus_game {
 
@@ -56,6 +57,12 @@ struct TestCave : Map
 // Collection of function to test behavior of wumpus_package
 
 namespace test_map_behavior {
+
+  int creating();
+
+}
+
+namespace test_level_behavior {
 
   int creating();
 

@@ -13,8 +13,8 @@ int main()
 
   status += test_map_behavior::creating();
 
-  // status += test_level_behavior::create();
-  
+  status += test_level_behavior::creating();
+
   status += test_subject_behavior::static_moving();
   status += test_subject_behavior::dynamic_moving();
   status += test_subject_behavior::random_placing();

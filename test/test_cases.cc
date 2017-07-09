@@ -94,6 +94,39 @@ namespace test_map_behavior {
 
 }  // namespace test_map_behavior
 
+namespace test_level_behavior {
+
+  int creating()
+  {
+    std::cerr << "Check level creating:" << '\n';
+    
+    constexpr int kSteps {100};
+    constexpr int kCaveSize {20};
+    
+    int i{0};
+    int result{0};
+
+    do {
+      int kWumpsCnt = rand_toolkit::get_rand(1, kCaveSize/4);
+      int kBatsCnt = rand_toolkit::get_rand(1, kCaveSize/4);
+      int kPitsCnt = rand_toolkit::get_rand(1, kCaveSize/4);
+      Level lvl(kCaveSize, kWumpsCnt, kBatsCnt, kPitsCnt);
+
+      int wumps_total = test_helpers::persons_in_cave(lvl.cave_, Subject::WUMP);
+      int bats_total  = test_helpers::persons_in_cave(lvl.cave_, Subject::BAT);
+      int pits_total  = test_helpers::persons_in_cave(lvl.cave_, Subject::PIT);
+
+      result += kWumpsCnt - wumps_total;
+      result += kBatsCnt - bats_total;
+      result += kPitsCnt - pits_total;
+    } while(++i <= kSteps);
+
+    std::cerr << " " << kSteps-result << " out of " << kSteps << ".....Ok" << '\n';
+    return result;
+  }
+
+}
+
 namespace test_subject_behavior {
 
   int static_moving()
@@ -409,8 +442,8 @@ namespace test_player_behavior {
       Player player(cave);
       Player::Persons feels = player.Feels();
       for (auto const x:feels) {
-        if ((x < 4)) {
-          result += test_toolkit::message(i, i ,x);
+        if (x < 4) {
+          result += test_toolkit::message(i, i ,x)  ;
           ++k;
         }
       }

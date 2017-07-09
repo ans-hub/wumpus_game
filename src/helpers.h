@@ -12,6 +12,7 @@
 #include <sstream>
 #include <algorithm>
 
+#include "entities/subject.h"
 #include "entities/map.h"
 #include "entities/room.h"
 
@@ -22,6 +23,7 @@ namespace helpers {
   bool is_neighboring_rooms(int, int, const Map&);
   std::vector<int> get_neighboring_rooms(int, const Map&);
   std::string vint_to_string(const std::vector<int> &v, std::string delim = ",");
+  // int persons_in_cave(const Map&, Person);
 
 }  // namespace helpers
 

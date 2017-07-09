@@ -9,7 +9,7 @@ namespace wumpus_game {
 
 Subject::Subject(const Map& cave)
 : dead_{false}
-, type_{UNKNOWN}
+, type_{Person::UNKNOWN}
 , curr_room_{nullptr}
 , cave_{cave}
 {

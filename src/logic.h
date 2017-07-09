@@ -36,11 +36,7 @@ public:
   void Rebuild();
   void StartGame();
 
-  Map cave_;
-  Wump wump_;
-  Bat bats_;
-  Pit pit_;
-  Player player_;
+  Level& level_;
   Person game_over_cause_;
 
 private:

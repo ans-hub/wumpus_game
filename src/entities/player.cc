@@ -34,21 +34,21 @@ Subject::Person Player::Shot(int to_room) const
   int from_room = curr_room_->num_;
 
   if (!helpers::is_neighboring_rooms(to_room, from_room, cave_)) {
-    return EMPTY;
+    return Person::EMPTY;
   }
   else {
     std::vector<const Subject*>& persons = cave_.GetRoom(to_room)->persons_;
     bool wump_shot {false};
     for (auto const& s:persons) {
-      if (s->GetType() == WUMP) {
+      if (s->GetType() == Person::WUMP) {
         wump_shot = true;
       }
     }
     if (wump_shot) {
-      return WUMP;
+      return Person::WUMP;
     }
     else {
-      return EMPTY;
+      return Person::EMPTY;
     }
   }
 }

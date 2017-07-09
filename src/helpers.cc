@@ -7,8 +7,6 @@
 
 namespace wumpus_game {
 
-// MAP HELPERS
-
 namespace helpers {
 
 // Returns neighbor room numbers 
@@ -49,6 +47,19 @@ std::string vint_to_string(const std::vector<int> &v, std::string delim)
   return sst.str();
 }
 
+// // Counts concrete person instances in cave
+
+// int persons_in_cave(const Map& cave, Person subj)
+// {
+//   int result{0};
+//   for (int i = 0; i < cave.GetSize(); ++i) {
+//     auto curr_persons = cave.GetRoom(i)->persons_;
+//     for (const auto& p : curr_persons) {
+//       if (p->GetType() == subj) ++result;
+//     }
+//   }
+//   return result;
+// }
 
 }  // namespace helpers
 
