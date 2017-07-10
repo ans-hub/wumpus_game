@@ -8,15 +8,30 @@
 namespace wumpus_game {
 
 Subject::Subject(const Map& cave)
-: dead_{false}
-, type_{Person::UNKNOWN}
-, curr_room_{nullptr}
-, cave_{cave}
+  : dead_{false}
+  , type_{Person::UNKNOWN}
+  , curr_room_{nullptr}
+  , cave_{cave}
 {
   rand_toolkit::start_rand();
   curr_room_ = cave.GetRoom(0);
   CheckIn();
   TeleportRandom();
+}
+
+Subject::Subject(Subject&& old)
+  : dead_{old.dead_}
+  , type_{old.type_}
+  , curr_room_{old.curr_room_}
+  , cave_{old.cave_} { }
+
+Subject& Subject::operator=(Subject&& old)
+{
+  this->dead_ = old.dead_;
+  this->type_ = old.type_;
+  this->curr_room_ = old.curr_room_;
+  const_cast<Map&>(this->cave_) = old.cave_;
+  return *this;
 }
 
 bool Subject::Move(int to_room, std::string& msg)

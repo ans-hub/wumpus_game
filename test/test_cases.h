@@ -35,7 +35,6 @@ namespace wumpus_game {
 struct TestSubject : Subject
 {
   TestSubject(const Map& cave, int start);
-  int start_room_;
 };
 
 // Helper struct to make abstract class not abstract
@@ -59,6 +58,7 @@ struct TestCave : Map
 namespace test_map_behavior {
 
   int creating();
+  int move_semantic();
 
 }
 
@@ -70,6 +70,8 @@ namespace test_level_behavior {
 
 namespace test_subject_behavior {
 
+  int creating_and_placing();
+  int move_semantic();
   int static_moving();
   int dynamic_moving();
   int random_placing();
@@ -81,6 +83,7 @@ namespace test_subject_behavior {
 
 namespace test_player_behavior {
 
+  int move_semantic();
   int feels();
   int shot();
 

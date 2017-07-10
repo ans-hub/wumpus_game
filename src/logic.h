@@ -6,51 +6,28 @@
 #ifndef LOGIC_H
 #define LOGIC_H
 
-#include <stdexcept>
-#include <string>
-#include <algorithm>
-
-#include "entities/room.h"
-#include "entities/map.h"
-#include "entities/player.h"
-#include "entities/wump.h"
-#include "entities/bat.h"
-#include "entities/pit.h"
-
-
-#include "3rdparty/observer.h"
-#include "3rdparty/observable.h"
 #include "events.h"
-#include "helpers.h"
+#include "entities/level.h"
+#include "3rdparty/observable.h"
 
 namespace wumpus_game {
 
-class Logic
-: public mvc_set::Observable<mvc_set::Show, mvc_set::Input&, int&>
+// make inherit from Abc Model
+
+class Logic : public mvc_set::Observable<Events>
 {
 public:
-  typedef Subject::Person Person;
-
   Logic();
-  void Run();
-  void Rebuild();
-  void StartGame();
-
-  Level& level_;
-  Person game_over_cause_;
-
+  void Init();
+  void Move(int);
+  void Shot(int);
 private:
-  void PlayerTurn();
-  void EnemyTurn();
-  void Battle();
+  using Person = Subject::Person;
 
-  void PlayerDoShot(int);
-  void PlayerDoMove(int);
-  void GetUserInput(::mvc_set::Input&, int&);
+  Level level_;
+  Person game_over_cause_;
 };
 
 }  // namespace wumpus_game
 
 #endif  // LOGIC_Р
-
-// Note #1 : Observer specialisation - int& - room number

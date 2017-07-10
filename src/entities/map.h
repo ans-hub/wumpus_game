@@ -23,6 +23,9 @@ public:
   explicit Map(int);
   ~Map();
   Map(const Map&) =delete;
+  Map& operator=(Map&) =delete;
+  Map(Map&&);
+  Map& operator=(Map&&);
 
   Room*   GetRoom(int num) const;
   int     GetSize() const { return size_; }

@@ -33,8 +33,11 @@ struct Level
   BatsVec   bats_;
   PitsVec   pits_;
 
-  Level(int, std::size_t, std::size_t, std::size_t);
+  Level(int, int, int, int);
   Level(const Level&) =delete;
+  Level& operator=(const Level&) = delete;
+  Level(Level&&);
+  Level&& operator=(Level&&);
 };
 
 }  // namespace wumpus_game

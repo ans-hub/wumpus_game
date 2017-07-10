@@ -7,6 +7,22 @@
 
 namespace wumpus_game {
 
+// Room::Room(Room&& old)
+//   : num_{old.num_}
+//   , left_{old.left_}
+//   , right_{old.right_}
+//   , back_{old.back_}
+//   , persons_{std::move(old.persons_)}
+// {
+//   old.num_ = 0;
+//   old.left_ = nullptr;
+//   old.right_ = nullptr;
+//   old.back_ = nullptr;
+//   // for (auto v : old.persons_) {
+//   //   v = nullptr;
+//   // }
+// }
+
 bool Room::IsEmpty() const
 {
   return (persons_.empty()) ? true : false;

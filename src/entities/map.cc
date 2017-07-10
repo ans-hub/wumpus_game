@@ -34,6 +34,22 @@ Map::~Map()
   }
 }
 
+Map::Map(Map&& old) : size_{old.size_}, rooms_{old.rooms_}
+{
+  old.size_ = 0;
+  for (auto& r : old.rooms_)  r = nullptr;
+}
+
+Map& Map::operator=(Map&& old)
+{
+  this->size_ = old.size_;
+  this->rooms_ = old.rooms_;
+  old.size_ = 0;
+  for (auto& r : old.rooms_)  r = nullptr;
+  return *this;
+}
+
+
 // Creates some new rooms and store its pointers 
 
 void Map::CreateRooms()

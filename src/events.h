@@ -1,14 +1,14 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: contains enum for messaging between controllor, view and model 
+// File: contains enum for messaging between model and view 
 
-#ifndef MVC_SET_EVENTS
-#define MVC_SET_EVENTS
+#ifndef EVENTS_H
+#define EVENTS_H
 
-namespace mvc_set {
+namespace wumpus_game {
 
-  enum class Show   // Event
+  enum class Events
   {
     WINDOW = 0,
     INTRO,
@@ -20,15 +20,6 @@ namespace mvc_set {
     PLAYER_FEELS,
     MOVED_BATS,
     PLAYER_MOVED
-  };
-
-  enum class Input  // Action
-  { 
-    UNKNOWN,
-    HELP,
-    QUIT,
-    MOVE,
-    SHOT
   };
 
 }  // namespace mvc_set

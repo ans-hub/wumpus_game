@@ -24,6 +24,9 @@ struct Room
   , back_{nullptr}
   , persons_{} { }
   Room(const Room&) =delete;
+  Room& operator=(Room&) =delete;
+  Room(Room&&) =delete;
+  Room& operator=(Room&&) =delete;
 
   bool IsEmpty() const;
 

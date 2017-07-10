@@ -17,6 +17,7 @@ public:
   : Subject(cave)
   { type_ = Person::PLAYER; }
   ~Player() { }
+  Player(Player&& old) : Subject(std::move(old)) { }
   
   Persons Feels() const;
   Person  Shot(int) const;

@@ -9,9 +9,9 @@ namespace wumpus_game {
 
 TestSubject::TestSubject(const Map& cave, int start)
 : Subject(cave)
-, start_room_{start}
 {
-  curr_room_ = cave.GetRoom(start_room_);
+  std::string msg{""};
+  Teleport(start, msg);
 }
 
 namespace test_map_behavior {
@@ -92,6 +92,23 @@ namespace test_map_behavior {
     return result;
   }
 
+  int move_semantic()
+  {   
+    std::cerr << "Check Map move semantic:" << '\n';
+
+    constexpr int kCaveSize {20};    
+    
+    Map cave(kCaveSize);
+    TestSubject subj1(cave, 3);
+    TestSubject subj2(cave, 7);
+    
+    Map cave2(std::move(cave));
+
+    int assume = 2;
+    int actual = test_helpers::persons_in_cave(cave2, Subject::UNKNOWN);
+    return test_toolkit::message(1, assume, actual);
+}
+
 }  // namespace test_map_behavior
 
 namespace test_level_behavior {
@@ -128,6 +145,57 @@ namespace test_level_behavior {
 }
 
 namespace test_subject_behavior {
+
+  int creating_and_placing()
+  {
+    std::cerr << "Check Subject creating and placing:" << '\n';
+
+    using SubjectPtr = std::unique_ptr<TestSubject>;
+    using SubjectVec = std::vector<SubjectPtr>;
+    constexpr int kCaveSize {20};
+    int subj_cnt = rand_toolkit::get_rand(0, kCaveSize*2);
+
+    int i{0};
+    Map cave(kCaveSize);
+    SubjectVec v;
+
+    do {
+      int room = rand_toolkit::get_rand(0, kCaveSize-1);
+      v.push_back(SubjectPtr{new TestSubject(cave, room)});
+    } while (++i < subj_cnt);
+    
+    int assume = subj_cnt;
+    int actual = test_helpers::persons_in_cave(cave, Subject::UNKNOWN);
+    return test_toolkit::message(1, assume, actual);
+  }
+
+  int move_semantic()
+  {
+    std::cerr << "Check Subject class move semantic:" << '\n';
+
+    constexpr int kCaveSize {20};
+    constexpr int kStartRoom_1 {3};
+    constexpr int kStartRoom_2 {4};
+    constexpr int kStartRoom_3 {7};
+    constexpr int kStartRoom_4 {12};
+    
+    Map cave(kCaveSize);    
+
+    TestSubject subj(cave, kStartRoom_1);
+    TestSubject subj2(cave, kStartRoom_2);
+    subj = TestSubject(cave, kStartRoom_3);
+    TestSubject subj3(TestSubject(cave, kStartRoom_4));
+
+    // Check total subjects count in cave
+
+    int assume = 3;
+    int actual = test_helpers::persons_in_cave(cave, Subject::UNKNOWN);
+    return test_toolkit::message(1, assume, actual);
+
+    // Check concrete rooms where subject placed
+    // auto rooms = test_helpers::rooms_with_persons(cave, Subject::UNKNOWN);
+    // paranoya!!!
+  }
 
   int static_moving()
   {
@@ -421,6 +489,19 @@ namespace test_subject_behavior {
 }  // namespace test_subject_behavior
 
 namespace test_player_behavior {
+
+  int move_semantic()
+  {
+    std::cerr << "Test move semantic of player:" << '\n';
+    
+    Map cave(20);
+    Player player{Player(cave)};
+    Map cave2 {std::move(cave)};
+    
+    int assume {1};
+    int actual = test_helpers::persons_in_cave(cave2, Subject::PLAYER);
+    return test_toolkit::message(1, assume, actual);    
+  }
 
   int feels()
   {

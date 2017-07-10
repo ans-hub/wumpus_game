@@ -9,19 +9,28 @@ namespace wumpus_game {
 
 namespace test_helpers {
 
-// Counts concrete person instances in cave
+// Returns roomses numbers where person is
 
-int persons_in_cave(const Map& cave, Subject::Person subj)
+std::vector<int> rooms_with_persons(const Map& cave, Subject::Person subj)
 {
-  int result{0};
+  std::vector<int> result{};
   for (int i = 0; i < cave.GetSize(); ++i) {
     auto curr_persons = cave.GetRoom(i)->persons_;
     for (const auto& p : curr_persons) {
-      if (p->GetType() == subj) ++result;
+      if (p->GetType() == subj) result.push_back(p->GetCurrRoomNum());
     }
   }
   return result;
 }
+
+// Counts concrete person instances in cave
+
+int persons_in_cave(const Map& cave, Subject::Person subj)
+{
+  return static_cast<int>(rooms_with_persons(cave, subj).size());
+}
+
+
 
 }  // namespace helpers
 

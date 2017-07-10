@@ -34,6 +34,9 @@ public:
   explicit Subject(const Map&);
   virtual ~Subject() { CheckOut(); }
   Subject(const Subject&) =delete;
+  Subject& operator=(Subject&) =delete;
+  Subject(Subject&&);
+  Subject& operator=(Subject&&);
 
   bool    Move(int, std::string&);     // see note #1 after code
   bool    Teleport(int, std::string&);

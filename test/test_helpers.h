@@ -6,6 +6,8 @@
 #ifndef TEST_HELPERS_H
 #define TEST_HELPERS_H
 
+#include <vector>
+
 #include "entities/map.h"
 #include "entities/subject.h"
 
@@ -13,6 +15,7 @@ namespace wumpus_game {
 
 namespace test_helpers {
 
+  std::vector<int> rooms_with_persons(const Map&, Subject::Person);
   int persons_in_cave(const Map&, Subject::Person);
 
 }  // namespace test_helpers
