@@ -13,7 +13,7 @@ namespace wumpus_game {
 class Bat : public Enemy
 {
 public:
-  explicit Bat(const Map& cave)
+  explicit Bat(Map& cave)
   : Enemy(cave)
   { type_ = Person::BAT; }
   

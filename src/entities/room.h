@@ -14,7 +14,7 @@ class Subject;
 
 struct Room
 {
-  typedef std::vector<const Subject*> Vsubjects;  // see note #1 after code
+  typedef std::vector<Subject*> Vsubjects;  // see note #1 after code
 
   Room() : Room(int()) { }
   explicit Room(int num)

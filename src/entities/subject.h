@@ -31,10 +31,10 @@ public:
 
   typedef std::vector<Person> Persons;
 
-  explicit Subject(const Map&);
+  explicit Subject(Map&);
   virtual ~Subject() { CheckOut(); }
   Subject(const Subject&) =delete;
-  Subject& operator=(Subject&) =delete;
+  Subject& operator=(const Subject&) =delete;
   Subject(Subject&&);
   Subject& operator=(Subject&&);
 
@@ -56,7 +56,7 @@ protected:
   bool    dead_;
   Person  type_;        // see note #3 after code
   Room*   curr_room_;
-  const   Map& cave_;
+  Map&    cave_;
 };
 
 }  // namespace wumpus_game

@@ -7,7 +7,7 @@
 
 namespace wumpus_game {
 
-TestSubject::TestSubject(const Map& cave, int start)
+TestSubject::TestSubject(Map& cave, int start)
 : Subject(cave)
 {
   std::string msg{""};
@@ -140,6 +140,48 @@ namespace test_level_behavior {
 
     std::cerr << " " << kSteps-result << " out of " << kSteps << ".....Ok" << '\n';
     return result;
+  }
+
+  int move_semantic()
+  {   
+    std::cerr << "Check Level move semantic:" << '\n';   
+
+    constexpr int kCaveSize {20};
+    int wumps_cnt{rand_toolkit::get_rand(1, kCaveSize/6)};
+    int bats_cnt{rand_toolkit::get_rand(1, kCaveSize/6)};
+    int pits_cnt{rand_toolkit::get_rand(1, kCaveSize/6)};
+
+    int result{0};
+
+    Level level_1(20, 4, 2, 3);
+    level_1 = Level(40, wumps_cnt, pits_cnt, bats_cnt);
+
+    int assume = wumps_cnt;
+    int actual = test_helpers::persons_in_cave(level_1.cave_, Subject::WUMP);
+    result += test_toolkit::message(1, assume, actual);
+
+    assume = 1;
+    actual = test_helpers::persons_in_cave(level_1.cave_, Subject::PLAYER);    
+    result += test_toolkit::message(2, assume, actual);
+
+    assume = bats_cnt;
+    actual = test_helpers::persons_in_cave(level_1.cave_, Subject::BAT);    
+    result += test_toolkit::message(3, assume, actual);
+
+    assume = pits_cnt;
+    actual = test_helpers::persons_in_cave(level_1.cave_, Subject::PIT);    
+    result += test_toolkit::message(4, assume, actual);
+
+    assume = 0;
+    actual = test_helpers::persons_in_cave(level_1.cave_, Subject::UNKNOWN);    
+    result += test_toolkit::message(5, assume, actual);
+
+    Subject* p = level_1.wumps_[wumps_cnt-1].get();
+    assume = p->GetCurrRoomNum();
+    actual = test_helpers::find_person_in_cave(level_1.cave_, p);   
+    result += test_toolkit::message(6, assume, actual);
+
+    return result; 
   }
 
 }
@@ -500,7 +542,7 @@ namespace test_player_behavior {
     
     int assume {1};
     int actual = test_helpers::persons_in_cave(cave2, Subject::PLAYER);
-    return test_toolkit::message(1, assume, actual);    
+    return test_toolkit::message(1, assume, actual);
   }
 
   int feels()

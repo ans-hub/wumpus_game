@@ -34,14 +34,14 @@ namespace wumpus_game {
 
 struct TestSubject : Subject
 {
-  TestSubject(const Map& cave, int start);
+  TestSubject(Map& cave, int start);
 };
 
 // Helper struct to make abstract class not abstract
 
 struct TestEnemy : Enemy
 {
-  TestEnemy(const Map& cave) : Enemy(cave) { }
+  TestEnemy(Map& cave) : Enemy(cave) { }
   std::string FeelsRepresent() const override { return ""; }
 };
 
@@ -65,6 +65,7 @@ namespace test_map_behavior {
 namespace test_level_behavior {
 
   int creating();
+  int move_semantic();
 
 }
 

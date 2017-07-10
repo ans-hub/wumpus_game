@@ -7,7 +7,7 @@
 
 namespace wumpus_game {
 
-Subject::Subject(const Map& cave)
+Subject::Subject(Map& cave)
   : dead_{false}
   , type_{Person::UNKNOWN}
   , curr_room_{nullptr}
@@ -30,7 +30,6 @@ Subject& Subject::operator=(Subject&& old)
   this->dead_ = old.dead_;
   this->type_ = old.type_;
   this->curr_room_ = old.curr_room_;
-  const_cast<Map&>(this->cave_) = old.cave_;
   return *this;
 }
 
@@ -113,7 +112,7 @@ void Subject::CheckIn()
 
 void Subject::CheckOut()
 {
-  std::vector<const Subject*>& p = curr_room_->persons_;
+  std::vector<Subject*>& p = curr_room_->persons_;
   p.erase (
     std::remove (p.begin(), p.end(), this), p.end()
   );

@@ -16,6 +16,7 @@ int main()
   status += test_map_behavior::move_semantic();
 
   status += test_level_behavior::creating();
+  status += test_level_behavior::move_semantic();
 
   status += test_subject_behavior::creating_and_placing();
   status += test_subject_behavior::move_semantic();

@@ -17,6 +17,7 @@ namespace test_helpers {
 
   std::vector<int> rooms_with_persons(const Map&, Subject::Person);
   int persons_in_cave(const Map&, Subject::Person);
+  int find_person_in_cave(const Map&, Subject*);
 
 }  // namespace test_helpers
 

@@ -30,6 +30,20 @@ int persons_in_cave(const Map& cave, Subject::Person subj)
   return static_cast<int>(rooms_with_persons(cave, subj).size());
 }
 
+// Returns room number of concrete person (minus if not find)
+
+int find_person_in_cave(const Map& cave, Subject* subj)
+{
+  int result{-1};
+  for (int i = 0; i < cave.GetSize(); ++i) {
+    auto curr_persons = cave.GetRoom(i)->persons_;
+    for (const auto& p : curr_persons) {
+      if (p == subj) result = p->GetCurrRoomNum();
+      break;
+    }
+  }
+  return result;
+}
 
 
 }  // namespace helpers

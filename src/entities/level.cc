@@ -9,11 +9,12 @@ namespace wumpus_game {
 
 Level::Level(int size, int wumps, int pits, int bats)
   : cave_{size}
-  , player_{cave_}
+  , player_{ }
   , wumps_{ } 
   , bats_ { }
   , pits_ { }
 {
+  player_ = PlayerPtr {new Player(cave_)};
   for (int i = 0; i < wumps; ++i)
     wumps_.push_back(WumpPtr {new Wump(cave_)});
   for (int i = 0; i < bats; ++i)
@@ -27,9 +28,16 @@ Level::Level(Level&& old)
   , player_{std::move(old.player_)}
   , wumps_{std::move(old.wumps_)}
   , bats_{std::move(old.bats_)}
-  , pits_{std::move(old.pits_)}
-{
+  , pits_{std::move(old.pits_)} { }
 
+Level& Level::operator=(Level&& old)
+{
+  cave_ = std::move(old.cave_);
+  player_ = std::move(old.player_);
+  wumps_ = std::move(old.wumps_);
+  bats_ = std::move(old.bats_);
+  pits_ = std::move(old.pits_);
+  return *this;
 }
 
 }  // namespace wumpus_game

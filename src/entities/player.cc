@@ -37,7 +37,7 @@ Subject::Person Player::Shot(int to_room) const
     return Person::EMPTY;
   }
   else {
-    std::vector<const Subject*>& persons = cave_.GetRoom(to_room)->persons_;
+    std::vector<Subject*>& persons = cave_.GetRoom(to_room)->persons_;
     bool wump_shot {false};
     for (auto const& s:persons) {
       if (s->GetType() == Person::WUMP) {
