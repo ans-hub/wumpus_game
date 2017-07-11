@@ -15,7 +15,7 @@ class Enemy : public Subject
 public:
   explicit Enemy(Map& cave)
   : Subject(cave)
-  { type_ = Person::ENEMY; }
+  { type_ = Subject::ENEMY; }
   ~Enemy(){ }
   
   // Represents what feels others if near placed the Enemy

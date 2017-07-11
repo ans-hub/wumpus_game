@@ -41,25 +41,20 @@ Map::~Map()
 Map::Map(Map&& old)
   : base_{old.base_}
   , size_{old.size_}
-  // , rooms_{old.rooms_}
 {
   old.base_ = 0;
   old.size_ = 0;
   rooms_.swap(old.rooms_);
-  // for (auto& r : old.rooms_) r = nullptr;
 }
 
 Map& Map::operator=(Map&& old)
 {
   this->base_ = old.base_;
   this->size_ = old.size_;
-  // this->rooms_ = 
   this->rooms_.swap(old.rooms_);
-  // this->rooms_ = old.rooms_;
   
   old.base_ = 0;
   old.size_ = 0;
-  // for (auto& r : old.rooms_) r = nullptr;
   return *this;
 }
 
@@ -137,7 +132,7 @@ std::ostream& operator<<(std::ostream& oss, const Map& cave)
   oss << "\nDebug cave:\n";
   for (auto i = 0; i < cave.GetSize(); ++i) {
     Room* r = cave.GetRoom(i);
-    oss << r->num_ << ": " << r->persons_.size();
+    oss << r->num_ << ": " << r->subjects_.size();
     oss << "\n";
   }
   return oss;

@@ -16,7 +16,7 @@ public:
   explicit Wump(Map& cave)
   : Enemy(cave)
   , worried_{false}
-  { type_ = Person::WUMP; }
+  { type_ = Subject::WUMP; }
   
   std::string FeelsRepresent() const override;
   bool Worried() const { return worried_; }

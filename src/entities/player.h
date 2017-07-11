@@ -13,19 +13,15 @@ namespace wumpus_game {
 class Player : public Subject
 {
 public:
-  explicit Player(Map& cave)
-  : Subject(cave)
-  { type_ = Person::PLAYER; }
+  explicit Player(Map&, int);
   ~Player() { }
-  Player(Player&& old) : Subject(std::move(old)) { }
-  Player& operator=(Player&& old)
-  {
-    Subject::operator=(std::move(old));
-    return *this;
-  }
+  Player(Player&& old);
+  Player& operator=(Player&&);
   
-  Persons Feels() const;
-  Person  Shot(int) const;
+  bool        Shot();
+  VSubjectsId Feels() const;
+private:
+  int arrows_;
 };
 
 }  // namespace wumpus_game

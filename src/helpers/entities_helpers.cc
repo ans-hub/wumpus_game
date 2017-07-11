@@ -1,9 +1,9 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: implementation of the helpers
+// File: implementation of the entities helpers
 
-#include "helpers.h"
+#include "entities_helpers.h"
 
 namespace wumpus_game {
 

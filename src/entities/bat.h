@@ -15,7 +15,7 @@ class Bat : public Enemy
 public:
   explicit Bat(Map& cave)
   : Enemy(cave)
-  { type_ = Person::BAT; }
+  { type_ = Subject::BAT; }
   
   std::string FeelsRepresent() const override;
 };

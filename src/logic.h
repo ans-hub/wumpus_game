@@ -10,7 +10,8 @@
 #include <string>
 
 #include "events.h"
-#include "helpers.h"
+#include "helpers/logic_helpers.h"
+#include "helpers/entities_helpers.h"
 #include "entities/level.h"
 #include "entities/subject.h"
 #include "3rdparty/observable.h"
@@ -26,13 +27,19 @@ public:
   Logic(const Logic&) =delete;
 
   void NewLevel(unsigned int);
-  void Move(int);
-  void Shot(int);
-private:
-  using Person = Subject::Person;
+  void Turn(int, int);
+  bool GameOver() const { return (game_over_cause_ != Subject::UNKNOWN); }
+protected:
+  Level       level_;
+  bool        player_turn_;
+  Subject::ID game_over_cause_;
 
-  Level   level_;
-  Person  game_over_cause_;
+  void PlayerTurn(int, int);
+  bool PlayerShot(int);
+  bool PlayerMove(int);
+  void WumpsTurn();
+  void BatsTurn();
+  void PitsTurn();
 };
 
 }  // namespace wumpus_game

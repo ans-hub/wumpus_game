@@ -26,7 +26,8 @@
 #include "entities/bat.h"
 #include "entities/level.h"
 #include "logic.h"
-#include "helpers.h"
+#include "helpers/entities_helpers.h"
+#include "helpers/logic_helpers.h"
 #include "test_helpers.h"
 
 namespace wumpus_game {
@@ -87,7 +88,6 @@ namespace test_player_behavior {
 
   int move_semantic();
   int feels();
-  int shot();
 
 }
 

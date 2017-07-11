@@ -7,49 +7,56 @@
 
 namespace wumpus_game {
 
-Player::Persons Player::Feels() const
+Player::Player(Map& cave, int arrows)
+  : Subject(cave)
+  , arrows_{arrows}
 {
-  Persons res;
+  type_ = Subject::PLAYER;
+}
+
+Player::Player(Player&& old)
+  : Subject(std::move(old))
+{
+  arrows_ = old.arrows_;
+}
+
+Player& Player::operator=(Player&& old)
+{
+  Subject::operator=(std::move(old));
+  this->arrows_ = old.arrows_;
+  return *this;
+}
+
+Player::VSubjectsId Player::Feels() const
+{
+  VSubjectsId res;
   Room* next;
 
   next = curr_room_->left_;
-  for (auto const p : next->persons_) {
+  for (auto const p : next->subjects_) {
     res.push_back(p->GetType());
   }
 
   next = curr_room_->right_;
-  for (auto const p : next->persons_) {
+  for (auto const p : next->subjects_) {
     res.push_back(p->GetType());
   }
   
   next = curr_room_->back_;
-  for (auto const p : next->persons_) {
+  for (auto const p : next->subjects_) {
     res.push_back(p->GetType());
   }
   return res;
 }
 
-Subject::Person Player::Shot(int to_room) const
+bool Player::Shot()
 {
-  int from_room = curr_room_->num_;
-
-  if (!helpers::is_neighboring_rooms(to_room, from_room, cave_)) {
-    return Person::EMPTY;
+  if (!arrows_) {
+    return false;
   }
   else {
-    std::vector<Subject*>& persons = cave_.GetRoom(to_room)->persons_;
-    bool wump_shot {false};
-    for (auto const& s:persons) {
-      if (s->GetType() == Person::WUMP) {
-        wump_shot = true;
-      }
-    }
-    if (wump_shot) {
-      return Person::WUMP;
-    }
-    else {
-      return Person::EMPTY;
-    }
+    --arrows_;
+    return true;
   }
 }
 

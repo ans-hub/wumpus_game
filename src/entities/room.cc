@@ -25,7 +25,7 @@ namespace wumpus_game {
 
 bool Room::IsEmpty() const
 {
-  return (persons_.empty()) ? true : false;
+  return (subjects_.empty()) ? true : false;
 }
 
 }  // namespace wumpus_game

@@ -34,7 +34,7 @@ struct Level
   BatsVec   bats_;
   PitsVec   pits_;
 
-  Level(int, int, int, int);
+  Level(int, int, int, int, int);
   Level(const Level&) =delete;
   Level& operator=(const Level&) = delete;
   Level(Level&&);

@@ -7,14 +7,14 @@
 
 namespace wumpus_game {
 
-Level::Level(int size, int wumps, int pits, int bats)
+Level::Level(int size, int arrows, int wumps, int pits, int bats)
   : cave_{size}
   , player_{ }
   , wumps_{ } 
   , bats_ { }
   , pits_ { }
 {
-  player_ = PlayerPtr {new Player(cave_)};
+  player_ = PlayerPtr {new Player(cave_, arrows)};
   for (int i = 0; i < wumps; ++i)
     wumps_.push_back(WumpPtr {new Wump(cave_)});
   for (int i = 0; i < bats; ++i)

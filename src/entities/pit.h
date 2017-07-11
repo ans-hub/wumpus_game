@@ -15,7 +15,7 @@ class Pit : public Enemy
 public:
   explicit Pit(Map& cave)
   : Enemy(cave)
-  { type_ = Person::PIT; }
+  { type_ = Subject::PIT; }
   
   std::string FeelsRepresent() const override;
 };

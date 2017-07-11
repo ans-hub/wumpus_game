@@ -29,7 +29,6 @@ int main()
   
   // status += test_player_behavior::move_semantic();    // strange and leak code
   status += test_player_behavior::feels();
-  status += test_player_behavior::shot();
 
   status += test_logic_behavior::init();
   status += test_logic_behavior::shot();

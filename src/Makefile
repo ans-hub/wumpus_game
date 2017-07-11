@@ -12,7 +12,8 @@ FLTKFLAGS = `fltk-config --ldflags` -lfltk_images -lfltk_png -lz
 # Objects
 
 OBJECTS 	= labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o \
-						wump.o helpers.o cli_controller.o cli_view.o logic.o gui.o
+						wump.o cli_controller.o cli_view.o logic.o gui.o \
+						logic_helpers.o entities_helpers.o
 
 # Main game files
 
@@ -43,11 +44,14 @@ bat.o : $(ENT)bat.h $(ENT)bat.cc enemy.o
 pit.o : $(ENT)pit.h $(ENT)pit.cc enemy.o
 	$(CC) $(CFLAGS) -c $(ENT)pit.cc
 
-logic.o : logic.h logic.cc 3rdparty/observable.h events.h helpers.h
+logic.o : logic.h logic.cc 3rdparty/observable.h events.h logic_helpers.o
 	$(CC) $(CFLAGS) -c logic.cc
 
-helpers.o : helpers.h helpers.cc
-	$(CC) $(CFLAGS) -c helpers.cc
+entities_helpers.o : helpers/entities_helpers.h helpers/entities_helpers.cc
+	$(CC) $(CFLAGS) -c helpers/entities_helpers.cc
+
+logic_helpers.o : helpers/logic_helpers.h helpers/logic_helpers.cc
+	$(CC) $(CFLAGS) -c helpers/logic_helpers.cc
 
 # Interface
 

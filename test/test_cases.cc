@@ -130,10 +130,11 @@ namespace test_level_behavior {
     int result{0};
 
     do {
+      int kArrows = 5;
       int kWumpsCnt = rand_toolkit::get_rand(1, kCaveSize/4);
       int kBatsCnt = rand_toolkit::get_rand(1, kCaveSize/4);
       int kPitsCnt = rand_toolkit::get_rand(1, kCaveSize/4);
-      Level lvl(kCaveSize, kWumpsCnt, kBatsCnt, kPitsCnt);
+      Level lvl(kCaveSize, kArrows, kWumpsCnt, kBatsCnt, kPitsCnt);
 
       int wumps_total = test_helpers::persons_in_cave(lvl.cave_, Subject::WUMP);
       int bats_total  = test_helpers::persons_in_cave(lvl.cave_, Subject::BAT);
@@ -153,15 +154,16 @@ namespace test_level_behavior {
     std::cerr << "Check Level move semantic:" << '\n';   
 
     constexpr int kCaveSize {5};
+    constexpr int kArrows {5};
     int wumps_cnt{rand_toolkit::get_rand(1, kCaveSize*4/6)};
     int bats_cnt{rand_toolkit::get_rand(1, kCaveSize*4/6)};
     int pits_cnt{rand_toolkit::get_rand(1, kCaveSize*4/6)};
 
     int result{0};
 
-    Level level(5, 4, 2, 3);
-    level = Level(6, wumps_cnt, pits_cnt, bats_cnt);  // make 2 loops with diff moves
-    Level level_1 {Level(6, wumps_cnt, pits_cnt, bats_cnt)};
+    Level level(5, 5, 4, 2, 3);
+    level = Level(6, kArrows, wumps_cnt, pits_cnt, bats_cnt);  // make 2 loops with diff moves
+    Level level_1 {Level(6, kArrows, wumps_cnt, pits_cnt, bats_cnt)};
 
     int assume = wumps_cnt;
     int actual = test_helpers::persons_in_cave(level_1.cave_, Subject::WUMP);
@@ -316,6 +318,7 @@ namespace test_subject_behavior {
     std::cerr << "Check traversal absents:" << '\n';
     
     constexpr int kCaveSize {5};
+    constexpr int kArrows {5};
     constexpr int kSteps {100};
     constexpr int kItems {10};
 
@@ -332,7 +335,7 @@ namespace test_subject_behavior {
       for (int m = 0; m < kItems; ++m) {
         subjects.push_back(new TestEnemy(cave));
       }
-      subjects.push_back(new Player(cave));
+      subjects.push_back(new Player(cave, kArrows));
 
       // Get nums of not empty rooms
 
@@ -364,48 +367,49 @@ namespace test_subject_behavior {
     std::cerr << "Subjects examine room:" << '\n';
     
     constexpr int kCaveSize {5};
+    constexpr int kArrows {5};
     Map cave(kCaveSize);
 
     TestEnemy e1(cave);
     TestEnemy e2(cave);
-    Player p1(cave);
+    Player p1(cave, kArrows);
 
     int start_room = p1.GetCurrRoomNum();
-    
+
     std::size_t assume {0};
-    std::size_t actual = p1.ExamineRoom().size();
+    std::size_t actual = test_helpers::neighboring_subjects(p1, cave).size();
     int result = test_toolkit::message(1, assume, actual);
     
-    actual = e1.ExamineRoom().size(); 
+    actual = test_helpers::neighboring_subjects(e1, cave).size(); 
     result += test_toolkit::message(2, assume, actual);
 
-    actual = e2.ExamineRoom().size();
+    actual =  test_helpers::neighboring_subjects(e2, cave).size();
     result += test_toolkit::message(3, assume, actual);
 
     std::string msg{};
     p1.Teleport(e2.GetCurrRoomNum(), msg);
 
     assume = 1;
-    actual = p1.ExamineRoom().size();
+    actual = test_helpers::neighboring_subjects(p1, cave).size();
     result += test_toolkit::message(4, assume, actual);
 
     if (actual == 1) {
       assume = Subject::ENEMY;
-      actual = p1.ExamineRoom().at(0);
+      actual = test_helpers::neighboring_subjects(p1, cave).at(0)->GetType();
       result += test_toolkit::message(5, assume, actual);
     }
 
     assume = 0;
-    actual = e1.ExamineRoom().size();
+    actual = test_helpers::neighboring_subjects(e1, cave).size();
     result += test_toolkit::message(6, assume, actual);
     
     assume = 1;
-    actual = e2.ExamineRoom().size();
+    actual = test_helpers::neighboring_subjects(e2, cave).size();
     result += test_toolkit::message(7, assume, actual);
     
     if (actual == 1) { 
       assume = Subject::PLAYER;
-      actual = e2.ExamineRoom().at(0);
+      actual = test_helpers::neighboring_subjects(e2, cave).at(0)->GetType();
       result += test_toolkit::message(8, assume, actual);
     }
 
@@ -414,10 +418,11 @@ namespace test_subject_behavior {
     e2.Teleport(start_room, msg);
     
     assume = 2;
-    actual = p1.ExamineRoom().size();
+    actual = test_helpers::neighboring_subjects(p1, cave).size();
     result += test_toolkit::message(9, assume, actual);
 
     return result;
+    // return 0;
   }
 
   int check_in_and_out_1()
@@ -455,7 +460,7 @@ namespace test_subject_behavior {
       
       int cnt{0};
       for (auto const r:cave.GetAllRooms()) {
-        cnt += r->persons_.size();
+        cnt += r->subjects_.size();
       }
       if (cnt != kItems) {
         result += test_toolkit::message(i, false, true);
@@ -542,9 +547,10 @@ namespace test_player_behavior {
   int move_semantic()
   {
     std::cerr << "Test move semantic of player:" << '\n';
+    constexpr int kArrows {5};
     
     Map cave(20);
-    Player player{Player(cave)};
+    Player player{Player(cave, kArrows)};
     Map cave2 {std::move(cave)};
     
     int assume {1};
@@ -557,6 +563,7 @@ namespace test_player_behavior {
     std::cerr << "Test feels of player:" << '\n';
     
     constexpr int kCaveSize {5};
+    constexpr int kArrows {5};
     constexpr int kSteps {100};
     
     Map cave(kCaveSize);
@@ -569,8 +576,8 @@ namespace test_player_behavior {
       Wump wump(cave);
       Bat bat(cave);
       Pit pit(cave);
-      Player player(cave);
-      Player::Persons feels = player.Feels();
+      Player player(cave, kArrows);
+      auto feels = player.Feels();
       for (auto const x:feels) {
         if (x < 4) {
           result += test_toolkit::message(i, i ,x)  ;
@@ -580,31 +587,6 @@ namespace test_player_behavior {
     } while (++i <= kSteps);
     std::cerr << " " << kSteps-k << " out of " << kSteps << ".....Ok" << '\n';
 
-    return result;
-  }
-
-  int shot()
-  {
-    std::cerr << "Test player shots:" << '\n';
-    
-    constexpr int kCaveSize {5};
-    
-    Map cave(kCaveSize);
-    Wump wump(cave);
-    Player player(cave);
-
-    std::string msg{""};
-    wump.Teleport(0, msg);
-    player.Teleport(1, msg);
-    auto assume = Subject::WUMP;
-    auto actual = player.Shot(0);
-    int result = test_toolkit::message(1, assume, actual);
-
-    wump.Teleport(15, msg);
-    assume = Subject::EMPTY;
-    actual = player.Shot(0);
-    result += test_toolkit::message(2, assume, actual);
-  
     return result;
   }
 
@@ -621,9 +603,22 @@ namespace test_logic_behavior {
     Logic logic{};
     int i{1};
     do {
-      logic.NewLevel(i);
+      logic.NewLevel(i);  // check here if one subj in one room and not unkn
     } while (++i <= kSteps);
     
+    return 0;
+  }
+
+  int move()
+  {
+    Logic logic{};
+    logic.NewLevel(2);
+    logic.Turn(0,5);
+    logic.Turn(1,5);
+  
+    // do {
+    // } while (!logic.GameOver());
+
     return 0;
   }
 
@@ -632,10 +627,6 @@ namespace test_logic_behavior {
     return 0;
   }
   
-  int move()
-  {
-    return 0;
-  }
 
 }  // namespace test_logic_behavior
 

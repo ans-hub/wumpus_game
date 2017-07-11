@@ -10,7 +10,7 @@
 #include "../3rdparty/rand_toolkit.h"
 
 #include "map.h"
-#include "../helpers.h"
+#include "../helpers/entities_helpers.h"
 
 namespace wumpus_game {
 
@@ -19,7 +19,7 @@ struct Room;
 class Subject
 {
 public:
-  enum Person { // remake in Type
+  enum ID { // remake in Type
     UNKNOWN = 0,
     EMPTY,
     PLAYER,
@@ -29,7 +29,8 @@ public:
     BAT
   };
 
-  typedef std::vector<Person> Persons;
+  typedef std::vector<ID> VSubjectsId;
+  typedef std::vector<Subject*> VSubjects;
 
   explicit Subject(Map&);
   virtual ~Subject() { CheckOut(); }
@@ -42,19 +43,19 @@ public:
   bool    Teleport(int, std::string&);
   bool    MoveRandom();
   bool    TeleportRandom();
-  Persons ExamineRoom() const;
 
-  Person  GetType() const { return type_; }
+  ID      GetType() const { return type_; }
   int     GetCurrRoomNum() const { return curr_room_->num_; }
   void    Kill() { dead_ = true; }
   void    Alive() { dead_ = false; }
+  bool    IsLive() { return dead_; }
 
 protected:
   void    CheckIn();    // see note #2 after code
   void    CheckOut();
 
   bool    dead_;
-  Person  type_;        // see note #3 after code
+  ID      type_;        // see note #3 after code
   Room*   curr_room_;
   Map&    cave_;
 };

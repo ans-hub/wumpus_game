@@ -14,7 +14,7 @@ class Subject;
 
 struct Room
 {
-  typedef std::vector<Subject*> Vsubjects;  // see note #1 after code
+  typedef std::vector<Subject*> VSubjects;  // see note #1 after code
 
   Room() : Room(int()) { }
   explicit Room(int num)
@@ -22,7 +22,7 @@ struct Room
   , left_{nullptr}
   , right_{nullptr}
   , back_{nullptr}
-  , persons_{} { }
+  , subjects_{} { }
   Room(const Room&) =delete;
   Room& operator=(Room&) =delete;
   Room(Room&&) =delete;
@@ -34,7 +34,7 @@ struct Room
   Room*     left_;
   Room*     right_;
   Room*     back_;
-  Vsubjects persons_;   // see note #2 after code
+  VSubjects subjects_;   // see note #2 after code
 };
 
 }  // namespace wumpus_game

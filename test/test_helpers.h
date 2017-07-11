@@ -15,9 +15,11 @@ namespace wumpus_game {
 
 namespace test_helpers {
 
-  std::vector<int> rooms_with_persons(const Map&, Subject::Person);
-  int persons_in_cave(const Map&, Subject::Person);
+  std::vector<int> rooms_with_persons(const Map&, Subject::ID);
+  int persons_in_cave(const Map&, Subject::ID);
   int find_person_in_cave(const Map&, Subject*);
+  std::vector<Subject*> neighboring_subjects(Subject&, const Map&);
+
 
 }  // namespace test_helpers
 

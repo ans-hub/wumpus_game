@@ -9,7 +9,7 @@ namespace wumpus_game {
 
 Subject::Subject(Map& cave)
   : dead_{false}
-  , type_{Person::UNKNOWN}
+  , type_{ID::UNKNOWN}
   , curr_room_{nullptr}
   , cave_{cave}
 {
@@ -96,23 +96,14 @@ bool Subject::TeleportRandom()
   } while(true);
 }
 
-Subject::Persons Subject::ExamineRoom() const
-{
-  Persons persons;
-  for (auto const p : curr_room_->persons_) {
-    if (p != this) persons.push_back(p->GetType());
-  }
-  return persons;
-}
-
 void Subject::CheckIn()
 {
-  curr_room_->persons_.push_back(this);
+  curr_room_->subjects_.push_back(this);
 }
 
 void Subject::CheckOut()
 {
-  std::vector<Subject*>& p = curr_room_->persons_;
+  std::vector<Subject*>& p = curr_room_->subjects_;
   p.erase (
     std::remove (p.begin(), p.end(), this), p.end()
   );
