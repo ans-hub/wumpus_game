@@ -11,9 +11,9 @@ namespace helpers {
 
 // Returns neighbor room numbers 
 
-std::vector<int> get_neighboring_rooms(int room_num, const Map& cave)
+std::vector<int> get_neighboring_rooms(int room_num, Map* cave)
 {
-  Room* room = cave.GetRoom(room_num);
+  Room* room = cave->GetRoom(room_num);
   return { room->left_->num_
          , room->right_->num_
          , room->back_->num_
@@ -22,7 +22,7 @@ std::vector<int> get_neighboring_rooms(int room_num, const Map& cave)
 
 // Returns bool if room num_1 and room num_2 is neighbors
 
-bool is_neighboring_rooms(int num_1, int num_2, const Map& cave)
+bool is_neighboring_rooms(int num_1, int num_2, Map* cave)
 {
   if (num_1 == num_2) return false;
 

@@ -13,13 +13,14 @@ namespace wumpus_game {
 class Player : public Subject
 {
 public:
-  explicit Player(Map&, int);
+  explicit Player(Map*, int);
   ~Player() { }
   Player(Player&& old);
   Player& operator=(Player&&);
   
   bool        Shot();
   VSubjectsId Feels() const;
+  int GetArrows() const { return arrows_; }
 private:
   int arrows_;
 };

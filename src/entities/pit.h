@@ -13,7 +13,7 @@ namespace wumpus_game {
 class Pit : public Enemy
 {
 public:
-  explicit Pit(Map& cave)
+  explicit Pit(Map* cave)
   : Enemy(cave)
   { type_ = Subject::PIT; }
   

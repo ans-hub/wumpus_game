@@ -20,15 +20,19 @@ namespace wumpus_game {
 
 // make inherit from Abc Model
 
-class Logic : public mvc_set::Observable<Events>
+class Logic : public mvc_set::Observable<Event>
 {
 public:
+  friend struct CliView;
+  using SubjectID = Subject::ID;
+  
   Logic();
   Logic(const Logic&) =delete;
 
   void NewLevel(unsigned int);
   void Turn(int, int);
   bool GameOver() const { return (game_over_cause_ != Subject::UNKNOWN); }
+  const Level& GetLevel() const { return level_; }
 protected:
   Level       level_;
   bool        player_turn_;

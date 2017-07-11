@@ -1,7 +1,7 @@
 // observable.h
 
-#ifndef MVC_SET_OBSERVABLE_H
-#define MVC_SET_OBSERVABLE_H
+#ifndef MVC_OBSERVABLE_H
+#define MVC_OBSERVABLE_H
 
 #include <vector>
 #include <algorithm>
@@ -11,69 +11,46 @@
 
 namespace mvc_set {
 
-template<class T, class ... U>
+template<class...T>
 class Observable
 {
-  std::vector<std::reference_wrapper<Observer<U...>>> controller_;
-  std::vector<std::reference_wrapper<Observer<T>>> views_;
+  typedef Observer<T...> Observer;
+  typedef std::reference_wrapper<Observer> WrapObserver;
+  std::vector<WrapObserver> observers_;
 public:
-  void RegisterView(Observer<T>&);
-  void RegisterController(Observer<U...>&);
-  void UnregisterView(Observer<T>&);
-  void NotifyViews(T);
-  void RequestController(U ... args);
+  void RegisterObserver(Observer&);
+  void UnregisterObserver(Observer&);
+  void NotifyObservers(T...args) const;
 protected:
-  Observable() : controller_{ }, views_{ } { }
-  // Observable() { }
+  Observable() : observers_{ } { }
   Observable(const Observable&) =delete;
   Observable& operator=(const Observable&) =delete;
 };
 
 // REALISATION
 
-template<class T, class ... U>
-void Observable<T,U...>::RegisterController(Observer<U...>& observer)
+template<class...T>
+void Observable<T...>::RegisterObserver(Observer& o)
 {
-  if (controller_.empty()) {
-    controller_.push_back(observer);
-  }
-  else {
-    controller_[0] = observer;
-  }
+  observers_.push_back(o);
 }
 
-template<class T, class ... U>
-void Observable<T,U...>::RegisterView(Observer<T>& observer)
+template<class...T>
+void Observable<T...>::UnregisterObserver(Observer& o)
 {
-  views_.push_back(observer);
-}
-
-template<class T, class ... U>
-void Observable<T,U...>::UnregisterView(Observer<T>& observer)
-{
-  views_.erase (
-    std::remove (views_.begin(), views_.end(), observer), views_.end()
+  observers_.erase (
+    std::remove (o->begin(), o->end(), o), o->end()
   );
 }
 
-template<class T, class ... U>
-void Observable<T,U...>::NotifyViews(T args)
+template<class...T>
+void Observable<T...>::NotifyObservers(T...args) const
 {
-  for (Observer<T>& observer : views_) {
-    // observer->IncomingNotify(std::forward<U>(args)...);
-    observer.IncomingNotify(args);
-  }
-}
-
-template<class T, class ... U>
-void Observable<T,U...>::RequestController(U ... args)
-{
-  for (Observer<U...>& observer : controller_) {
-    // observer->IncomingNotify(std::forward<U>(args)...);
-    observer.IncomingNotify(args...);
+  for (const auto& o : observers_) {
+    o.get().IncomingNotify(std::forward<T>(args)...);
   }
 }
 
 }  // namespace mvc_set
 
-#endif  // MVC_SET_OBSERVABLE
+#endif  // MVC_OBSERVABLE

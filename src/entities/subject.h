@@ -32,7 +32,7 @@ public:
   typedef std::vector<ID> VSubjectsId;
   typedef std::vector<Subject*> VSubjects;
 
-  explicit Subject(Map&);
+  explicit Subject(Map*);
   virtual ~Subject() { CheckOut(); }
   Subject(const Subject&) =delete;
   Subject& operator=(const Subject&) =delete;
@@ -48,7 +48,7 @@ public:
   int     GetCurrRoomNum() const { return curr_room_->num_; }
   void    Kill() { dead_ = true; }
   void    Alive() { dead_ = false; }
-  bool    IsLive() { return dead_; }
+  bool    IsLive() { return !dead_; }
 
 protected:
   void    CheckIn();    // see note #2 after code
@@ -57,7 +57,7 @@ protected:
   bool    dead_;
   ID      type_;        // see note #3 after code
   Room*   curr_room_;
-  Map&    cave_;
+  Map*    cave_;
 };
 
 }  // namespace wumpus_game

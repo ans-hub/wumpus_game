@@ -29,6 +29,8 @@
 #include "helpers/entities_helpers.h"
 #include "helpers/logic_helpers.h"
 #include "test_helpers.h"
+#include "cli/view.h"
+// #include "cli/controller.h"
 
 namespace wumpus_game {
 
@@ -36,14 +38,14 @@ namespace wumpus_game {
 
 struct TestSubject : Subject
 {
-  TestSubject(Map& cave, int start);
+  TestSubject(Map* cave, int start);
 };
 
 // Helper struct to make abstract class not abstract
 
 struct TestEnemy : Enemy
 {
-  TestEnemy(Map& cave) : Enemy(cave) { }
+  TestEnemy(Map* cave) : Enemy(cave) { }
   std::string FeelsRepresent() const override { return ""; }
 };
 

@@ -7,14 +7,14 @@
 
 namespace wumpus_game {
 
-Subject::Subject(Map& cave)
+Subject::Subject(Map* cave)
   : dead_{false}
   , type_{ID::UNKNOWN}
   , curr_room_{nullptr}
   , cave_{cave}
 {
   rand_toolkit::start_rand();
-  curr_room_ = cave.GetRoom(0);
+  curr_room_ = cave->GetRoom(0);
   CheckIn();
   TeleportRandom();
 }
@@ -30,6 +30,7 @@ Subject& Subject::operator=(Subject&& old)
   this->dead_ = old.dead_;
   this->type_ = old.type_;
   this->curr_room_ = old.curr_room_;
+  this->cave_ = old.cave_;
   return *this;
 }
 
@@ -37,7 +38,7 @@ bool Subject::Move(int to_room, std::string& msg)
 {
   int from_room = curr_room_->num_;
 
-  if (to_room >= cave_.GetSize()) {
+  if (to_room >= cave_->GetSize()) {
     msg = "Wrong room number";
     return false;
   }
@@ -54,7 +55,7 @@ bool Subject::Teleport(int to_room, std::string& msg)
 {
   int from_room = curr_room_->num_;
 
-  if (to_room >= cave_.GetSize()) {
+  if (to_room >= cave_->GetSize()) {
     msg = "Wrong room number";
     return false;
   }
@@ -65,7 +66,7 @@ bool Subject::Teleport(int to_room, std::string& msg)
   else {
     msg = "Succesfull";
     CheckOut();
-    curr_room_ = cave_.GetRoom(to_room);
+    curr_room_ = cave_->GetRoom(to_room);
     CheckIn();
     return true;
   } 
@@ -88,8 +89,8 @@ bool Subject::MoveRandom()
 bool Subject::TeleportRandom()
 {
   do {
-    int rand_room = rand_toolkit::get_rand(0, cave_.GetSize()-1);
-    if (cave_.GetRoom(rand_room)->IsEmpty()) {
+    int rand_room = rand_toolkit::get_rand(0, cave_->GetSize()-1);
+    if (cave_->GetRoom(rand_room)->IsEmpty()) {
       std::string msg{};
       return Teleport(rand_room, msg);
     }

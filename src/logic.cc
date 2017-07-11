@@ -10,32 +10,38 @@ namespace wumpus_game {
 Logic::Logic()
   : level_(5,5,1,1,1) // make def ctor in level which is level 1
   , player_turn_{true}
-  , game_over_cause_{Subject::UNKNOWN}
+  , game_over_cause_{Subject::EMPTY}
 {
-  NewLevel(1);
+
 }
 
 void Logic::NewLevel(unsigned int num)
 {
   int base = static_cast<int>(num); // simulate assert
   int size = base + 3;
-  int arrows = 5;
-  int wump = size*4/12;   // 
-  int bat = size*4/6;     // increases to 1 unit when size increases to x/y
-  int pit = size*4/12;    //
+  int arrows = size;
+  int wump = size*4/12;     // 
+  int bat = size*4/12;      // increases to 1 unit when size increases to x/y
+  int pit = size*4/6;       //
   level_ = Level(size, arrows, wump, bat, pit);
   game_over_cause_ = Subject::UNKNOWN;
+  player_turn_ = true;
+  NotifyObservers(Event::NEW_LEVEL);
+  NotifyObservers(Event::READY_TO_INPUT);
 }
 
 void Logic::Turn(int action, int room)
 {
   if (!game_over_cause_) {
     PlayerTurn(action, room);   // changes player_turn_;
-    if (!player_turn_) {
+  }
+  if (!player_turn_ && !game_over_cause_) {
       PitsTurn();     //
       BatsTurn();     // changes game_over_ and player_turn_ 
       WumpsTurn();    //
     }
+  if (!game_over_cause_) {
+    NotifyObservers(Event::READY_TO_INPUT);
   }
 }
 
@@ -55,31 +61,35 @@ bool Logic::PlayerShot(int to_room)
 {
   auto& player = level_.player_;
   auto& wumps  = level_.wumps_;
-  auto& cave  = level_.cave_;
+  auto cave   = level_.cave_.get();
   
   int from_room = player->GetCurrRoomNum();
   
   if (!helpers::is_neighboring_rooms(to_room, from_room, cave)) {
-    // NotifyObservers(Event::DOES_NOT_SHOT_A);
+    NotifyObservers(Event::SHOT_NOT_NEIGHBOR);
     return false;
   }
 
   if (!player->Shot()) {
-    // NotifyObservers(Event::DOES_NOT_SHOT_B);
+    game_over_cause_ = Subject::WUMP;
+    NotifyObservers(Event::HAVE_NOT_ARROWS);
+    NotifyObservers(Event::GAME_OVER);    
     return false;
   }
+  
+  NotifyObservers(Event::PLAYER_DOES_SHOT);
 
   auto neighbors = helpers::get_neighboring_rooms(from_room, cave);
   helpers::worry_neighboring_wumps(wumps, neighbors);
+
   if (helpers::kill_one_wump_in_room(wumps, to_room)) {
-    // Notidy
+    NotifyObservers(Event::ONE_WUMP_KILLED);
   }
 
-  if (helpers::alive_subjects_count(level_.wumps_) == 0) {
+  if (helpers::alive_subjects_count(wumps) == 0) {
     game_over_cause_ = Subject::PLAYER;
-    // NotifyObservers(Event::PLAYER_WIN);
+    NotifyObservers(Event::GAME_OVER);
   }
-  // NotifyObservers(Event::PLAYER_END_SHOT);
   return true;
 }
 
@@ -89,11 +99,11 @@ bool Logic::PlayerMove(int room)
   
   std::string msg{""};
   if (!player->Move(room, msg)) {
-    // NotifyObservers(Event::DOES_NOT_MOVE);
+    NotifyObservers(Event::MOVE_NOT_NEIGHBOR);
     return false; 
   }
-  
-  // NotifyObservers(Event::PLAYER_MOVED);
+
+  NotifyObservers(Event::PLAYER_DOES_MOVE);
   return true;
 }
 
@@ -110,6 +120,7 @@ void Logic::WumpsTurn()
     if (helpers::is_in_one_room(wump.get(), player.get())) {
       player->Kill();
       game_over_cause_ = Subject::WUMP;
+      NotifyObservers(Event::GAME_OVER);      
       break;
     }
   }
@@ -124,9 +135,10 @@ void Logic::BatsTurn()
     if (helpers::is_in_one_room(bat.get(), player.get())) {
       player->TeleportRandom();
       bat->TeleportRandom();
+      NotifyObservers(Event::MOVED_BATS);            
       break;
     }
-  }  
+  }
 }
 
 void Logic::PitsTurn()
@@ -138,6 +150,7 @@ void Logic::PitsTurn()
     if (helpers::is_in_one_room(pit.get(), player.get())) {
       player->Kill();
       game_over_cause_ = Subject::PIT;
+      NotifyObservers(Event::GAME_OVER);      
       break;
     }
   }

@@ -3,31 +3,28 @@
 // Author: Anton Novoselov, 2017
 // File: model's `view` using ostream routines
 
-#ifndef MVCSET_CLI_VIEW
-#define MVCSET_CLI_VIEW
+#ifndef CLI_VIEW_H
+#define CLI_VIEW_H
 
 #include <ostream>
 
 #include "../3rdparty/observer.h"
 #include "../events.h"
 #include "../logic.h"
-#include "../helpers.h"
+#include "../helpers/entities_helpers.h"
 
-namespace mvc_set {
+namespace wumpus_game {
 
-struct CliView : public Observer<Show>
-{
-  typedef wumpus_game::Logic Model;
-  typedef wumpus_game::Logic::Person Person;
-  
-  CliView(std::ostream& ost, Model& model)
+struct CliView : public mvc_set::Observer<Event>
+{ 
+  CliView(std::ostream& ost, Logic& model)
     : ostream_{ost}
     , model_{model} { }
   ~CliView() { }
-  bool IncomingNotify(Show msg) override;
+  bool IncomingNotify(Event) const override;
 private:
   std::ostream& ostream_;
-  Model& model_;
+  Logic& model_;
 };
 
 namespace cli_helpers {
@@ -35,14 +32,16 @@ namespace cli_helpers {
   void print_prompt(std::ostream&);
   void print_error_room(std::ostream&);
   void print_error_action(std::ostream&);
-  void print_intro(std::ostream&);
-  void print_game_over(std::ostream&, CliView::Person);
-  void print_feels(std::ostream&, const wumpus_game::Player&);
+  void print_intro(std::ostream&, const Logic&);
+  void print_shot_no_arrays(std::ostream&);
+  void print_shot_not_neighboring(std::ostream&);
+  void print_game_over(std::ostream&, Subject::ID);
+  void print_feels(std::ostream&, const wumpus_game::Logic&);
   void print_neighbors(std::ostream&, const wumpus_game::Logic&);
   void print_moved_bats(std::ostream&);
 
 }  // namespace cli_helpers 
 
-}  // namespace mvc_set
+}  // namespace wumpus_game
 
-#endif // MVCSET_CLI_VIEW
+#endif // CLI_VIEW_H

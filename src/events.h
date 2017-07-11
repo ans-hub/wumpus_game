@@ -8,18 +8,28 @@
 
 namespace wumpus_game {
 
-  enum class Events
+  enum class Event
   {
     WINDOW = 0,
-    INTRO,
+    READY_TO_INPUT,
+    NEW_LEVEL,
     GAME_OVER,
-    PROMPT,
-    ERROR_ROOM,
-    ERROR_ACTION,
-    NEIGH_ROOMS,
-    PLAYER_FEELS,
     MOVED_BATS,
-    PLAYER_MOVED
+    HAVE_NOT_ARROWS,
+    SHOT_NOT_NEIGHBOR,
+    MOVE_NOT_NEIGHBOR,
+    PLAYER_DOES_SHOT,
+    PLAYER_DOES_MOVE,
+    ONE_WUMP_KILLED,
+    // INTRO,
+    // GAME_OVER,
+    // PROMPT,
+    // ERROR_ROOM,
+    // ERROR_ACTION,
+    // NEIGH_ROOMS,
+    // PLAYER_FEELS,
+    // MOVED_BATS,
+    // PLAYER_MOVED
   };
 
 }  // namespace mvc_set

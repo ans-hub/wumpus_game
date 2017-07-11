@@ -1,47 +1,73 @@
 
 #include "view.h"
 
-namespace mvc_set {
+namespace wumpus_game {
 
-bool CliView::IncomingNotify(Show msg)
+bool CliView::IncomingNotify(Event msg) const
 {
   switch(msg)
   {
-    case Show::WINDOW :
-      model_.StartGame();
+    // case Event::WINDOW :
+    //   model_.StartGame();
+    //   break;
+    
+    case Event::NEW_LEVEL :
+      cli_helpers::print_intro(ostream_, model_);
       break;
     
-    case Show::INTRO :
-      cli_helpers::print_intro(ostream_);
-      break;
-    
-    case Show::GAME_OVER :
+    case Event::GAME_OVER :
       cli_helpers::print_game_over(ostream_, model_.game_over_cause_);
       break;
 
-    case Show::PLAYER_FEELS :
-      cli_helpers::print_feels(ostream_, model_.player_);
-      break;
+    // case Event::PLAYER_FEELS :
+    //   cli_helpers::print_feels(ostream_, model_.player_);
+    //   break;
 
-    case Show::NEIGH_ROOMS :
-      cli_helpers::print_neighbors(ostream_, model_);
-      break;    
+    // case Event::NEIGH_ROOMS :
+    //   cli_helpers::print_neighbors(ostream_, model_);
+    //   break;    
     
-    case Show::MOVED_BATS :
+    case Event::MOVED_BATS :
       cli_helpers::print_moved_bats(ostream_);
       break;
+    
+    case Event::HAVE_NOT_ARROWS :
+      cli_helpers::print_shot_no_arrays(ostream_);
+      break;
 
-    case Show::PROMPT :
+    case Event::SHOT_NOT_NEIGHBOR :
+      cli_helpers::print_shot_not_neighboring(ostream_);
+      break;
+
+    case Event::MOVE_NOT_NEIGHBOR :
+      cli_helpers::print_error_room(ostream_);
+      break;
+    
+    case Event::PLAYER_DOES_SHOT :
+      ostream_ << "PLAYER_DOES_SHOT\n";
+      break;
+    
+    case Event::PLAYER_DOES_MOVE :
+      ostream_ << "PLAYER_DOES_MOVE\n";
+      break;
+    
+    case Event::ONE_WUMP_KILLED :
+      ostream_ << "ONE_WUMP_KILLED\n";
+      break;
+    
+    case Event::READY_TO_INPUT :
+      cli_helpers::print_feels(ostream_, model_);    
+      cli_helpers::print_neighbors(ostream_, model_);  
       cli_helpers::print_prompt(ostream_);
       break;
     
-    case Show::ERROR_ACTION :
-      cli_helpers::print_error_action(ostream_);
-      break;
+    // case Event::ERROR_ACTION :
+    //   cli_helpers::print_error_action(ostream_);
+    //   break;
     
-    case Show::ERROR_ROOM :
-      cli_helpers::print_error_room(ostream_);
-      break;
+    // case Event::ERROR_ROOM :
+    //   cli_helpers::print_error_room(ostream_);
+    //   break;
 
     default: break;
   }
@@ -62,53 +88,63 @@ void print_error_room(std::ostream& ostream)
   ostream << "ERROR: You input not neighbor room, please repeat\n";
 }
 
-void print_error_action(std::ostream& ostream)
+void  print_shot_no_arrays(std::ostream& ostream)
 {
-  ostream << "ERROR: You input error action, please repeat\n";
+  ostream << "ERROR: You have not enought arrays to show\n";
 }
 
-void print_intro(std::ostream& ostream)
+void  print_shot_not_neighboring(std::ostream& ostream)
 {
-  ostream << "You are in the dark cave. Somewhere here lives the Wumpus.\n"
-          << "You have the bow and unlimited count of arrows. Find and kill him!\n"
-          << "And be aware about presence of other danger things -"
-          << "the Bats and the Bottomless pit\n\n";
+  ostream << "ERROR: You shot not neighboring room, please repeat\n";
 }
 
-void print_game_over(std::ostream& ostream, CliView::Person person)
+void print_intro(std::ostream& ostream, const Logic& logic)
+{
+  auto& level = logic.GetLevel();
+  ostream << "You are in the dark cave with " << level.cave_->GetSize()
+          << " rooms. Somewhere here lives " << level.wumps_.size() 
+          << " Wumpus.\n"
+          << "You have the bow and " << level.player_->GetArrows() 
+          << " arrows. Find and kill all Wumpus!\n"
+          << "And be aware about presence of other danger things - "
+          << "the " << level.bats_.size() << " Bats "
+          << "and the " << level.pits_.size() << " Bottomless pits\n\n";
+}
+
+void print_game_over(std::ostream& ostream, Logic::SubjectID person)
 {
   switch (person) {
-    case CliView::Person::PLAYER:
+    case Logic::SubjectID::PLAYER:
       ostream << "***You have killed the Wumpus! Congratulations!***\n";
       break;
-    case CliView::Person::WUMP:
+    case Logic::SubjectID::WUMP:
       ostream << "***You have been killed by Wumpus***\n";
       break;
-    case CliView::Person::PIT:
+    case Logic::SubjectID::PIT:
       ostream << "***The bottomless pit is your perpetual retreat***\n";
       break;
-    case CliView::Person::UNKNOWN:
+    case Logic::SubjectID::UNKNOWN:
     default:
       ostream << "***See you later!***\n";
       break;
   }
 }
 
-void print_feels(std::ostream& ostream, const wumpus_game::Player& player)
+void print_feels(std::ostream& ostream, const wumpus_game::Logic& logic)
 {
   using namespace wumpus_game;
 
-  auto feels = player.Feels();
+  auto feels = logic.GetLevel().player_->Feels();
   for (auto const feel : feels) {
     switch(feel)
     {
-      case Logic::Person::WUMP :
+      case Logic::SubjectID::WUMP :
         ostream << "FEELS: It`s smeels like Wumpus (possible the Wumpus is near)\n";
         break;
-      case Logic::Person::PIT  :
+      case Logic::SubjectID::PIT  :
         ostream << "FEELS: You feel the wind (possible the bats is near)\n";
         break;
-      case Logic::Person::BAT  :
+      case Logic::SubjectID::BAT  :
         ostream << "FEELS: You feel the cold (possible the bottomless pit is near)\n";
         break;
       default : break;
@@ -120,8 +156,12 @@ void print_neighbors(std::ostream& ostream, const wumpus_game::Logic& model)
 {
   using namespace wumpus_game;
   
-  auto current { model.player_.GetCurrRoomNum() };
-  auto neighbor = helpers::get_neighboring_rooms(current, model.cave_);
+  auto current { model.GetLevel().player_->GetCurrRoomNum() };
+  auto neighbor = helpers::get_neighboring_rooms
+  (
+    current,
+    model.GetLevel().cave_.get()
+  );
 
   ostream << "You see the legend on the floor with current room "
           << "number and directions:\n";
@@ -137,4 +177,4 @@ void print_moved_bats(std::ostream& ostream)
 
 }  // namespace cli_helpers
 
-}  // namespace mvc_set
+}  // namespace wumpus_game

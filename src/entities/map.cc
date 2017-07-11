@@ -41,6 +41,7 @@ Map::~Map()
 Map::Map(Map&& old)
   : base_{old.base_}
   , size_{old.size_}
+  , rooms_{}
 {
   old.base_ = 0;
   old.size_ = 0;

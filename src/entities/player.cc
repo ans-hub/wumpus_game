@@ -7,7 +7,7 @@
 
 namespace wumpus_game {
 
-Player::Player(Map& cave, int arrows)
+Player::Player(Map* cave, int arrows)
   : Subject(cave)
   , arrows_{arrows}
 {
@@ -52,6 +52,7 @@ Player::VSubjectsId Player::Feels() const
 bool Player::Shot()
 {
   if (!arrows_) {
+    // arrows_ = 5; // :)
     return false;
   }
   else {

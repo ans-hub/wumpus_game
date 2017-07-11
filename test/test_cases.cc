@@ -7,7 +7,7 @@
 
 namespace wumpus_game {
 
-TestSubject::TestSubject(Map& cave, int start)
+TestSubject::TestSubject(Map* cave, int start)
 : Subject(cave)
 {
   std::string msg{""};
@@ -104,13 +104,13 @@ namespace test_map_behavior {
     constexpr int kCaveSize {5};    
     
     Map cave(kCaveSize);
-    TestSubject subj1(cave, 3);
-    TestSubject subj2(cave, 7);
+    TestSubject subj1(&cave, 3);
+    TestSubject subj2(&cave, 7);
     
     Map cave2(std::move(cave));
 
     int assume = 2;
-    int actual = test_helpers::persons_in_cave(cave2, Subject::UNKNOWN);
+    int actual = test_helpers::persons_in_cave(&cave2, Subject::UNKNOWN);
     return test_toolkit::message(1, assume, actual);
     return 0;
 }
@@ -136,9 +136,9 @@ namespace test_level_behavior {
       int kPitsCnt = rand_toolkit::get_rand(1, kCaveSize/4);
       Level lvl(kCaveSize, kArrows, kWumpsCnt, kBatsCnt, kPitsCnt);
 
-      int wumps_total = test_helpers::persons_in_cave(lvl.cave_, Subject::WUMP);
-      int bats_total  = test_helpers::persons_in_cave(lvl.cave_, Subject::BAT);
-      int pits_total  = test_helpers::persons_in_cave(lvl.cave_, Subject::PIT);
+      int wumps_total = test_helpers::persons_in_cave(lvl.cave_.get(), Subject::WUMP);
+      int bats_total  = test_helpers::persons_in_cave(lvl.cave_.get(), Subject::BAT);
+      int pits_total  = test_helpers::persons_in_cave(lvl.cave_.get(), Subject::PIT);
 
       result += kWumpsCnt - wumps_total;
       result += kBatsCnt - bats_total;
@@ -166,28 +166,28 @@ namespace test_level_behavior {
     Level level_1 {Level(6, kArrows, wumps_cnt, pits_cnt, bats_cnt)};
 
     int assume = wumps_cnt;
-    int actual = test_helpers::persons_in_cave(level_1.cave_, Subject::WUMP);
+    int actual = test_helpers::persons_in_cave(level_1.cave_.get(), Subject::WUMP);
     result += test_toolkit::message(1, assume, actual);
 
     assume = 1;
-    actual = test_helpers::persons_in_cave(level_1.cave_, Subject::PLAYER);    
+    actual = test_helpers::persons_in_cave(level_1.cave_.get(), Subject::PLAYER);    
     result += test_toolkit::message(2, assume, actual);
 
     assume = bats_cnt;
-    actual = test_helpers::persons_in_cave(level_1.cave_, Subject::BAT);    
+    actual = test_helpers::persons_in_cave(level_1.cave_.get(), Subject::BAT);    
     result += test_toolkit::message(3, assume, actual);
 
     assume = pits_cnt;
-    actual = test_helpers::persons_in_cave(level_1.cave_, Subject::PIT);    
+    actual = test_helpers::persons_in_cave(level_1.cave_.get(), Subject::PIT);    
     result += test_toolkit::message(4, assume, actual);
 
     assume = 0;
-    actual = test_helpers::persons_in_cave(level_1.cave_, Subject::UNKNOWN);    
+    actual = test_helpers::persons_in_cave(level_1.cave_.get(), Subject::UNKNOWN);    
     result += test_toolkit::message(5, assume, actual);
 
     Subject* p = level_1.wumps_[wumps_cnt-1].get();
     assume = p->GetCurrRoomNum();
-    actual = test_helpers::find_person_in_cave(level_1.cave_, p);   
+    actual = test_helpers::find_person_in_cave(level_1.cave_.get(), p);   
     result += test_toolkit::message(6, assume, actual);
 
     return result; 
@@ -212,11 +212,11 @@ namespace test_subject_behavior {
 
     do {
       int room = rand_toolkit::get_rand(0, kCaveSize-1);
-      v.push_back(SubjectPtr{new TestSubject(cave, room)});
+      v.push_back(SubjectPtr{new TestSubject(&cave, room)});
     } while (++i < subj_cnt);
     
     int assume = subj_cnt;
-    int actual = test_helpers::persons_in_cave(cave, Subject::UNKNOWN);
+    int actual = test_helpers::persons_in_cave(&cave, Subject::UNKNOWN);
     return test_toolkit::message(1, assume, actual);
   }
 
@@ -230,17 +230,17 @@ namespace test_subject_behavior {
     constexpr int kStartRoom_3 {7};
     constexpr int kStartRoom_4 {12};
     
-    Map cave(kCaveSize);    
+    Map cave(kCaveSize);
 
-    TestSubject subj(cave, kStartRoom_1);
-    TestSubject subj2(cave, kStartRoom_2);
-    subj = TestSubject(cave, kStartRoom_3);
-    TestSubject subj3(TestSubject(cave, kStartRoom_4));
+    TestSubject subj(&cave, kStartRoom_1);
+    TestSubject subj2(&cave, kStartRoom_2);
+    subj = TestSubject(&cave, kStartRoom_3);
+    TestSubject subj3(TestSubject(&cave, kStartRoom_4));
 
     // Check total subjects count in cave
 
     int assume = 3;
-    int actual = test_helpers::persons_in_cave(cave, Subject::UNKNOWN);
+    int actual = test_helpers::persons_in_cave(&cave, Subject::UNKNOWN);
     return test_toolkit::message(1, assume, actual);
 
     // Check concrete rooms where subject placed
@@ -254,7 +254,7 @@ namespace test_subject_behavior {
     constexpr int kStartRoom {0};
 
     Map cave(kCaveSize);
-    TestSubject person(cave, kStartRoom);
+    TestSubject person(&cave, kStartRoom);
 
     std::cerr << "Check subject static moving:" << '\n';
 
@@ -286,7 +286,7 @@ namespace test_subject_behavior {
     constexpr int kCaveSize {5};
     constexpr int kSteps {100};
     Map cave(kCaveSize);
-    TestEnemy person(cave);
+    TestEnemy person(&cave);
 
     std::cerr << "Check dynamic moving:" << '\n';
 
@@ -296,7 +296,7 @@ namespace test_subject_behavior {
 
     do {
       int curr_room = person.GetCurrRoomNum();
-      std::vector<int> neighbors = helpers::get_neighboring_rooms(curr_room, cave);
+      std::vector<int> neighbors = helpers::get_neighboring_rooms(curr_room, &cave);
       int rand_direction = neighbors[rand_toolkit::get_rand(0,2)];
       
       std::string assume {"Succesfull"};
@@ -333,9 +333,9 @@ namespace test_subject_behavior {
 
       std::vector<Subject*> subjects;
       for (int m = 0; m < kItems; ++m) {
-        subjects.push_back(new TestEnemy(cave));
+        subjects.push_back(new TestEnemy(&cave));
       }
-      subjects.push_back(new Player(cave, kArrows));
+      subjects.push_back(new Player(&cave, kArrows));
 
       // Get nums of not empty rooms
 
@@ -370,46 +370,46 @@ namespace test_subject_behavior {
     constexpr int kArrows {5};
     Map cave(kCaveSize);
 
-    TestEnemy e1(cave);
-    TestEnemy e2(cave);
-    Player p1(cave, kArrows);
+    TestEnemy e1(&cave);
+    TestEnemy e2(&cave);
+    Player p1(&cave, kArrows);
 
     int start_room = p1.GetCurrRoomNum();
 
     std::size_t assume {0};
-    std::size_t actual = test_helpers::neighboring_subjects(p1, cave).size();
+    std::size_t actual = test_helpers::neighboring_subjects(p1, &cave).size();
     int result = test_toolkit::message(1, assume, actual);
     
-    actual = test_helpers::neighboring_subjects(e1, cave).size(); 
+    actual = test_helpers::neighboring_subjects(e1, &cave).size(); 
     result += test_toolkit::message(2, assume, actual);
 
-    actual =  test_helpers::neighboring_subjects(e2, cave).size();
+    actual =  test_helpers::neighboring_subjects(e2, &cave).size();
     result += test_toolkit::message(3, assume, actual);
 
     std::string msg{};
     p1.Teleport(e2.GetCurrRoomNum(), msg);
 
     assume = 1;
-    actual = test_helpers::neighboring_subjects(p1, cave).size();
+    actual = test_helpers::neighboring_subjects(p1, &cave).size();
     result += test_toolkit::message(4, assume, actual);
 
     if (actual == 1) {
       assume = Subject::ENEMY;
-      actual = test_helpers::neighboring_subjects(p1, cave).at(0)->GetType();
+      actual = test_helpers::neighboring_subjects(p1, &cave).at(0)->GetType();
       result += test_toolkit::message(5, assume, actual);
     }
 
     assume = 0;
-    actual = test_helpers::neighboring_subjects(e1, cave).size();
+    actual = test_helpers::neighboring_subjects(e1, &cave).size();
     result += test_toolkit::message(6, assume, actual);
     
     assume = 1;
-    actual = test_helpers::neighboring_subjects(e2, cave).size();
+    actual = test_helpers::neighboring_subjects(e2, &cave).size();
     result += test_toolkit::message(7, assume, actual);
     
     if (actual == 1) { 
       assume = Subject::PLAYER;
-      actual = test_helpers::neighboring_subjects(e2, cave).at(0)->GetType();
+      actual = test_helpers::neighboring_subjects(e2, &cave).at(0)->GetType();
       result += test_toolkit::message(8, assume, actual);
     }
 
@@ -418,7 +418,7 @@ namespace test_subject_behavior {
     e2.Teleport(start_room, msg);
     
     assume = 2;
-    actual = test_helpers::neighboring_subjects(p1, cave).size();
+    actual = test_helpers::neighboring_subjects(p1, &cave).size();
     result += test_toolkit::message(9, assume, actual);
 
     return result;
@@ -445,7 +445,7 @@ namespace test_subject_behavior {
 
       std::vector<Subject*> subjects;
       for (int m = 0; m < kItems; ++m) {
-        subjects.push_back(new TestEnemy(cave));
+        subjects.push_back(new TestEnemy(&cave));
       }
 
       // Move them randomly
@@ -498,7 +498,7 @@ namespace test_subject_behavior {
     constexpr int kCaveSize {5};
     constexpr int kSteps {100};
     Map cave(kCaveSize);
-    TestEnemy person(cave);
+    TestEnemy person(&cave);
 
     std::cerr << "Check check-ins and check-outs (part 2):" << '\n';
 
@@ -508,7 +508,7 @@ namespace test_subject_behavior {
 
     do {
       int curr_room = person.GetCurrRoomNum();
-      std::vector<int> neighbors = helpers::get_neighboring_rooms(curr_room, cave);
+      std::vector<int> neighbors = helpers::get_neighboring_rooms(curr_room, &cave);
       int rand_direction = neighbors[rand_toolkit::get_rand(0,2)];
       
       std::string msg {};
@@ -550,11 +550,11 @@ namespace test_player_behavior {
     constexpr int kArrows {5};
     
     Map cave(20);
-    Player player{Player(cave, kArrows)};
+    Player player{Player(&cave, kArrows)};
     Map cave2 {std::move(cave)};
     
     int assume {1};
-    int actual = test_helpers::persons_in_cave(cave2, Subject::PLAYER);
+    int actual = test_helpers::persons_in_cave(&cave2, Subject::PLAYER);
     return test_toolkit::message(1, assume, actual);
   }
 
@@ -573,10 +573,10 @@ namespace test_player_behavior {
     int result{0};
     
     do {
-      Wump wump(cave);
-      Bat bat(cave);
-      Pit pit(cave);
-      Player player(cave, kArrows);
+      Wump wump(&cave);
+      Bat bat(&cave);
+      Pit pit(&cave);
+      Player player(&cave, kArrows);
       auto feels = player.Feels();
       for (auto const x:feels) {
         if (x < 4) {
@@ -611,14 +611,29 @@ namespace test_logic_behavior {
 
   int move()
   {
-    Logic logic{};
-    logic.NewLevel(2);
-    logic.Turn(0,5);
-    logic.Turn(1,5);
-  
-    // do {
-    // } while (!logic.GameOver());
+    // using namespace mvc_set;
 
+    Logic logic{};
+
+    CliView view {std::cout, logic};
+    logic.RegisterObserver(view);
+
+    logic.NewLevel(2);
+    const Level& level = logic.GetLevel();
+    do {
+      int curr_room = level.player_->GetCurrRoomNum();
+      auto rooms = helpers::get_neighboring_rooms(curr_room, level.cave_.get());
+      auto feels = level.player_->Feels();
+      
+      bool wump = false;
+      for (auto& feel : feels) {
+        if (feel == Subject::WUMP) wump = true;
+      }
+      int cell = rand_toolkit::get_rand(0,2);
+      logic.Turn(static_cast<int>(wump), rooms[cell]);
+
+    } while (!logic.GameOver());
+  
     return 0;
   }
 

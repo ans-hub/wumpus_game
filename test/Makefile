@@ -2,9 +2,11 @@ CC = clang++
 SRC = ../src/
 HLP = $(SRC)helpers/
 ENT = $(SRC)entities/
+CLI = $(SRC)cli/
 CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
-level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o
+level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
+cli_view.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc -o main.out $(OBJECTS)
@@ -38,6 +40,9 @@ level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 
 logic.o : $(SRC)logic.h $(SRC)logic.cc level.o $(SRC)events.h $(SRC)3rdparty/observable.h
 	$(CC) $(CFLAGS) -c $(SRC)logic.cc
+
+cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(SRC)events.h
+	$(CC) $(CFLAGS) -c $(CLI)view.cc -o cli_view.o 
 
 entities_helpers.o : $(HLP)entities_helpers.h $(HLP)entities_helpers.cc
 	$(CC) $(CFLAGS) -c $(HLP)entities_helpers.cc

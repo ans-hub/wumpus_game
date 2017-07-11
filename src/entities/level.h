@@ -19,6 +19,7 @@ namespace wumpus_game {
 
 struct Level
 {
+  using MapPtr    = std::unique_ptr<Map>;
   using PlayerPtr = std::unique_ptr<Player>;
   using WumpPtr   = std::unique_ptr<Wump>;
   using BatPtr    = std::unique_ptr<Bat>;
@@ -28,7 +29,7 @@ struct Level
   using BatsVec   = std::vector<BatPtr>;
   using PitsVec   = std::vector<PitPtr>;
 
-  Map       cave_;
+  MapPtr    cave_;
   PlayerPtr player_;
   WumpsVec  wumps_;
   BatsVec   bats_;

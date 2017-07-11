@@ -21,8 +21,8 @@ namespace wumpus_game {
 
 namespace helpers {
 
-  bool is_neighboring_rooms(int, int, const Map&);
-  std::vector<int> get_neighboring_rooms(int, const Map&);
+  bool is_neighboring_rooms(int, int, Map*);
+  std::vector<int> get_neighboring_rooms(int, Map*);
   std::string vint_to_string(const std::vector<int> &v, std::string delim = ",");
 
 }  // namespace helpers
