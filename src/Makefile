@@ -43,7 +43,7 @@ bat.o : $(ENT)bat.h $(ENT)bat.cc enemy.o
 pit.o : $(ENT)pit.h $(ENT)pit.cc enemy.o
 	$(CC) $(CFLAGS) -c $(ENT)pit.cc
 
-logic.o : logic.h logic.cc 3rdparty/observable.h events.h
+logic.o : logic.h logic.cc 3rdparty/observable.h events.h helpers.h
 	$(CC) $(CFLAGS) -c logic.cc
 
 helpers.o : helpers.h helpers.cc

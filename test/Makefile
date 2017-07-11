@@ -3,7 +3,7 @@ SRC = ../src/
 ENT = $(SRC)entities/
 CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
-level.o helpers.o test_helpers.o test_cases.o
+level.o logic.o helpers.o test_helpers.o test_cases.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc -o main.out $(OBJECTS)
@@ -34,6 +34,9 @@ pit.o : $(ENT)pit.h $(ENT)pit.cc enemy.o
 
 level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 	$(CC) $(CFLAGS) -c $(ENT)level.cc
+
+logic.o : $(SRC)logic.h $(SRC)logic.cc level.o $(SRC)events.h $(SRC)3rdparty/observable.h
+	$(CC) $(CFLAGS) -c $(SRC)logic.cc
 
 helpers.o : $(SRC)helpers.h $(SRC)helpers.cc
 	$(CC) $(CFLAGS) -c $(SRC)helpers.cc

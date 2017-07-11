@@ -6,8 +6,13 @@
 #ifndef LOGIC_H
 #define LOGIC_H
 
+#include <cassert>
+#include <string>
+
 #include "events.h"
+#include "helpers.h"
 #include "entities/level.h"
+#include "entities/subject.h"
 #include "3rdparty/observable.h"
 
 namespace wumpus_game {
@@ -18,14 +23,16 @@ class Logic : public mvc_set::Observable<Events>
 {
 public:
   Logic();
-  void Init();
+  Logic(const Logic&) =delete;
+
+  void NewLevel(unsigned int);
   void Move(int);
   void Shot(int);
 private:
   using Person = Subject::Person;
 
-  Level level_;
-  Person game_over_cause_;
+  Level   level_;
+  Person  game_over_cause_;
 };
 
 }  // namespace wumpus_game

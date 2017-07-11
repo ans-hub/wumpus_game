@@ -7,21 +7,25 @@
 // degree of valency of all vertexes equal 3 (every vertex is connected by
 // edges with 3 other vertex. In meaning of this app the Map is the
 // Graph, the Rooms are vertexes and the tunnels are edges, the size is the
-// Rooms count in the Map.
+// Rooms count in the Map, the `base of dodecahedron` - is the number of its
+// inner edges, needs to build plane projections through formulas.
 //
 // Note #2 : Connecting of the Rooms is auto-processed and based on plane
-// projection of regular dodecahedron using Schlegel diagram. Neighbors
+// projection of regular dodecahedron using Schlegel diagram.  Neighbors
 // Rooms are called as "left", "right" and "back". As you can see at the
 // plane projection, here are presence three main pathes, called "center",
-// "outer" and "inner". Center path consists of size/2 rooms, outer and inner
-// pathes consists of size/4 rooms. Manually creating was avoided by me as
-// not extentable. Scheme of connecting see in the /src/graph.jpg
+// "outer" and "inner". Center path consists of `base number`*2 rooms, outer
+// and inner pathes consists of `base number` rooms each others. Scheme of
+// connecting see in the /src/graph.jpg.
 
 #include "map.h"
 
 namespace wumpus_game {
 
-Map::Map(int size) : size_{size}, rooms_{}
+Map::Map(int base)
+  : base_{base}
+  , size_{base*4}
+  , rooms_{}
 {
   CreateRooms();    // create graph (see note #1)
   ConnectRooms();   // connect vertexes of graph (see note #2)
@@ -34,18 +38,28 @@ Map::~Map()
   }
 }
 
-Map::Map(Map&& old) : size_{old.size_}, rooms_{old.rooms_}
+Map::Map(Map&& old)
+  : base_{old.base_}
+  , size_{old.size_}
+  // , rooms_{old.rooms_}
 {
+  old.base_ = 0;
   old.size_ = 0;
-  for (auto& r : old.rooms_)  r = nullptr;
+  rooms_.swap(old.rooms_);
+  // for (auto& r : old.rooms_) r = nullptr;
 }
 
 Map& Map::operator=(Map&& old)
 {
+  this->base_ = old.base_;
   this->size_ = old.size_;
-  this->rooms_ = old.rooms_;
+  // this->rooms_ = 
+  this->rooms_.swap(old.rooms_);
+  // this->rooms_ = old.rooms_;
+  
+  old.base_ = 0;
   old.size_ = 0;
-  for (auto& r : old.rooms_)  r = nullptr;
+  // for (auto& r : old.rooms_) r = nullptr;
   return *this;
 }
 

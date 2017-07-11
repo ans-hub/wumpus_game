@@ -34,6 +34,7 @@ protected:
   void    CreateRooms();
   void    ConnectRooms();
 
+  int     base_;
   int     size_;
   Vrooms  rooms_;
 };

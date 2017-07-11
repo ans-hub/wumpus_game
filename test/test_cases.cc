@@ -18,7 +18,7 @@ namespace test_map_behavior {
 
   int creating()
   {
-    constexpr int kCaveSize {20};
+    constexpr int kCaveSize {5};
     Map cave(kCaveSize);
     
     std::cerr << "Check rooms connecting:" << '\n';
@@ -86,7 +86,12 @@ namespace test_map_behavior {
 
     num = cave.GetSize() / 2 - cave.GetSize() / 4 - 1;
     assume = cave.GetSize() / 2 + num;
-    actual = cave.GetRoom(num)->right_->num_;
+    if (assume%2 == 0) {
+      actual = cave.GetRoom(num)->right_->num_;
+    }
+    else {
+      actual = cave.GetRoom(num)->left_->num_;      
+    }
     result += test_toolkit::message(10, assume, actual);
 
     return result;
@@ -96,7 +101,7 @@ namespace test_map_behavior {
   {   
     std::cerr << "Check Map move semantic:" << '\n';
 
-    constexpr int kCaveSize {20};    
+    constexpr int kCaveSize {5};    
     
     Map cave(kCaveSize);
     TestSubject subj1(cave, 3);
@@ -107,6 +112,7 @@ namespace test_map_behavior {
     int assume = 2;
     int actual = test_helpers::persons_in_cave(cave2, Subject::UNKNOWN);
     return test_toolkit::message(1, assume, actual);
+    return 0;
 }
 
 }  // namespace test_map_behavior
@@ -118,7 +124,7 @@ namespace test_level_behavior {
     std::cerr << "Check level creating:" << '\n';
     
     constexpr int kSteps {100};
-    constexpr int kCaveSize {20};
+    constexpr int kCaveSize {5};
     
     int i{0};
     int result{0};
@@ -146,15 +152,16 @@ namespace test_level_behavior {
   {   
     std::cerr << "Check Level move semantic:" << '\n';   
 
-    constexpr int kCaveSize {20};
-    int wumps_cnt{rand_toolkit::get_rand(1, kCaveSize/6)};
-    int bats_cnt{rand_toolkit::get_rand(1, kCaveSize/6)};
-    int pits_cnt{rand_toolkit::get_rand(1, kCaveSize/6)};
+    constexpr int kCaveSize {5};
+    int wumps_cnt{rand_toolkit::get_rand(1, kCaveSize*4/6)};
+    int bats_cnt{rand_toolkit::get_rand(1, kCaveSize*4/6)};
+    int pits_cnt{rand_toolkit::get_rand(1, kCaveSize*4/6)};
 
     int result{0};
 
-    Level level_1(20, 4, 2, 3);
-    level_1 = Level(40, wumps_cnt, pits_cnt, bats_cnt);
+    Level level(5, 4, 2, 3);
+    level = Level(6, wumps_cnt, pits_cnt, bats_cnt);  // make 2 loops with diff moves
+    Level level_1 {Level(6, wumps_cnt, pits_cnt, bats_cnt)};
 
     int assume = wumps_cnt;
     int actual = test_helpers::persons_in_cave(level_1.cave_, Subject::WUMP);
@@ -194,7 +201,7 @@ namespace test_subject_behavior {
 
     using SubjectPtr = std::unique_ptr<TestSubject>;
     using SubjectVec = std::vector<SubjectPtr>;
-    constexpr int kCaveSize {20};
+    constexpr int kCaveSize {5};
     int subj_cnt = rand_toolkit::get_rand(0, kCaveSize*2);
 
     int i{0};
@@ -215,7 +222,7 @@ namespace test_subject_behavior {
   {
     std::cerr << "Check Subject class move semantic:" << '\n';
 
-    constexpr int kCaveSize {20};
+    constexpr int kCaveSize {5};
     constexpr int kStartRoom_1 {3};
     constexpr int kStartRoom_2 {4};
     constexpr int kStartRoom_3 {7};
@@ -241,7 +248,7 @@ namespace test_subject_behavior {
 
   int static_moving()
   {
-    constexpr int kCaveSize {20};
+    constexpr int kCaveSize {5};
     constexpr int kStartRoom {0};
 
     Map cave(kCaveSize);
@@ -274,8 +281,8 @@ namespace test_subject_behavior {
 
   int dynamic_moving()
   {
-    constexpr int kCaveSize {20};
-    constexpr int kSteps {10000};
+    constexpr int kCaveSize {5};
+    constexpr int kSteps {100};
     Map cave(kCaveSize);
     TestEnemy person(cave);
 
@@ -308,8 +315,8 @@ namespace test_subject_behavior {
   {
     std::cerr << "Check traversal absents:" << '\n';
     
-    constexpr int kCaveSize {20};
-    constexpr int kSteps {10000};
+    constexpr int kCaveSize {5};
+    constexpr int kSteps {100};
     constexpr int kItems {10};
 
     int i{0};
@@ -356,7 +363,7 @@ namespace test_subject_behavior {
   {
     std::cerr << "Subjects examine room:" << '\n';
     
-    constexpr int kCaveSize {20};
+    constexpr int kCaveSize {5};
     Map cave(kCaveSize);
 
     TestEnemy e1(cave);
@@ -417,8 +424,8 @@ namespace test_subject_behavior {
   {
     std::cerr << "Check check-ins and check-outs (part 1):" << '\n';
     
-    constexpr int kCaveSize {20};
-    constexpr int kSteps {10000};
+    constexpr int kCaveSize {5};
+    constexpr int kSteps {100};
     constexpr int kItems {10};
     constexpr int kTeleportsEach {10};
 
@@ -483,8 +490,8 @@ namespace test_subject_behavior {
 
   int check_in_and_out_2()
   {
-    constexpr int kCaveSize {20};
-    constexpr int kSteps {10000};
+    constexpr int kCaveSize {5};
+    constexpr int kSteps {100};
     Map cave(kCaveSize);
     TestEnemy person(cave);
 
@@ -549,8 +556,8 @@ namespace test_player_behavior {
   {
     std::cerr << "Test feels of player:" << '\n';
     
-    constexpr int kCaveSize {20};
-    constexpr int kSteps {10000};
+    constexpr int kCaveSize {5};
+    constexpr int kSteps {100};
     
     Map cave(kCaveSize);
 
@@ -580,7 +587,7 @@ namespace test_player_behavior {
   {
     std::cerr << "Test player shots:" << '\n';
     
-    constexpr int kCaveSize {20};
+    constexpr int kCaveSize {5};
     
     Map cave(kCaveSize);
     Wump wump(cave);
@@ -602,5 +609,34 @@ namespace test_player_behavior {
   }
 
 }  // namespace test_player_behavior 
+
+namespace test_logic_behavior {
+
+  int init()
+  {
+    std::cerr << "Test logic creating and resetting:" << '\n';
+    
+    constexpr int kSteps{20};
+    
+    Logic logic{};
+    int i{1};
+    do {
+      logic.NewLevel(i);
+    } while (++i <= kSteps);
+    
+    return 0;
+  }
+
+  int shot()
+  {
+    return 0;
+  }
+  
+  int move()
+  {
+    return 0;
+  }
+
+}  // namespace test_logic_behavior
 
 }  // namespace wumpus_game

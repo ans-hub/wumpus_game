@@ -24,6 +24,16 @@ namespace helpers {
   std::vector<int> get_neighboring_rooms(int, const Map&);
   std::string vint_to_string(const std::vector<int> &v, std::string delim = ",");
 
+  template<class T> int find_in_vector(std::vector<T>, T);
+
+  // Template functions realisation
+
+  template<class T> int find_in_vector(std::vector<T>, T)
+  {
+    int result{0};
+    return result;
+  }
+
 }  // namespace helpers
 
 }  // namespace wumpus_game

@@ -25,6 +25,7 @@
 #include "entities/pit.h"
 #include "entities/bat.h"
 #include "entities/level.h"
+#include "logic.h"
 #include "helpers.h"
 #include "test_helpers.h"
 
@@ -87,6 +88,14 @@ namespace test_player_behavior {
   int move_semantic();
   int feels();
   int shot();
+
+}
+
+namespace test_logic_behavior {
+
+  int init();
+  int shot();
+  int move();
 
 }
 
