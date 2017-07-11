@@ -73,7 +73,7 @@ bool Logic::PlayerShot(int to_room)
   if (!player->Shot()) {
     game_over_cause_ = Subject::WUMP;
     NotifyObservers(Event::HAVE_NOT_ARROWS);
-    NotifyObservers(Event::GAME_OVER);    
+    NotifyObservers(Event::GAME_OVER);
     return false;
   }
   

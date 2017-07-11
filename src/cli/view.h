@@ -36,9 +36,10 @@ namespace cli_helpers {
   void print_shot_no_arrays(std::ostream&);
   void print_shot_not_neighboring(std::ostream&);
   void print_game_over(std::ostream&, Subject::ID);
-  void print_feels(std::ostream&, const wumpus_game::Logic&);
-  void print_neighbors(std::ostream&, const wumpus_game::Logic&);
+  void print_feels(std::ostream&, const Logic&);
+  void print_neighbors(std::ostream&, const Logic&);
   void print_moved_bats(std::ostream&);
+  void print_killed_one_wump(std::ostream&);
 
 }  // namespace cli_helpers 
 

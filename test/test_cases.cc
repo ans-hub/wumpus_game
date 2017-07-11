@@ -210,11 +210,10 @@ namespace test_subject_behavior {
     Map cave(kCaveSize);
     SubjectVec v;
 
-    do {
+    while (i++ < subj_cnt) {
       int room = rand_toolkit::get_rand(0, kCaveSize-1);
       v.push_back(SubjectPtr{new TestSubject(&cave, room)});
-    } while (++i < subj_cnt);
-    
+    }
     int assume = subj_cnt;
     int actual = test_helpers::persons_in_cave(&cave, Subject::UNKNOWN);
     return test_toolkit::message(1, assume, actual);
@@ -611,29 +610,16 @@ namespace test_logic_behavior {
 
   int move()
   {
-    // using namespace mvc_set;
-
+    constexpr int kLevels {5};
+    
     Logic logic{};
 
+    CliController ctrl {logic};
     CliView view {std::cout, logic};
     logic.RegisterObserver(view);
 
-    logic.NewLevel(2);
-    const Level& level = logic.GetLevel();
-    do {
-      int curr_room = level.player_->GetCurrRoomNum();
-      auto rooms = helpers::get_neighboring_rooms(curr_room, level.cave_.get());
-      auto feels = level.player_->Feels();
-      
-      bool wump = false;
-      for (auto& feel : feels) {
-        if (feel == Subject::WUMP) wump = true;
-      }
-      int cell = rand_toolkit::get_rand(0,2);
-      logic.Turn(static_cast<int>(wump), rooms[cell]);
-
-    } while (!logic.GameOver());
-  
+    ctrl.Start();
+    
     return 0;
   }
 

@@ -18,14 +18,6 @@ bool CliView::IncomingNotify(Event msg) const
     case Event::GAME_OVER :
       cli_helpers::print_game_over(ostream_, model_.game_over_cause_);
       break;
-
-    // case Event::PLAYER_FEELS :
-    //   cli_helpers::print_feels(ostream_, model_.player_);
-    //   break;
-
-    // case Event::NEIGH_ROOMS :
-    //   cli_helpers::print_neighbors(ostream_, model_);
-    //   break;    
     
     case Event::MOVED_BATS :
       cli_helpers::print_moved_bats(ostream_);
@@ -43,21 +35,13 @@ bool CliView::IncomingNotify(Event msg) const
       cli_helpers::print_error_room(ostream_);
       break;
     
-    case Event::PLAYER_DOES_SHOT :
-      ostream_ << "PLAYER_DOES_SHOT\n";
-      break;
-    
-    case Event::PLAYER_DOES_MOVE :
-      ostream_ << "PLAYER_DOES_MOVE\n";
-      break;
-    
     case Event::ONE_WUMP_KILLED :
-      ostream_ << "ONE_WUMP_KILLED\n";
+      cli_helpers::print_killed_one_wump(ostream_);
       break;
     
     case Event::READY_TO_INPUT :
-      cli_helpers::print_feels(ostream_, model_);    
       cli_helpers::print_neighbors(ostream_, model_);  
+      cli_helpers::print_feels(ostream_, model_);    
       cli_helpers::print_prompt(ostream_);
       break;
     
@@ -80,7 +64,7 @@ namespace cli_helpers {
 
 void print_prompt(std::ostream& ostream)
 {
-  ostream << "What to do? Move or shot? In which room? > ";
+  ostream << "What to do? Move or shot? In which room? > \n";
 }
 
 void print_error_room(std::ostream& ostream)
@@ -108,14 +92,14 @@ void print_intro(std::ostream& ostream, const Logic& logic)
           << " arrows. Find and kill all Wumpus!\n"
           << "And be aware about presence of other danger things - "
           << "the " << level.bats_.size() << " Bats "
-          << "and the " << level.pits_.size() << " Bottomless pits\n\n";
+          << "and the " << level.pits_.size() << " Bottomless pits\n";
 }
 
 void print_game_over(std::ostream& ostream, Logic::SubjectID person)
 {
   switch (person) {
     case Logic::SubjectID::PLAYER:
-      ostream << "***You have killed the Wumpus! Congratulations!***\n";
+      ostream << "***You have clean the cave from Wumpuses! Congratulations!***\n";
       break;
     case Logic::SubjectID::WUMP:
       ostream << "***You have been killed by Wumpus***\n";
@@ -130,7 +114,7 @@ void print_game_over(std::ostream& ostream, Logic::SubjectID person)
   }
 }
 
-void print_feels(std::ostream& ostream, const wumpus_game::Logic& logic)
+void print_feels(std::ostream& ostream, const Logic& logic)
 {
   using namespace wumpus_game;
 
@@ -152,7 +136,7 @@ void print_feels(std::ostream& ostream, const wumpus_game::Logic& logic)
   }
 }
 
-void print_neighbors(std::ostream& ostream, const wumpus_game::Logic& model)
+void print_neighbors(std::ostream& ostream, const Logic& model)
 {
   using namespace wumpus_game;
   
@@ -163,7 +147,7 @@ void print_neighbors(std::ostream& ostream, const wumpus_game::Logic& model)
     model.GetLevel().cave_.get()
   );
 
-  ostream << "You see the legend on the floor with current room "
+  ostream << "-\nYou see the legend on the floor with current room "
           << "number and directions:\n";
   ostream << "*** Room # " << current
           << ", tunnels to " << helpers::vint_to_string(neighbor, ", ")
@@ -173,6 +157,11 @@ void print_neighbors(std::ostream& ostream, const wumpus_game::Logic& model)
 void print_moved_bats(std::ostream& ostream)
 {
   ostream << "INFO: You have been moved by the Bats to another room\n";
+}
+
+void print_killed_one_wump(std::ostream& ostream)
+{
+  ostream << "INFO: You killed one wumpus\n";
 }
 
 }  // namespace cli_helpers
