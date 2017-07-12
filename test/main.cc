@@ -31,8 +31,7 @@ int main()
   status += test_player_behavior::feels();
 
   status += test_logic_behavior::init();
-  status += test_logic_behavior::shot();
-  status += test_logic_behavior::move();
+  status += test_logic_behavior::for_exceptions();
 
   return status;
 }

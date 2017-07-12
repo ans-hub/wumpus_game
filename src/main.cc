@@ -9,6 +9,7 @@
 #include "gui/gui.h"
 #include "cli/view.h"
 #include "cli/controller.h"
+#include "ai/controller.h"
 
 int main()
 { 

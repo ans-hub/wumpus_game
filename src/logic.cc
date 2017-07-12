@@ -15,7 +15,7 @@ Logic::Logic()
 
 }
 
-void Logic::NewLevel(unsigned int num)
+void Logic::NewLevel(unsigned int num)  // move level build logic in another class?? or file hel,pers?
 {
   int base = static_cast<int>(num); // simulate assert
   int size = base + 3;

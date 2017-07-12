@@ -1,34 +1,39 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: model's `controller` using ostream routines
+// File: model's `controller` using ai
 
-#ifndef CLI_CTRL_H
-#define CLI_CTRL_H
+#ifndef AI_CONTROLLER_H
+#define AI_CONTROLLER_H
 
-#include <istream>
+#include <iostream>
 
-#include "../3rdparty/observer.h"
-#include "../events.h"
+#include "../3rdparty/controller.h"
 #include "../logic.h"
 
 namespace wumpus_game {
 
-class CliCtrl : public Controller
+class AiController : public mvc_set::Controller
 {
 public:
-  CliCtrl(std::istream& ist) : istream_{ist} { }
-  ~CliCtrl() { }
-  bool RunModel(Input& msg, int& n) override;
+  AiController(Logic& model, int level, int steps) 
+    : Controller()
+    , model_{model}
+    , level_{level}
+    , steps_{steps}
+    { }
+  ~AiController() { }
+  bool RunModel() override;
 private:
-  std::istream& istream_;
-  Logic& 
+  Logic& model_;
+  int level_;
+  int steps_;
 };
 
-namespace cli_helpers {
+namespace ai_helpers {
 
-}  // namespace cli_helpers
+}  // namespace ai_helpers
 
 }  // namespace wumpus_game
 
-#endif  // CLI_CTRL_H
+#endif  // AI_CONTROLLER_H

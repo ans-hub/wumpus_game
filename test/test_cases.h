@@ -31,6 +31,7 @@
 #include "test_helpers.h"
 #include "cli/view.h"
 #include "cli/controller.h"
+#include "ai/controller.h"
 
 namespace wumpus_game {
 
@@ -96,8 +97,7 @@ namespace test_player_behavior {
 namespace test_logic_behavior {
 
   int init();
-  int shot();
-  int move();
+  int for_exceptions();
 
 }
 

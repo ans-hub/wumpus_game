@@ -608,27 +608,27 @@ namespace test_logic_behavior {
     return 0;
   }
 
-  int move()
+  int for_exceptions()
   {
-    constexpr int kLevels {5};
+    std::cerr << "Test logic process for exceptions via AiController:" << '\n';
+    
+    constexpr int kLevel {5};
+    constexpr int kSteps {100};
     
     Logic logic{};
-
-    CliController ctrl {std::cin, logic};
-    CliView view {std::cout, logic};
-    logic.RegisterObserver(view);
-
-    ctrl.RunModel();
+    AiController ctrl {logic, kLevel, kSteps};
     
-    return 0;
-  }
-
-  int shot()
-  {
-    return 0;
+    int result{0};
+    try {
+      ctrl.RunModel();
+    }
+    catch (...) {
+      ++result;
+    }
+    std::cerr << " " << kSteps - result << " out of " << kSteps << ".....Ok" << '\n';    
+    return result;
   }
   
-
 }  // namespace test_logic_behavior
 
 }  // namespace wumpus_game

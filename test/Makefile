@@ -3,10 +3,11 @@ SRC = ../src/
 HLP = $(SRC)helpers/
 ENT = $(SRC)entities/
 CLI = $(SRC)cli/
+AI = $(SRC)ai/
 CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
-cli_view.o cli_controller.o
+cli_view.o cli_controller.o ai_controller.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc -o main.out $(OBJECTS)
@@ -17,10 +18,10 @@ room.o : $(ENT)room.h $(ENT)room.cc subject.o
 map.o : $(ENT)map.h $(ENT)map.cc room.o 
 	$(CC) $(CFLAGS) -c $(ENT)map.cc
 
-subject.o : $(ENT)subject.h $(ENT)subject.cc map.o helpers.o
+subject.o : $(ENT)subject.h $(ENT)subject.cc map.o entities_helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)subject.cc
 
-player.o : $(ENT)player.h $(ENT)player.cc subject.o helpers.o
+player.o : $(ENT)player.h $(ENT)player.cc subject.o entities_helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)player.cc
 
 enemy.o : $(ENT)enemy.h $(ENT)enemy.cc subject.o
@@ -46,6 +47,9 @@ cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(SRC)
 
 cli_controller.o : $(CLI)controller.h $(CLI)controller.cc $(SRC)3rdparty/controller.h logic.o
 	$(CC) $(CFLAGS) -c $(CLI)controller.cc -o cli_controller.o 
+
+ai_controller.o : $(AI)controller.h $(AI)controller.cc $(SRC)3rdparty/controller.h logic.o
+	$(CC) $(CFLAGS) -c $(AI)controller.cc -o ai_controller.o 
 
 entities_helpers.o : $(HLP)entities_helpers.h $(HLP)entities_helpers.cc
 	$(CC) $(CFLAGS) -c $(HLP)entities_helpers.cc
