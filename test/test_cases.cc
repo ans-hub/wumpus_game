@@ -638,8 +638,11 @@ namespace test_experiments {
     Logic logic{};
     Windows windows{};
     GuiView view {windows, logic};
+    CliView view2 {std::cout, logic};
     GuiController ctrl{windows, logic};
     
+    logic.RegisterObserver(view);
+    logic.RegisterObserver(view2);
     ctrl.RunModel();
     return 0;
   }

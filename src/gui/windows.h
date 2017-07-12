@@ -15,6 +15,11 @@ struct Windows
 {
   Windows();
   ~Windows();
+  void Show();
+  void Close();
+  void Redraw();
+  void AddWidget(Fl_Widget*);
+  void RemoveWidget(Fl_Widget*);
   
   FormMain*   main_wnd_;
   FormPopup*  popup_wnd_;

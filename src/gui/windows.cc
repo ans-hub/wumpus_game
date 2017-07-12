@@ -18,5 +18,30 @@ Windows::~Windows()
   delete popup_wnd_;
 }
 
+void Windows::Show()
+{
+  main_wnd_->window_->show();
+  Fl::run();
+}
+
+void Windows::Close()
+{
+  main_wnd_->window_->hide();
+}
+
+void Windows::Redraw()
+{
+  main_wnd_->window_->redraw();
+}
+
+void Windows::AddWidget(Fl_Widget* w)
+{
+  main_wnd_->window_->add(w);
+}
+
+void Windows::RemoveWidget(Fl_Widget* w)
+{
+  main_wnd_->window_->remove(w);
+}
 
 }  // namespace wumpus_game

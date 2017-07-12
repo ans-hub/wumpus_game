@@ -32,11 +32,13 @@ public:
   void NewLevel(unsigned int);
   void Turn(int, int);
   bool GameOver() const { return (game_over_cause_ != Subject::UNKNOWN); }
+  int CurrentLevel() const { return GameOver() ? -1 : curr_level_; }
   const Level& GetLevel() const { return level_; }
 protected:
   Level       level_;
   bool        player_turn_;
   Subject::ID game_over_cause_;
+  int         curr_level_;
 
   void PlayerTurn(int, int);
   bool PlayerShot(int);

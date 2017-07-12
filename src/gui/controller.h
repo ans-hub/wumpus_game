@@ -12,18 +12,26 @@
 
 namespace wumpus_game {
 
+class Fl_Widget;
+
 class GuiController : public mvc_set::Controller
 {
 public:
   GuiController(Windows& gui, Logic& model);
   ~GuiController() { }
   bool RunModel() override;
+  void StopModel();
+  void CommandStart() { model_.NewLevel(1); }
 private:
   Windows& gui_;
   Logic& model_;
 };
 
 namespace gui_helpers {
+
+  void cb_start_button(void*, void*);
+  void cb_quit_button(void*, void*);
+  // void start_command();
 
 }  // namespace gui_helpers
 

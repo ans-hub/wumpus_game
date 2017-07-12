@@ -11,6 +11,7 @@ Logic::Logic()
   : level_(5,5,1,1,1) // make def ctor in level which is level 1
   , player_turn_{true}
   , game_over_cause_{Subject::EMPTY}
+  , curr_level_{-1}
 {
 
 }
@@ -26,6 +27,7 @@ void Logic::NewLevel(unsigned int num)  // move level build logic in another cla
   level_ = Level(size, arrows, wump, bat, pit);
   game_over_cause_ = Subject::UNKNOWN;
   player_turn_ = true;
+  curr_level_ = num;
   NotifyObservers(Event::NEW_LEVEL);
   NotifyObservers(Event::READY_TO_INPUT);
 }
