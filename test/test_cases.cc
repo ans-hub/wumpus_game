@@ -631,4 +631,19 @@ namespace test_logic_behavior {
   
 }  // namespace test_logic_behavior
 
+namespace test_experiments {
+
+  int experimental()
+  {
+    Logic logic{};
+    Windows windows{};
+    GuiView view {windows, logic};
+    GuiController ctrl{windows, logic};
+    
+    ctrl.RunModel();
+    return 0;
+  }
+
+}  // namespace test_experiments
+
 }  // namespace wumpus_game

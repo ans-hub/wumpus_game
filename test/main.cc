@@ -12,6 +12,8 @@ int main()
   int status{0};
   rand_toolkit::start_rand();
 
+  test_experiments::experimental();
+
   status += test_map_behavior::creating();
   // status += test_map_behavior::move_semantic();  //  no leaks, just stranges
 

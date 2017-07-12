@@ -1,16 +1,26 @@
 CC = clang++
+
 SRC = ../src/
 HLP = $(SRC)helpers/
 ENT = $(SRC)entities/
 CLI = $(SRC)cli/
+GUI = $(SRC)gui/
 AI = $(SRC)ai/
+
 CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
+FLTKFLAGS = `fltk-config --ldflags` -lfltk_images -lpng16 -lz
+
+# note - if library is libpng16.so, just type lpng16 and so on
+# a - static lib
+# so - dynamic lib
+
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
-cli_view.o cli_controller.o ai_controller.o
+cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
+windows.o form_main.o
 
 main.out : $(OBJECTS) main.cc
-	$(CC) $(CFLAGS) -o0 main.cc -o main.out $(OBJECTS)
+	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
 
 room.o : $(ENT)room.h $(ENT)room.cc subject.o
 	$(CC) $(CFLAGS) -c $(ENT)room.cc
@@ -41,6 +51,18 @@ level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 
 logic.o : $(SRC)logic.h $(SRC)logic.cc level.o $(SRC)events.h $(SRC)3rdparty/observable.h
 	$(CC) $(CFLAGS) -c $(SRC)logic.cc
+
+windows.o : $(GUI)windows.h $(GUI)windows.cc $(GUI)forms/form_main.h $(GUI)forms/form_popup.h
+	$(CC) $(CFLAGS) -c $(GUI)windows.cc
+
+form_main.o : $(GUI)forms/form_main.h $(GUI)forms/form_main.cc $(GUI)forms/room_button.h
+	$(CC) $(CFLAGS) -c $(GUI)forms/form_main.cc
+
+gui_view.o : $(GUI)view.h $(GUI)view.cc $(SRC)3rdparty/observer.h logic.o $(SRC)events.h $(GUI)windows.h
+	$(CC) $(CFLAGS) -c $(GUI)view.cc -o gui_view.o 
+
+gui_controller.o : $(GUI)controller.h $(GUI)controller.cc $(SRC)3rdparty/controller.h logic.o $(GUI)windows.h
+	$(CC) $(CFLAGS) -c $(GUI)controller.cc -o gui_controller.o 
 
 cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(SRC)events.h
 	$(CC) $(CFLAGS) -c $(CLI)view.cc -o cli_view.o 

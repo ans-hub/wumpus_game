@@ -32,6 +32,9 @@
 #include "cli/view.h"
 #include "cli/controller.h"
 #include "ai/controller.h"
+#include "gui/windows.h"
+#include "gui/view.h"
+#include "gui/controller.h"
 
 namespace wumpus_game {
 
@@ -98,6 +101,12 @@ namespace test_logic_behavior {
 
   int init();
   int for_exceptions();
+
+}
+
+namespace test_experiments {
+
+  int experimental();
 
 }
 

@@ -8,6 +8,7 @@ namespace mvc_set {
 struct Controller
 {
   Controller() { }
+  virtual ~Controller() { }
   Controller(const Controller&) =delete;
   virtual bool RunModel() =0;
 };
