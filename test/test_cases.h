@@ -30,7 +30,7 @@
 #include "helpers/logic_helpers.h"
 #include "test_helpers.h"
 #include "cli/view.h"
-// #include "cli/controller.h"
+#include "cli/controller.h"
 
 namespace wumpus_game {
 

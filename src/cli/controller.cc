@@ -1,37 +1,49 @@
 
 #include "controller.h"
 
-namespace mvc_set {
+namespace wumpus_game {
 
-bool CliCtrl::IncomingNotify(Input& msg, int& m)
+bool CliController::RunModel()
 {
-  if (!istream_) { return false; }
+  // model_.NewLevel(1);
+  // do {
+  //   int action { 1};
+  //   int room {0};
+  //   if (istream_ >> action >> room) {
+  //     model_.Turn(action, room);
+  //   }
+  // } while(!model_.GameOver());
+  // return true;
 
+  if (!istream_) { return false; }
+  
+  model_.NewLevel(1);
+  
+  int room{-1};
   std::string action;
+
   do {
-    if (istream_ >> action >> m) {
+    if (istream_ >> action >> room) {
       if ((action == "m") || (action == "move")) {
-        msg = Input::MOVE;
+        model_.Turn(0, room);
       }
       else if ((action == "s") || (action == "shot")) {
-        msg = Input::SHOT;
-      }
-      else if ((action == "h") || (action == "help")) {
-        msg = Input::HELP;
+        model_.Turn(1, room);        
       }
       else if ((action == "q") || (action == "quit")) {
-        msg = Input::QUIT;
+        return false;
       }
       else {
-        msg = Input::UNKNOWN;
+        model_.Turn(-1, room);
       }
     }
     else {
       istream_.clear();
       istream_.ignore(10000, '\n');
+      model_.Turn(-1, room);
     }
-    return true;
-  } while (true);
+  } while(!model_.GameOver());
+  return true;
 }
 
-}  // namespace mvc_set
+}  // namespace wumpus_game

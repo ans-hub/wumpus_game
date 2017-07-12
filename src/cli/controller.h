@@ -3,31 +3,34 @@
 // Author: Anton Novoselov, 2017
 // File: model's `controller` using ostream routines
 
-#ifndef MVCSET_CLI_CTRL
-#define MVCSET_CLI_CTRL
+#ifndef CLI_CONTROLLER_H
+#define CLI_CONTROLLER_H
 
-#include <istream>
+#include <iostream>
 
-#include "../3rdparty/observer.h"
-#include "../events.h"
+#include "../3rdparty/controller.h"
 #include "../logic.h"
 
-namespace mvc_set {
+namespace wumpus_game {
 
-class CliCtrl : public Observer<Input&, int&>
+class CliController : public mvc_set::Controller
 {
 public:
-  CliCtrl(std::istream& ist) : istream_{ist} { }
-  ~CliCtrl() { }
-  bool IncomingNotify(Input& msg, int& n) override;
+  CliController(std::istream& ist, Logic& model) 
+    : Controller() 
+    , istream_{ist}
+    , model_{model} { }
+  ~CliController() { }
+  bool RunModel() override;
 private:
   std::istream& istream_;
+  Logic& model_;
 };
 
 namespace cli_helpers {
 
 }  // namespace cli_helpers
 
-}  // namespace mvc_set
+}  // namespace wumpus_game
 
-#endif  // MVCSET_CLI_CTRL
+#endif  // CLI_CONTROLLER_H

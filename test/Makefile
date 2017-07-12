@@ -6,7 +6,7 @@ CLI = $(SRC)cli/
 CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
-cli_view.o
+cli_view.o cli_controller.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc -o main.out $(OBJECTS)
@@ -43,6 +43,9 @@ logic.o : $(SRC)logic.h $(SRC)logic.cc level.o $(SRC)events.h $(SRC)3rdparty/obs
 
 cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(SRC)events.h
 	$(CC) $(CFLAGS) -c $(CLI)view.cc -o cli_view.o 
+
+cli_controller.o : $(CLI)controller.h $(CLI)controller.cc $(SRC)3rdparty/controller.h logic.o
+	$(CC) $(CFLAGS) -c $(CLI)controller.cc -o cli_controller.o 
 
 entities_helpers.o : $(HLP)entities_helpers.h $(HLP)entities_helpers.cc
 	$(CC) $(CFLAGS) -c $(HLP)entities_helpers.cc

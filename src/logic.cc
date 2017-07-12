@@ -53,6 +53,7 @@ void Logic::PlayerTurn(int action, int room)
   {
     case 0 : does = PlayerMove(room); break;
     case 1 : does = PlayerShot(room); break;
+    default : NotifyObservers(Event::UNKNOWN_COMMAND); break;
   }
   player_turn_ = !does;
 }

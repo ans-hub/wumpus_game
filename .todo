@@ -1,10 +1,11 @@
 # 17-06-16 at 14:28  -  Exceptions catch in ~Room()
 # 17-07-02 at 15:48  -  Enums in different files
 # 17-07-02 at 23:10  -  Remove actions from ctrl to string
-# 17-07-06 at 12:20  -  Rename Labyrinth to Map
 # 17-07-06 at 12:21  -  Rooms exits make in vector
 # 17-07-06 at 12:21  -  Map form or as dodecaedr or from file
 # 17-07-06 at 12:22  -  RoomButton - own drawed as with lightening un the top, or facel
 # 17-07-06 at 12:27  -  Decide about constness
 # 17-07-06 at 12:33  -  Make one namespace
 # 17-07-06 at 12:36  -  Make choose between controllers and views
+# 17-07-12 at 07:46  -  Helpers all in one and forward declare enum subj id
+# 17-07-12 at 07:47  -  Test_Cases to test_entities, test_logic, test_ctroller

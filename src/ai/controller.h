@@ -3,8 +3,8 @@
 // Author: Anton Novoselov, 2017
 // File: model's `controller` using ostream routines
 
-#ifndef MVCSET_CLI_CTRL
-#define MVCSET_CLI_CTRL
+#ifndef CLI_CTRL_H
+#define CLI_CTRL_H
 
 #include <istream>
 
@@ -12,22 +12,23 @@
 #include "../events.h"
 #include "../logic.h"
 
-namespace mvc_set {
+namespace wumpus_game {
 
-class CliCtrl : public Observer<Input&, int&>
+class CliCtrl : public Controller
 {
 public:
   CliCtrl(std::istream& ist) : istream_{ist} { }
   ~CliCtrl() { }
-  bool IncomingNotify(Input& msg, int& n) override;
+  bool RunModel(Input& msg, int& n) override;
 private:
   std::istream& istream_;
+  Logic& 
 };
 
 namespace cli_helpers {
 
 }  // namespace cli_helpers
 
-}  // namespace mvc_set
+}  // namespace wumpus_game
 
-#endif  // MVCSET_CLI_CTRL
+#endif  // CLI_CTRL_H

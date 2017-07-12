@@ -40,6 +40,7 @@ namespace cli_helpers {
   void print_neighbors(std::ostream&, const Logic&);
   void print_moved_bats(std::ostream&);
   void print_killed_one_wump(std::ostream&);
+  void print_unknown_command(std::ostream&);
 
 }  // namespace cli_helpers 
 

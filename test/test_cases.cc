@@ -614,11 +614,11 @@ namespace test_logic_behavior {
     
     Logic logic{};
 
-    CliController ctrl {logic};
+    CliController ctrl {std::cin, logic};
     CliView view {std::cout, logic};
     logic.RegisterObserver(view);
 
-    ctrl.Start();
+    ctrl.RunModel();
     
     return 0;
   }

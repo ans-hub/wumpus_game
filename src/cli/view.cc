@@ -44,7 +44,9 @@ bool CliView::IncomingNotify(Event msg) const
       cli_helpers::print_feels(ostream_, model_);    
       cli_helpers::print_prompt(ostream_);
       break;
-    
+    case Event::UNKNOWN_COMMAND : 
+      cli_helpers::print_unknown_command(ostream_);
+      break;
     // case Event::ERROR_ACTION :
     //   cli_helpers::print_error_action(ostream_);
     //   break;
@@ -64,12 +66,12 @@ namespace cli_helpers {
 
 void print_prompt(std::ostream& ostream)
 {
-  ostream << "What to do? Move or shot? In which room? > \n";
+  ostream << "What to do? Move or shot? In which room? > ";
 }
 
 void print_error_room(std::ostream& ostream)
 {
-  ostream << "ERROR: You input not neighbor room, please repeat\n";
+  ostream << "ERROR: You input not neighbor room to move, please repeat\n";
 }
 
 void  print_shot_no_arrays(std::ostream& ostream)
@@ -162,6 +164,11 @@ void print_moved_bats(std::ostream& ostream)
 void print_killed_one_wump(std::ostream& ostream)
 {
   ostream << "INFO: You killed one wumpus\n";
+}
+
+void print_unknown_command(std::ostream& ostream)
+{
+  ostream << "ERROR: Your input is not recognized\n";  
 }
 
 }  // namespace cli_helpers
