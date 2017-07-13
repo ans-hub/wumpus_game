@@ -12,8 +12,8 @@ GuiController::GuiController(Windows& gui, Logic& model)
   , gui_{gui}
   , model_{model}
 {
-  gui_.box_rooms_->callback_ = (void*)gui_helpers::cb_rooms_button;
-  gui_.box_rooms_->command_ = (void*)this;
+  gui_.map_box_->SetCallback((void*)gui_helpers::cb_rooms_button);
+  gui_.map_box_->SetCommand((void*)this);
  
   auto* wnd = gui_.main_wnd_;
   
@@ -51,7 +51,6 @@ void GuiController::CommandAction(int room)
   if (e == FL_RIGHT_MOUSE) {
     model_.Turn(1, room);
   }
-  //
 }
 
 namespace gui_helpers {
@@ -68,9 +67,7 @@ void cb_quit_button(void*, void* c)
 
 void cb_rooms_button(void* b, void* c)
 {
-  // auto res = ((GuiController*)c)->CommandAction(((RoomButton*)b)->num_);
   ((GuiController*)c)->CommandAction(((RoomButton*)b)->num_);
-  // ((RoomButton*)b)->value(res);
 }
 
 }  // namespace gui_helpers

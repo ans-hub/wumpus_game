@@ -17,6 +17,7 @@ bool GuiView::IncomingNotify(Event msg) const
       gui_helpers::disable_buttons(gui_);
       gui_helpers::show_player_pos(gui_, model_);
       break;
+    case Event::UNKNOWN_COMMAND :
     case Event::MOVE_NOT_NEIGHBOR :
     case Event::SHOT_NOT_NEIGHBOR :
     {
@@ -29,7 +30,11 @@ bool GuiView::IncomingNotify(Event msg) const
       gui_helpers::clear_player_pos(gui_);
       gui_helpers::show_player_pos(gui_, model_);  
       break;
+    case Event::PLAYER_DOES_SHOT :
+      gui_helpers::unshown_last_action(gui_, model_);
+      break;    
     case Event::GAME_OVER :
+      gui_helpers::hide_level(gui_);
       gui_helpers::enable_buttons(gui_);
       break;
   }
@@ -49,16 +54,14 @@ void disable_buttons(Windows& gui)
 void show_level(Windows& gui, const Logic& model)
 {
   int level = model.CurrentLevel();
-  // GroupRooms* rooms = new GroupRooms();
-  gui.RedrawRooms(level);
-  // gui.AddWidget(rooms);
+  gui.map_box_->DrawMap(level);
+  gui.map_box_->Activate();
   gui.Redraw();
-  //  gui.ShowWidget(gui.box_rooms_);
-  // int level = model.CurrentLevel();
-  // GroupRooms* rooms = new GroupRooms();
-  // gui.RedrawRooms(level);
-  // gui.AddWidget(rooms);
-  // gui.Redraw();
+}
+
+void hide_level(Windows& gui)
+{
+  gui.map_box_->Deactivate();
 }
 
 void enable_buttons(Windows& gui)
@@ -70,9 +73,8 @@ void enable_buttons(Windows& gui)
 void unshown_last_action(Windows& gui, const Logic& model)
 {
   int room = model.CurrentRequest().room_;
-  auto* btn = gui.box_rooms_->rooms_[room];
-  if (!btn->visited_) btn->value(0); 
-  // Fl::pushed(nullptr);
+  auto* btn = gui.map_box_->GetRooms()[room];
+  if (!btn->visited_) btn->value(0);
   gui.Redraw();
 }
 
@@ -86,20 +88,20 @@ void show_error_room(Windows& gui)
 void show_player_pos(Windows& gui, const Logic& model)
 {
   int room = model.GetLevel().player_->GetCurrRoomNum();
-  gui.box_rooms_->rooms_[room]->label("Y");
-  gui.box_rooms_->rooms_[room]->value(1);
+  gui.map_box_->GetRooms()[room]->label("Y");
+  gui.map_box_->GetRooms()[room]->value(1);
 }
 
 void clear_player_pos(Windows& gui)
 {
-  auto& rooms = gui.box_rooms_->rooms_;
+  auto& rooms = gui.map_box_->GetRooms();
   for (auto& v : rooms) v->label("");
 }
 
 void mark_room_as_visited(Windows& gui, const Logic& model)
 {
   int room = model.CurrentRequest().room_;
-  auto* btn = gui.box_rooms_->rooms_[room];
+  auto* btn = gui.map_box_->GetRooms()[room];
   btn->visited_ = true;
 }
 

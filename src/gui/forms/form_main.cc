@@ -11,8 +11,8 @@ FormMain::FormMain ()
 : Fl_Window(200, 200, "_")
 // , rooms_{}
 , window_{new Fl_Window(425, 700, "Hunt the Wumpus")}
-, img_level_{(new Fl_PNG_Image("gui/forms/data/level.png"))}
-, img_cover_{(new Fl_PNG_Image("gui/forms/data/cover.png"))}
+, img_level_{(new Fl_PNG_Image("../src/gui/forms/data/level.png"))}
+, img_cover_{(new Fl_PNG_Image("../src/gui/forms/data/cover.png"))}
 , box_cover_{new Fl_Box(-5, 0, 435, 625)}
 , box_level_{new Fl_Box(2, 54, 425, 390)}
 , box_label_{new Fl_Box(30, 20, 370, 45, "HUNT THE WUMPUS")}

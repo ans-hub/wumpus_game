@@ -8,7 +8,7 @@
 
 #include "forms/form_main.h"
 #include "forms/form_popup.h"
-#include "forms/group_rooms.h"
+#include "forms/form_map.h"
 
 namespace wumpus_game {
 
@@ -19,17 +19,14 @@ struct Windows
   void Show();
   void Close();
   void Redraw();
-  // void NewRooms(int, ,);
   void AddWidget(Fl_Widget*);
   void RemoveWidget(Fl_Widget*); 
   void ShowWidget(Fl_Widget*);
   void HideWidget(Fl_Widget*); 
   
-  void RedrawRooms(int);
-  
   FormMain*   main_wnd_;
   FormPopup*  popup_wnd_;
-  GroupRooms* box_rooms_;
+  FormMap*    map_box_;
 };
 
 }  // namespace wumpus_game

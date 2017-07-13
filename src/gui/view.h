@@ -32,6 +32,7 @@ private:
 namespace gui_helpers {
   
   void show_level(Windows&, const Logic&);
+  void hide_level(Windows&);
   void show_intro(Windows&, const Logic&);
   void enable_buttons(Windows&);
   void disable_buttons(Windows&);

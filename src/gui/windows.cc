@@ -10,17 +10,17 @@ namespace wumpus_game {
 Windows::Windows() 
   : main_wnd_{ new FormMain() }
   , popup_wnd_{ new FormPopup() }
-  , box_rooms_ { new GroupRooms() }
+  , map_box_ { new FormMap() }
 {
-  AddWidget(box_rooms_);
+  AddWidget(map_box_);
 }
 
 Windows::~Windows()
 {
-  RemoveWidget(box_rooms_);
+  RemoveWidget(map_box_);
   delete main_wnd_;
   delete popup_wnd_;
-  delete box_rooms_;
+  delete map_box_;
 }
 
 void Windows::Show()
@@ -39,12 +39,6 @@ void Windows::Redraw()
   main_wnd_->window_->redraw();
 }
 
-void Windows::RedrawRooms(int i)
-{
-  box_rooms_->ClearRooms();
-  box_rooms_->DrawRooms(i);
-}
-
 void Windows::AddWidget(Fl_Widget* w)
 {
   main_wnd_->window_->add(w);
@@ -57,12 +51,12 @@ void Windows::RemoveWidget(Fl_Widget* w)
 
 void Windows::ShowWidget(Fl_Widget* w)
 {
-  w->hide();
+  w->show();
 }
 
 void Windows::HideWidget(Fl_Widget* w)
 {
-  w->show();
+  w->hide();
 }
 
 }  // namespace wumpus_game

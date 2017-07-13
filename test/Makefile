@@ -17,7 +17,7 @@ FLTKFLAGS = `fltk-config --ldflags` -lfltk_images -lpng16 -lz
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
 cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
-windows.o form_main.o group_rooms.o
+windows.o form_main.o form_map.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
@@ -58,8 +58,8 @@ windows.o : $(GUI)windows.h $(GUI)windows.cc $(GUI)forms/form_main.h $(GUI)forms
 form_main.o : $(GUI)forms/form_main.h $(GUI)forms/form_main.cc $(GUI)forms/room_button.h
 	$(CC) $(CFLAGS) -c $(GUI)forms/form_main.cc
 
-group_rooms.o : $(GUI)forms/group_rooms.h $(GUI)forms/group_rooms.cc $(GUI)forms/room_button.h
-	$(CC) $(CFLAGS) -c $(GUI)forms/group_rooms.cc
+form_map.o : $(GUI)forms/form_map.h $(GUI)forms/form_map.cc $(GUI)forms/room_button.h
+	$(CC) $(CFLAGS) -c $(GUI)forms/form_map.cc
 
 gui_view.o : $(GUI)view.h $(GUI)view.cc $(SRC)3rdparty/observer.h logic.o $(SRC)events.h $(GUI)windows.h
 	$(CC) $(CFLAGS) -c $(GUI)view.cc -o gui_view.o 
