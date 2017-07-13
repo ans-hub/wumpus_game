@@ -12,6 +12,7 @@ Logic::Logic()
   , player_turn_{true}
   , game_over_cause_{Subject::EMPTY}
   , curr_level_{-1}
+  , curr_request_{ }
 {
 
 }
@@ -28,12 +29,15 @@ void Logic::NewLevel(unsigned int num)  // move level build logic in another cla
   game_over_cause_ = Subject::UNKNOWN;
   player_turn_ = true;
   curr_level_ = num;
+  curr_request_.Clear();
   NotifyObservers(Event::NEW_LEVEL);
   NotifyObservers(Event::READY_TO_INPUT);
 }
 
 void Logic::Turn(int action, int room)
 {
+  curr_request_.Set(action, room);
+
   if (!game_over_cause_) {
     PlayerTurn(action, room);   // changes player_turn_;
   }

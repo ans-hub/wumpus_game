@@ -9,7 +9,7 @@ namespace wumpus_game {
 
 FormMain::FormMain ()
 : Fl_Window(200, 200, "_")
-, rooms_{}
+// , rooms_{}
 , window_{new Fl_Window(425, 700, "Hunt the Wumpus")}
 , img_level_{(new Fl_PNG_Image("gui/forms/data/level.png"))}
 , img_cover_{(new Fl_PNG_Image("gui/forms/data/cover.png"))}
@@ -28,7 +28,6 @@ FormMain::FormMain ()
 
 FormMain::~FormMain()
 {
-  for (auto v : rooms_) delete v;
   delete display_;
   delete output_;
   delete btn_quit_;
@@ -44,7 +43,6 @@ FormMain::~FormMain()
 
 void FormMain::TuneAppearance()
 {
-  // windows_size
   window_->color((Fl_Color)34);
   box_cover_->image(img_cover_);
   box_cover_->align(Fl_Align(192));
@@ -61,6 +59,7 @@ void FormMain::TuneAppearance()
   display_->align(FL_ALIGN_TOP);
   display_->buffer(output_);
   display_->wrap_mode(Fl_Text_Display::WRAP_AT_BOUNDS, 0);
+  window_->position((Fl::w() - window_->w())/2, (Fl::h() - window_->h())/2);
 }
 
 }  // namespace wumpus_game

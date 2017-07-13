@@ -31,10 +31,16 @@ private:
 
 namespace gui_helpers {
   
-  void show_intro(Windows&, const Logic&);
-  void disable_buttons(Windows&);
   void show_level(Windows&, const Logic&);
+  void show_intro(Windows&, const Logic&);
   void enable_buttons(Windows&);
+  void disable_buttons(Windows&);
+  void unshown_last_action(Windows&, const Logic&);
+  void show_error_room(Windows&);
+  void show_player_pos(Windows&, const Logic&);
+  void clear_player_pos(Windows&);
+  void mark_room_as_visited(Windows&, const Logic&);
+
 
 }  // namespace gui_helpers
 

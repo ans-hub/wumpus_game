@@ -6,6 +6,7 @@
 #ifndef GUI_CONTROLLER_H
 #define GUI_CONTROLLER_H
 
+#include "forms/room_button.h"
 #include "../3rdparty/controller.h"
 #include "../logic.h"
 #include "windows.h"
@@ -21,7 +22,8 @@ public:
   ~GuiController() { }
   bool RunModel() override;
   void StopModel();
-  void CommandStart() { model_.NewLevel(1); }
+  void CommandStart();
+  void CommandAction(int);
 private:
   Windows& gui_;
   Logic& model_;
@@ -31,7 +33,7 @@ namespace gui_helpers {
 
   void cb_start_button(void*, void*);
   void cb_quit_button(void*, void*);
-  // void start_command();
+  void cb_rooms_button(void*, void*);
 
 }  // namespace gui_helpers
 

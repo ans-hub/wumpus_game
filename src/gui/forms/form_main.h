@@ -9,7 +9,7 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
-#include <FL/Fl_Light_Button.H>
+// #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Text_Display.H>
@@ -25,12 +25,12 @@ namespace wumpus_game {
 class FormMain : public Fl_Window 
 {
 public:
-  typedef std::vector<RoomButton*> RoomButtons;
+  // typedef std::vector<RoomButton*> RoomButtons;
   
   FormMain();
   ~FormMain();
 
-  RoomButtons       rooms_;
+  // RoomButtons       rooms_;
   Fl_Window*        window_;
   Fl_PNG_Image*     img_level_;
   Fl_PNG_Image*     img_cover_;
