@@ -27,7 +27,6 @@ GuiController::GuiController(Windows& gui, Logic& model)
 
 bool GuiController::RunModel()
 {
-  // nothing
   gui_.Show();
   return true;
 }
@@ -39,7 +38,7 @@ void GuiController::StopModel()
 
 void GuiController::CommandStart()
 {
-  model_.NewLevel(1);
+  model_.NewLevel(4);
 }
 
 void GuiController::CommandAction(int room)

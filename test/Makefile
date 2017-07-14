@@ -17,7 +17,7 @@ FLTKFLAGS = `fltk-config --ldflags` -lfltk_images -lpng16 -lz
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
 cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
-windows.o form_main.o form_map.o
+windows.o form_main.o form_map.o map_pathes.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
@@ -55,11 +55,14 @@ logic.o : $(SRC)logic.h $(SRC)logic.cc level.o $(SRC)events.h $(SRC)3rdparty/obs
 windows.o : $(GUI)windows.h $(GUI)windows.cc $(GUI)forms/form_main.h $(GUI)forms/form_popup.h
 	$(CC) $(CFLAGS) -c $(GUI)windows.cc
 
-form_main.o : $(GUI)forms/form_main.h $(GUI)forms/form_main.cc $(GUI)forms/room_button.h
+form_main.o : $(GUI)forms/form_main.h $(GUI)forms/form_main.cc
 	$(CC) $(CFLAGS) -c $(GUI)forms/form_main.cc
 
-form_map.o : $(GUI)forms/form_map.h $(GUI)forms/form_map.cc $(GUI)forms/room_button.h
+form_map.o : $(GUI)forms/form_map.h $(GUI)forms/form_map.cc $(GUI)widgets/room_button.h $(GUI)widgets/map_pathes.h
 	$(CC) $(CFLAGS) -c $(GUI)forms/form_map.cc
+
+map_pathes.o : $(GUI)widgets/map_pathes.h $(GUI)widgets/map_pathes.cc
+	$(CC) $(CFLAGS) -c $(GUI)widgets/map_pathes.cc
 
 gui_view.o : $(GUI)view.h $(GUI)view.cc $(SRC)3rdparty/observer.h logic.o $(SRC)events.h $(GUI)windows.h
 	$(CC) $(CFLAGS) -c $(GUI)view.cc -o gui_view.o 

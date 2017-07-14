@@ -18,7 +18,7 @@ struct Windows
   ~Windows();
   void Show();
   void Close();
-  void Redraw();
+  void Redraw(int);
   void AddWidget(Fl_Widget*);
   void RemoveWidget(Fl_Widget*); 
   void ShowWidget(Fl_Widget*);

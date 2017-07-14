@@ -7,12 +7,11 @@
 #define FORM_MAP_H
 
 #include <vector>
-#include <cmath>
-
 #include <FL/Fl.H>
 #include <FL/Fl_Group.H>
 #include <FL/fl_draw.H>
-#include "room_button.h"
+#include "../widgets/room_button.h"
+#include "../widgets/map_pathes.h"
 
 namespace wumpus_game {
 
@@ -31,19 +30,19 @@ public:
   void Deactivate() { for (auto& r : rooms_) r->deactivate(); }
   void Activate() { for (auto& r : rooms_) r->activate(); }
   VRoomsRef GetRooms() const { return rooms_; }
-  void DrawMap(int);
+  void Redraw(int);
 
 protected:
   void DrawRooms(int);
-  void DrawLines(int) { }
+  void DrawLines(int);
   void ClearRooms();
   void ClearLines() { }
   void ResizeGroup(int);
   void SetCallbacks();
   
 private:
-  // void draw() override;
   VRooms        rooms_;
+  MapPathes*    pathes_;
   CallbackFunc* callback_;
   CommandFunc*  command_;
 };

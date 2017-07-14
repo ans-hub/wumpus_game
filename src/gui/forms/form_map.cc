@@ -10,6 +10,7 @@ namespace wumpus_game {
 FormMap::FormMap ()
   : Fl_Group(1, 1, 1, 1, "")
   , rooms_{}
+  , pathes_{nullptr}
 {
   form_helpers::tune_form(this);
 } 
@@ -22,27 +23,44 @@ FormMap::~FormMap()
   }
 }
 
-void FormMap::DrawMap(int level)
+void FormMap::Redraw(int level)
 {
+  // clear map where???
   ResizeGroup(level);
   ClearRooms();
   DrawLines(level);
   DrawRooms(level);
-  SetCallbacks();  
+  SetCallbacks();
 }
 
 // REALISATION DETAILS
 
+void FormMap::DrawLines(int level)
+{
+  int edge_len = 10;
+  pathes_ = new MapPathes(level, edge_len);
+  this->add(pathes_);
+  pathes_->position(120, 120);
+  this->end();
+}
+
 void FormMap::DrawRooms(int level)
 {
-  for (int i = 0; i < (level+3)*4; ++i) {
+  int btn_size = 30;
 
-    RoomButton* btn = new RoomButton(i, (i*30)+20, 120, 30, 30);
+  for (int i = 0; i < (level+3)*4; ++i) {
+    RoomButton* btn = new RoomButton(
+      i,
+      pathes_->x() + pathes_->GetVertexes()[i].x_ - btn_size / 2,
+      pathes_->y() + pathes_->GetVertexes()[i].y_ - btn_size / 2,
+      btn_size,
+      btn_size);
     this->add(btn);
     form_helpers::tune_button(btn);
     rooms_.push_back(btn);
   }
 }
+
 
 void FormMap::SetCallbacks()
 {
@@ -60,51 +78,11 @@ void FormMap::ClearRooms()
 
 void FormMap::ResizeGroup(int)
 {
+  // evaluate based on edge len
+  // and room btn too evaluated based on edge_len val
+  // may be GetSizesForLevel???
   this->resize(30, 80, 370, 335);
 }
-
-// void FormMap::draw()
-// {
-//   // data member - level
-//   struct Point{int x_; int y_; };
-//   std::vector<Point> v;
-
-//   int vx_total = 16;
-//   int start_ivx = vx_total/2;
-//   int ivx_total = vx_total/4;
-//   int ovx_total = vx_total/4;
-  
-//   int fedge_len = 5;
-//   int hedge_len = fedge_len/2;
-  
-//   int width = vx_total * fedge_len;
-//   int height = width;
-
-//   int center_pnt_x = width/2;
-//   int center_pnt_y = height/2;
-
-//   v.resize(vx_total);
-
-//   // Fill inner 
-
-//   int step = 2;
-//   int radius = width / 2;
-//   double angle_step = 360/ivx_total;
-//   double angle = 0;
-//   for (int i = start_ivx-1; i < vx_total; i += step) {
-//     Point p;
-//     p.x_ = cos(angle) * radius + center_pnt_x;
-//     p.y_ = sin(angle) * radius + center_pnt_y;
-//     v[i] = p;
-//     angle += angle_step;
-//   }
-
-//   // Draw inner
-
-//   // for (int i = start_ivx-1; i < ivx_total; i += step) {
-//     fl_line (v[7].x_, v[8].y_, v[9].x_, v[9].y_);
-//   // } 
-// }
 
 namespace form_helpers {
 

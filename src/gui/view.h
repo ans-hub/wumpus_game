@@ -6,6 +6,8 @@
 #ifndef GUI_VIEW_H
 #define GUI_VIEW_H
 
+#include <sstream>
+
 #include "../3rdparty/observer.h"
 #include "../events.h"
 #include "../logic.h"
@@ -41,8 +43,12 @@ namespace gui_helpers {
   void show_player_pos(Windows&, const Logic&);
   void clear_player_pos(Windows&);
   void mark_room_as_visited(Windows&, const Logic&);
-
-
+  void show_moved_bats(Windows&);
+  void show_havent_arrows(Windows&);
+  void show_feels(Windows&, const Logic&);
+  void show_game_over(Windows&, const Logic&);
+  void show_killed_one_wump(Windows&);
+  
 }  // namespace gui_helpers
 
 }  // namespace wumpus_game

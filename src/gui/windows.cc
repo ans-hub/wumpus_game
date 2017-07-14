@@ -34,8 +34,18 @@ void Windows::Close()
   main_wnd_->window_->hide();
 }
 
-void Windows::Redraw()
+void Windows::Redraw(int level)
 {
+  map_box_->Redraw(level);
+  main_wnd_->Redraw(1); 
+  
+  // int edge_len = 10;
+  // int w = ((level+3)*4) * edge_len * 2;
+  // int h = w + 200;
+  
+  // main_wnd_->window_->resize(1, 1, w, h);
+  // main_wnd_->window_->position((Fl::w() - main_wnd_->window_->w())/2, (Fl::h() - main_wnd_->window_->h())/2);
+
   main_wnd_->window_->redraw();
 }
 

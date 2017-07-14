@@ -1,3 +1,7 @@
+// Package: wumpus_game (v0.9)
+// Description: https://github.com/ans-hub/wumpus_game
+// Author: Anton Novoselov, 2017
+// File: FLTK widget represents interactive rooms on game the map
 
 #ifndef ROOM_BUTTON_H
 #define ROOM_BUTTON_H

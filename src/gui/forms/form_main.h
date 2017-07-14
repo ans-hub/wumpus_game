@@ -9,7 +9,6 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
-// #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Text_Display.H>
@@ -18,7 +17,7 @@
 
 #include <vector>
 
-#include "room_button.h"
+// #include "room_button.h"
 
 namespace wumpus_game {
 
@@ -30,9 +29,7 @@ public:
   FormMain();
   ~FormMain();
 
-  // RoomButtons       rooms_;
   Fl_Window*        window_;
-  Fl_PNG_Image*     img_level_;
   Fl_PNG_Image*     img_cover_;
   Fl_Box*           box_cover_;
   Fl_Box*           box_level_;
@@ -42,6 +39,9 @@ public:
   Fl_Button*        btn_quit_;
   Fl_Text_Buffer*   output_;
   Fl_Text_Display*  display_;
+
+  void Redraw(int);
+  
 private:
   void TuneAppearance();
 };

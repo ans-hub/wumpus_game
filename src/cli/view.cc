@@ -11,10 +11,6 @@ bool CliView::IncomingNotify(Event msg) const
 {
   switch(msg)
   {
-    // case Event::WINDOW :
-    //   model_.StartGame();
-    //   break;
-    
     case Event::NEW_LEVEL :
       cli_helpers::print_intro(ostream_, model_);
       break;
@@ -58,8 +54,7 @@ bool CliView::IncomingNotify(Event msg) const
     // case Event::ERROR_ROOM :
     //   cli_helpers::print_error_room(ostream_);
     //   break;
-
-    default: break;
+    case Event::WINDOW : default: break;
   }
   return true;
 }
@@ -122,8 +117,6 @@ void print_game_over(std::ostream& ostream, Logic::SubjectID person)
 
 void print_feels(std::ostream& ostream, const Logic& logic)
 {
-  using namespace wumpus_game;
-
   auto feels = logic.GetLevel().player_->Feels();
   for (auto const feel : feels) {
     switch(feel)
@@ -144,8 +137,6 @@ void print_feels(std::ostream& ostream, const Logic& logic)
 
 void print_neighbors(std::ostream& ostream, const Logic& model)
 {
-  using namespace wumpus_game;
-  
   auto current { model.GetLevel().player_->GetCurrRoomNum() };
   auto neighbor = helpers::get_neighboring_rooms
   (
