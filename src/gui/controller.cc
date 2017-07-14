@@ -38,7 +38,9 @@ void GuiController::StopModel()
 
 void GuiController::CommandStart()
 {
-  model_.NewLevel(4);
+  auto level = model_.CurrentLevel();
+  if (level == -1) level = 0; // 0 level is so small far traingle
+  model_.NewLevel(++level);
 }
 
 void GuiController::CommandAction(int room)

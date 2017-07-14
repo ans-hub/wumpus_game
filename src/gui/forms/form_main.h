@@ -6,6 +6,7 @@
 #ifndef FORM_MAIN_H
 #define FORM_MAIN_H
 
+#include <vector>
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
@@ -15,9 +16,7 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Window.H>
 
-#include <vector>
-
-// #include "room_button.h"
+#include "../helpers/draw_consts.h"
 
 namespace wumpus_game {
 

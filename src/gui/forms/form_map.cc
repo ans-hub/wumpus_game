@@ -25,7 +25,6 @@ FormMap::~FormMap()
 
 void FormMap::Redraw(int level)
 {
-  // clear map where???
   ResizeGroup(level);
   ClearRooms();
   DrawLines(level);
@@ -35,20 +34,25 @@ void FormMap::Redraw(int level)
 
 // REALISATION DETAILS
 
+// Make form map in form _main. It is more simple to change sizes whe nlevel is new
+
 void FormMap::DrawLines(int level)
 {
-  int edge_len = 10;
-  pathes_ = new MapPathes(level, edge_len);
+  // int edge_len = draw_consts::edge_len;
+  this->remove(pathes_);
+  pathes_ = new MapPathes(level);   // may be we set only x y w h and widget define by itself how to draw items???
   this->add(pathes_);
-  pathes_->position(120, 120);
+  pathes_->position(x(), y());   /// don`t forget to dothis
+  // pathes_->redraw();
   this->end();
 }
 
 void FormMap::DrawRooms(int level)
 {
-  int btn_size = 30;
-
-  for (int i = 0; i < (level+3)*4; ++i) {
+  int btn_size = draw_consts::room_btn_size;
+  int rooms = draw_consts::level_vertexes(level);
+  
+  for (int i = 0; i < rooms; ++i) {
     RoomButton* btn = new RoomButton(
       i,
       pathes_->x() + pathes_->GetVertexes()[i].x_ - btn_size / 2,
@@ -76,12 +80,13 @@ void FormMap::ClearRooms()
   rooms_.resize(0);
 }
 
-void FormMap::ResizeGroup(int)
+void FormMap::ResizeGroup(int level)
 {
   // evaluate based on edge len
   // and room btn too evaluated based on edge_len val
   // may be GetSizesForLevel???
-  this->resize(30, 80, 370, 335);
+  int w = draw_consts::level_width(level);
+  this->resize(30, 90, w, w);
 }
 
 namespace form_helpers {

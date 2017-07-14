@@ -10,8 +10,10 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Group.H>
 #include <FL/fl_draw.H>
+
 #include "../widgets/room_button.h"
 #include "../widgets/map_pathes.h"
+#include "../helpers/draw_consts.h"
 
 namespace wumpus_game {
 
@@ -36,7 +38,7 @@ protected:
   void DrawRooms(int);
   void DrawLines(int);
   void ClearRooms();
-  void ClearLines() { }
+  void ClearLines() { delete pathes_; }
   void ResizeGroup(int);
   void SetCallbacks();
   

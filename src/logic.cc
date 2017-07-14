@@ -49,6 +49,11 @@ void Logic::Turn(int action, int room)
   if (!game_over_cause_) {
     NotifyObservers(Event::READY_TO_INPUT);
   }
+  else {
+    if (game_over_cause_ != Subject::PLAYER) {
+      curr_level_ = -1;
+    }
+  }
 }
 
 void Logic::PlayerTurn(int action, int room)

@@ -17,7 +17,7 @@ FLTKFLAGS = `fltk-config --ldflags` -lfltk_images -lpng16 -lz
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
 cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
-windows.o form_main.o form_map.o map_pathes.o
+windows.o form_main.o form_map.o map_pathes.o draw_consts.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
@@ -63,6 +63,9 @@ form_map.o : $(GUI)forms/form_map.h $(GUI)forms/form_map.cc $(GUI)widgets/room_b
 
 map_pathes.o : $(GUI)widgets/map_pathes.h $(GUI)widgets/map_pathes.cc
 	$(CC) $(CFLAGS) -c $(GUI)widgets/map_pathes.cc
+
+draw_consts.o : $(GUI)helpers/draw_consts.h $(GUI)helpers/draw_consts.cc
+	$(CC) $(CFLAGS) -c $(GUI)helpers/draw_consts.cc
 
 gui_view.o : $(GUI)view.h $(GUI)view.cc $(SRC)3rdparty/observer.h logic.o $(SRC)events.h $(GUI)windows.h
 	$(CC) $(CFLAGS) -c $(GUI)view.cc -o gui_view.o 

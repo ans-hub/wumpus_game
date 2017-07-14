@@ -42,7 +42,8 @@ public:
   void Turn(int, int);
   bool GameOver() const { return (game_over_cause_ != Subject::UNKNOWN); }
   Subject::ID GameOverCause() const { return game_over_cause_; }
-  int CurrentLevel() const { return GameOver() ? -1 : curr_level_; }
+  // int CurrentLevel() const { return GameOver() ? -1 : curr_level_; }
+  int CurrentLevel() const { return curr_level_; }
   const Request& CurrentRequest() const { return curr_request_; }
   const Level& GetLevel() const { return level_; }
 protected:

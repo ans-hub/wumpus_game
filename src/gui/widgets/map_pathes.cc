@@ -7,15 +7,17 @@
 
 namespace wumpus_game {
 
-MapPathes::MapPathes(int level, double edge_length)
+MapPathes::MapPathes(int level)
   : Fl_Widget(1, 1, 1, 1, "")
-  , vxs_count_{(level+3)*4}
-  , edge_length_{edge_length}
+  , vxs_count_{draw_consts::level_vertexes(level)}
   , total_vxs_(vxs_count_)
   , inner_vxs_{}
   , middle_vxs_{}
   , outer_vxs_{}
 {
+  int w = draw_consts::level_width(level);
+  int h = w;
+  this->resize(1, 1, h, w);
   FillAllVertexes();
 }
 
@@ -23,15 +25,15 @@ void MapPathes::FillAllVertexes()
 {
   // Prepare
 
-  double width = vxs_count_ * edge_length_;
-  double height = width;
+  double width = w();
+  double height = h();
   double x0 = width/2;
   double y0 = height/2;
 
   // Get points of inner polygon 
 
   double ivxs_count_ = vxs_count_/4;
-  double irad = width / 4;
+  double irad = width / 6;
   double istart_angle = 90;
 
   inner_vxs_ = draw_helpers::get_poly_vertexes(
@@ -51,7 +53,7 @@ void MapPathes::FillAllVertexes()
   // Get points of outer polygon
 
   double ovxs_count_ = vxs_count_/4;
-  double orad = (width / 4) + (2 * (width / 3));
+  double orad = width / 2;
   double ostart_angle = 90 + (360 / ovxs_count_ / 2);
 
   outer_vxs_ = draw_helpers::get_poly_vertexes(
@@ -104,8 +106,8 @@ PointVec get_poly_vertexes(
   for (double i = 0; i < edges; ++i) {
     if (angle > 360) angle = angle - 360;
     Point p;
-    p.x_ = cos(angle*pi()/180) * rad + x0;
-    p.y_ = sin(angle*pi()/180) * rad + y0;
+    p.x_ = cos(angle * draw_consts::pi() / 180) * rad + x0;
+    p.y_ = sin(angle * draw_consts::pi() / 180) * rad + y0;
     res[i] = p;
     angle += angle_step;
   }
@@ -139,6 +141,8 @@ void draw_points(const PointVec& v, MapPathes*, int)
 
 void draw_poly(const PointVec& v, MapPathes* surface)
 {
+  // fl_color(FL_BLUE);
+  // fl_rect(0, 0, 100, 100);
   fl_color(FL_WHITE);    
   fl_line_style(1,5);
 
@@ -152,6 +156,10 @@ void draw_poly(const PointVec& v, MapPathes* surface)
       surface->x()+p1.x_, surface->y()+p1.y_,
       surface->x()+p2.x_, surface->y()+p2.y_
     );
+    // fl_line(
+    //   p1.x_, p1.y_,
+    //   p2.x_, p2.y_
+    // );
   }
   fl_line_style(0,1);
 }
