@@ -56,10 +56,12 @@ void FormMain::Redraw(int level)
   btn_quit_->resize(297, window_->h()-40, 105, 25);
 
   window_->redraw();
+  // redraw();
 }
 
 void FormMain::TuneAppearance()
 {
+  window_->set_modal();
   window_->color((Fl_Color)34);
   box_cover_->image(img_cover_);
   box_cover_->align(Fl_Align(192));

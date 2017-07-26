@@ -12,15 +12,13 @@ GuiController::GuiController(Windows& gui, Logic& model)
   , gui_{gui}
   , model_{model}
 {
-  gui_.map_box_->SetCallback((void*)gui_helpers::cb_rooms_button);
-  gui_.map_box_->SetCommand((void*)this);
+  gui_.wdg_map_->SetCallback((void*)gui_helpers::cb_rooms_button);
+  gui_.wdg_map_->SetCommand((void*)this);
  
-  auto* wnd = gui_.main_wnd_;
-  
-  wnd->btn_start_->callback(
+  gui_.wnd_start_->btn_start_->callback(
     (Fl_Callback*)(gui_helpers::cb_start_button), (void*)this
   );
-  wnd->btn_quit_->callback(
+  gui_.wnd_start_->btn_quit_->callback(
     (Fl_Callback*)(gui_helpers::cb_quit_button), (void*)this    
   );
 }
@@ -38,7 +36,7 @@ void GuiController::StopModel()
 
 void GuiController::CommandStart()
 {
-  auto level = model_.CurrentLevel();
+  int level = model_.CurrentLevel();
   if (level == -1) level = 0; // 0 level is so small far traingle
   model_.NewLevel(++level);
 }

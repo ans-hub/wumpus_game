@@ -104,6 +104,7 @@ void tune_button(RoomButton* b)
   b->labelcolor((Fl_Color)94);
 }
 
+
 }  // namespace form_helpers
 
 }  // namespace wumpus_game

@@ -27,7 +27,10 @@ public:
   
   FormMain();
   ~FormMain();
-
+  void Show() const { window_->show(); }
+  void Hide() const { window_->hide(); }
+  void Redraw(int);
+  
   Fl_Window*        window_;
   Fl_PNG_Image*     img_cover_;
   Fl_Box*           box_cover_;
@@ -39,11 +42,16 @@ public:
   Fl_Text_Buffer*   output_;
   Fl_Text_Display*  display_;
 
-  void Redraw(int);
   
 private:
   void TuneAppearance();
 };
+
+namespace gui_helpers {
+
+  void cb_close_window(void*, void* w);
+
+}
 
 }  // namespace wumpus_game
 

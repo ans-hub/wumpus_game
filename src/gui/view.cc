@@ -79,46 +79,47 @@ void show_intro(Windows& gui, const Logic& logic)
       << "the " << level.bats_.size() << " Bats "
       << "and the " << level.pits_.size() << " Bottomless pits\n";
 
-  auto& out = gui.main_wnd_->output_;
+  auto& out = gui.wnd_main_->output_;
   out->text("");
   out->append(sst.str().c_str());
 }
 
 void disable_buttons(Windows& gui)
 {
-  auto* wnd = gui.main_wnd_;
+  auto* wnd = gui.wnd_main_;
   wnd->btn_start_->deactivate();
 }
 
 void show_level(Windows& gui, const Logic& model)
 {
   int level = model.CurrentLevel();
+  gui.ShowMain();
   gui.Redraw(level);
-  gui.map_box_->Activate();
+  gui.wdg_map_->Activate();
 }
 
 void hide_level(Windows& gui)
 {
-  gui.map_box_->Deactivate();
+  gui.wdg_map_->Deactivate();
 }
 
 void enable_buttons(Windows& gui)
 {
-  auto* wnd = gui.main_wnd_;
+  auto* wnd = gui.wnd_main_;
   wnd->btn_start_->activate();
 }
 
 void unshown_last_action(Windows& gui, const Logic& model)
 {
   int room = model.CurrentRequest().room_;
-  auto* btn = gui.map_box_->GetRooms()[room];
+  auto* btn = gui.wdg_map_->GetRooms()[room];
   if (!btn->visited_) btn->value(0);
   // gui.Redraw();
 }
 
 void show_error_room(Windows& gui)
 {
-  gui.main_wnd_->output_->insert(
+  gui.wnd_main_->output_->insert(
     0, "ERROR: You choose not neighboring room, please repeat\n"
   );
 }
@@ -126,40 +127,40 @@ void show_error_room(Windows& gui)
 void show_player_pos(Windows& gui, const Logic& model)
 {
   int room = model.GetLevel().player_->GetCurrRoomNum();
-  gui.map_box_->GetRooms()[room]->label("Y");
-  gui.map_box_->GetRooms()[room]->value(1);
+  gui.wdg_map_->GetRooms()[room]->label("Y");
+  gui.wdg_map_->GetRooms()[room]->value(1);
 }
 
 void clear_player_pos(Windows& gui)
 {
-  auto& rooms = gui.map_box_->GetRooms();
+  auto& rooms = gui.wdg_map_->GetRooms();
   for (auto& v : rooms) v->label("");
 }
 
 void mark_room_as_visited(Windows& gui, const Logic& model)
 {
   int room = model.CurrentRequest().room_;
-  auto* btn = gui.map_box_->GetRooms()[room];
+  auto* btn = gui.wdg_map_->GetRooms()[room];
   btn->visited_ = true;
 }
 
 void show_moved_bats(Windows& gui)
 {
-  gui.main_wnd_->output_->insert(
+  gui.wnd_main_->output_->insert(
     0, "You have been moved by the Bats to another room\n"
   );
 }
 
 void show_havent_arrows(Windows& gui)
 {
-  gui.main_wnd_->output_->insert(
+  gui.wnd_main_->output_->insert(
     0, "ERROR: You have not enought arrays to shot\n"
   );
 }
 
 void show_feels(Windows& gui, const Logic& logic)
 {
-  auto& out = gui.main_wnd_->output_;
+  auto& out = gui.wnd_main_->output_;
   auto feels = logic.GetLevel().player_->Feels();
   
   for (auto const feel : feels) {
@@ -187,7 +188,7 @@ void show_feels(Windows& gui, const Logic& logic)
 
 void show_game_over(Windows& gui, const Logic& logic)
 {
-  auto& out = gui.main_wnd_->output_;
+  auto& out = gui.wnd_main_->output_;
 
   switch (logic.GameOverCause()) {
     case Logic::SubjectID::PLAYER :
@@ -208,7 +209,7 @@ void show_game_over(Windows& gui, const Logic& logic)
 
 void show_killed_one_wump(Windows& gui)
 {
-  auto& out = gui.main_wnd_->output_;
+  auto& out = gui.wnd_main_->output_;
   out->insert(0, "INFO: You killed one wumpus\n");
 }
 

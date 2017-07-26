@@ -8,47 +8,73 @@
 namespace wumpus_game {
 
 Windows::Windows() 
-  : main_wnd_{ new FormMain() }
-  , popup_wnd_{ new FormPopup() }
-  , map_box_ { new FormMap() }
+  : wnd_start_ { new FormStart() }
+  , wnd_help_ { new FormHelp() }
+  , wnd_main_{ new FormMain() }
+  , wnd_popup_{ new FormPopup() }
+  , wdg_map_ { new FormMap() }
 {
-  AddWidget(map_box_);
+  wnd_main_->window_->add(wdg_map_);
+   
+  wnd_start_->btn_help_->callback(
+    (Fl_Callback*)(gui_helpers::cb_help_button), (void*)this
+  );
+  wnd_help_->btn_quit_help_->callback(
+    (Fl_Callback*)(gui_helpers::cb_quit_help_button), (void*)this
+  );
+  wnd_main_->window_->callback(
+    (Fl_Callback*)(gui_helpers::cb_close_wnd_main_), (void*)this    
+  );
+  wnd_main_->btn_help_->callback(
+    (Fl_Callback*)(gui_helpers::cb_help_button), (void*)this
+  );
 }
 
 Windows::~Windows()
 {
-  RemoveWidget(map_box_);
-  delete main_wnd_;
-  delete popup_wnd_;
-  delete map_box_;
+  wnd_main_->window_->remove(wdg_map_); // to prevent segmentation fault
+  delete wnd_start_;
+  delete wnd_help_;
+  delete wnd_main_;
+  delete wnd_popup_;
+  delete wdg_map_;
 }
 
 void Windows::Show()
 {
-  main_wnd_->window_->show();
+  wnd_start_->window_->show();
   Fl::run();
 }
 
 void Windows::Close()
 {
-  main_wnd_->window_->hide();
+  wnd_start_->window_->hide();
+}
+
+void Windows::ShowMain() const
+{
+  wnd_main_->Show();
+} 
+
+void Windows::HideMain() const
+{
+  wnd_main_->Hide();
+}
+
+void Windows::ShowHelp() const
+{
+  wnd_help_->Show();
+}
+
+void Windows::HideHelp() const
+{
+  wnd_help_->Hide();
 }
 
 void Windows::Redraw(int level)
 {
-  main_wnd_->Redraw(level); 
-  map_box_->Redraw(level);
-  main_wnd_->window_->redraw();
-}
-
-void Windows::AddWidget(Fl_Widget* w)
-{
-  main_wnd_->window_->add(w);
-}
-
-void Windows::RemoveWidget(Fl_Widget* w)
-{
-  main_wnd_->window_->remove(w);
+  wnd_main_->Redraw(level); 
+  wdg_map_->Redraw(level);
 }
 
 void Windows::ShowWidget(Fl_Widget* w)
@@ -60,5 +86,33 @@ void Windows::HideWidget(Fl_Widget* w)
 {
   w->hide();
 }
+
+namespace gui_helpers {
+
+void cb_help_button(void*, void* w)
+{
+  ((Windows*)w)->ShowHelp();
+}
+
+void cb_quit_help_button(void*, void* w)
+{
+  ((Windows*)w)->HideHelp();
+}
+
+void cb_close_wnd_main_(void*, void* w)
+{
+  fl_message_hotspot(0);
+  auto result = fl_choice(
+    "Are you want to stop game?", 
+    "Yes",  // 0
+    "No",   // 1
+    0
+  );
+  if (result == 0) {
+    ((Windows*)w)->HideMain();
+  }
+}
+
+}  // namespace gui_helpers
 
 }  // namespace wumpus_game

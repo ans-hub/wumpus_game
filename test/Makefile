@@ -8,7 +8,7 @@ GUI = $(SRC)gui/
 AI = $(SRC)ai/
 
 CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
-FLTKFLAGS = `fltk-config --ldflags` -lfltk_images -lpng16 -lz
+FLTKFLAGS = `fltk-config --use-images --ldflags`
 
 # note - if library is libpng16.so, just type lpng16 and so on
 # a - static lib
@@ -17,7 +17,7 @@ FLTKFLAGS = `fltk-config --ldflags` -lfltk_images -lpng16 -lz
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
 cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
-windows.o form_main.o form_map.o map_pathes.o draw_consts.o
+windows.o form_start.o form_help.o form_main.o form_map.o map_pathes.o draw_consts.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
@@ -54,6 +54,12 @@ logic.o : $(SRC)logic.h $(SRC)logic.cc level.o $(SRC)events.h $(SRC)3rdparty/obs
 
 windows.o : $(GUI)windows.h $(GUI)windows.cc $(GUI)forms/form_main.h $(GUI)forms/form_popup.h
 	$(CC) $(CFLAGS) -c $(GUI)windows.cc
+
+form_start.o : $(GUI)forms/form_start.h $(GUI)forms/form_start.cc
+	$(CC) $(CFLAGS) -c $(GUI)forms/form_start.cc
+
+form_help.o : $(GUI)forms/form_help.h $(GUI)forms/form_help.cc
+	$(CC) $(CFLAGS) -c $(GUI)forms/form_help.cc
 
 form_main.o : $(GUI)forms/form_main.h $(GUI)forms/form_main.cc
 	$(CC) $(CFLAGS) -c $(GUI)forms/form_main.cc

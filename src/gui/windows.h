@@ -6,6 +6,10 @@
 #ifndef GUI_WINDOWS_H
 #define GUI_WINDOWS_H
 
+#include "FL/fl_ask.H"
+
+#include "forms/form_start.h"
+#include "forms/form_help.h"
 #include "forms/form_main.h"
 #include "forms/form_popup.h"
 #include "forms/form_map.h"
@@ -19,15 +23,27 @@ struct Windows
   void Show();
   void Close();
   void Redraw(int);
-  void AddWidget(Fl_Widget*);
-  void RemoveWidget(Fl_Widget*); 
+  void ShowMain() const;
+  void HideMain() const;
+  void ShowHelp() const;
+  void HideHelp() const;
   void ShowWidget(Fl_Widget*);
   void HideWidget(Fl_Widget*); 
   
-  FormMain*   main_wnd_;
-  FormPopup*  popup_wnd_;
-  FormMap*    map_box_;
+  FormStart*  wnd_start_;
+  FormHelp*   wnd_help_;
+  FormMain*   wnd_main_;
+  FormPopup*  wnd_popup_;
+  FormMap*    wdg_map_;
 };
+
+namespace gui_helpers {
+
+  void cb_help_button(void*, void* w);
+  void cb_quit_help_button(void*, void* w);
+  void cb_close_wnd_main_(void*, void* w);
+
+}  // namespace gui_helpers
 
 }  // namespace wumpus_game
 
