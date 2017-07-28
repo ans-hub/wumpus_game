@@ -14,9 +14,9 @@ FormMain::FormMain ()
 , box_cover_{new Fl_Box(-5, 0, 435, 625)}
 , box_level_{new Fl_Box(2, 54, 425, 390)}
 , box_label_{new Fl_Box(30, 20, 370, 45, "HUNT THE WUMPUS")}
-, btn_start_{new Fl_Button(27, 655, 105, 25, "Start new")}
+// , btn_restart_{new Fl_Button(27, 655, 105, 25, "Restart")}
+, btn_continue_{new Fl_Button(297, 655, 105, 25, "Next")}
 , btn_help_{new Fl_Button(165, 655, 105, 25, "Help")}
-, btn_quit_{new Fl_Button(297, 655, 105, 25, "Quit")}
 {
   TuneAppearance();
   end();
@@ -24,9 +24,9 @@ FormMain::FormMain ()
 
 FormMain::~FormMain()
 {
-  delete btn_quit_;
   delete btn_help_;
-  delete btn_start_;
+  delete btn_continue_;
+  // delete btn_restart_;
   delete box_label_;
   delete box_level_;
   delete box_cover_;
@@ -43,10 +43,10 @@ void FormMain::Redraw(int level)
   position((Fl::w() - this->w())/2, (Fl::h() - this->h())/2);
   box_cover_->resize(-5, 0, this->w(), this->h());
   box_level_->resize(2, 54, this->w(), this->h()/2);
-  box_label_->resize(30, 20, this->w()-60 , 45);
-  btn_start_->resize(27, this->h()-40, 105, 25);
-  btn_help_->resize(165, this->h()-40, 105, 25);
-  btn_quit_->resize(297, this->h()-40, 105, 25);
+  box_label_->resize(30, 20, this->w()-60, 45);
+  // btn_restart_->resize(this->w()-50-270, this->h()-40, 90, 25);
+  btn_help_->resize(this->w()-40-180, this->h()-40, 90, 25);
+  btn_continue_->resize(this->w()-30-90, this->h()-40, 90, 25);
 
   redraw();
 }

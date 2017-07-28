@@ -65,12 +65,12 @@ namespace gui_helpers {
 
 void enable_buttons(Windows& gui)
 {
-  gui.wnd_main_->btn_start_->activate();
+  gui.wnd_main_->btn_continue_->activate();
 }
 
 void disable_buttons(Windows& gui)
 {
-  gui.wnd_main_->btn_start_->deactivate();
+  gui.wnd_main_->btn_continue_->deactivate();
 }
 
 void show_level(Windows& gui, const Logic& model)
@@ -116,11 +116,11 @@ void show_moved_bats(Windows& gui, const Logic& model)
   gui.wnd_main_->redraw();
 }
 
-void show_havent_arrows(Windows& gui)
+void show_havent_arrows(Windows& )
 {
-  gui.wnd_main_->output_->insert(
-    0, "ERROR: You have not enought arrays to shot\n"
-  );
+  // gui.wnd_main_->output_->insert(
+  //   0, "ERROR: You have not enought arrays to shot\n"
+  // );
 }
 
 void show_feels(Windows& gui, const Logic& model)
@@ -147,7 +147,7 @@ void show_feels(Windows& gui, const Logic& model)
     } 
   }
   gui.wdg_map_->GetPlayer()->DoesFeels(wumps, bats, pits);
-  gui.wnd_main_->redraw();   
+  gui.wnd_main_->redraw();
 }
 
 void show_game_over(Windows& gui, const Logic& logic)
@@ -155,17 +155,17 @@ void show_game_over(Windows& gui, const Logic& logic)
   switch (logic.GameOverCause()) {
     case Logic::SubjectID::PLAYER :
       gui.wdg_map_->GetPlayer()->DoesKillWump();
+      gui.wnd_main_->btn_continue_->label("Next");
       gui.wnd_main_->redraw();
-      // show win message, unlock buttons for next level
       break;
     case Logic::SubjectID::WUMP :
       gui.wdg_map_->GetPlayer()->DoesKilledByWump();
+      gui.wnd_main_->btn_continue_->label("Retry");      
       gui.wnd_main_->redraw();
-      // show loose message, unlock buttons for restart level
       break;
     case Logic::SubjectID::PIT :
-      // show loose message, unlock buttons for restart level
       gui.wdg_map_->GetPlayer()->DoesKilledByPits();
+      gui.wnd_main_->btn_continue_->label("Retry");            
       gui.wnd_main_->redraw();
       break;
     case Logic::SubjectID::UNKNOWN :
@@ -176,10 +176,10 @@ void show_game_over(Windows& gui, const Logic& logic)
   gui.wnd_main_->redraw();     
 }
 
-void show_killed_one_wump(Windows& gui)
+void show_killed_one_wump(Windows&)
 {
-  auto& out = gui.wnd_main_->output_;
-  out->insert(0, "INFO: You killed one wumpus\n");
+  // auto& out = gui.wnd_main_->output_;
+  // out->insert(0, "INFO: You killed one wumpus\n");
 }
 
 }  // namespace gui_helpers

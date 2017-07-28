@@ -35,9 +35,8 @@ public:
   Fl_Box*           box_cover_;
   Fl_Box*           box_level_;
   Fl_Box*           box_label_;
-  Fl_Button*        btn_start_;
+  Fl_Button*        btn_continue_;
   Fl_Button*        btn_help_;
-  Fl_Button*        btn_quit_;
 
 private:
   void TuneAppearance();

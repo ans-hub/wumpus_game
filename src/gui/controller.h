@@ -23,6 +23,7 @@ public:
   bool RunModel() override;
   void StopModel();
   void CommandStart();
+  void CommandContinue();
   void CommandAction(int);
 private:
   Windows& gui_;
@@ -34,6 +35,7 @@ namespace gui_helpers {
   void cb_start_button(void*, void*);
   void cb_quit_button(void*, void*);
   void cb_rooms_button(void*, void*);
+  void cb_continue_button(void*, void*);
 
 }  // namespace gui_helpers
 

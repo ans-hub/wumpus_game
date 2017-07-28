@@ -38,7 +38,8 @@ public:
   Logic();
   Logic(const Logic&) =delete;
 
-  void NewLevel(unsigned int);
+  void NewLevel();
+  void NewLevel(unsigned int num);
   void Turn(int, int);
   bool GameOver() const { return (game_over_cause_ != Subject::UNKNOWN); }
   Subject::ID GameOverCause() const { return game_over_cause_; }

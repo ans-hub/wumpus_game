@@ -19,7 +19,10 @@ GuiController::GuiController(Windows& gui, Logic& model)
     (Fl_Callback*)(gui_helpers::cb_start_button), (void*)this
   );
   gui_.wnd_start_->btn_quit_->callback(
-    (Fl_Callback*)(gui_helpers::cb_quit_button), (void*)this    
+    (Fl_Callback*)(gui_helpers::cb_quit_button), (void*)this
+  );
+  gui_.wnd_main_->btn_continue_->callback(
+    (Fl_Callback*)(gui_helpers::cb_continue_button), (void*)this
   );
 }
 
@@ -36,9 +39,12 @@ void GuiController::StopModel()
 
 void GuiController::CommandStart()
 {
-  int level = model_.CurrentLevel();
-  if (level == -1) level = 0; // 0 level is so small far traingle
-  model_.NewLevel(++level);
+  model_.NewLevel(1);
+}
+
+void GuiController::CommandContinue()
+{
+  model_.NewLevel();
 }
 
 void GuiController::CommandAction(int room)
@@ -57,6 +63,11 @@ namespace gui_helpers {
 void cb_start_button(void*, void* c)
 {
   ((GuiController*)c)->CommandStart();
+}
+
+void cb_continue_button(void*, void* c)
+{
+  ((GuiController*)c)->CommandContinue();
 }
 
 void cb_quit_button(void*, void* c)

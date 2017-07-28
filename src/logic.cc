@@ -11,15 +11,22 @@ Logic::Logic()
   : level_(5,5,1,1,1) // make def ctor in level which is level 1
   , player_turn_{true}
   , game_over_cause_{Subject::EMPTY}
-  , curr_level_{-1}
+  , curr_level_{1}
   , curr_request_{ }
 {
 
 }
 
+void Logic::NewLevel()
+{
+  NewLevel(curr_level_);
+}
+
 void Logic::NewLevel(unsigned int num)  // move level build logic in another class?? or file hel,pers?
 {
-  int base = static_cast<int>(num); // simulate assert
+  curr_level_ = num;
+
+  int base = static_cast<int>(curr_level_); // simulate assert
   int size = base + 3;
   int arrows = size;
   int wump = size*4/12;     // 
@@ -28,7 +35,6 @@ void Logic::NewLevel(unsigned int num)  // move level build logic in another cla
   level_ = Level(size, arrows, wump, bat, pit);
   game_over_cause_ = Subject::UNKNOWN;
   player_turn_ = true;
-  curr_level_ = num;
   curr_request_.Clear();
   NotifyObservers(Event::NEW_LEVEL);
   NotifyObservers(Event::READY_TO_INPUT);
@@ -50,8 +56,8 @@ void Logic::Turn(int action, int room)
     NotifyObservers(Event::READY_TO_INPUT);
   }
   else {
-    if (game_over_cause_ != Subject::PLAYER) {
-      curr_level_ = -1;
+    if (game_over_cause_ == Subject::PLAYER) {
+      ++curr_level_;
     }
   }
 }

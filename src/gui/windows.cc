@@ -39,7 +39,7 @@ void Windows::SetChildrenCallbacks()
     (Fl_Callback*)(gui_helpers::cb_quit_help_button), (void*)this
   );
   wnd_main_->callback(
-    (Fl_Callback*)(gui_helpers::cb_close_wnd_main_), (void*)this    
+    (Fl_Callback*)(gui_helpers::cb_close_wnd_main_), (void*)this
   );
   wnd_main_->btn_help_->callback(
     (Fl_Callback*)(gui_helpers::cb_help_button), (void*)this

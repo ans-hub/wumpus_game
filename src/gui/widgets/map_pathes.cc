@@ -143,8 +143,6 @@ void draw_points(const PointVec& v, MapPathes*, int)
 
 void draw_poly(const PointVec& v, MapPathes* surface)
 {
-  // fl_color(FL_BLUE);
-  // fl_rect(0, 0, 100, 100);
   fl_color(FL_WHITE);    
   fl_line_style(1,5);
 
@@ -158,10 +156,6 @@ void draw_poly(const PointVec& v, MapPathes* surface)
       surface->x()+p1.x_, surface->y()+p1.y_,
       surface->x()+p2.x_, surface->y()+p2.y_
     );
-    // fl_line(
-    //   p1.x_, p1.y_,
-    //   p2.x_, p2.y_
-    // );
   }
   fl_line_style(0,1);
 }
