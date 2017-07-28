@@ -12,6 +12,7 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_PNG_Image.H>
+#include <FL/Fl_Tiled_Image.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Window.H>
@@ -23,26 +24,20 @@ namespace wumpus_game {
 class FormMain : public Fl_Window 
 {
 public:
-  // typedef std::vector<RoomButton*> RoomButtons;
-  
   FormMain();
   ~FormMain();
   void Show() { show(); }
-  // void Show() const { window_->show(); }
   void Hide() { hide(); }
-  // void Hide() const { window_->hide(); }
   void Redraw(int);
   
-  // Fl_Window*        window_;
   Fl_PNG_Image*     img_cover_;
+  Fl_Tiled_Image*   img_bg_;
   Fl_Box*           box_cover_;
   Fl_Box*           box_level_;
   Fl_Box*           box_label_;
   Fl_Button*        btn_start_;
   Fl_Button*        btn_help_;
   Fl_Button*        btn_quit_;
-  Fl_Text_Buffer*   output_;
-  Fl_Text_Display*  display_;
 
 private:
   void TuneAppearance();

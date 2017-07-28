@@ -88,7 +88,7 @@ void hide_level(Windows& gui)
 
 void show_error_room(Windows& gui)
 {
-  gui.wdg_map_->GetPlayer()->UnknownAction();
+  gui.wdg_map_->GetPlayer()->DoesUnknownAction();
   gui.wnd_main_->redraw();   
 }
 
@@ -97,13 +97,13 @@ void show_player_movement(Windows& gui, const Logic& model)
   int room = model.GetLevel().player_->GetCurrRoomNum();
   int x = gui.wdg_map_->GetRoomCoordX(room);
   int y = gui.wdg_map_->GetRoomCoordY(room);
-  gui.wdg_map_->GetPlayer()->Move(x,y);
+  gui.wdg_map_->GetPlayer()->DoesMove(x,y);
   gui.wnd_main_->redraw();
 }
 
 void show_player_shot(Windows& gui)
 {
-  gui.wdg_map_->GetPlayer()->Shot();
+  gui.wdg_map_->GetPlayer()->DoesShot();
   gui.wnd_main_->redraw();   
 }
 
@@ -146,29 +146,34 @@ void show_feels(Windows& gui, const Logic& model)
       default : break;
     } 
   }
-  gui.wdg_map_->GetPlayer()->ShowFeels(wumps, bats, pits);
+  gui.wdg_map_->GetPlayer()->DoesFeels(wumps, bats, pits);
   gui.wnd_main_->redraw();   
 }
 
 void show_game_over(Windows& gui, const Logic& logic)
 {
-  auto& out = gui.wnd_main_->output_;
-
   switch (logic.GameOverCause()) {
     case Logic::SubjectID::PLAYER :
-      out->insert(0,"***You have killed the Wumpus!***\n");
+      gui.wdg_map_->GetPlayer()->DoesKillWump();
+      gui.wnd_main_->redraw();
+      // show win message, unlock buttons for next level
       break;
-    case Logic::SubjectID::WUMP    :
-      out->insert(0, "***You have been killed by Wumpus***\n");
+    case Logic::SubjectID::WUMP :
+      gui.wdg_map_->GetPlayer()->DoesKilledByWump();
+      gui.wnd_main_->redraw();
+      // show loose message, unlock buttons for restart level
       break;
     case Logic::SubjectID::PIT :
-      out->insert(0, "***The bottomless pit is your perpetual retreat***\n");
+      // show loose message, unlock buttons for restart level
+      gui.wdg_map_->GetPlayer()->DoesKilledByPits();
+      gui.wnd_main_->redraw();
       break;
     case Logic::SubjectID::UNKNOWN :
     default:
-      out->insert(0, "***See you later!***\n");
+      gui.wnd_main_->hide();
       break;
   }
+  gui.wnd_main_->redraw();     
 }
 
 void show_killed_one_wump(Windows& gui)
@@ -176,7 +181,6 @@ void show_killed_one_wump(Windows& gui)
   auto& out = gui.wnd_main_->output_;
   out->insert(0, "INFO: You killed one wumpus\n");
 }
-
 
 }  // namespace gui_helpers
 

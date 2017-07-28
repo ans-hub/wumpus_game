@@ -8,7 +8,8 @@
 namespace wumpus_game {
 
 PlayerWidget::PlayerWidget()
-  : Fl_Group(1, 1, 70, 80)
+  : Fl_Group(0, 0, 70, 80)
+  // background don`t forget!!!
   , grp_player_{(new Fl_Group(10, 30, 50, 50))}
   , grp_feels_{(new Fl_Group(5, 0, 60, 30))}
   , box_wumps_{(new Fl_Box(0, 1, 15, 15))}
@@ -16,7 +17,8 @@ PlayerWidget::PlayerWidget()
   , box_pits_{(new Fl_Box(30, 1, 15, 15))}
   , img_stay_{(new Fl_PNG_Image("../src/gui/widgets/img/player_stay.png"))}
   , img_shot_{(new Fl_PNG_Image("../src/gui/widgets/img/player_shot.png"))}
-  , img_bats_{(new Fl_PNG_Image("../src/gui/widgets/img/player_bats.png"))}
+  , img_bats_{(new Fl_PNG_Image("../src/gui/widgets/img/player_bats.png"))}  
+  , img_kill_wump_{(new Fl_PNG_Image("../src/gui/widgets/img/player_kill_w.png"))}
   , img_unknown_{(new Fl_PNG_Image("../src/gui/widgets/img/unknown_action.png"))}
   , img_dead_wump_{(new Fl_PNG_Image("../src/gui/widgets/img/player_dead_w.png"))}
   , img_dead_pits_{(new Fl_PNG_Image("../src/gui/widgets/img/player_dead_p.png"))}
@@ -26,25 +28,7 @@ PlayerWidget::PlayerWidget()
   , img_feels_wumps_{(new Fl_PNG_Image("../src/gui/widgets/img/feels_wumps.png"))}
   , trajectory_{}
 {
-  begin();
-  box(FL_BORDER_BOX);
-  resizable(0);
-  grp_player_->box(FL_BORDER_BOX);
-  grp_player_->align(Fl_Align(513));
-  grp_feels_->box(FL_BORDER_BOX);
-  grp_feels_->align(Fl_Align(513));
-  grp_player_->image(img_stay_);
-  box_wumps_->image(img_feels_wumps_);
-  box_bats_->image(img_feels_bats_);
-  box_pits_->image(img_feels_pits_);
-  grp_feels_->image(img_feels_box_);
-  grp_feels_->add(box_wumps_);
-  grp_feels_->add(box_bats_);
-  grp_feels_->add(box_pits_);
-  grp_feels_->end();
-  add(grp_player_);
-  add(grp_feels_);
-  end();
+  TuneAppearance();
 }
 
 PlayerWidget::~PlayerWidget()
@@ -52,6 +36,7 @@ PlayerWidget::~PlayerWidget()
   delete img_stay_;
   delete img_shot_;
   delete img_bats_;
+  delete img_kill_wump_;
   delete img_unknown_;
   delete img_dead_wump_;
   delete img_dead_pits_;
@@ -66,10 +51,57 @@ PlayerWidget::~PlayerWidget()
   delete grp_player_;
 }
 
-void PlayerWidget::Move(int x, int y)
+void PlayerWidget::DoesMove(int x, int y)
 {
   grp_player_->image(img_stay_);
   position(x,y);
+  redraw();
+}
+
+void PlayerWidget::DoesShot()
+{
+  grp_player_->image(img_shot_);
+  redraw();
+}
+
+void PlayerWidget::DoesKillWump()
+{
+  grp_player_->image(img_kill_wump_);
+  redraw();
+}
+
+void PlayerWidget::DoesKilledByWump()
+{
+  grp_player_->image(img_dead_wump_);
+  redraw();
+}
+
+void PlayerWidget::DoesKilledByPits()
+{
+  grp_player_->image(img_dead_pits_);
+  redraw();
+}
+
+void PlayerWidget::DoesUnknownAction()
+{
+  grp_player_->image(img_unknown_);
+  redraw();
+}
+
+void PlayerWidget::DoesFeels(bool wump, bool bats, bool pits)
+{
+  if (wump) 
+    box_wumps_->show();
+  else
+    box_wumps_->hide();
+  if (bats)
+    box_bats_->show();
+  else
+    box_bats_->hide();
+  if (pits)
+    box_pits_->show();
+  else
+    box_pits_->hide();
   redraw();
 }
 
@@ -107,34 +139,49 @@ void PlayerWidget::AnimateFinish()
   }
 }
 
+// PRIVATE REALISATION
 
-void PlayerWidget::Shot()
+void PlayerWidget::TuneAppearance()
 {
-  grp_player_->image(img_shot_);
-  redraw();
+  begin();
+  box(FL_BORDER_BOX);
+  resizable(0);
+  grp_player_->box(FL_BORDER_BOX);
+  grp_player_->align(Fl_Align(513));
+  grp_feels_->box(FL_BORDER_BOX);
+  grp_feels_->align(Fl_Align(513));
+  grp_player_->image(img_stay_);
+  box_wumps_->image(img_feels_wumps_);
+  box_bats_->image(img_feels_bats_);
+  box_pits_->image(img_feels_pits_);
+  grp_feels_->image(img_feels_box_);
+  grp_feels_->add(box_wumps_);
+  grp_feels_->add(box_bats_);
+  grp_feels_->add(box_pits_);
+  grp_feels_->end();
+  add(grp_player_);
+  add(grp_feels_);
+  end();
 }
 
-void PlayerWidget::UnknownAction()
+// CALLBACKS SECTION
+
+void PlayerWidget::cb_move_bats(void* w)
 {
-  grp_player_->image(img_unknown_);
-  redraw();
+  auto* p = ((PlayerWidget*)w);
+  if (p->trajectory_.Empty()) {
+    p->AnimateFinish();
+    Fl::remove_timeout(cb_move_bats, w);
+  }
+  else {
+    p->AnimateContinue();
+    Fl::repeat_timeout(0.1, cb_move_bats, w);
+  }
 }
 
-void PlayerWidget::ShowFeels(bool wump, bool bats, bool pits)
+void PlayerWidget::cb_stop_bats(void* w)
 {
-  if (wump) 
-    box_wumps_->show();
-  else
-    box_wumps_->hide();
-  if (bats)
-    box_bats_->show();
-  else
-    box_bats_->hide();
-  if (pits)
-    box_pits_->show();
-  else
-    box_pits_->hide();
-  redraw();
+  Fl::remove_timeout(cb_move_bats, w);
 }
 
 }  // namespace wumpus_game

@@ -7,6 +7,7 @@
 #define PLAYER_WIDGET_H
 
 #include <vector>
+
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_PNG_Image.H>
@@ -23,23 +24,27 @@ public:
   PlayerWidget();
   ~PlayerWidget();
   
-  void Move(int x, int y);
+  void DoesMove(int x, int y);
+  void DoesShot();
+  void DoesKillWump();
+  void DoesKilledByWump();
+  void DoesKilledByPits();
+  void DoesUnknownAction();
+  void DoesFeels(bool, bool, bool);
   void AnimateBegin(int x, int y);
   void AnimateContinue();
   void AnimateFinish();
-  void Shot();
-  void UnknownAction();
-  void ShowFeels(bool, bool, bool);
 
 private:
-  Fl_Group* grp_player_;
-  Fl_Group* grp_feels_;
-  Fl_Box*   box_wumps_;  
-  Fl_Box*   box_bats_;  
-  Fl_Box*   box_pits_;  
+  Fl_Group*     grp_player_;
+  Fl_Group*     grp_feels_;
+  Fl_Box*       box_wumps_;  
+  Fl_Box*       box_bats_;  
+  Fl_Box*       box_pits_;  
   Fl_PNG_Image* img_stay_;
   Fl_PNG_Image* img_shot_;
-  Fl_PNG_Image* img_bats_;  
+  Fl_PNG_Image* img_bats_; 
+  Fl_PNG_Image* img_kill_wump_;
   Fl_PNG_Image* img_unknown_;
   Fl_PNG_Image* img_dead_wump_;
   Fl_PNG_Image* img_dead_pits_;
@@ -47,25 +52,12 @@ private:
   Fl_PNG_Image* img_feels_bats_;
   Fl_PNG_Image* img_feels_pits_;
   Fl_PNG_Image* img_feels_wumps_;
-  Trajectory trajectory_;
+  Trajectory    trajectory_;
   
-  static void cb_move_bats(void* w)
-  {
-    auto* p = ((PlayerWidget*)w);
-    if (p->trajectory_.Empty()) {
-      p->AnimateFinish();
-      Fl::remove_timeout(cb_move_bats, w);
-    }
-    else {
-      p->AnimateContinue();
-      Fl::repeat_timeout(0.1, cb_move_bats, w);
-    }
-  }
+  void TuneAppearance();
 
-  static void cb_stop_bats(void* w)
-  {
-    Fl::remove_timeout(cb_move_bats, w);
-  }
+  static void cb_move_bats(void*);
+  static void cb_stop_bats(void*);
 };
 
 }  // namespace wumpus_game
