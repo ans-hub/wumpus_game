@@ -27,11 +27,13 @@ public:
   
   FormMain();
   ~FormMain();
-  void Show() const { window_->show(); }
-  void Hide() const { window_->hide(); }
+  void Show() { show(); }
+  // void Show() const { window_->show(); }
+  void Hide() { hide(); }
+  // void Hide() const { window_->hide(); }
   void Redraw(int);
   
-  Fl_Window*        window_;
+  // Fl_Window*        window_;
   Fl_PNG_Image*     img_cover_;
   Fl_Box*           box_cover_;
   Fl_Box*           box_level_;
@@ -42,7 +44,6 @@ public:
   Fl_Text_Buffer*   output_;
   Fl_Text_Display*  display_;
 
-  
 private:
   void TuneAppearance();
 };

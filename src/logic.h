@@ -32,7 +32,7 @@ struct Request
 class Logic : public mvc_set::Observable<Event>
 {
 public:
-  friend struct CliView;
+  friend struct CliView;  // ????
   using SubjectID = Subject::ID;
   
   Logic();

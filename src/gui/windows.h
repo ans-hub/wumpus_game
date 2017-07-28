@@ -16,8 +16,9 @@
 
 namespace wumpus_game {
 
-struct Windows
+class Windows
 {
+public:
   Windows();
   ~Windows();
   void Show();
@@ -28,13 +29,17 @@ struct Windows
   void ShowHelp() const;
   void HideHelp() const;
   void ShowWidget(Fl_Widget*);
-  void HideWidget(Fl_Widget*); 
+  void HideWidget(Fl_Widget*);
   
-  FormStart*  wnd_start_;
-  FormHelp*   wnd_help_;
-  FormMain*   wnd_main_;
-  FormPopup*  wnd_popup_;
-  FormMap*    wdg_map_;
+  FormStart*    wnd_start_;
+  FormHelp*     wnd_help_;
+  FormMain*     wnd_main_;
+  FormPopup*    wnd_popup_;
+  FormMap*      wdg_map_;
+
+private:
+  void SetChildrenCallbacks();
+
 };
 
 namespace gui_helpers {

@@ -10,20 +10,15 @@
 #include <sstream>
 #include <cmath>
 #include <FL/Fl.H>
-#include <FL/Fl_Widget.H>
+#include <FL/Fl_Group.H>
 #include <FL/fl_draw.H>
 
 #include "../helpers/draw_consts.h"
+#include "structs/point.h"
 
 namespace wumpus_game {
 
-struct Point
-{
-  double x_;
-  double y_;
-};
-
-struct MapPathes : public Fl_Widget
+struct MapPathes : public Fl_Group
 {
   using PointVec = std::vector<Point>;
   using cPointVec = const PointVec;

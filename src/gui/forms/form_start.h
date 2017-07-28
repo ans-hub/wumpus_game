@@ -19,9 +19,8 @@ class FormStart : public Fl_Window
 public: 
   FormStart();
   ~FormStart();
-  void Show() const { window_->show(); }
-  void Hide() const { window_->hide(); }
-  Fl_Window*        window_;
+  void Show() { show(); }
+  void Hide() { hide(); }
   Fl_Box*           box_btns_;
   Fl_Box*           box_label_;
   Fl_Button*        btn_start_;

@@ -14,6 +14,7 @@
 #include "../widgets/room_button.h"
 #include "../widgets/map_pathes.h"
 #include "../helpers/draw_consts.h"
+#include "../widgets/player_widget.h"
 
 namespace wumpus_game {
 
@@ -22,6 +23,7 @@ class FormMap : public Fl_Group
 public:
   using VRooms = std::vector<RoomButton*>;
   using VRoomsRef = const VRooms&;
+  using PlayerPtr = PlayerWidget;
   using CallbackFunc = void;
   using CommandFunc = void;
   
@@ -31,20 +33,27 @@ public:
   void SetCommand(CommandFunc* cmd) { command_ = cmd; }
   void Deactivate() { for (auto& r : rooms_) r->deactivate(); }
   void Activate() { for (auto& r : rooms_) r->activate(); }
-  VRoomsRef GetRooms() const { return rooms_; }
+  void RedrawRooms() { Deactivate(); Activate(); }
+  VRoomsRef  GetRooms() const { return rooms_; }
+  PlayerPtr* GetPlayer() { return player_; }
+  int GetRoomCoordX(int) const;
+  int GetRoomCoordY(int) const;
   void Redraw(int);
 
 protected:
+  void ResizeGroup(int);
+  void DrawPlayer();
   void DrawRooms(int);
   void DrawLines(int);
   void ClearRooms();
-  void ClearLines() { delete pathes_; }
-  void ResizeGroup(int);
+  void ClearPlayer();
+  void ClearLines();
   void SetCallbacks();
   
 private:
   VRooms        rooms_;
   MapPathes*    pathes_;
+  PlayerPtr*    player_;
   CallbackFunc* callback_;
   CommandFunc*  command_;
 };

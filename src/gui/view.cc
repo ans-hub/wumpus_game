@@ -13,9 +13,8 @@ bool GuiView::IncomingNotify(Event msg) const
   {
     case Event::NEW_LEVEL :
       gui_helpers::show_level(gui_, model_);
-      gui_helpers::show_intro(gui_, model_);
       gui_helpers::disable_buttons(gui_);
-      gui_helpers::show_player_pos(gui_, model_);
+      gui_helpers::show_player_movement(gui_, model_);
       break;
 
     case Event::GAME_OVER :
@@ -27,9 +26,8 @@ bool GuiView::IncomingNotify(Event msg) const
     case Event::UNKNOWN_COMMAND :
     case Event::MOVE_NOT_NEIGHBOR :
     case Event::SHOT_NOT_NEIGHBOR :
-    {
+    {    
       gui_helpers::show_error_room(gui_);
-      gui_helpers::unshown_last_action(gui_, model_);
       break;
     }
 
@@ -46,15 +44,15 @@ bool GuiView::IncomingNotify(Event msg) const
       break;
 
     case Event::MOVED_BATS :
-      gui_helpers::show_moved_bats(gui_);
-    case Event::PLAYER_DOES_MOVE :
-      gui_helpers::mark_room_as_visited(gui_, model_);
-      gui_helpers::clear_player_pos(gui_);
-      gui_helpers::show_player_pos(gui_, model_);  
+      gui_helpers::show_moved_bats(gui_, model_);
+      break;
+
+    case Event::PLAYER_DOES_MOVE :  
+      gui_helpers::show_player_movement(gui_, model_);  
       break;
     
     case Event::PLAYER_DOES_SHOT :
-      gui_helpers::unshown_last_action(gui_, model_);
+      gui_helpers::show_player_shot(gui_);
       break;    
     
     case Event::WINDOW : default: break;
@@ -64,30 +62,15 @@ bool GuiView::IncomingNotify(Event msg) const
 }
 
 namespace gui_helpers {
-  
-void show_intro(Windows& gui, const Logic& logic)
+
+void enable_buttons(Windows& gui)
 {
-  auto& level = logic.GetLevel();
-
-  std::stringstream sst{};
-  sst << "You are in the dark cave with " << level.cave_->GetSize()
-      << " rooms. Somewhere here lives " << level.wumps_.size() 
-      << " Wumpus.\n"
-      << "You have the bow and " << level.player_->GetArrows() 
-      << " arrows. Find and kill all Wumpus!\n"
-      << "And be aware about presence of other danger things - "
-      << "the " << level.bats_.size() << " Bats "
-      << "and the " << level.pits_.size() << " Bottomless pits\n";
-
-  auto& out = gui.wnd_main_->output_;
-  out->text("");
-  out->append(sst.str().c_str());
+  gui.wnd_main_->btn_start_->activate();
 }
 
 void disable_buttons(Windows& gui)
 {
-  auto* wnd = gui.wnd_main_;
-  wnd->btn_start_->deactivate();
+  gui.wnd_main_->btn_start_->deactivate();
 }
 
 void show_level(Windows& gui, const Logic& model)
@@ -103,52 +86,34 @@ void hide_level(Windows& gui)
   gui.wdg_map_->Deactivate();
 }
 
-void enable_buttons(Windows& gui)
-{
-  auto* wnd = gui.wnd_main_;
-  wnd->btn_start_->activate();
-}
-
-void unshown_last_action(Windows& gui, const Logic& model)
-{
-  int room = model.CurrentRequest().room_;
-  auto* btn = gui.wdg_map_->GetRooms()[room];
-  if (!btn->visited_) btn->value(0);
-  // gui.Redraw();
-}
-
 void show_error_room(Windows& gui)
 {
-  gui.wnd_main_->output_->insert(
-    0, "ERROR: You choose not neighboring room, please repeat\n"
-  );
+  gui.wdg_map_->GetPlayer()->UnknownAction();
+  gui.wnd_main_->redraw();   
 }
 
-void show_player_pos(Windows& gui, const Logic& model)
+void show_player_movement(Windows& gui, const Logic& model)
 {
   int room = model.GetLevel().player_->GetCurrRoomNum();
-  gui.wdg_map_->GetRooms()[room]->label("Y");
-  gui.wdg_map_->GetRooms()[room]->value(1);
+  int x = gui.wdg_map_->GetRoomCoordX(room);
+  int y = gui.wdg_map_->GetRoomCoordY(room);
+  gui.wdg_map_->GetPlayer()->Move(x,y);
+  gui.wnd_main_->redraw();
 }
 
-void clear_player_pos(Windows& gui)
+void show_player_shot(Windows& gui)
 {
-  auto& rooms = gui.wdg_map_->GetRooms();
-  for (auto& v : rooms) v->label("");
+  gui.wdg_map_->GetPlayer()->Shot();
+  gui.wnd_main_->redraw();   
 }
 
-void mark_room_as_visited(Windows& gui, const Logic& model)
+void show_moved_bats(Windows& gui, const Logic& model)
 {
-  int room = model.CurrentRequest().room_;
-  auto* btn = gui.wdg_map_->GetRooms()[room];
-  btn->visited_ = true;
-}
-
-void show_moved_bats(Windows& gui)
-{
-  gui.wnd_main_->output_->insert(
-    0, "You have been moved by the Bats to another room\n"
-  );
+  int room = model.GetLevel().player_->GetCurrRoomNum();
+  int to_x = gui.wdg_map_->GetRoomCoordX(room);
+  int to_y = gui.wdg_map_->GetRoomCoordY(room);
+  gui.wdg_map_->GetPlayer()->AnimateBegin(to_x, to_y);
+  gui.wnd_main_->redraw();
 }
 
 void show_havent_arrows(Windows& gui)
@@ -158,32 +123,31 @@ void show_havent_arrows(Windows& gui)
   );
 }
 
-void show_feels(Windows& gui, const Logic& logic)
-{
-  auto& out = gui.wnd_main_->output_;
-  auto feels = logic.GetLevel().player_->Feels();
-  
+void show_feels(Windows& gui, const Logic& model)
+{  
+  bool wumps {false};
+  bool bats {false};  
+  bool pits {false};
+
+  auto feels = model.GetLevel().player_->Feels();
+
   for (auto const feel : feels) {
     switch(feel)
     {
       case Logic::SubjectID::WUMP :
-        out->insert(
-          0, "FEELS: It`s smeels like Wumpus (possible the Wumpus is near)\n"
-        );
-        break;
-      case Logic::SubjectID::PIT  :
-        out->insert(
-          0, "FEELS: You feel the wind (possible the bats is near)\n"
-        );
+        wumps = true;
         break;
       case Logic::SubjectID::BAT  :
-        out->insert(
-          0, "FEELS: You feel the cold (possible the bottomless pit is near)\n"
-        );
+        bats = true;
+        break;
+      case Logic::SubjectID::PIT  :
+        pits = true;
         break;
       default : break;
     } 
   }
+  gui.wdg_map_->GetPlayer()->ShowFeels(wumps, bats, pits);
+  gui.wnd_main_->redraw();   
 }
 
 void show_game_over(Windows& gui, const Logic& logic)

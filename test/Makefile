@@ -17,7 +17,8 @@ FLTKFLAGS = `fltk-config --use-images --ldflags`
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
 cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
-windows.o form_start.o form_help.o form_main.o form_map.o map_pathes.o draw_consts.o
+windows.o form_start.o form_help.o form_main.o form_map.o map_pathes.o \
+player_widget.o draw_consts.o trajectory.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
@@ -52,7 +53,7 @@ level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 logic.o : $(SRC)logic.h $(SRC)logic.cc level.o $(SRC)events.h $(SRC)3rdparty/observable.h
 	$(CC) $(CFLAGS) -c $(SRC)logic.cc
 
-windows.o : $(GUI)windows.h $(GUI)windows.cc $(GUI)forms/form_main.h $(GUI)forms/form_popup.h
+windows.o : $(GUI)windows.h $(GUI)windows.cc form_main.o form_map.o form_help.o form_start.o
 	$(CC) $(CFLAGS) -c $(GUI)windows.cc
 
 form_start.o : $(GUI)forms/form_start.h $(GUI)forms/form_start.cc
@@ -64,11 +65,17 @@ form_help.o : $(GUI)forms/form_help.h $(GUI)forms/form_help.cc
 form_main.o : $(GUI)forms/form_main.h $(GUI)forms/form_main.cc
 	$(CC) $(CFLAGS) -c $(GUI)forms/form_main.cc
 
-form_map.o : $(GUI)forms/form_map.h $(GUI)forms/form_map.cc $(GUI)widgets/room_button.h $(GUI)widgets/map_pathes.h
+form_map.o : $(GUI)forms/form_map.h $(GUI)forms/form_map.cc $(GUI)widgets/room_button.h map_pathes.o player_widget.o
 	$(CC) $(CFLAGS) -c $(GUI)forms/form_map.cc
 
-map_pathes.o : $(GUI)widgets/map_pathes.h $(GUI)widgets/map_pathes.cc
+map_pathes.o : $(GUI)widgets/map_pathes.h $(GUI)widgets/map_pathes.cc $(GUI)widgets/structs/point.h
 	$(CC) $(CFLAGS) -c $(GUI)widgets/map_pathes.cc
+
+trajectory.o : $(GUI)widgets/structs/trajectory.h $(GUI)widgets/structs/trajectory.cc $(GUI)widgets/structs/point.h
+	$(CC) $(CFLAGS) -c $(GUI)widgets/structs/trajectory.cc
+
+player_widget.o : $(GUI)widgets/player_widget.h $(GUI)widgets/player_widget.cc $(GUI)widgets/structs/point.h trajectory.o
+	$(CC) $(CFLAGS) -c $(GUI)widgets/player_widget.cc
 
 draw_consts.o : $(GUI)helpers/draw_consts.h $(GUI)helpers/draw_consts.cc
 	$(CC) $(CFLAGS) -c $(GUI)helpers/draw_consts.cc

@@ -8,7 +8,7 @@
 namespace wumpus_game {
 
 MapPathes::MapPathes(int level)
-  : Fl_Widget(1, 1, 1, 1, "")
+  : Fl_Group(1, 1, 1, 1, "")
   , vxs_count_{draw_consts::level_vertexes(level)}
   , total_vxs_(vxs_count_)
   , inner_vxs_{}
@@ -83,6 +83,8 @@ void MapPathes::FillAllVertexes()
 
 void MapPathes::draw()
 {
+  // Fl_Group::draw();
+
   // Draw inner, middle and outer polygons
 
   draw_helpers::draw_poly(inner_vxs_, this);

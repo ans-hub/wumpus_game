@@ -32,18 +32,15 @@ private:
 };
 
 namespace gui_helpers {
-  
-  void show_level(Windows&, const Logic&);
-  void hide_level(Windows&);
-  void show_intro(Windows&, const Logic&);
+
   void enable_buttons(Windows&);
   void disable_buttons(Windows&);
-  void unshown_last_action(Windows&, const Logic&);
+  void show_level(Windows&, const Logic&);
+  void hide_level(Windows&);
   void show_error_room(Windows&);
-  void show_player_pos(Windows&, const Logic&);
-  void clear_player_pos(Windows&);
-  void mark_room_as_visited(Windows&, const Logic&);
-  void show_moved_bats(Windows&);
+  void show_player_movement(Windows&, const Logic&);
+  void show_player_shot(Windows&);
+  void show_moved_bats(Windows&, const Logic&);
   void show_havent_arrows(Windows&);
   void show_feels(Windows&, const Logic&);
   void show_game_over(Windows&, const Logic&);

@@ -9,7 +9,7 @@ namespace wumpus_game {
 
 FormStart::FormStart ()
 : Fl_Window(330, 270, "Hunt the Wumpus")
-, window_{new Fl_Window(330, 270, "Hunt the Wumpus")}
+// , window_{new Fl_Window(330, 270, "Hunt the Wumpus")}
 , box_btns_{new Fl_Box(30, 80, 270, 170)}
 , box_label_{new Fl_Box(30, 20, 270, 45, "HUNT THE WUMPUS")}
 , btn_start_{new Fl_Button(90, 100, 150, 25, "Start new")}
@@ -17,7 +17,8 @@ FormStart::FormStart ()
 , btn_quit_{new Fl_Button(90, 200, 150, 25, "Quit")}
 {
   TuneAppearance();
-  window_->end();
+  end();
+  // window_->end();
 }
 
 FormStart::~FormStart()
@@ -27,13 +28,15 @@ FormStart::~FormStart()
   delete btn_start_;
   delete box_label_;
   delete box_btns_; 
-  delete window_;
+  // delete window_;
 }
 
 void FormStart::TuneAppearance()
 {
-  window_->color((Fl_Color)34);
-  window_->position((Fl::w() - window_->w())/2, (Fl::h() - window_->h())/2);
+  color((Fl_Color)34);
+  position((Fl::w() - w())/2, (Fl::h() - h())/2);
+  // window_->color((Fl_Color)34);
+  // window_->position((Fl::w() - window_->w())/2, (Fl::h() - window_->h())/2);
   box_btns_->box(FL_PLASTIC_UP_FRAME);
   box_btns_->color((Fl_Color)84);
   box_label_->color((Fl_Color)84);

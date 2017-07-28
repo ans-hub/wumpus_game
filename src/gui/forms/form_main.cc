@@ -8,9 +8,8 @@
 namespace wumpus_game {
 
 FormMain::FormMain ()
-: Fl_Window(200, 200, "_")
-// , rooms_{}
-, window_{new Fl_Window(425, 700, "Hunt the Wumpus")}
+: Fl_Window(425, 700, "Hunt the Wumpus")
+// , window_{new Fl_Window(425, 700, "Hunt the Wumpus")}
 , img_cover_{(new Fl_PNG_Image(".../src/gui/forms/data/cover.png"))}
 , box_cover_{new Fl_Box(-5, 0, 435, 625)}
 , box_level_{new Fl_Box(2, 54, 425, 390)}
@@ -22,7 +21,8 @@ FormMain::FormMain ()
 , display_{new Fl_Text_Display(26, 435, 375, 200, "Output")}
 {
   TuneAppearance();
-  window_->end();
+  // window_->end();
+  end();
 }
 
 FormMain::~FormMain()
@@ -36,7 +36,7 @@ FormMain::~FormMain()
   delete box_level_;
   delete box_cover_;
   delete img_cover_;
-  delete window_;
+  // delete window_;
 }
 
 void FormMain::Redraw(int level)
@@ -45,24 +45,24 @@ void FormMain::Redraw(int level)
   int w = draw_consts::level_width(level) + offset * 2;
   int h = w + 300;
   
-  window_->resize(1, 1, w, h);
-  window_->position((Fl::w() - window_->w())/2, (Fl::h() - window_->h())/2);
-  box_cover_->resize(-5, 0, window_->w(), window_->h());
-  box_level_->resize(2, 54, window_->w(), window_->h()/2);
-  box_label_->resize(30, 20, window_->w()-60 , 45);
-  display_->resize(30, w + 50, window_->w()-60, 200);
-  btn_start_->resize(27, window_->h()-40, 105, 25);
-  btn_help_->resize(165, window_->h()-40, 105, 25);
-  btn_quit_->resize(297, window_->h()-40, 105, 25);
+  resize(1, 1, w, h);
+  position((Fl::w() - this->w())/2, (Fl::h() - this->h())/2);
+  box_cover_->resize(-5, 0, this->w(), this->h());
+  box_level_->resize(2, 54, this->w(), this->h()/2);
+  box_label_->resize(30, 20, this->w()-60 , 45);
+  display_->resize(30, w + 50, this->w()-60, 200);
+  btn_start_->resize(27, this->h()-40, 105, 25);
+  btn_help_->resize(165, this->h()-40, 105, 25);
+  btn_quit_->resize(297, this->h()-40, 105, 25);
 
-  window_->redraw();
-  // redraw();
+  redraw();
 }
 
 void FormMain::TuneAppearance()
 {
-  window_->set_modal();
-  window_->color((Fl_Color)34);
+  set_modal();
+  color((Fl_Color)34);
+  position((Fl::w() - this->w())/2, (Fl::h() - this->h())/2);
   box_cover_->image(img_cover_);
   box_cover_->align(Fl_Align(192));
   box_label_->box(FL_PLASTIC_UP_FRAME);
@@ -76,7 +76,6 @@ void FormMain::TuneAppearance()
   display_->align(FL_ALIGN_TOP);
   display_->buffer(output_);
   display_->wrap_mode(Fl_Text_Display::WRAP_AT_BOUNDS, 0);
-  window_->position((Fl::w() - window_->w())/2, (Fl::h() - window_->h())/2);
 }
 
 }  // namespace wumpus_game
