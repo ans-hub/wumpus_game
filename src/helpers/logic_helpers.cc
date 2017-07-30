@@ -19,10 +19,14 @@ void worry_neighboring_wumps(VWumpsPtr& wumps, std::vector<int>& neighbors)
 
 bool kill_one_wump_in_room(VWumpsPtr& wumps, int room)
 {
-  for (auto& w : wumps) {
-    if (w->GetCurrRoomNum() == room) {
-      w->Kill();
+  // remake to more pretty
+  for (auto it = wumps.begin(); it != wumps.end();) {
+    if (it->get()->GetCurrRoomNum() == room) {
+      it->reset();
+      it = wumps.erase(it);
       return true;
+    } else {
+      ++it;
     }
   }
   return false;

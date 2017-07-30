@@ -124,10 +124,10 @@ void print_feels(std::ostream& ostream, const Logic& logic)
       case Logic::SubjectID::WUMP :
         ostream << "FEELS: It`s smeels like Wumpus (possible the Wumpus is near)\n";
         break;
-      case Logic::SubjectID::PIT  :
+      case Logic::SubjectID::BAT  :
         ostream << "FEELS: You feel the wind (possible the bats is near)\n";
         break;
-      case Logic::SubjectID::BAT  :
+      case Logic::SubjectID::PIT  :
         ostream << "FEELS: You feel the cold (possible the bottomless pit is near)\n";
         break;
       default : break;

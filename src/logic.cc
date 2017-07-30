@@ -27,11 +27,11 @@ void Logic::NewLevel(unsigned int num)  // move level build logic in another cla
   curr_level_ = num;
 
   int base = static_cast<int>(curr_level_); // simulate assert
-  int size = base + 3;
+  int size = base + 4;
   int arrows = size;
   int wump = size*4/12;     // 
-  int bat = size*4/12;      // increases to 1 unit when size increases to x/y
-  int pit = size*4/6;       //
+  int bat = size*4/9;      // increases to 1 unit when size increases to x/y
+  int pit = size*4/12;       //
   level_ = Level(size, arrows, wump, bat, pit);
   game_over_cause_ = Subject::UNKNOWN;
   player_turn_ = true;

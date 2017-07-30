@@ -21,7 +21,10 @@ GuiController::GuiController(Windows& gui, Logic& model)
   gui_.wnd_start_->btn_quit_->callback(
     (Fl_Callback*)(gui_helpers::cb_quit_button), (void*)this
   );
-  gui_.wnd_main_->btn_continue_->callback(
+  gui_.wdg_info_->btn_next_->callback(
+    (Fl_Callback*)(gui_helpers::cb_next_button), (void*)this
+  );
+  gui_.wdg_info_->btn_continue_->callback(
     (Fl_Callback*)(gui_helpers::cb_continue_button), (void*)this
   );
 }
@@ -47,6 +50,12 @@ void GuiController::CommandContinue()
   model_.NewLevel();
 }
 
+void GuiController::CommandLevel()
+{
+  int level = model_.CurrentLevel();
+  model_.NewLevel(++level);
+}
+
 void GuiController::CommandAction(int room)
 {
   auto e = Fl::event_button();
@@ -68,6 +77,11 @@ void cb_start_button(void*, void* c)
 void cb_continue_button(void*, void* c)
 {
   ((GuiController*)c)->CommandContinue();
+}
+
+void cb_next_button(void*, void* c)
+{
+  ((GuiController*)c)->CommandLevel();  
 }
 
 void cb_quit_button(void*, void* c)

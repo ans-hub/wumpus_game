@@ -8,15 +8,11 @@
 namespace wumpus_game {
 
 FormMain::FormMain ()
-: Fl_Window(425, 400, "Hunt the Wumpus")
+: Fl_Window(425, 380, "Hunt the Wumpus")
 , img_cover_{(new Fl_PNG_Image("../src/gui/forms/img/bg.png"))}
-, img_bg_{(new Fl_Tiled_Image(img_cover_,0,0))}
 , box_cover_{new Fl_Box(-5, 0, 435, 625)}
 , box_level_{new Fl_Box(2, 54, 425, 390)}
 , box_label_{new Fl_Box(30, 20, 370, 45, "HUNT THE WUMPUS")}
-// , btn_restart_{new Fl_Button(27, 655, 105, 25, "Restart")}
-, btn_continue_{new Fl_Button(297, 655, 105, 25, "Next")}
-, btn_help_{new Fl_Button(165, 655, 105, 25, "Help")}
 {
   TuneAppearance();
   end();
@@ -24,9 +20,6 @@ FormMain::FormMain ()
 
 FormMain::~FormMain()
 {
-  delete btn_help_;
-  delete btn_continue_;
-  // delete btn_restart_;
   delete box_label_;
   delete box_level_;
   delete box_cover_;
@@ -37,17 +30,14 @@ void FormMain::Redraw(int level)
 {
   int offset = 30;
   int w = draw_consts::level_width(level) + offset * 2;
-  int h = w + 100;
+  int h = w + 60;
   
   resize(1, 1, w, h);
   position((Fl::w() - this->w())/2, (Fl::h() - this->h())/2);
   box_cover_->resize(-5, 0, this->w(), this->h());
   box_level_->resize(2, 54, this->w(), this->h()/2);
   box_label_->resize(30, 20, this->w()-60, 45);
-  // btn_restart_->resize(this->w()-50-270, this->h()-40, 90, 25);
-  btn_help_->resize(this->w()-40-180, this->h()-40, 90, 25);
-  btn_continue_->resize(this->w()-30-90, this->h()-40, 90, 25);
-
+  
   redraw();
 }
 
@@ -56,9 +46,8 @@ void FormMain::TuneAppearance()
   set_modal();
   color((Fl_Color)34);
   position((Fl::w() - this->w())/2, (Fl::h() - this->h())/2);
-  // box_cover_->image(img_bg_);
-  // box_cover_->align(FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_CLIP);
-  image(img_bg_);
+  box_cover_->image(img_cover_);
+  box_cover_->align(FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_CLIP);
   box_label_->box(FL_PLASTIC_UP_FRAME);
   box_label_->color((Fl_Color)84);
   box_label_->labelsize(28);

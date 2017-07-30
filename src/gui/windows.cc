@@ -11,22 +11,25 @@ Windows::Windows()
   : wnd_start_ { new FormStart() }
   , wnd_help_ { new FormHelp() }
   , wnd_main_{ new FormMain() }
-  , wnd_popup_{ new FormPopup() }
   , wdg_map_ { new FormMap() }
+  , wdg_info_{ new FormInfo() }
 {
   wnd_main_->begin();
   wnd_main_->add(wdg_map_);
+  wnd_main_->add(wdg_info_);
   wnd_main_->end();
   SetChildrenCallbacks();
+  // Fl::redraw();
 }
 
 Windows::~Windows()
 {
-  wnd_main_->remove(wdg_map_); // to prevent segmentation fault
+  wnd_main_->remove(wdg_map_);  // to prevent segmentation fault
+  wnd_main_->remove(wdg_info_); // to prevent segmentation fault
   delete wnd_start_;
   delete wnd_help_;
   delete wnd_main_;
-  delete wnd_popup_;
+  delete wdg_info_;
   delete wdg_map_;
 }
 
@@ -41,7 +44,7 @@ void Windows::SetChildrenCallbacks()
   wnd_main_->callback(
     (Fl_Callback*)(gui_helpers::cb_close_wnd_main_), (void*)this
   );
-  wnd_main_->btn_help_->callback(
+  wdg_info_->btn_help_->callback(
     (Fl_Callback*)(gui_helpers::cb_help_button), (void*)this
   );
 }
@@ -60,7 +63,7 @@ void Windows::Close()
 void Windows::ShowMain() const
 {
   wnd_main_->Show();
-} 
+}
 
 void Windows::HideMain() const
 {
@@ -81,6 +84,7 @@ void Windows::Redraw(int level)
 {
   wnd_main_->Redraw(level); 
   wdg_map_->Redraw(level);
+  wdg_info_->Redraw(level);
 }
 
 void Windows::ShowWidget(Fl_Widget* w)

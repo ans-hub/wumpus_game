@@ -24,6 +24,7 @@ public:
   void StopModel();
   void CommandStart();
   void CommandContinue();
+  void CommandLevel();
   void CommandAction(int);
 private:
   Windows& gui_;
@@ -34,6 +35,7 @@ namespace gui_helpers {
 
   void cb_start_button(void*, void*);
   void cb_quit_button(void*, void*);
+  void cb_next_button(void*, void*);
   void cb_rooms_button(void*, void*);
   void cb_continue_button(void*, void*);
 
@@ -42,3 +44,5 @@ namespace gui_helpers {
 }  // namespace wumpus_game
 
 #endif  // GUI_CONTROLLER_H
+
+// Note: controller sets callbacks which is based on the game logic

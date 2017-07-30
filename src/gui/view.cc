@@ -15,12 +15,14 @@ bool GuiView::IncomingNotify(Event msg) const
       gui_helpers::show_level(gui_, model_);
       gui_helpers::disable_buttons(gui_);
       gui_helpers::show_player_movement(gui_, model_);
+      gui_helpers::refresh_info_widget(gui_, model_);
       break;
 
     case Event::GAME_OVER :
       gui_helpers::show_game_over(gui_, model_);
       gui_helpers::hide_level(gui_);
       gui_helpers::enable_buttons(gui_);
+      gui_helpers::refresh_info_widget(gui_, model_);      
       break;
 
     case Event::UNKNOWN_COMMAND :
@@ -33,6 +35,7 @@ bool GuiView::IncomingNotify(Event msg) const
 
     case Event::HAVE_NOT_ARROWS :
       gui_helpers::show_havent_arrows(gui_);
+      gui_helpers::refresh_info_widget(gui_, model_);      
       break;
 
     case Event::READY_TO_INPUT : 
@@ -41,6 +44,7 @@ bool GuiView::IncomingNotify(Event msg) const
 
     case Event::ONE_WUMP_KILLED :
       gui_helpers::show_killed_one_wump(gui_);
+      gui_helpers::refresh_info_widget(gui_, model_);
       break;
 
     case Event::MOVED_BATS :
@@ -48,11 +52,12 @@ bool GuiView::IncomingNotify(Event msg) const
       break;
 
     case Event::PLAYER_DOES_MOVE :  
-      gui_helpers::show_player_movement(gui_, model_);  
+      gui_helpers::show_player_movement(gui_, model_);
       break;
     
     case Event::PLAYER_DOES_SHOT :
       gui_helpers::show_player_shot(gui_);
+      gui_helpers::refresh_info_widget(gui_, model_);      
       break;    
     
     case Event::WINDOW : default: break;
@@ -63,19 +68,38 @@ bool GuiView::IncomingNotify(Event msg) const
 
 namespace gui_helpers {
 
+void refresh_info_widget(Windows& gui, const Logic& model)
+{
+  auto level = std::to_string(model.CurrentLevel());
+  gui.wdg_info_->box_level_->copy_label(level.c_str());
+
+  auto wumps = std::to_string(model.GetLevel().WumpsCountLive());
+  gui.wdg_info_->box_wumps_->copy_label(wumps.c_str());
+
+  auto bats = std::to_string(model.GetLevel().BatsCount());
+  gui.wdg_info_->box_bats_->copy_label(bats.c_str());
+
+  auto pits = std::to_string(model.GetLevel().PitsCount());
+  gui.wdg_info_->box_pits_->copy_label(pits.c_str());
+
+  auto arrows = std::to_string(model.GetLevel().ArrowsCount());
+  gui.wdg_info_->box_arrows_->copy_label(arrows.c_str());  
+}
+
 void enable_buttons(Windows& gui)
 {
-  gui.wnd_main_->btn_continue_->activate();
+  gui.wdg_info_->btn_continue_->activate();
 }
 
 void disable_buttons(Windows& gui)
 {
-  gui.wnd_main_->btn_continue_->deactivate();
+  gui.wdg_info_->btn_continue_->deactivate();
 }
 
 void show_level(Windows& gui, const Logic& model)
 {
   int level = model.CurrentLevel();
+  
   gui.ShowMain();
   gui.Redraw(level);
   gui.wdg_map_->Activate();
@@ -155,17 +179,17 @@ void show_game_over(Windows& gui, const Logic& logic)
   switch (logic.GameOverCause()) {
     case Logic::SubjectID::PLAYER :
       gui.wdg_map_->GetPlayer()->DoesKillWump();
-      gui.wnd_main_->btn_continue_->label("Next");
+      gui.wdg_info_->btn_continue_->label("Next");
       gui.wnd_main_->redraw();
       break;
     case Logic::SubjectID::WUMP :
       gui.wdg_map_->GetPlayer()->DoesKilledByWump();
-      gui.wnd_main_->btn_continue_->label("Retry");      
+      gui.wdg_info_->btn_continue_->label("Retry");      
       gui.wnd_main_->redraw();
       break;
     case Logic::SubjectID::PIT :
       gui.wdg_map_->GetPlayer()->DoesKilledByPits();
-      gui.wnd_main_->btn_continue_->label("Retry");            
+      gui.wdg_info_->btn_continue_->label("Retry");            
       gui.wnd_main_->redraw();
       break;
     case Logic::SubjectID::UNKNOWN :

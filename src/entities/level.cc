@@ -7,7 +7,7 @@
 
 namespace wumpus_game {
 
-Level::Level(int size, int arrows, int wumps, int pits, int bats)
+Level::Level(int size, int arrows, int wumps, int bats, int pits)
   : cave_{ }
   , player_{ }
   , wumps_{ } 
@@ -40,5 +40,14 @@ Level& Level::operator=(Level&& old)
   pits_ = std::move(old.pits_);
   return *this;
 }
+
+int Level::WumpsCountLive() const
+{
+  int lives{0};
+  for (const auto& v : wumps_)
+    if (v->IsLive()) ++lives;
+  return lives;
+}
+
 
 }  // namespace wumpus_game

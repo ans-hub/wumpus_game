@@ -29,6 +29,7 @@ struct Level
   using BatsVec   = std::vector<BatPtr>;
   using PitsVec   = std::vector<PitPtr>;
 
+  // make private
   MapPtr    cave_;
   PlayerPtr player_;
   WumpsVec  wumps_;
@@ -40,6 +41,12 @@ struct Level
   Level& operator=(const Level&) = delete;
   Level(Level&&);
   Level& operator=(Level&&);
+
+  int WumpsCountTotal() const { return static_cast<int>(wumps_.size()); }
+  int WumpsCountLive() const;
+  int BatsCount() const { return static_cast<int>(bats_.size()); }
+  int PitsCount() const { return static_cast<int>(pits_.size()); }
+  int ArrowsCount() const { return player_->GetArrows(); }
 };
 
 }  // namespace wumpus_game

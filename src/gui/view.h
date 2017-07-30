@@ -7,6 +7,7 @@
 #define GUI_VIEW_H
 
 #include <sstream>
+#include <string>
 
 #include "../3rdparty/observer.h"
 #include "../events.h"
@@ -33,6 +34,7 @@ private:
 
 namespace gui_helpers {
 
+  void refresh_info_widget(Windows&, const Logic&);
   void enable_buttons(Windows&);
   void disable_buttons(Windows&);
   void show_level(Windows&, const Logic&);

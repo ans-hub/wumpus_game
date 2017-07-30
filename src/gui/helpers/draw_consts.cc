@@ -11,12 +11,15 @@ namespace draw_consts {
   
 int level_vertexes(int level)
 { 
-  return (level+3)*4;
+  return (level+4)*4;
 }
 
 double level_width(int level)
 {
-  return level_vertexes(level) * edge_len * 2;
+  // remove magic const
+  // if (level == 1 || level == 2 || level == 3) level = 2; // prevent too small window
+  // return level_vertexes(level) * edge_len * 2;
+  return level_vertexes(2) * edge_len * 2;
 } 
 
 }  // namespace draw_consts

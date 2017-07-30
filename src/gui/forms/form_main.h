@@ -9,8 +9,6 @@
 #include <vector>
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
-#include <FL/Fl_Button.H>
-#include <FL/Fl_Output.H>
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Tiled_Image.H>
 #include <FL/Fl_Text_Display.H>
@@ -35,18 +33,16 @@ public:
   Fl_Box*           box_cover_;
   Fl_Box*           box_level_;
   Fl_Box*           box_label_;
-  Fl_Button*        btn_continue_;
-  Fl_Button*        btn_help_;
 
 private:
   void TuneAppearance();
 };
 
-namespace gui_helpers {
+// namespace gui_helpers {
 
-  void cb_close_window(void*, void* w);
+//   void cb_close_window(void*, void* w);
 
-}
+// }
 
 }  // namespace wumpus_game
 

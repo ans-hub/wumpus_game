@@ -12,9 +12,9 @@ PlayerWidget::PlayerWidget()
   // background don`t forget!!!
   , grp_player_{(new Fl_Group(10, 30, 50, 50))}
   , grp_feels_{(new Fl_Group(5, 0, 60, 30))}
-  , box_wumps_{(new Fl_Box(0, 1, 15, 15))}
-  , box_bats_{(new Fl_Box(15, 1, 15, 15))}
-  , box_pits_{(new Fl_Box(30, 1, 15, 15))}
+  , box_wumps_{(new Fl_Box(15, 1, 15, 15))}
+  , box_bats_{(new Fl_Box(30, 1, 15, 15))}
+  , box_pits_{(new Fl_Box(45, 1, 15, 15))}
   , img_stay_{(new Fl_PNG_Image("../src/gui/widgets/img/player_stay.png"))}
   , img_shot_{(new Fl_PNG_Image("../src/gui/widgets/img/player_shot.png"))}
   , img_bats_{(new Fl_PNG_Image("../src/gui/widgets/img/player_bats.png"))}  
@@ -109,8 +109,8 @@ void PlayerWidget::AnimateBegin(int x, int y)
 {
   if (trajectory_.Empty()) {
     grp_player_->image(img_bats_);
-    int step_pxl = 15;
-    trajectory_.Set(this->x(), this->y(), x, y, Trajectory::LINE, step_pxl);
+    int steps = 7;    // move in settings
+    trajectory_.Set(this->x(), this->y(), x, y, Trajectory::LINE, steps);
     Fl::add_timeout(0.1, cb_move_bats, this);
   }
 }

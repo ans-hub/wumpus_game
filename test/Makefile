@@ -17,8 +17,8 @@ FLTKFLAGS = `fltk-config --use-images --ldflags`
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
 cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
-windows.o form_start.o form_help.o form_main.o form_map.o map_pathes.o \
-player_widget.o draw_consts.o trajectory.o
+windows.o form_start.o form_help.o form_info.o form_main.o form_map.o \
+map_pathes.o player_widget.o draw_consts.o trajectory.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
@@ -61,6 +61,9 @@ form_start.o : $(GUI)forms/form_start.h $(GUI)forms/form_start.cc
 
 form_help.o : $(GUI)forms/form_help.h $(GUI)forms/form_help.cc
 	$(CC) $(CFLAGS) -c $(GUI)forms/form_help.cc
+
+form_info.o : $(GUI)forms/form_info.h $(GUI)forms/form_info.cc draw_consts.o
+	$(CC) $(CFLAGS) -c $(GUI)forms/form_info.cc
 
 form_main.o : $(GUI)forms/form_main.h $(GUI)forms/form_main.cc
 	$(CC) $(CFLAGS) -c $(GUI)forms/form_main.cc

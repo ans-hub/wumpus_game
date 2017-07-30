@@ -37,13 +37,14 @@ Point get_point_on_line(const Point& a, const Point& b, double part)
 
 std::vector<Point> build_line_trajectory(Point& from, Point& to, int step)
 {
-  std::vector<Point> v(step);
+  std::vector<Point> v(step+1);   // since 1 step consists of 2 points
 
-  for (int i = 0; i < step; ++i) {
+  for (int i = 0; i < step; ++i) {    // since reserve 1 for "to"
     double part = (double)i/step;
     Point p = draw_helpers::get_point_on_line(from, to, part);
-    v[step-i-1] = p;
+    v[step-i] = p;
   }
+  v[0] = to;
   return v;
 }
 

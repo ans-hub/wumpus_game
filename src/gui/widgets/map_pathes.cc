@@ -27,6 +27,7 @@ void MapPathes::FillAllVertexes()
 
   double width = w();
   double height = h();
+  // double offset = w()/20;
   double x0 = width/2;
   double y0 = height/2;
 
@@ -43,7 +44,7 @@ void MapPathes::FillAllVertexes()
   // Get points of middle polygon
 
   double mvxs_count_ = vxs_count_/2;
-  double mrad = irad * 2;
+  double mrad = irad * 2 - (width / 20);
   double mstart_angle = 90;
 
   middle_vxs_ = draw_helpers::get_poly_vertexes(
@@ -53,7 +54,7 @@ void MapPathes::FillAllVertexes()
   // Get points of outer polygon
 
   double ovxs_count_ = vxs_count_/4;
-  double orad = width / 2;
+  double orad = (width / 2) - (width / 20);
   double ostart_angle = 90 + (360 / ovxs_count_ / 2);
 
   outer_vxs_ = draw_helpers::get_poly_vertexes(
@@ -144,7 +145,7 @@ void draw_points(const PointVec& v, MapPathes*, int)
 void draw_poly(const PointVec& v, MapPathes* surface)
 {
   fl_color(FL_WHITE);    
-  fl_line_style(1,5);
+  fl_line_style(3,5);
 
   for (std::size_t i = 0; i < v.size(); ++i) {
     auto p1 = v[i];
@@ -167,11 +168,25 @@ void draw_edges(const PointVec& v, MapPathes* surface)
     auto p1 = v[i];
     auto p2 = v[i+half];
     
+    // Draw edges
+
+    fl_color(FL_WHITE);    
+    fl_line_style(2,5);    
+    fl_line(
+      surface->x()+p1.x_, surface->y()+p1.y_,
+      surface->x()+p2.x_, surface->y()+p2.y_
+    );
+    fl_line_style(0,1);
+    
+    // Draw numbers
+  
     std::ostringstream s1{};
     std::ostringstream s2{};
     s1 << i;
-    s2 << i+half;
-    fl_color(FL_BLUE);
+    s2 << i+half;  
+
+    fl_color(Fl_Color(99));
+    fl_font(fl_font(), 14);
     fl_draw(
       s1.str().c_str(),
       surface->x()+p1.x_ + 20,
@@ -182,13 +197,6 @@ void draw_edges(const PointVec& v, MapPathes* surface)
       surface->x()+p2.x_ + 20,
       surface->y()+p2.y_ + 20
     );
-    fl_color(FL_WHITE);    
-    fl_line_style(1,5);    
-    fl_line(
-      surface->x()+p1.x_, surface->y()+p1.y_,
-      surface->x()+p2.x_, surface->y()+p2.y_
-    );
-    fl_line_style(0,1);
   }
 }
 

@@ -11,7 +11,7 @@
 #include "forms/form_start.h"
 #include "forms/form_help.h"
 #include "forms/form_main.h"
-#include "forms/form_popup.h"
+#include "forms/form_info.h"
 #include "forms/form_map.h"
 
 namespace wumpus_game {
@@ -34,22 +34,25 @@ public:
   FormStart*    wnd_start_;
   FormHelp*     wnd_help_;
   FormMain*     wnd_main_;
-  FormPopup*    wnd_popup_;
   FormMap*      wdg_map_;
+  FormInfo*     wdg_info_;
 
 private:
-  void SetChildrenCallbacks();
+  void SetChildrenCallbacks();    // see note #1
 
 };
 
 namespace gui_helpers {
 
-  void cb_help_button(void*, void* w);
-  void cb_quit_help_button(void*, void* w);
-  void cb_close_wnd_main_(void*, void* w);
+  void cb_help_button(void*, void*);
+  void cb_quit_help_button(void*, void*);
+  void cb_close_wnd_main_(void*, void*);
 
 }  // namespace gui_helpers
 
 }  // namespace wumpus_game
 
 #endif  // GUI_WINDOWS_H
+
+// Note #1 : main gui sets callbacks that not depends on game logic,
+// but only based on form showing and opening logic
