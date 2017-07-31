@@ -18,8 +18,7 @@ Windows::Windows()
   wnd_main_->add(wdg_map_);
   wnd_main_->add(wdg_info_);
   wnd_main_->end();
-  SetChildrenCallbacks();
-  // Fl::redraw();
+  SetFormsCallbacks();
 }
 
 Windows::~Windows()
@@ -33,10 +32,13 @@ Windows::~Windows()
   delete wdg_map_;
 }
 
-void Windows::SetChildrenCallbacks()
+void Windows::SetFormsCallbacks()
 {
   wnd_start_->btn_help_->callback(
     (Fl_Callback*)(gui_helpers::cb_help_button), (void*)this
+  );
+  wnd_start_->btn_quit_->callback(
+    (Fl_Callback*)(gui_helpers::cb_quit_button), (void*)this
   );
   wnd_help_->btn_quit_help_->callback(
     (Fl_Callback*)(gui_helpers::cb_quit_help_button), (void*)this
@@ -109,6 +111,11 @@ void cb_quit_help_button(void*, void* w)
   ((Windows*)w)->HideHelp();
 }
 
+void cb_quit_button(void*, void* c)
+{
+  ((Windows*)c)->Close();
+}
+
 void cb_close_wnd_main_(void*, void* w)
 {
   fl_message_hotspot(0);
@@ -119,6 +126,7 @@ void cb_close_wnd_main_(void*, void* w)
     ((Windows*)w)->HideMain();
   }
 }
+
 
 }  // namespace gui_helpers
 

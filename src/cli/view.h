@@ -8,10 +8,10 @@
 
 #include <ostream>
 
-#include "../3rdparty/observer.h"
-#include "../events.h"
-#include "../logic.h"
-#include "../helpers/entities_helpers.h"
+#include "3rdparty/observer.h"
+#include "entities/events.h"
+#include "entities/logic.h"
+#include "entities/helpers/map_helpers.h"
 
 namespace wumpus_game {
 

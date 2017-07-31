@@ -8,8 +8,8 @@
 
 #include <iostream>
 
-#include "../3rdparty/controller.h"
-#include "../logic.h"
+#include "3rdparty/controller.h"
+#include "entities/logic.h"
 
 namespace wumpus_game {
 

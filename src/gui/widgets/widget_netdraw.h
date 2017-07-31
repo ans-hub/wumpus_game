@@ -14,8 +14,8 @@
 #include <FL/Fl_Group.H>
 #include <FL/fl_draw.H>
 
-#include "../helpers/draw_consts.h"
-#include "../helpers/point.h"
+#include "gui/helpers/draw_consts.h"
+#include "gui/helpers/point.h"
 
 namespace wumpus_game {
 

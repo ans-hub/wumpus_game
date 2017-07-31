@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include "logic.h"
+#include "entities/logic.h"
 #include "gui/gui.h"
 #include "cli/view.h"
 #include "cli/controller.h"

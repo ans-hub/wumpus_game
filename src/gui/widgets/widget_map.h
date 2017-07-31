@@ -11,10 +11,10 @@
 #include <FL/Fl_Group.H>
 #include <FL/fl_draw.H>
 
-#include "../widgets/widget_room.h"
-#include "../widgets/widget_netdraw.h"
-#include "../widgets/widget_player.h"
-#include "../helpers/draw_consts.h"
+#include "gui/widgets/widget_room.h"
+#include "gui/widgets/widget_netdraw.h"
+#include "gui/widgets/widget_player.h"
+#include "gui/helpers/draw_consts.h"
 
 namespace wumpus_game {
 

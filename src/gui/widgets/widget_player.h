@@ -13,8 +13,8 @@
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Group.H>
 
-#include "../helpers/point.h"
-#include "../helpers/trajectory.h"
+#include "gui/helpers/point.h"
+#include "gui/helpers/trajectory.h"
 
 namespace wumpus_game {
 

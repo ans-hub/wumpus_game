@@ -15,7 +15,7 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Window.H>
 
-#include "../helpers/draw_consts.h"
+#include "gui/helpers/draw_consts.h"
 
 namespace wumpus_game {
 

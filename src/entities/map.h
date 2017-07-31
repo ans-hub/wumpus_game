@@ -11,7 +11,7 @@
 #include <string>
 #include <algorithm>
 
-#include "room.h"
+#include "entities/room.h"
 
 namespace wumpus_game {
 

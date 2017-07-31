@@ -7,10 +7,9 @@
 #define SUBJECT_H
 
 #include <string>
-#include "../3rdparty/rand_toolkit.h"
-
-#include "map.h"
-#include "../helpers/entities_helpers.h"
+#include "3rdparty/rand_toolkit.h"
+#include "entities/map.h"
+#include "entities/helpers/map_helpers.h"
 
 namespace wumpus_game {
 

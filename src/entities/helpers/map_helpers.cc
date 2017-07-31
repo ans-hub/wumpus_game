@@ -3,7 +3,7 @@
 // Author: Anton Novoselov, 2017
 // File: implementation of the entities helpers
 
-#include "entities_helpers.h"
+#include "map_helpers.h"
 
 namespace wumpus_game {
 

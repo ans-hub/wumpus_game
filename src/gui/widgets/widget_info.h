@@ -13,7 +13,7 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_PNG_Image.H>
 
-#include "../helpers/draw_consts.h"
+#include "gui/helpers/draw_consts.h"
 
 namespace wumpus_game {
 

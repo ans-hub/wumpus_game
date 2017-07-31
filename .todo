@@ -9,6 +9,4 @@
 # 17-07-06 at 12:36  -  Make choose between controllers and views
 # 17-07-12 at 07:46  -  Helpers all in one and forward declare enum subj id
 # 17-07-12 at 07:47  -  Test_Cases to test_entities, test_logic, test_ctroller
-All callbacks move to controller
 Make observer as link to the memeber function
-Move logic helpers to logic.cc

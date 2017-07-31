@@ -9,10 +9,10 @@
 #include <sstream>
 #include <string>
 
-#include "../3rdparty/observer.h"
-#include "../events.h"
-#include "../logic.h"
-#include "windows.h"
+#include "3rdparty/observer.h"
+#include "entities/events.h"
+#include "entities/logic.h"
+#include "gui/windows.h"
 
 namespace wumpus_game {
 

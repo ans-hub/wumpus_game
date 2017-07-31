@@ -6,7 +6,7 @@
 #ifndef PIT_H
 #define PIT_H
 
-#include "enemy.h"
+#include "entities/enemy.h"
 
 namespace wumpus_game {
 

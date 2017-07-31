@@ -9,9 +9,9 @@
 #include <cassert>
 #include <string>
 
-#include "events.h"
-#include "helpers/logic_helpers.h"
-#include "helpers/entities_helpers.h"
+#include "entities/events.h"
+#include "entities/helpers/logic_helpers.h"
+#include "entities/helpers/map_helpers.h"
 #include "entities/level.h"
 #include "entities/subject.h"
 #include "3rdparty/observable.h"

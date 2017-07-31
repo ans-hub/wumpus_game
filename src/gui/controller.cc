@@ -12,14 +12,16 @@ GuiController::GuiController(Windows& gui, Logic& model)
   , gui_{gui}
   , model_{model}
 {
+  SetGameCallbacks();
+}
+
+void GuiController::SetGameCallbacks()
+{
   gui_.wdg_map_->SetCallback((void*)gui_helpers::cb_rooms_button);
   gui_.wdg_map_->SetCommand((void*)this);
  
   gui_.wnd_start_->btn_start_->callback(
     (Fl_Callback*)(gui_helpers::cb_start_button), (void*)this
-  );
-  gui_.wnd_start_->btn_quit_->callback(
-    (Fl_Callback*)(gui_helpers::cb_quit_button), (void*)this
   );
   gui_.wdg_info_->btn_next_->callback(
     (Fl_Callback*)(gui_helpers::cb_next_button), (void*)this
@@ -82,11 +84,6 @@ void cb_continue_button(void*, void* c)
 void cb_next_button(void*, void* c)
 {
   ((GuiController*)c)->CommandLevel();  
-}
-
-void cb_quit_button(void*, void* c)
-{
-  ((GuiController*)c)->StopModel();
 }
 
 void cb_rooms_button(void* b, void* c)

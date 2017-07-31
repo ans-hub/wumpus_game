@@ -7,7 +7,7 @@
 #define TRAJECTORY_GEO_H
 
 #include <vector>
-#include "point.h"
+#include "gui/helpers/point.h"
 
 namespace wumpus_game {
 

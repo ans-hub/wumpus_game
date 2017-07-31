@@ -6,7 +6,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "subject.h"
+#include "entities/subject.h"
 
 namespace wumpus_game {
 

@@ -6,7 +6,7 @@
 #ifndef WUMP_H
 #define WUMP_H
 
-#include "enemy.h"
+#include "entities/enemy.h"
 
 namespace wumpus_game {
 

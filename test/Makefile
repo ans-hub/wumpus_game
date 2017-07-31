@@ -1,17 +1,17 @@
 CC = clang++
 
 SRC = ../src/
-HLP = $(SRC)helpers/
 ENT = $(SRC)entities/
+HLP = $(ENT)helpers/
 CLI = $(SRC)cli/
 GUI = $(SRC)gui/
 AI = $(SRC)ai/
 
-CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
+CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
 FLTKFLAGS = `fltk-config --use-images --ldflags`
 
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
-level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
+level.o logic.o map_helpers.o logic_helpers.o test_helpers.o test_cases.o \
 cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
 windows.o form_start.o form_help.o form_main.o widget_info.o widget_map.o \
 widget_netdraw.o widget_player.o draw_consts.o trajectory.o
@@ -46,8 +46,8 @@ pit.o : $(ENT)pit.h $(ENT)pit.cc enemy.o
 level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 	$(CC) $(CFLAGS) -c $(ENT)level.cc
 
-logic.o : $(SRC)logic.h $(SRC)logic.cc level.o $(SRC)events.h $(SRC)3rdparty/observable.h
-	$(CC) $(CFLAGS) -c $(SRC)logic.cc
+logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(ENT)events.h $(SRC)3rdparty/observable.h
+	$(CC) $(CFLAGS) -c $(ENT)logic.cc
 
 windows.o : $(GUI)windows.h $(GUI)windows.cc form_main.o widget_map.o form_help.o form_start.o
 	$(CC) $(CFLAGS) -c $(GUI)windows.cc
@@ -79,13 +79,13 @@ widget_player.o : $(GUI)widgets/widget_player.h $(GUI)widgets/widget_player.cc $
 draw_consts.o : $(GUI)helpers/draw_consts.h $(GUI)helpers/draw_consts.cc
 	$(CC) $(CFLAGS) -c $(GUI)helpers/draw_consts.cc
 
-gui_view.o : $(GUI)view.h $(GUI)view.cc $(SRC)3rdparty/observer.h logic.o $(SRC)events.h $(GUI)windows.h
+gui_view.o : $(GUI)view.h $(GUI)view.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h $(GUI)windows.h
 	$(CC) $(CFLAGS) -c $(GUI)view.cc -o gui_view.o 
 
 gui_controller.o : $(GUI)controller.h $(GUI)controller.cc $(SRC)3rdparty/controller.h logic.o $(GUI)windows.h
 	$(CC) $(CFLAGS) -c $(GUI)controller.cc -o gui_controller.o 
 
-cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(SRC)events.h
+cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h
 	$(CC) $(CFLAGS) -c $(CLI)view.cc -o cli_view.o 
 
 cli_controller.o : $(CLI)controller.h $(CLI)controller.cc $(SRC)3rdparty/controller.h logic.o
@@ -94,8 +94,8 @@ cli_controller.o : $(CLI)controller.h $(CLI)controller.cc $(SRC)3rdparty/control
 ai_controller.o : $(AI)controller.h $(AI)controller.cc $(SRC)3rdparty/controller.h logic.o
 	$(CC) $(CFLAGS) -c $(AI)controller.cc -o ai_controller.o 
 
-entities_helpers.o : $(HLP)entities_helpers.h $(HLP)entities_helpers.cc
-	$(CC) $(CFLAGS) -c $(HLP)entities_helpers.cc
+map_helpers.o : $(HLP)map_helpers.h $(HLP)map_helpers.cc
+	$(CC) $(CFLAGS) -c $(HLP)map_helpers.cc
 
 logic_helpers.o : $(HLP)logic_helpers.h $(HLP)logic_helpers.cc
 	$(CC) $(CFLAGS) -c $(HLP)logic_helpers.cc

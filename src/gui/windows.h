@@ -8,11 +8,11 @@
 
 #include "FL/fl_ask.H"
 
-#include "forms/form_start.h"
-#include "forms/form_help.h"
-#include "forms/form_main.h"
-#include "widgets/widget_info.h"
-#include "widgets/widget_map.h"
+#include "gui/forms/form_start.h"
+#include "gui/forms/form_help.h"
+#include "gui/forms/form_main.h"
+#include "gui/widgets/widget_info.h"
+#include "gui/widgets/widget_map.h"
 
 namespace wumpus_game {
 
@@ -38,7 +38,7 @@ public:
   WidgetInfo*   wdg_info_;
 
 private:
-  void SetChildrenCallbacks();    // see note #1
+  void SetFormsCallbacks();    // see note #1
 
 };
 
@@ -46,6 +46,7 @@ namespace gui_helpers {
 
   void cb_help_button(void*, void*);
   void cb_quit_help_button(void*, void*);
+  void cb_quit_button(void*, void* c);
   void cb_close_wnd_main_(void*, void*);
 
 }  // namespace gui_helpers
@@ -55,4 +56,5 @@ namespace gui_helpers {
 #endif  // GUI_WINDOWS_H
 
 // Note #1 : main gui sets callbacks that not depends on game logic,
-// but only based on form showing and opening logic
+// but only based on form showing and opening logic. Callbacks based on
+// game logic sets in the controller

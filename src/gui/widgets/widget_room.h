@@ -27,7 +27,7 @@ struct WidgetRoom : Fl_Button
     , visited_{false}
     , img_on_{(new Fl_PNG_Image("../src/gui/widgets/img/room_on.png"))}
     , img_off_{(new Fl_PNG_Image("../src/gui/widgets/img/room_off.png"))}
-    , img_mark_{(new Fl_PNG_Image("../src/gui/widgets/img/room_mark.png"))}
+    , img_mark_{(new Fl_PNG_Image("../src/gui/widgets/img/room_mark.png"))}     // ?? 
   {
     this->image(img_on_);
     this->deimage(img_off_);
