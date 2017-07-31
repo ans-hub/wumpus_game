@@ -1,10 +1,10 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: form represents info table for game window
+// File: group widget represents info and control table for game window
 
-#ifndef FORM_INFO_H
-#define FORM_INFO_H
+#ifndef WIDGET_INFO_H
+#define WIDGET_INFO_H
 
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
@@ -17,11 +17,11 @@
 
 namespace wumpus_game {
 
-class FormInfo : public Fl_Group
+class WidgetInfo : public Fl_Group
 {
 public:
-  FormInfo();
-  ~FormInfo();
+  WidgetInfo();
+  ~WidgetInfo();
   void Show() { show(); }
   void Hide() { hide(); }
   void Redraw(int);
@@ -47,4 +47,4 @@ private:
 
 }  // namespace wumpus_game
 
-#endif  //FORM_INFO_H
+#endif  //WIDGET_INFO_H

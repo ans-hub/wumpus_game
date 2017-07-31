@@ -1,22 +1,22 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: form represents info table for game window
+// File: group widget represents info and control table for game window
 
-#include "form_info.h"
+#include "widget_info.h"
 
 namespace wumpus_game {
 
 // Make coor put in initialzer list not in Resize() (Redraw())
 
-FormInfo::FormInfo ()
+WidgetInfo::WidgetInfo ()
 : Fl_Group(10, 70, 300, 35)
-, img_cover_{new Fl_PNG_Image("../src/gui/forms/img/info_bg.png")}
-, img_level_{new Fl_PNG_Image("../src/gui/forms/img/info_level.png")}
-, img_wumps_{new Fl_PNG_Image("../src/gui/forms/img/info_wumps.png")}
-, img_bats_{new Fl_PNG_Image("../src/gui/forms/img/info_bats.png")}
-, img_pits_{new Fl_PNG_Image("../src/gui/forms/img/info_pits.png")}
-, img_arrows_{new Fl_PNG_Image("../src/gui/forms/img/info_arrows.png")}
+, img_cover_{new Fl_PNG_Image("../src/gui/widgets/img/info_bg.png")}
+, img_level_{new Fl_PNG_Image("../src/gui/widgets/img/info_level.png")}
+, img_wumps_{new Fl_PNG_Image("../src/gui/widgets/img/info_wumps.png")}
+, img_bats_{new Fl_PNG_Image("../src/gui/widgets/img/info_bats.png")}
+, img_pits_{new Fl_PNG_Image("../src/gui/widgets/img/info_pits.png")}
+, img_arrows_{new Fl_PNG_Image("../src/gui/widgets/img/info_arrows.png")}
 , box_level_{new Fl_Box(x()+10, y()+25, 15, 15)}
 , box_wumps_{new Fl_Box(1,1,1,1)}
 , box_bats_{new Fl_Box(1,1,1,1)}
@@ -30,7 +30,7 @@ FormInfo::FormInfo ()
   end();
 }
 
-FormInfo::~FormInfo()
+WidgetInfo::~WidgetInfo()
 {
   delete btn_next_;
   delete btn_help_;
@@ -48,7 +48,7 @@ FormInfo::~FormInfo()
   delete img_cover_;
 }
 
-void FormInfo::Redraw(int level)
+void WidgetInfo::Redraw(int level)
 {
   int w = draw_consts::level_width(level);
   int offset = draw_consts::main_wnd_offset; 
@@ -82,7 +82,7 @@ void FormInfo::Redraw(int level)
 //   // redraw();
 }
 
-void FormInfo::TuneAppearance()
+void WidgetInfo::TuneAppearance()
 {
   // set_modal();
   // color((Fl_Color)34);

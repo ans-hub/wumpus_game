@@ -91,7 +91,7 @@ void cb_quit_button(void*, void* c)
 
 void cb_rooms_button(void* b, void* c)
 {
-  ((GuiController*)c)->CommandAction(((RoomButton*)b)->num_);
+  ((GuiController*)c)->CommandAction(((WidgetRoom*)b)->num_);
 }
 
 }  // namespace gui_helpers

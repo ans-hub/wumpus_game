@@ -1,13 +1,13 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: FLTK widget draw pathes between rooms
+// File: control widget draw pathes between rooms
 
-#include "map_pathes.h"
+#include "widget_netdraw.h"
 
 namespace wumpus_game {
 
-MapPathes::MapPathes(int level)
+WidgetNetdraw::WidgetNetdraw(int level)
   : Fl_Group(1, 1, 1, 1, "")
   , vxs_count_{draw_consts::level_vertexes(level)}
   , total_vxs_(vxs_count_)
@@ -21,7 +21,7 @@ MapPathes::MapPathes(int level)
   FillAllVertexes();
 }
 
-void MapPathes::FillAllVertexes()
+void WidgetNetdraw::FillAllVertexes()
 {
   // Prepare
 
@@ -82,7 +82,7 @@ void MapPathes::FillAllVertexes()
   );
 }
 
-void MapPathes::draw()
+void WidgetNetdraw::draw()
 {
   // Fl_Group::draw();
 
@@ -132,7 +132,7 @@ bool fill_vector_by_another(
   return true;
 }
 
-void draw_points(const PointVec& v, MapPathes*, int)
+void draw_points(const PointVec& v, WidgetNetdraw*, int)
 {
   for (const auto& v0 : v) {
     fl_line_style(1,5);
@@ -142,7 +142,7 @@ void draw_points(const PointVec& v, MapPathes*, int)
   fl_line_style(0,1);
 }
 
-void draw_poly(const PointVec& v, MapPathes* surface)
+void draw_poly(const PointVec& v, WidgetNetdraw* surface)
 {
   fl_color(FL_WHITE);    
   fl_line_style(3,5);
@@ -161,7 +161,7 @@ void draw_poly(const PointVec& v, MapPathes* surface)
   fl_line_style(0,1);
 }
 
-void draw_edges(const PointVec& v, MapPathes* surface)
+void draw_edges(const PointVec& v, WidgetNetdraw* surface)
 {
   double half = static_cast<int>(v.size()/2);
   for (int i = 0; i < half; ++i) {

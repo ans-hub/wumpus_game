@@ -10,15 +10,11 @@ AI = $(SRC)ai/
 CFLAGS = -I ../src/ -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
 FLTKFLAGS = `fltk-config --use-images --ldflags`
 
-# note - if library is libpng16.so, just type lpng16 and so on
-# a - static lib
-# so - dynamic lib
-
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o entities_helpers.o logic_helpers.o test_helpers.o test_cases.o \
 cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
-windows.o form_start.o form_help.o form_info.o form_main.o form_map.o \
-map_pathes.o player_widget.o draw_consts.o trajectory.o
+windows.o form_start.o form_help.o form_main.o widget_info.o widget_map.o \
+widget_netdraw.o widget_player.o draw_consts.o trajectory.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
@@ -53,7 +49,7 @@ level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 logic.o : $(SRC)logic.h $(SRC)logic.cc level.o $(SRC)events.h $(SRC)3rdparty/observable.h
 	$(CC) $(CFLAGS) -c $(SRC)logic.cc
 
-windows.o : $(GUI)windows.h $(GUI)windows.cc form_main.o form_map.o form_help.o form_start.o
+windows.o : $(GUI)windows.h $(GUI)windows.cc form_main.o widget_map.o form_help.o form_start.o
 	$(CC) $(CFLAGS) -c $(GUI)windows.cc
 
 form_start.o : $(GUI)forms/form_start.h $(GUI)forms/form_start.cc
@@ -62,23 +58,23 @@ form_start.o : $(GUI)forms/form_start.h $(GUI)forms/form_start.cc
 form_help.o : $(GUI)forms/form_help.h $(GUI)forms/form_help.cc
 	$(CC) $(CFLAGS) -c $(GUI)forms/form_help.cc
 
-form_info.o : $(GUI)forms/form_info.h $(GUI)forms/form_info.cc draw_consts.o
-	$(CC) $(CFLAGS) -c $(GUI)forms/form_info.cc
-
 form_main.o : $(GUI)forms/form_main.h $(GUI)forms/form_main.cc
 	$(CC) $(CFLAGS) -c $(GUI)forms/form_main.cc
 
-form_map.o : $(GUI)forms/form_map.h $(GUI)forms/form_map.cc $(GUI)widgets/room_button.h map_pathes.o player_widget.o
-	$(CC) $(CFLAGS) -c $(GUI)forms/form_map.cc
+widget_info.o : $(GUI)widgets/widget_info.h $(GUI)widgets/widget_info.cc draw_consts.o
+	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_info.cc
 
-map_pathes.o : $(GUI)widgets/map_pathes.h $(GUI)widgets/map_pathes.cc $(GUI)widgets/structs/point.h
-	$(CC) $(CFLAGS) -c $(GUI)widgets/map_pathes.cc
+widget_map.o : $(GUI)widgets/widget_map.h $(GUI)widgets/widget_map.cc $(GUI)widgets/widget_room.h widget_netdraw.o widget_player.o
+	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_map.cc
 
-trajectory.o : $(GUI)widgets/structs/trajectory.h $(GUI)widgets/structs/trajectory.cc $(GUI)widgets/structs/point.h
-	$(CC) $(CFLAGS) -c $(GUI)widgets/structs/trajectory.cc
+widget_netdraw.o : $(GUI)widgets/widget_netdraw.h $(GUI)widgets/widget_netdraw.cc $(GUI)helpers/point.h
+	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_netdraw.cc
 
-player_widget.o : $(GUI)widgets/player_widget.h $(GUI)widgets/player_widget.cc $(GUI)widgets/structs/point.h trajectory.o
-	$(CC) $(CFLAGS) -c $(GUI)widgets/player_widget.cc
+trajectory.o : $(GUI)helpers/trajectory.h $(GUI)helpers/trajectory.cc $(GUI)helpers/point.h
+	$(CC) $(CFLAGS) -c $(GUI)helpers/trajectory.cc
+
+widget_player.o : $(GUI)widgets/widget_player.h $(GUI)widgets/widget_player.cc $(GUI)helpers/point.h trajectory.o
+	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_player.cc
 
 draw_consts.o : $(GUI)helpers/draw_consts.h $(GUI)helpers/draw_consts.cc
 	$(CC) $(CFLAGS) -c $(GUI)helpers/draw_consts.cc

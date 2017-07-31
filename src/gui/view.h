@@ -26,7 +26,7 @@ struct GuiView : public mvc_set::Observer<Event>
   ~GuiView() { }
   bool IncomingNotify(Event) const override;
 private:
-  typedef std::vector<RoomButton*> RoomButtons;
+  typedef std::vector<WidgetRoom*> RoomButtons;
   Windows& gui_;
   Logic& model_;
   RoomButtons rooms_;

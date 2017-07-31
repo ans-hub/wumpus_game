@@ -11,8 +11,8 @@ Windows::Windows()
   : wnd_start_ { new FormStart() }
   , wnd_help_ { new FormHelp() }
   , wnd_main_{ new FormMain() }
-  , wdg_map_ { new FormMap() }
-  , wdg_info_{ new FormInfo() }
+  , wdg_map_ { new WidgetMap() }
+  , wdg_info_{ new WidgetInfo() }
 {
   wnd_main_->begin();
   wnd_main_->add(wdg_map_);

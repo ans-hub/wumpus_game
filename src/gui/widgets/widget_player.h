@@ -1,10 +1,10 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: FLTK widget represents player on the map
+// File: group widget represents player on the map
 
-#ifndef PLAYER_WIDGET_H
-#define PLAYER_WIDGET_H
+#ifndef WIDGET_PLAYER_H
+#define WIDGET_PLAYER_H
 
 #include <vector>
 
@@ -13,16 +13,16 @@
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Group.H>
 
-#include "structs/point.h"
-#include "structs/trajectory.h"
+#include "../helpers/point.h"
+#include "../helpers/trajectory.h"
 
 namespace wumpus_game {
 
-class PlayerWidget : public Fl_Group
+class WidgetPlayer : public Fl_Group
 {
 public:
-  PlayerWidget();
-  ~PlayerWidget();
+  WidgetPlayer();
+  ~WidgetPlayer();
   
   void DoesMove(int x, int y);
   void DoesShot();
@@ -62,4 +62,4 @@ private:
 
 }  // namespace wumpus_game
 
-#endif  // PLAYER_WIDGET_H
+#endif  // WIDGET_PLAYER_H

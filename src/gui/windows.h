@@ -11,8 +11,8 @@
 #include "forms/form_start.h"
 #include "forms/form_help.h"
 #include "forms/form_main.h"
-#include "forms/form_info.h"
-#include "forms/form_map.h"
+#include "widgets/widget_info.h"
+#include "widgets/widget_map.h"
 
 namespace wumpus_game {
 
@@ -34,8 +34,8 @@ public:
   FormStart*    wnd_start_;
   FormHelp*     wnd_help_;
   FormMain*     wnd_main_;
-  FormMap*      wdg_map_;
-  FormInfo*     wdg_info_;
+  WidgetMap*    wdg_map_;
+  WidgetInfo*   wdg_info_;
 
 private:
   void SetChildrenCallbacks();    // see note #1

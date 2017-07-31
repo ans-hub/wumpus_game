@@ -1,10 +1,10 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: FLTK widget represents interactive rooms on game the map
+// File: control widget represents interactive rooms on game the map
 
-#ifndef ROOM_BUTTON_H
-#define ROOM_BUTTON_H
+#ifndef WIDGET_ROOM_H
+#define WIDGET_ROOM_H
 
 #include <FL/Fl.H>
 #include <FL/Fl_PNG_Image.H>
@@ -12,7 +12,7 @@
 
 namespace wumpus_game {
 
-struct RoomButton : Fl_Button
+struct WidgetRoom : Fl_Button
 {
   int num_; 
   int visited_;
@@ -21,7 +21,7 @@ struct RoomButton : Fl_Button
   Fl_PNG_Image* img_mark_;
   int handle(int) override;
 
-  RoomButton(int num, int x, int y, int w, int h)
+  WidgetRoom(int num, int x, int y, int w, int h)
     : Fl_Button(x, y, w, h)
     , num_{num}
     , visited_{false}
@@ -40,7 +40,7 @@ struct RoomButton : Fl_Button
     // this->labeltype(FL_SHADOW_LABEL);
     // this->labelcolor((Fl_Color)94);
   }
-  ~RoomButton()
+  ~WidgetRoom()
   {
     delete img_on_;
     delete img_off_;
@@ -48,7 +48,7 @@ struct RoomButton : Fl_Button
   }
 };
 
-inline int RoomButton::handle(int event)
+inline int WidgetRoom::handle(int event)
 {
   switch(event)
   {
@@ -71,4 +71,4 @@ inline int RoomButton::handle(int event)
 
 }  // namespace wumpus_game
 
-#endif  // ROOM_BUTTON_H
+#endif  // WIDGET_ROOM_H

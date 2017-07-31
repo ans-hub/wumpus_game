@@ -1,13 +1,13 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: form represents map for main window
+// File: group widget represents map for main window
 
-#include "form_map.h"
+#include "widget_map.h"
 
 namespace wumpus_game {
 
-FormMap::FormMap ()
+WidgetMap::WidgetMap ()
   : Fl_Group(1, 1, 1, 1, "")
   , rooms_{}
   , pathes_{nullptr}
@@ -16,7 +16,7 @@ FormMap::FormMap ()
   form_helpers::tune_form(this);
 } 
 
-FormMap::~FormMap()
+WidgetMap::~WidgetMap()
 {
   for (auto& v : rooms_) {
     this->remove(v);
@@ -25,17 +25,17 @@ FormMap::~FormMap()
   delete player_;
 }
 
-int FormMap::GetRoomCoordX(int num) const
+int WidgetMap::GetRoomCoordX(int num) const
 {
   return pathes_->x() + pathes_->GetVertexes()[num].x_;
 }
 
-int FormMap::GetRoomCoordY(int num) const
+int WidgetMap::GetRoomCoordY(int num) const
 {
   return pathes_->y() + pathes_->GetVertexes()[num].y_;
 }
 
-void FormMap::Redraw(int level)
+void WidgetMap::Redraw(int level)
 {
   begin();
   ResizeGroup(level);
@@ -51,7 +51,7 @@ void FormMap::Redraw(int level)
 
 // REALISATION DETAILS
 
-void FormMap::ResizeGroup(int level)
+void WidgetMap::ResizeGroup(int level)
 {
   // evaluate based on edge len
   // and room btn too evaluated based on edge_len val
@@ -60,33 +60,33 @@ void FormMap::ResizeGroup(int level)
   this->resize(30, 90, w, w);
 }
 
-void FormMap::DrawPlayer()
+void WidgetMap::DrawPlayer()
 {
   // remove(player_);
-  player_ = new PlayerWidget();
+  player_ = new WidgetPlayer();   // Not raii!!
   add(player_);
 }
 
 // Make form map in form _main. It is more simple to change sizes whe nlevel is new
 
-void FormMap::DrawLines(int level)
+void WidgetMap::DrawLines(int level)
 {
   // int edge_len = draw_consts::edge_len;
-  // remove(pathes_);
-  pathes_ = new MapPathes(level);   // may be we set only x y w h and widget define by itself how to draw items???
+  // remove(pathes_);             // not raii!
+  pathes_ = new WidgetNetdraw(level);   // may be we set only x y w h and widget define by itself how to draw items???
   add(pathes_);
   pathes_->position(x(), y());   /// don`t forget to dothis
   // pathes_->redraw();
   // this->end(); 
 }
 
-void FormMap::DrawRooms(int level)
+void WidgetMap::DrawRooms(int level)
 {
   int btn_size = draw_consts::room_btn_size;
   int rooms = draw_consts::level_vertexes(level);
   
   for (int i = 0; i < rooms; ++i) {
-    RoomButton* btn = new RoomButton(
+    WidgetRoom* btn = new WidgetRoom(     //not raii
       i,
       GetRoomCoordX(i) - btn_size / 2,
       GetRoomCoordY(i) - btn_size / 2,
@@ -98,7 +98,7 @@ void FormMap::DrawRooms(int level)
   }
 }
 
-void FormMap::ClearRooms()
+void WidgetMap::ClearRooms()
 {
   for (auto& v : rooms_) {
     remove(v);
@@ -108,19 +108,19 @@ void FormMap::ClearRooms()
   rooms_.resize(0);
 }
 
-void FormMap::ClearPlayer()
+void WidgetMap::ClearPlayer()
 { 
   remove(player_);
   delete player_;
 }
 
-void FormMap::ClearLines()
+void WidgetMap::ClearLines()
 {
   remove(pathes_);
   delete pathes_;
 }
 
-void FormMap::SetCallbacks()
+void WidgetMap::SetCallbacks()
 {
   for (auto& b : rooms_) {
     b->callback((Fl_Callback*)this->callback_, this->command_);
@@ -134,7 +134,7 @@ void tune_form(Fl_Group* w)
   w->box(FL_PLASTIC_UP_FRAME);
 }
 
-void tune_button(RoomButton*)
+void tune_button(WidgetRoom*)
 {
   // b->color((Fl_Color)36);
   // b->selection_color((Fl_Color)69);

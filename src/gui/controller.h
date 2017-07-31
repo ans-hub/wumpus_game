@@ -6,7 +6,7 @@
 #ifndef GUI_CONTROLLER_H
 #define GUI_CONTROLLER_H
 
-#include "widgets/room_button.h"
+#include "widgets/widget_room.h"
 #include "../3rdparty/controller.h"
 #include "../logic.h"
 #include "windows.h"

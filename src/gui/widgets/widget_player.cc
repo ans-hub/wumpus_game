@@ -1,13 +1,13 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: FLTK widget represents player on the map
+// File: group widget represents player on the map
 
-#include "player_widget.h"
+#include "widget_player.h"
 
 namespace wumpus_game {
 
-PlayerWidget::PlayerWidget()
+WidgetPlayer::WidgetPlayer()
   : Fl_Group(0, 0, 70, 80)
   // background don`t forget!!!
   , grp_player_{(new Fl_Group(10, 30, 50, 50))}
@@ -31,7 +31,7 @@ PlayerWidget::PlayerWidget()
   TuneAppearance();
 }
 
-PlayerWidget::~PlayerWidget()
+WidgetPlayer::~WidgetPlayer()
 {
   delete img_stay_;
   delete img_shot_;
@@ -51,44 +51,44 @@ PlayerWidget::~PlayerWidget()
   delete grp_player_;
 }
 
-void PlayerWidget::DoesMove(int x, int y)
+void WidgetPlayer::DoesMove(int x, int y)
 {
   grp_player_->image(img_stay_);
   position(x,y);
   redraw();
 }
 
-void PlayerWidget::DoesShot()
+void WidgetPlayer::DoesShot()
 {
   grp_player_->image(img_shot_);
   redraw();
 }
 
-void PlayerWidget::DoesKillWump()
+void WidgetPlayer::DoesKillWump()
 {
   grp_player_->image(img_kill_wump_);
   redraw();
 }
 
-void PlayerWidget::DoesKilledByWump()
+void WidgetPlayer::DoesKilledByWump()
 {
   grp_player_->image(img_dead_wump_);
   redraw();
 }
 
-void PlayerWidget::DoesKilledByPits()
+void WidgetPlayer::DoesKilledByPits()
 {
   grp_player_->image(img_dead_pits_);
   redraw();
 }
 
-void PlayerWidget::DoesUnknownAction()
+void WidgetPlayer::DoesUnknownAction()
 {
   grp_player_->image(img_unknown_);
   redraw();
 }
 
-void PlayerWidget::DoesFeels(bool wump, bool bats, bool pits)
+void WidgetPlayer::DoesFeels(bool wump, bool bats, bool pits)
 {
   if (wump) 
     box_wumps_->show();
@@ -105,7 +105,7 @@ void PlayerWidget::DoesFeels(bool wump, bool bats, bool pits)
   redraw();
 }
 
-void PlayerWidget::AnimateBegin(int x, int y)
+void WidgetPlayer::AnimateBegin(int x, int y)
 {
   if (trajectory_.Empty()) {
     grp_player_->image(img_bats_);
@@ -115,7 +115,7 @@ void PlayerWidget::AnimateBegin(int x, int y)
   }
 }
 
-void PlayerWidget::AnimateContinue()
+void WidgetPlayer::AnimateContinue()
 {
   if (!trajectory_.Empty()) {
     int x = trajectory_.Next().x_;
@@ -128,7 +128,7 @@ void PlayerWidget::AnimateContinue()
   }
 }
 
-void PlayerWidget::AnimateFinish()
+void WidgetPlayer::AnimateFinish()
 {
   if (trajectory_.Empty()) {
     trajectory_.Reset();
@@ -141,7 +141,7 @@ void PlayerWidget::AnimateFinish()
 
 // PRIVATE REALISATION
 
-void PlayerWidget::TuneAppearance()
+void WidgetPlayer::TuneAppearance()
 {
   begin();
   box(FL_BORDER_BOX);
@@ -166,9 +166,9 @@ void PlayerWidget::TuneAppearance()
 
 // CALLBACKS SECTION
 
-void PlayerWidget::cb_move_bats(void* w)
+void WidgetPlayer::cb_move_bats(void* w)
 {
-  auto* p = ((PlayerWidget*)w);
+  auto* p = ((WidgetPlayer*)w);
   if (p->trajectory_.Empty()) {
     p->AnimateFinish();
     Fl::remove_timeout(cb_move_bats, w);
@@ -179,7 +179,7 @@ void PlayerWidget::cb_move_bats(void* w)
   }
 }
 
-void PlayerWidget::cb_stop_bats(void* w)
+void WidgetPlayer::cb_stop_bats(void* w)
 {
   Fl::remove_timeout(cb_move_bats, w);
 }
