@@ -10,7 +10,7 @@ namespace wumpus_game {
 
   enum class Event
   {
-    WINDOW = 0,
+    MODEL_READY = 0,
     UNKNOWN_COMMAND,
     READY_TO_INPUT,
     NEW_LEVEL,

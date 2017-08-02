@@ -10,32 +10,47 @@
 
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
-#include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Group.H>
+#include <FL/Fl_PNG_Image.H>
 
 #include "gui/helpers/point.h"
 #include "gui/helpers/trajectory.h"
+#include "gui/helpers/draw_consts.h"
 
 namespace wumpus_game {
 
 class WidgetPlayer : public Fl_Group
 {
 public:
+  enum State
+  {
+    MOVED_BATS,
+    STAY,
+    WALK,
+    SHOT,
+    KILLED_BY_WUMP,
+    KILLED_BY_PITS,
+    KILL_WUMP,
+    UNKNOWN_ACTION
+  };
+
   WidgetPlayer();
   ~WidgetPlayer();
   
-  void DoesMove(int x, int y);
-  void DoesShot();
-  void DoesKillWump();
-  void DoesKilledByWump();
-  void DoesKilledByPits();
-  void DoesUnknownAction();
-  void DoesFeels(bool, bool, bool);
-  void AnimateBegin(int x, int y);
-  void AnimateContinue();
-  void AnimateFinish();
+  void SetStateImage(State);
+  void ShowFeelsIcons(bool, bool, bool);
+  void StaticMove(const Point&);
+  void AnimateMove(const Point&, Trajectory::Type);
+  bool IsAnimateInProgress() const { return !trajectory_.Empty(); }
 
 private:
+
+  void TuneAppearance();
+
+  void AnimateMoveContinue();
+  void AnimateMoveFinish();
+  static void cb_animate_move(void*);
+
   Fl_Group*     grp_player_;
   Fl_Group*     grp_feels_;
   Fl_Box*       box_wumps_;  
@@ -43,6 +58,7 @@ private:
   Fl_Box*       box_pits_;  
   Fl_PNG_Image* img_stay_;
   Fl_PNG_Image* img_shot_;
+  Fl_PNG_Image* img_walk_;
   Fl_PNG_Image* img_bats_; 
   Fl_PNG_Image* img_kill_wump_;
   Fl_PNG_Image* img_unknown_;
@@ -52,12 +68,7 @@ private:
   Fl_PNG_Image* img_feels_bats_;
   Fl_PNG_Image* img_feels_pits_;
   Fl_PNG_Image* img_feels_wumps_;
-  Trajectory    trajectory_;
-  
-  void TuneAppearance();
-
-  static void cb_move_bats(void*);
-  static void cb_stop_bats(void*);
+  Trajectory    trajectory_;  
 };
 
 }  // namespace wumpus_game

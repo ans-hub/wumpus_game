@@ -8,10 +8,10 @@
 namespace wumpus_game {
 
 WidgetMap::WidgetMap ()
-  : Fl_Group(1, 1, 1, 1, "")
+  : Fl_Group(30, 90, parent()->w(), parent()->h())
   , rooms_{}
   , pathes_{nullptr}
-  , player_{nullptr}  // add separate as rooms and pathes
+  , player_{new WidgetPlayer()}  // add separate as rooms and pathes
 {
   form_helpers::tune_form(this);
 } 
@@ -22,6 +22,7 @@ WidgetMap::~WidgetMap()
     this->remove(v);
     delete v;
   }
+  remove(player_);
   delete player_;
 }
 
@@ -63,7 +64,7 @@ void WidgetMap::ResizeGroup(int level)
 void WidgetMap::DrawPlayer()
 {
   // remove(player_);
-  player_ = new WidgetPlayer();   // Not raii!!
+  // player_ = new WidgetPlayer();   // Not raii!!
   add(player_);
 }
 
@@ -111,7 +112,7 @@ void WidgetMap::ClearRooms()
 void WidgetMap::ClearPlayer()
 { 
   remove(player_);
-  delete player_;
+  // delete player_;
 }
 
 void WidgetMap::ClearLines()

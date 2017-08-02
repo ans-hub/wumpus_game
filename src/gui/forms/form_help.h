@@ -23,12 +23,7 @@ class FormHelp : public Fl_Window
 public: 
   FormHelp();
   ~FormHelp();
-  // void Show() const { window_->show(); }
-  void Show() { show(); }
-  void Hide() { hide(); }
-  // void Hide() const { window_->hide(); }
   
-  // Fl_Window*        window_;
   Fl_Box*           box_label_;
   Fl_Button*        btn_quit_help_;
   Fl_Text_Buffer*   output_;

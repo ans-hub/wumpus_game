@@ -12,22 +12,26 @@ GuiController::GuiController(Windows& gui, Logic& model)
   , gui_{gui}
   , model_{model}
 {
-  SetGameCallbacks();
+  SetLogicCommandsCallbacks();
+  SetLevelProcessingCallbacks();
 }
 
-void GuiController::SetGameCallbacks()
+void GuiController::SetLogicCommandsCallbacks()
 {
-  gui_.wdg_map_->SetCallback((void*)gui_helpers::cb_rooms_button);
+  gui_.wdg_map_->SetCallback((void*)cb_rooms_button);
   gui_.wdg_map_->SetCommand((void*)this);
- 
+}
+
+void GuiController::SetLevelProcessingCallbacks()
+{
   gui_.wnd_start_->btn_start_->callback(
-    (Fl_Callback*)(gui_helpers::cb_start_button), (void*)this
+    (Fl_Callback*)(cb_start_button), (void*)this
   );
   gui_.wdg_info_->btn_next_->callback(
-    (Fl_Callback*)(gui_helpers::cb_next_button), (void*)this
+    (Fl_Callback*)(cb_next_button), (void*)this
   );
   gui_.wdg_info_->btn_continue_->callback(
-    (Fl_Callback*)(gui_helpers::cb_continue_button), (void*)this
+    (Fl_Callback*)(cb_continue_button), (void*)this
   );
 }
 
@@ -69,28 +73,24 @@ void GuiController::CommandAction(int room)
   }
 }
 
-namespace gui_helpers {
-
-void cb_start_button(void*, void* c)
+void GuiController::cb_start_button(void*, void* c)
 {
   ((GuiController*)c)->CommandStart();
 }
 
-void cb_continue_button(void*, void* c)
+void GuiController::cb_continue_button(void*, void* c)
 {
   ((GuiController*)c)->CommandContinue();
 }
 
-void cb_next_button(void*, void* c)
+void GuiController::cb_next_button(void*, void* c)
 {
   ((GuiController*)c)->CommandLevel();  
 }
 
-void cb_rooms_button(void* b, void* c)
+void GuiController::cb_rooms_button(void* b, void* c)
 {
-  ((GuiController*)c)->CommandAction(((WidgetRoom*)b)->num_);
+  ((GuiController*)c)->CommandAction(((WidgetRoom*)b)->num_); // called by WidgetRoom
 }
-
-}  // namespace gui_helpers
 
 }  // namespace wumpus_game

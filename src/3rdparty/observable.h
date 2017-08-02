@@ -14,12 +14,12 @@ namespace mvc_set {
 template<class...T>
 class Observable
 {
-  typedef Observer<T...> Observer;
-  typedef std::reference_wrapper<Observer> WrapObserver;
+  // typedef Observer<T...> Observer;
+  using WrapObserver = std::reference_wrapper<Observer<T...>>;
   std::vector<WrapObserver> observers_;
 public:
-  void RegisterObserver(Observer&);
-  void UnregisterObserver(Observer&);
+  void RegisterObserver(Observer<T...>&);
+  void UnregisterObserver(Observer<T...>&);
   void NotifyObservers(T...args) const;
 protected:
   Observable() : observers_{ } { }
@@ -30,13 +30,13 @@ protected:
 // REALISATION
 
 template<class...T>
-void Observable<T...>::RegisterObserver(Observer& o)
+void Observable<T...>::RegisterObserver(Observer<T...>& o)
 {
   observers_.push_back(o);
 }
 
 template<class...T>
-void Observable<T...>::UnregisterObserver(Observer& o)
+void Observable<T...>::UnregisterObserver(Observer<T...>& o)
 {
   observers_.erase (
     std::remove (o->begin(), o->end(), o), o->end()

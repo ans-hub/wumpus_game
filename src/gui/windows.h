@@ -23,23 +23,21 @@ public:
   ~Windows();
   void Show();
   void Close();
-  void Redraw(int);
-  void ShowMain() const;
-  void HideMain() const;
-  void ShowHelp() const;
-  void HideHelp() const;
-  void ShowWidget(Fl_Widget*);
-  void HideWidget(Fl_Widget*);
   
+  // Form of all game
+
   FormStart*    wnd_start_;
   FormHelp*     wnd_help_;
   FormMain*     wnd_main_;
+  
+  // Widgets that are aliases for simple access
+  
   WidgetMap*    wdg_map_;
   WidgetInfo*   wdg_info_;
+  WidgetPlayer* wdg_player_;
 
 private:
   void SetFormsCallbacks();    // see note #1
-
 };
 
 namespace gui_helpers {
@@ -55,6 +53,6 @@ namespace gui_helpers {
 
 #endif  // GUI_WINDOWS_H
 
-// Note #1 : main gui sets callbacks that not depends on game logic,
-// but only based on form showing and opening logic. Callbacks based on
-// game logic sets in the controller
+// Note #1 : Windows sets callbacks that not depends on game logic,
+// but only based on form appearance logic. Callbacks based on game
+// logic sets in the GuiController

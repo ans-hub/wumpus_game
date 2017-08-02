@@ -1,4 +1,4 @@
-CC = clang++
+CC = g++
 
 SRC = ../src/
 ENT = $(SRC)entities/
@@ -7,17 +7,17 @@ CLI = $(SRC)cli/
 GUI = $(SRC)gui/
 AI = $(SRC)ai/
 
-CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
+CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g -L $(SRC)3rdparty -lbass
 FLTKFLAGS = `fltk-config --use-images --ldflags`
 
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o map_helpers.o logic_helpers.o test_helpers.o test_cases.o \
 cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
 windows.o form_start.o form_help.o form_main.o widget_info.o widget_map.o \
-widget_netdraw.o widget_player.o draw_consts.o trajectory.o
+widget_netdraw.o widget_player.o draw_consts.o trajectory.o game_sounds.o
 
 main.out : $(OBJECTS) main.cc
-	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
+	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main.out
 
 room.o : $(ENT)room.h $(ENT)room.cc subject.o
 	$(CC) $(CFLAGS) -c $(ENT)room.cc
@@ -25,10 +25,10 @@ room.o : $(ENT)room.h $(ENT)room.cc subject.o
 map.o : $(ENT)map.h $(ENT)map.cc room.o 
 	$(CC) $(CFLAGS) -c $(ENT)map.cc
 
-subject.o : $(ENT)subject.h $(ENT)subject.cc map.o entities_helpers.o
+subject.o : $(ENT)subject.h $(ENT)subject.cc map.o map_helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)subject.cc
 
-player.o : $(ENT)player.h $(ENT)player.cc subject.o entities_helpers.o
+player.o : $(ENT)player.h $(ENT)player.cc subject.o map_helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)player.cc
 
 enemy.o : $(ENT)enemy.h $(ENT)enemy.cc subject.o
@@ -105,6 +105,9 @@ test_helpers.o : test_helpers.h test_helpers.cc map.o subject.o
 
 test_cases.o : test_cases.h test_cases.cc $(OBJECTS)
 	$(CC) $(CFLAGS) -c test_cases.cc
+
+game_sounds.o : $(SRC)audio/game_sounds.h $(SRC)audio/game_sounds.cc
+	$(CC) $(CFLAGS) -c $(SRC)audio/game_sounds.cc
 
 clean : 
 	rm ${OBJECTS} main.out

@@ -7,6 +7,8 @@
 #define TRAJECTORY_GEO_H
 
 #include <vector>
+#include <cmath>
+
 #include "gui/helpers/point.h"
 
 namespace wumpus_game {
@@ -19,21 +21,24 @@ struct Trajectory
     CURVE
   };
   
-  std::vector<Point> points_;
-
-  Trajectory() : points_{ } { }  
-  bool  Empty() const { return points_.empty(); }
-  void  Set(double, double, double, double, Type, int);
+  Trajectory() : points_{ } { }
+  void  Set(const Point&, const Point&, Type, int);
   Point Next() const { return points_.back(); }
-  void  Pop() { points_.pop_back(); }
   void  Reset() { points_.clear(); points_.resize(0); }
+  void  Pop() { points_.pop_back(); }
+  bool  Empty() const { return points_.empty(); }
+
+private:
+  std::vector<Point> points_;
 };
 
 namespace draw_helpers {
 
-  Point get_point_on_line(Point, Point, int);
-  std::vector<Point> build_line_trajectory(Point&, Point&, int);
-  std::vector<Point> build_curve_trajectory(Point&, Point&, int);
+  Point eval_vector_coordinates(const Point&, const Point&);
+  double eval_vector_length(const Point&, const Point&);
+  Point get_point_on_vector(const Point&, const Point&, int);
+  std::vector<Point> build_line_trajectory(const Point&, const Point&, int);
+  std::vector<Point> build_bezier_trajectory(const Point&, const Point&, int);
 
 }  // namespace draw_helpers
  

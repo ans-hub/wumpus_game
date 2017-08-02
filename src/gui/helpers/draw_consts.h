@@ -12,13 +12,16 @@ namespace wumpus_game {
 
 namespace draw_consts {
   
-  constexpr double pi() { return std::atan(1)*4; }
-  constexpr double edge_len = 12;
-  constexpr int room_btn_size = 30;
-  constexpr int main_wnd_offset = 30;
+  constexpr double  pi() { return std::atan(1)*4; }
   
-  int level_vertexes(int);
-  double level_width(int); 
+  constexpr double  edge_len = 12;
+  constexpr int     room_btn_size = 30;
+  constexpr int     main_wnd_offset = 30;
+  constexpr int     animation_step = 3;
+  constexpr double  animation_speed =  0.01;
+  
+  int     level_vertexes(int);
+  double  level_width(int); 
 
 }  // namespace draw_consts
 

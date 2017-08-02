@@ -36,4 +36,5 @@ int main()
   status += test_logic_behavior::for_exceptions();
 
   return status;
+  
 }

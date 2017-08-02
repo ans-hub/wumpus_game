@@ -7,7 +7,7 @@
 
 namespace wumpus_game {
 
-bool CliView::IncomingNotify(Event msg) const
+bool CliView::IncomingNotify(Event msg)
 {
   switch(msg)
   {
@@ -16,7 +16,7 @@ bool CliView::IncomingNotify(Event msg) const
       break;
     
     case Event::GAME_OVER :
-      cli_helpers::print_game_over(ostream_, model_.game_over_cause_);
+      cli_helpers::print_game_over(ostream_, model_.GameOverCause());
       break;
     
     case Event::MOVED_BATS :
@@ -54,7 +54,7 @@ bool CliView::IncomingNotify(Event msg) const
     // case Event::ERROR_ROOM :
     //   cli_helpers::print_error_room(ostream_);
     //   break;
-    case Event::WINDOW : default: break;
+    case Event::MODEL_READY : default: break;
   }
   return true;
 }

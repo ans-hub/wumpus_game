@@ -35,6 +35,7 @@
 #include "gui/windows.h"
 #include "gui/view.h"
 #include "gui/controller.h"
+#include "audio/game_sounds.h"
 
 namespace wumpus_game {
 

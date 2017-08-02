@@ -13,8 +13,6 @@
 
 namespace wumpus_game {
 
-class Fl_Widget;
-
 class GuiController : public mvc_set::Controller
 {
 public:
@@ -22,24 +20,29 @@ public:
   ~GuiController() { }
   bool RunModel() override;
   void StopModel();
+private:
+  Windows& gui_;
+  Logic& model_;
+
+  // Commands used by gui through callbacks
+
   void CommandStart();
   void CommandContinue();
   void CommandLevel();
   void CommandAction(int);
-private:
-  Windows& gui_;
-  Logic& model_;
-  void SetGameCallbacks();    // see note #1
+  
+  // Callbacks setters
+
+  void SetLogicCommandsCallbacks();    // see note #1
+  void SetLevelProcessingCallbacks();
+
+  // Callbacks
+
+  static void cb_start_button(void*, void*);
+  static void cb_next_button(void*, void*);
+  static void cb_rooms_button(void*, void*);
+  static void cb_continue_button(void*, void*);
 };
-
-namespace gui_helpers {
-
-  void cb_start_button(void*, void*);
-  void cb_next_button(void*, void*);
-  void cb_rooms_button(void*, void*);
-  void cb_continue_button(void*, void*);
-
-}  // namespace gui_helpers
 
 }  // namespace wumpus_game
 

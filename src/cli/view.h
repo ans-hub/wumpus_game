@@ -21,8 +21,8 @@ struct CliView : public mvc_set::Observer<Event>
     : ostream_{ost}
     , model_{model} { }
   ~CliView() { }
-  bool IncomingNotify(Event) const override;
 private:
+  bool IncomingNotify(Event) override;
   std::ostream& ostream_;
   Logic& model_;
 };

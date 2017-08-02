@@ -9,7 +9,6 @@ namespace wumpus_game {
 
 WidgetPlayer::WidgetPlayer()
   : Fl_Group(0, 0, 70, 80)
-  // background don`t forget!!!
   , grp_player_{(new Fl_Group(10, 30, 50, 50))}
   , grp_feels_{(new Fl_Group(5, 0, 60, 30))}
   , box_wumps_{(new Fl_Box(15, 1, 15, 15))}
@@ -17,6 +16,7 @@ WidgetPlayer::WidgetPlayer()
   , box_pits_{(new Fl_Box(45, 1, 15, 15))}
   , img_stay_{(new Fl_PNG_Image("../src/gui/widgets/img/player_stay.png"))}
   , img_shot_{(new Fl_PNG_Image("../src/gui/widgets/img/player_shot.png"))}
+  , img_walk_{(new Fl_PNG_Image("../src/gui/widgets/img/player_walk.png"))}
   , img_bats_{(new Fl_PNG_Image("../src/gui/widgets/img/player_bats.png"))}  
   , img_kill_wump_{(new Fl_PNG_Image("../src/gui/widgets/img/player_kill_w.png"))}
   , img_unknown_{(new Fl_PNG_Image("../src/gui/widgets/img/unknown_action.png"))}
@@ -33,6 +33,7 @@ WidgetPlayer::WidgetPlayer()
 
 WidgetPlayer::~WidgetPlayer()
 {
+  delete img_walk_;
   delete img_stay_;
   delete img_shot_;
   delete img_bats_;
@@ -51,44 +52,29 @@ WidgetPlayer::~WidgetPlayer()
   delete grp_player_;
 }
 
-void WidgetPlayer::DoesMove(int x, int y)
+void WidgetPlayer::SetStateImage(State state)
 {
-  grp_player_->image(img_stay_);
-  position(x,y);
+  switch (state) {
+    case MOVED_BATS : grp_player_->image(img_bats_); break;
+    case STAY : grp_player_->image(img_stay_); break;
+    case WALK : grp_player_->image(img_walk_); break;
+    case SHOT : grp_player_->image(img_shot_); break;
+    case KILLED_BY_WUMP : grp_player_->image(img_dead_wump_); break;
+    case KILLED_BY_PITS : grp_player_->image(img_dead_pits_); break;
+    case KILL_WUMP : grp_player_->image(img_kill_wump_); break;
+    case UNKNOWN_ACTION : grp_player_->image(img_unknown_); break;    
+    default : break;
+  }
   redraw();
 }
 
-void WidgetPlayer::DoesShot()
+void WidgetPlayer::StaticMove(const Point& to)
 {
-  grp_player_->image(img_shot_);
+  position(to.x_, to.y_);
   redraw();
 }
 
-void WidgetPlayer::DoesKillWump()
-{
-  grp_player_->image(img_kill_wump_);
-  redraw();
-}
-
-void WidgetPlayer::DoesKilledByWump()
-{
-  grp_player_->image(img_dead_wump_);
-  redraw();
-}
-
-void WidgetPlayer::DoesKilledByPits()
-{
-  grp_player_->image(img_dead_pits_);
-  redraw();
-}
-
-void WidgetPlayer::DoesUnknownAction()
-{
-  grp_player_->image(img_unknown_);
-  redraw();
-}
-
-void WidgetPlayer::DoesFeels(bool wump, bool bats, bool pits)
+void WidgetPlayer::ShowFeelsIcons(bool wump, bool bats, bool pits)
 {
   if (wump) 
     box_wumps_->show();
@@ -105,38 +91,39 @@ void WidgetPlayer::DoesFeels(bool wump, bool bats, bool pits)
   redraw();
 }
 
-void WidgetPlayer::AnimateBegin(int x, int y)
+void WidgetPlayer::AnimateMove(const Point& to, Trajectory::Type type)
 {
-  if (trajectory_.Empty()) {
-    grp_player_->image(img_bats_);
-    int steps = 7;    // move in settings
-    trajectory_.Set(this->x(), this->y(), x, y, Trajectory::LINE, steps);
-    Fl::add_timeout(0.1, cb_move_bats, this);
-  }
+  Point from {
+    static_cast<double>(this->x()),
+    static_cast<double>(this->y())
+  };
+
+  auto step = draw_consts::animation_step;
+  auto speed = draw_consts::animation_speed;
+
+  trajectory_.Set(from, to, type, step);
+  Fl::add_timeout(speed, cb_animate_move, this);
 }
 
-void WidgetPlayer::AnimateContinue()
+void WidgetPlayer::AnimateMoveContinue()
 {
   if (!trajectory_.Empty()) {
     int x = trajectory_.Next().x_;
     int y = trajectory_.Next().y_;
     trajectory_.Pop();
     position(x, y);
-    
+
     redraw();
     parent()->parent()->redraw();
   }
 }
 
-void WidgetPlayer::AnimateFinish()
+void WidgetPlayer::AnimateMoveFinish()
 {
-  if (trajectory_.Empty()) {
-    trajectory_.Reset();
-    grp_player_->image(img_stay_);
-    
-    redraw();
-    parent()->parent()->redraw();
-  }
+  SetStateImage(STAY);
+
+  redraw();
+  parent()->parent()->redraw();
 }
 
 // PRIVATE REALISATION
@@ -145,7 +132,7 @@ void WidgetPlayer::TuneAppearance()
 {
   begin();
   box(FL_BORDER_BOX);
-  resizable(0);
+  this->resizable(0);
   grp_player_->box(FL_BORDER_BOX);
   grp_player_->align(Fl_Align(513));
   grp_feels_->box(FL_BORDER_BOX);
@@ -166,22 +153,18 @@ void WidgetPlayer::TuneAppearance()
 
 // CALLBACKS SECTION
 
-void WidgetPlayer::cb_move_bats(void* w)
+void WidgetPlayer::cb_animate_move(void* w)
 {
   auto* p = ((WidgetPlayer*)w);
-  if (p->trajectory_.Empty()) {
-    p->AnimateFinish();
-    Fl::remove_timeout(cb_move_bats, w);
+  if (!p->IsAnimateInProgress()) {
+    p->AnimateMoveFinish();    
+    Fl::remove_timeout(cb_animate_move, w); //  we can do this only here :(
   }
-  else {
-    p->AnimateContinue();
-    Fl::repeat_timeout(0.1, cb_move_bats, w);
+  else { 
+    p->AnimateMoveContinue();
+    auto speed = draw_consts::animation_speed;
+    Fl::repeat_timeout(speed, cb_animate_move, w);   // 0.007 is the best
   }
-}
-
-void WidgetPlayer::cb_stop_bats(void* w)
-{
-  Fl::remove_timeout(cb_move_bats, w);
 }
 
 }  // namespace wumpus_game

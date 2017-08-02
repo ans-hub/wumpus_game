@@ -12,14 +12,14 @@ Logic::Logic()
   , player_turn_{true}
   , game_over_cause_{Subject::EMPTY}
   , curr_level_{1}
-  , curr_request_{ }
+  , rooms_history_{ }
 {
-
+  NotifyObservers(Event::MODEL_READY);
 }
 
 void Logic::NewLevel()
 {
-  NewLevel(curr_level_);
+  NewLevel(curr_level_); 
 }
 
 void Logic::NewLevel(unsigned int num)  // move level build logic in another class?? or file hel,pers?
@@ -35,22 +35,22 @@ void Logic::NewLevel(unsigned int num)  // move level build logic in another cla
   level_ = Level(size, arrows, wump, bat, pit);
   game_over_cause_ = Subject::UNKNOWN;
   player_turn_ = true;
-  curr_request_.Clear();
+  rooms_history_.clear();
   NotifyObservers(Event::NEW_LEVEL);
   NotifyObservers(Event::READY_TO_INPUT);
 }
 
 void Logic::Turn(int action, int room)
 {
-  curr_request_.Set(action, room);
+  // curr_request_.Set(action, room);
 
   if (!game_over_cause_) {
     PlayerTurn(action, room);   // changes player_turn_;
   }
   if (!player_turn_ && !game_over_cause_) {
       PitsTurn();     //
-      BatsTurn();     // changes game_over_ and player_turn_ 
-      WumpsTurn();    //
+      BatsTurn();     // changes game_over_ and player_turn_  
+      WumpsTurn();    // (may be wumps turn is first rather than batsturn?)
     }
   if (!game_over_cause_) {
     NotifyObservers(Event::READY_TO_INPUT);
@@ -121,6 +121,7 @@ bool Logic::PlayerMove(int room)
     return false; 
   }
 
+  rooms_history_.push_back(room);
   NotifyObservers(Event::PLAYER_DOES_MOVE);
   return true;
 }
@@ -153,6 +154,7 @@ void Logic::BatsTurn()
     if (helpers::is_in_one_room(bat.get(), player.get())) {
       player->TeleportRandom();
       bat->TeleportRandom();
+      rooms_history_.push_back(player->GetCurrRoomNum());    
       NotifyObservers(Event::MOVED_BATS);            
       break;
     }

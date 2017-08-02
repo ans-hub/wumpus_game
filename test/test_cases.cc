@@ -640,9 +640,13 @@ namespace test_experiments {
     GuiView view {windows, logic};
     CliView view2 {std::cout, logic};
     GuiController ctrl{windows, logic};
-    
+    GameSounds audio {};
+    audio.Play("../src/audio/wav/cave_theme.wav", true);
+
+
     logic.RegisterObserver(view);
     logic.RegisterObserver(view2);
+    logic.RegisterObserver(audio);
     ctrl.RunModel();
     return 0;
   }

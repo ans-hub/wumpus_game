@@ -11,25 +11,18 @@ Windows::Windows()
   : wnd_start_ { new FormStart() }
   , wnd_help_ { new FormHelp() }
   , wnd_main_{ new FormMain() }
-  , wdg_map_ { new WidgetMap() }
-  , wdg_info_{ new WidgetInfo() }
+  , wdg_map_ { wnd_main_->wdg_map_ }
+  , wdg_info_{ wnd_main_->wdg_info_ }
+  , wdg_player_ { wnd_main_->wdg_map_->GetPlayer() }
 {
-  wnd_main_->begin();
-  wnd_main_->add(wdg_map_);
-  wnd_main_->add(wdg_info_);
-  wnd_main_->end();
   SetFormsCallbacks();
 }
 
 Windows::~Windows()
 {
-  wnd_main_->remove(wdg_map_);  // to prevent segmentation fault
-  wnd_main_->remove(wdg_info_); // to prevent segmentation fault
   delete wnd_start_;
   delete wnd_help_;
   delete wnd_main_;
-  delete wdg_info_;
-  delete wdg_map_;
 }
 
 void Windows::SetFormsCallbacks()
@@ -62,53 +55,16 @@ void Windows::Close()
   wnd_start_->hide();
 }
 
-void Windows::ShowMain() const
-{
-  wnd_main_->Show();
-}
-
-void Windows::HideMain() const
-{
-  wnd_main_->Hide();
-}
-
-void Windows::ShowHelp() const
-{
-  wnd_help_->Show();
-}
-
-void Windows::HideHelp() const
-{
-  wnd_help_->Hide();
-}
-
-void Windows::Redraw(int level)
-{
-  wnd_main_->Redraw(level); 
-  wdg_map_->Redraw(level);
-  wdg_info_->Redraw(level);
-}
-
-void Windows::ShowWidget(Fl_Widget* w)
-{
-  w->show();
-}
-
-void Windows::HideWidget(Fl_Widget* w)
-{
-  w->hide();
-}
-
 namespace gui_helpers {
 
 void cb_help_button(void*, void* w)
 {
-  ((Windows*)w)->ShowHelp();
+  ((Windows*)w)->wnd_help_->show();
 }
 
 void cb_quit_help_button(void*, void* w)
 {
-  ((Windows*)w)->HideHelp();
+  ((Windows*)w)->wnd_help_->hide();
 }
 
 void cb_quit_button(void*, void* c)
@@ -123,10 +79,9 @@ void cb_close_wnd_main_(void*, void* w)
     "Are you want to stop game?", "No", "Yes", 0
   );
   if (result == 1) {
-    ((Windows*)w)->HideMain();
+    ((Windows*)w)->wnd_main_->hide();
   }
 }
-
 
 }  // namespace gui_helpers
 

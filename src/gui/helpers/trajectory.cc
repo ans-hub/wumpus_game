@@ -7,18 +7,14 @@
 
 namespace wumpus_game {
 
-void Trajectory::Set(
-  double from_x, double from_y, double to_x, double to_y, Type t, int step)
+void Trajectory::Set(const Point& from, const Point& to, Type t, int step)
 {
-  Point from {from_x, from_y};
-  Point to {to_x, to_y};
-
   switch(t) {
     case LINE :
       points_ = draw_helpers::build_line_trajectory(from, to, step);
       break;
     case CURVE :
-      points_ = draw_helpers::build_curve_trajectory(from, to, step);
+      points_ = draw_helpers::build_bezier_trajectory(from, to, step);
       break;
     default : break;
   }
@@ -26,33 +22,57 @@ void Trajectory::Set(
 
 namespace draw_helpers {
 
-// Get point lies on the line
+// Define vector coordinates
 
-Point get_point_on_line(const Point& a, const Point& b, double part)
+Point eval_vector_coordinates(const Point& a, const Point& b)
+{
+  return {b.x_-a.x_, b.y_-a.y_};
+}
+
+// Define vector length
+
+double eval_vector_length(const Point& a, const Point& b)
+{
+  auto v = eval_vector_coordinates(a,b);
+  return std::sqrt(v.x_*v.x_ + v.y_*v.y_);
+}
+
+// Get point lies on the vector
+
+Point get_point_on_vector(const Point& a, const Point& b, double part)
 {
   return a + part*(b-a);
 }
 
 // Fill vector with points lies on the line in reversed order
 
-std::vector<Point> build_line_trajectory(Point& from, Point& to, int step)
+std::vector<Point> build_line_trajectory(const Point& from, const Point& to, int step)
 {
-  std::vector<Point> v(step+1);   // since 1 step consists of 2 points
+  double len = eval_vector_length(from, to);
+  int steps = len/step;
 
-  for (int i = 0; i < step; ++i) {    // since reserve 1 for "to"
-    double part = (double)i/step;
-    Point p = draw_helpers::get_point_on_line(from, to, part);
-    v[step-i] = p;
+  std::vector<Point> v(steps+1);   // since 1 step consists of 2 points
+
+  for (int i = 0; i < steps; ++i) {
+    double part = (double)i/steps;
+    Point p = draw_helpers::get_point_on_vector(from, to, part);
+    v[steps-i] = p;
   }
   v[0] = to;
   return v;
 }
 
 // Fill vector with points lies on the curve in reversed order
+// https://learn.javascript.ru/bezier
 
-std::vector<Point> build_curve_trajectory(Point&, Point&, int)
+std::vector<Point> build_bezier_trajectory(const Point& from, const Point& to, int step)
 {
-  std::vector<Point> v(0);
+  double len = eval_vector_length(from, to);
+  int steps = len/step;
+
+  
+  std::vector<Point> v(steps+1);
+
   return v;
 }
 

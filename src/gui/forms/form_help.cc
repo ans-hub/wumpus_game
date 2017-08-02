@@ -9,7 +9,6 @@ namespace wumpus_game {
 
 FormHelp::FormHelp ()
 : Fl_Window(330, 470, "Help")
-// , window_{new Fl_Window(330, 470, "Help")}
 , box_label_{new Fl_Box(30, 20, 270, 45, "HELP")}
 , btn_quit_help_{new Fl_Button(30, 420, 270, 25, "Close")}
 , output_{new Fl_Text_Buffer()}
@@ -18,7 +17,6 @@ FormHelp::FormHelp ()
   TuneAppearance();
   FillOutput();
   end();
-  // window_->end();
 }
 
 FormHelp::~FormHelp()
@@ -27,14 +25,10 @@ FormHelp::~FormHelp()
   delete display_;
   delete btn_quit_help_;
   delete box_label_;
-  // delete window_;
 }
 
 void FormHelp::TuneAppearance()
 {
-  // window_->set_modal();
-  // window_->color((Fl_Color)34);
-  // window_->position((Fl::w() - window_->w())/2, (Fl::h() - window_->h())/2);
   set_modal();
   color((Fl_Color)34);
   position((Fl::w() - this->w())/2, (Fl::h() - this->h())/2);

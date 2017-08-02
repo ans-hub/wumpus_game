@@ -8,6 +8,7 @@
 
 #include <cassert>
 #include <string>
+// #include <queue>
 
 #include "entities/events.h"
 #include "entities/helpers/logic_helpers.h"
@@ -18,21 +19,12 @@
 
 namespace wumpus_game {
 
-struct Request
-{
-  Request() : action_{}, room_{} { }
-  void Set(int a, int r) { action_ = a; room_ = r; }
-  void Clear() { action_ = -1; room_ = -1; }
-  int action_;
-  int room_;
-};
-
 // make inherit from Abc Model
 
 class Logic : public mvc_set::Observable<Event>
 {
 public:
-  friend struct CliView;  // ????
+  using Rooms = std::vector<int>;
   using SubjectID = Subject::ID;
   
   Logic();
@@ -43,16 +35,15 @@ public:
   void Turn(int, int);
   bool GameOver() const { return (game_over_cause_ != Subject::UNKNOWN); }
   Subject::ID GameOverCause() const { return game_over_cause_; }
-  // int CurrentLevel() const { return GameOver() ? -1 : curr_level_; }
   int CurrentLevel() const { return curr_level_; }
-  const Request& CurrentRequest() const { return curr_request_; }
   const Level& GetLevel() const { return level_; }
+  const Rooms& RoomsHistory() const { return rooms_history_; }
 protected:
   Level       level_;
   bool        player_turn_;
   Subject::ID game_over_cause_;
   int         curr_level_;
-  Request     curr_request_;
+  Rooms       rooms_history_;
 
   void PlayerTurn(int, int);
   bool PlayerShot(int);

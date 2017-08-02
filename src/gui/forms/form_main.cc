@@ -8,11 +8,13 @@
 namespace wumpus_game {
 
 FormMain::FormMain ()
-: Fl_Window(425, 380, "Hunt the Wumpus")
-, img_cover_{(new Fl_PNG_Image("../src/gui/forms/img/bg.png"))}
+: Fl_Double_Window(425, 380, "Hunt the Wumpus")
+, img_cover_{(new Fl_PNG_Image("../src/gui/forms/img/bg_main.png"))}
 , box_cover_{new Fl_Box(-5, 0, 435, 625)}
 , box_level_{new Fl_Box(2, 54, 425, 390)}
 , box_label_{new Fl_Box(30, 20, 370, 45, "HUNT THE WUMPUS")}
+, wdg_map_{new WidgetMap()}
+, wdg_info_{new WidgetInfo()}
 {
   TuneAppearance();
   end();
@@ -20,6 +22,8 @@ FormMain::FormMain ()
 
 FormMain::~FormMain()
 {
+  delete wdg_info_;
+  delete wdg_map_;
   delete box_label_;
   delete box_level_;
   delete box_cover_;
@@ -38,6 +42,9 @@ void FormMain::Redraw(int level)
   box_level_->resize(2, 54, this->w(), this->h()/2);
   box_label_->resize(30, 20, this->w()-60, 45);
   
+  wdg_map_->Redraw(level);
+  wdg_info_->Redraw(level);
+
   redraw();
 }
 
