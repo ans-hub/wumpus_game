@@ -12,6 +12,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_PNG_Image.H>
+#include <FL/Fl_Tiled_Image.H>
 
 #include "gui/helpers/draw_consts.h"
 
@@ -21,12 +22,13 @@ class WidgetInfo : public Fl_Group
 {
 public:
   WidgetInfo();
-  ~WidgetInfo();
+  ~WidgetInfo() { }
   void Show() { show(); }
   void Hide() { hide(); }
   void Redraw(int);
 
   Fl_PNG_Image*   img_cover_;
+  Fl_Tiled_Image* img_bg_;
   Fl_PNG_Image*   img_level_;
   Fl_PNG_Image*   img_wumps_;
   Fl_PNG_Image*   img_bats_;

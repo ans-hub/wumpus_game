@@ -13,12 +13,8 @@ namespace wumpus_game {
 class Wump : public Enemy
 {
 public:
-  explicit Wump(Map* cave)
-  : Enemy(cave)
-  , worried_{false}
-  { type_ = Subject::WUMP; }
-  
-  std::string FeelsRepresent() const override;
+  explicit Wump(Map*);
+  ~Wump(){ }
   bool Worried() const { return worried_; }
   void Worried(bool worried) { worried_ = worried; }
 protected:

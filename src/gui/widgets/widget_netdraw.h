@@ -25,10 +25,10 @@ struct WidgetNetdraw : public Fl_Group
   using cPointVec = const PointVec;
   
   WidgetNetdraw(int);
+  ~WidgetNetdraw() { }
   cPointVec& GetVertexes() const { return total_vxs_; }
 private:
   int      vxs_count_;
-  // double   edge_length_;
   PointVec total_vxs_;
   PointVec inner_vxs_;
   PointVec middle_vxs_;

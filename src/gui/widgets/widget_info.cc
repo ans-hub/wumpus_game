@@ -12,6 +12,7 @@ namespace wumpus_game {
 WidgetInfo::WidgetInfo ()
 : Fl_Group(10, 70, 300, 35)
 , img_cover_{new Fl_PNG_Image("../src/gui/widgets/img/info_bg.png")}
+, img_bg_{new Fl_Tiled_Image(img_cover_, 0, 0)}
 , img_level_{new Fl_PNG_Image("../src/gui/widgets/img/info_level.png")}
 , img_wumps_{new Fl_PNG_Image("../src/gui/widgets/img/info_wumps.png")}
 , img_bats_{new Fl_PNG_Image("../src/gui/widgets/img/info_bats.png")}
@@ -28,24 +29,6 @@ WidgetInfo::WidgetInfo ()
 {
   TuneAppearance();
   end();
-}
-
-WidgetInfo::~WidgetInfo()
-{
-  delete btn_next_;
-  delete btn_help_;
-  delete btn_continue_;
-  delete box_arrows_;
-  delete box_pits_;
-  delete box_bats_;
-  delete box_wumps_;
-  delete box_level_;
-  delete img_arrows_;
-  delete img_pits_;
-  delete img_bats_;
-  delete img_wumps_;
-  delete img_level_;
-  delete img_cover_;
 }
 
 void WidgetInfo::Redraw(int level)
@@ -66,49 +49,29 @@ void WidgetInfo::Redraw(int level)
   box_arrows_->resize(x()+35, y()+40, 15, 15);
   
   redraw();
-  // int offset = 30;
-  // int w = draw_consts::level_width(level) + offset * 2;
-  // int h = w + 100;
-  
-  // resize(1, 1, w, h);
-  // position((Fl::w() - this->w())/2, (Fl::h() - this->h())/2);
-  // box_cover_->resize(-5, 0, this->w(), this->h());
-  // box_level_->resize(2, 54, this->w(), this->h()/2);
-  // box_label_->resize(30, 20, this->w()-60, 45);
-  // // btn_restart_->resize(this->w()-50-270, this->h()-40, 90, 25);
-  // btn_help_->resize(this->w()-40-180, this->h()-40, 90, 25);
-  // btn_continue_->resize(this->w()-30-90, this->h()-40, 90, 25);
-
-//   // redraw();
 }
 
 void WidgetInfo::TuneAppearance()
 {
-  // set_modal();
-  // color((Fl_Color)34);
-  // position((Fl::w() - this->w())/2, (Fl::h() - this->h())/2);
-  // // box_cover_->image(img_bg_);
-  // // box_cover_->align(FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_CLIP);
-  // image(img_bg_);
-  // btn_continue_->resizable(0);
-  // btn_help_->resizable(0);
-  image(img_cover_);
-  align(Fl_Align(513));
+  image(img_bg_);
+  align(FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_CLIP);
+  box(FL_PLASTIC_UP_FRAME);
+  labelcolor(FL_WHITE);
   box_arrows_->image(img_arrows_);
   box_arrows_->align(Fl_Align(256));
+  box_arrows_->labelcolor(FL_WHITE);
   box_pits_->image(img_pits_);
   box_pits_->align(Fl_Align(256));
+  box_pits_->labelcolor(FL_WHITE);
   box_bats_->image(img_bats_);
   box_bats_->align(Fl_Align(256));
+  box_bats_->labelcolor(FL_WHITE);
   box_wumps_->image(img_wumps_);
   box_wumps_->align(Fl_Align(256));
+  box_wumps_->labelcolor(FL_WHITE);
   box_level_->image(img_level_);
   box_level_->align(Fl_Align(256));
-  box(FL_PLASTIC_UP_FRAME);
-  // redraw();
-  // box_label_->color((Fl_Color)84);
-  // box_label_->labelsize(28);
-  // box_label_->labelcolor((Fl_Color)115);
+  box_level_->labelcolor(FL_WHITE);
 }
 
 }  // namespace wumpus_game

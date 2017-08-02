@@ -1,39 +1,42 @@
-CC = clang++
+CC = g++
 
-# Pathes
+SRC = ./
+ENT = $(SRC)entities/
+AUD = $(SRC)audio/
+HLP = $(ENT)helpers/
+CLI = $(SRC)cli/
+GUI = $(SRC)gui/
+AI = $(SRC)ai/
 
-ENT 			= entities/
+CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g \
+				 -L $(SRC)3rdparty -lbass
 
-# Flags
+FLTKFLAGS = `fltk-config --use-images --ldflags`
 
-CFLAGS 		= -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g
-FLTKFLAGS = `fltk-config --ldflags` -lfltk_images -lfltk_png -lz
-
-# Objects
-
-OBJECTS 	= labyrinth.o subject.o enemy.o room.o player.o bat.o pit.o \
-						wump.o cli_controller.o cli_view.o logic.o gui.o \
-						logic_helpers.o entities_helpers.o
-
-# Main game files
+OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
+					level.o logic.o map_helpers.o logic_helpers.o cli_view.o \
+					cli_controller.o ai_controller.o gui_view.o gui_controller.o \
+					windows.o form_start.o form_help.o form_main.o widget_info.o \
+					widget_map.o widget_netdraw.o widget_player.o draw_consts.o \
+					trajectory.o game_sounds.o
 
 main.out : $(OBJECTS) main.cc
-	$(CC) $(CFLAGS) main.cc $(OBJECTS) $(FLTKFLAGS) -o main.out
+	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main.out
 
 room.o : $(ENT)room.h $(ENT)room.cc subject.o
 	$(CC) $(CFLAGS) -c $(ENT)room.cc
 
-labyrinth.o : $(ENT)labyrinth.h $(ENT)labyrinth.cc room.o
-	$(CC) $(CFLAGS) -c $(ENT)labyrinth.cc
+map.o : $(ENT)map.h $(ENT)map.cc room.o 
+	$(CC) $(CFLAGS) -c $(ENT)map.cc
 
-subject.o : $(ENT)subject.h $(ENT)subject.cc labyrinth.o
+subject.o : $(ENT)subject.h $(ENT)subject.cc map.o map_helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)subject.cc
 
-enemy.o : $(ENT)enemy.h $(ENT)enemy.cc subject.o
-	$(CC) $(CFLAGS) -c $(ENT)enemy.cc
-	
-player.o : $(ENT)player.h $(ENT)player.cc subject.o
+player.o : $(ENT)player.h $(ENT)player.cc subject.o map_helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)player.cc
+
+enemy.o : $(ENT)enemy.h $(ENT)enemy.cc subject.o
+	$(CC) $(CFLAGS) -c $(ENT)enemy.cc	
 
 wump.o : $(ENT)wump.h $(ENT)wump.cc enemy.o
 	$(CC) $(CFLAGS) -c $(ENT)wump.cc
@@ -44,27 +47,65 @@ bat.o : $(ENT)bat.h $(ENT)bat.cc enemy.o
 pit.o : $(ENT)pit.h $(ENT)pit.cc enemy.o
 	$(CC) $(CFLAGS) -c $(ENT)pit.cc
 
-logic.o : logic.h logic.cc 3rdparty/observable.h events.h logic_helpers.o
-	$(CC) $(CFLAGS) -c logic.cc
+level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
+	$(CC) $(CFLAGS) -c $(ENT)level.cc
 
-entities_helpers.o : helpers/entities_helpers.h helpers/entities_helpers.cc
-	$(CC) $(CFLAGS) -c helpers/entities_helpers.cc
+logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(ENT)events.h $(SRC)3rdparty/observable.h
+	$(CC) $(CFLAGS) -c $(ENT)logic.cc
 
-logic_helpers.o : helpers/logic_helpers.h helpers/logic_helpers.cc
-	$(CC) $(CFLAGS) -c helpers/logic_helpers.cc
+windows.o : $(GUI)windows.h $(GUI)windows.cc form_main.o widget_map.o form_help.o form_start.o
+	$(CC) $(CFLAGS) -c $(GUI)windows.cc
 
-# Interface
+form_start.o : $(GUI)forms/form_start.h $(GUI)forms/form_start.cc
+	$(CC) $(CFLAGS) -c $(GUI)forms/form_start.cc
 
-cli_controller.o : cli/controller.h cli/controller.cc 3rdparty/observer.h logic.o events.h
-	$(CC) $(CFLAGS) -c cli/controller.cc -o cli_controller.o
+form_help.o : $(GUI)forms/form_help.h $(GUI)forms/form_help.cc
+	$(CC) $(CFLAGS) -c $(GUI)forms/form_help.cc
 
-cli_view.o : cli/view.h cli/view.cc 3rdparty/observer.h logic.o events.h
-	$(CC) $(CFLAGS) -c cli/view.cc -o cli_view.o 
+form_main.o : $(GUI)forms/form_main.h $(GUI)forms/form_main.cc
+	$(CC) $(CFLAGS) -c $(GUI)forms/form_main.cc
 
-gui.o : gui/gui.h gui/gui.cc 3rdparty/observer.h logic.o events.h gui/coords.h gui/room_button.h
-	$(CC) $(CFLAGS) -c gui/gui.cc
+widget_info.o : $(GUI)widgets/widget_info.h $(GUI)widgets/widget_info.cc draw_consts.o
+	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_info.cc
 
-# Others
+widget_map.o : $(GUI)widgets/widget_map.h $(GUI)widgets/widget_map.cc $(GUI)widgets/widget_room.h widget_netdraw.o widget_player.o
+	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_map.cc
+
+widget_netdraw.o : $(GUI)widgets/widget_netdraw.h $(GUI)widgets/widget_netdraw.cc $(GUI)helpers/point.h
+	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_netdraw.cc
+
+trajectory.o : $(GUI)helpers/trajectory.h $(GUI)helpers/trajectory.cc $(GUI)helpers/point.h
+	$(CC) $(CFLAGS) -c $(GUI)helpers/trajectory.cc
+
+widget_player.o : $(GUI)widgets/widget_player.h $(GUI)widgets/widget_player.cc $(GUI)helpers/point.h trajectory.o
+	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_player.cc
+
+draw_consts.o : $(GUI)helpers/draw_consts.h $(GUI)helpers/draw_consts.cc
+	$(CC) $(CFLAGS) -c $(GUI)helpers/draw_consts.cc
+
+gui_view.o : $(GUI)view.h $(GUI)view.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h $(GUI)windows.h
+	$(CC) $(CFLAGS) -c $(GUI)view.cc -o gui_view.o 
+
+gui_controller.o : $(GUI)controller.h $(GUI)controller.cc $(SRC)3rdparty/controller.h logic.o $(GUI)windows.h
+	$(CC) $(CFLAGS) -c $(GUI)controller.cc -o gui_controller.o 
+
+cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h
+	$(CC) $(CFLAGS) -c $(CLI)view.cc -o cli_view.o 
+
+cli_controller.o : $(CLI)controller.h $(CLI)controller.cc $(SRC)3rdparty/controller.h logic.o
+	$(CC) $(CFLAGS) -c $(CLI)controller.cc -o cli_controller.o 
+
+ai_controller.o : $(AI)controller.h $(AI)controller.cc $(SRC)3rdparty/controller.h logic.o
+	$(CC) $(CFLAGS) -c $(AI)controller.cc -o ai_controller.o 
+
+map_helpers.o : $(HLP)map_helpers.h $(HLP)map_helpers.cc
+	$(CC) $(CFLAGS) -c $(HLP)map_helpers.cc
+
+logic_helpers.o : $(HLP)logic_helpers.h $(HLP)logic_helpers.cc
+	$(CC) $(CFLAGS) -c $(HLP)logic_helpers.cc
+
+game_sounds.o : $(SRC)audio/game_sounds.h $(SRC)audio/game_sounds.cc
+	$(CC) $(CFLAGS) -c $(SRC)audio/game_sounds.cc
 
 clean : 
 	rm ${OBJECTS} main.out

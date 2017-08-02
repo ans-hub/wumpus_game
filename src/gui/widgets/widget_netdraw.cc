@@ -27,7 +27,6 @@ void WidgetNetdraw::FillAllVertexes()
 
   double width = w();
   double height = h();
-  // double offset = w()/20;
   double x0 = width/2;
   double y0 = height/2;
 

@@ -1,31 +1,39 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: main app of wumpus_game
+// File: main game
 
 #include <iostream>
 
 #include "entities/logic.h"
-#include "gui/gui.h"
 #include "cli/view.h"
 #include "cli/controller.h"
 #include "ai/controller.h"
+#include "gui/windows.h"
+#include "gui/view.h"
+#include "gui/controller.h"
+#include "audio/game_sounds.h"
+// #include "scores/game_scores.h"
 
 int main()
-{ 
+{
   using namespace wumpus_game;
-  using namespace mvc_set;
 
-  Logic model{};
-  Gui view{model};
-  Gui& ctrl = view;
-  // return (Fl::run());
-  // CliView view {std::cout, model};
-  // CliCtrl ctrl {std::cin};
+  Logic         logic {};
+  Windows       windows {};
 
-  model.RegisterView(view);
-  model.RegisterController(ctrl);
-  model.Run();
+  GuiView       view  {windows, logic};
+  CliView       view2 {std::cout, logic};
+  GuiController ctrl  {windows, logic};
+  GameSounds    audio {logic};
+  // GameScores    scores{ }
+
+  logic.RegisterObserver(view);
+  logic.RegisterObserver(view2);
+  logic.RegisterObserver(audio);
+  // logic.RegisterObserver(scores);
+
+  ctrl.RunModel();
 
   return 0;
 }

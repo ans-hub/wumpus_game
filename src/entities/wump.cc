@@ -6,10 +6,10 @@
 #include "wump.h"
 
 namespace wumpus_game {
-
-std::string Wump::FeelsRepresent() const
+Wump::Wump(Map* cave) 
+  : Enemy(cave)
+  , worried_{false}
 {
-  return "FEELS: It`s smeels like Wumpus (possible the Wumpus is near)";
+  type_ = Subject::WUMP;
 }
-
 }  // namespace wumpus_game

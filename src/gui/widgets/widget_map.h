@@ -7,9 +7,10 @@
 #define WIDGET_MAP_H
 
 #include <vector>
+
 #include <FL/Fl.H>
-#include <FL/Fl_Group.H>
 #include <FL/fl_draw.H>
+#include <FL/Fl_Group.H>
 
 #include "gui/widgets/widget_room.h"
 #include "gui/widgets/widget_netdraw.h"
@@ -23,7 +24,6 @@ class WidgetMap : public Fl_Group
 public:
   using VRooms = std::vector<WidgetRoom*>;
   using VRoomsRef = const VRooms&;
-  // using Player = WidgetPlayer;
   using CallbackFunc = void;
   using CommandFunc = void;
   
@@ -40,7 +40,13 @@ public:
   int GetRoomCoordY(int) const;
   void Redraw(int);
 
-protected:
+private:
+  VRooms          rooms_;     // mess in var names@!
+  WidgetNetdraw*  pathes_;
+  WidgetPlayer*   player_;
+  CallbackFunc*   callback_;
+  CommandFunc*    command_;
+
   void ResizeGroup(int);
   void DrawPlayer();
   void DrawRooms(int);
@@ -49,21 +55,9 @@ protected:
   void ClearPlayer();
   void ClearLines();
   void SetCallbacks();
+  void TuneAppearance();
   
-private:
-  VRooms          rooms_;     // mess in var names@!
-  WidgetNetdraw*  pathes_;
-  WidgetPlayer*   player_;
-  CallbackFunc*   callback_;
-  CommandFunc*    command_;
 };
-
-namespace form_helpers {
-
-  void tune_form(Fl_Group*);
-  void tune_button(WidgetRoom*);
-
-}  // namespace form_helpers
 
 }  // namespace wumpus_game
 

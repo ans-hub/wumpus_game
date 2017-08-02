@@ -35,7 +35,7 @@ public:
   };
 
   WidgetPlayer();
-  ~WidgetPlayer();
+  ~WidgetPlayer() { }
   
   void SetStateImage(State);
   void ShowFeelsIcons(bool, bool, bool);

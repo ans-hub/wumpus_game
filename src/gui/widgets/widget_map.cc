@@ -8,12 +8,12 @@
 namespace wumpus_game {
 
 WidgetMap::WidgetMap ()
-  : Fl_Group(30, 90, parent()->w(), parent()->h())
+  : Fl_Group{30, 90, parent()->w(), parent()->h()}
   , rooms_{}
   , pathes_{nullptr}
-  , player_{new WidgetPlayer()}  // add separate as rooms and pathes
+  , player_{new WidgetPlayer()}
 {
-  form_helpers::tune_form(this);
+  TuneAppearance();
 } 
 
 WidgetMap::~WidgetMap()
@@ -54,31 +54,20 @@ void WidgetMap::Redraw(int level)
 
 void WidgetMap::ResizeGroup(int level)
 {
-  // evaluate based on edge len
-  // and room btn too evaluated based on edge_len val
-  // may be GetSizesForLevel???
   int w = draw_consts::level_width(level);
   this->resize(30, 90, w, w);
 }
 
 void WidgetMap::DrawPlayer()
 {
-  // remove(player_);
-  // player_ = new WidgetPlayer();   // Not raii!!
   add(player_);
 }
 
-// Make form map in form _main. It is more simple to change sizes whe nlevel is new
-
 void WidgetMap::DrawLines(int level)
 {
-  // int edge_len = draw_consts::edge_len;
-  // remove(pathes_);             // not raii!
-  pathes_ = new WidgetNetdraw(level);   // may be we set only x y w h and widget define by itself how to draw items???
+  pathes_ = new WidgetNetdraw(level);
   add(pathes_);
-  pathes_->position(x(), y());   /// don`t forget to dothis
-  // pathes_->redraw();
-  // this->end(); 
+  pathes_->position(x(), y());
 }
 
 void WidgetMap::DrawRooms(int level)
@@ -87,14 +76,13 @@ void WidgetMap::DrawRooms(int level)
   int rooms = draw_consts::level_vertexes(level);
   
   for (int i = 0; i < rooms; ++i) {
-    WidgetRoom* btn = new WidgetRoom(     //not raii
+    WidgetRoom* btn = new WidgetRoom(
       i,
       GetRoomCoordX(i) - btn_size / 2,
       GetRoomCoordY(i) - btn_size / 2,
       btn_size,
       btn_size);
     this->add(btn);
-    form_helpers::tune_button(btn);
     rooms_.push_back(btn);
   }
 }
@@ -112,7 +100,6 @@ void WidgetMap::ClearRooms()
 void WidgetMap::ClearPlayer()
 { 
   remove(player_);
-  // delete player_;
 }
 
 void WidgetMap::ClearLines()
@@ -128,22 +115,9 @@ void WidgetMap::SetCallbacks()
   }  
 }
 
-namespace form_helpers {
-
-void tune_form(Fl_Group* w)
+void WidgetMap::TuneAppearance()
 {
-  w->box(FL_PLASTIC_UP_FRAME);
+  box(FL_PLASTIC_UP_FRAME);
 }
-
-void tune_button(WidgetRoom*)
-{
-  // b->color((Fl_Color)36);
-  // b->selection_color((Fl_Color)69);
-  // b->labeltype(FL_SHADOW_LABEL);
-  // b->labelcolor((Fl_Color)94);
-}
-
-
-}  // namespace form_helpers
 
 }  // namespace wumpus_game

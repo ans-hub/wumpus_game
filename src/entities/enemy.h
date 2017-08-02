@@ -12,15 +12,11 @@ namespace wumpus_game {
 
 class Enemy : public Subject
 {
-public:
+protected:
   explicit Enemy(Map* cave)
   : Subject(cave)
   { type_ = Subject::ENEMY; }
-  ~Enemy(){ }
-  
-  // Represents what feels others if near placed the Enemy
-
-  virtual std::string FeelsRepresent() const =0;
+  virtual ~Enemy(){ }
 };
 
 }  // namespace wumpus_game

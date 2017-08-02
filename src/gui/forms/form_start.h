@@ -18,7 +18,7 @@ class FormStart : public Fl_Window
 {
 public: 
   FormStart();
-  ~FormStart();
+  ~FormStart() { }
   void Show() { show(); }
   void Hide() { hide(); }
   Fl_Box*           box_btns_;

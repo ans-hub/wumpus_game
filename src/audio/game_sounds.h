@@ -11,6 +11,7 @@
 #include "3rdparty/bass.h"
 #include "3rdparty/observer.h"
 #include "entities/events.h"
+#include "entities/logic.h"
 
 namespace wumpus_game {
 
@@ -18,19 +19,14 @@ struct GameSounds : public mvc_set::Observer<Event>
 {
   using Handles = std::vector<HSAMPLE>;
 
-  enum Type {
-    BACKGROUND,
-    WALK,
-    SHOT
-  };
-
-  GameSounds();
+  GameSounds(Logic&);
   ~GameSounds();
   bool Inited() const { return inited_; }
   void Play(const char*, bool);
 private:
   bool IncomingNotify(Event) override;
   bool inited_;
+  Logic& logic_;
   Handles handles_;
 };
 

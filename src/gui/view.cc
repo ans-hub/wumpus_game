@@ -94,10 +94,8 @@ void GuiView::ExecuteEvent(Event msg, int room)
 }
 
 void GuiView::CheckReadyToNextEvent()
-{
-  auto* wdg_player = gui_.wdg_map_->GetPlayer();
-  
-  if (!wdg_player->IsAnimateInProgress())
+{ 
+  if (!gui_.wdg_player_->IsAnimateInProgress())
     ready_ = true;
 }
 
@@ -166,16 +164,13 @@ void hide_level(Windows& gui)
 
 void show_error_room(Windows& gui)
 {
-  auto* wdg_player = gui.wdg_map_->GetPlayer();  
-  wdg_player->SetStateImage(WidgetPlayer::UNKNOWN_ACTION);
-  
+  gui.wdg_player_->SetStateImage(WidgetPlayer::UNKNOWN_ACTION);
   gui.wnd_main_->redraw();   
 }
 
 Point get_offsetted_point_of_room(Windows& gui, int room)
 {
-  auto* wdg_player = gui.wdg_map_->GetPlayer();
-  int offset = (wdg_player->w()) / 2;
+  int offset = (gui.wdg_player_->w()) / 2;
   double to_x = gui.wdg_map_->GetRoomCoordX(room)-offset;
   double to_y = gui.wdg_map_->GetRoomCoordY(room)-offset;
   return Point{to_x, to_y}; 
@@ -183,38 +178,33 @@ Point get_offsetted_point_of_room(Windows& gui, int room)
 
 void show_player_position_instantly(Windows& gui, const Logic& model)
 {
-  auto* wdg_player = gui.wdg_map_->GetPlayer();
   int room = model.GetLevel().player_->GetCurrRoomNum();
   Point to_point = get_offsetted_point_of_room(gui, room);
   
-  wdg_player->SetStateImage(WidgetPlayer::STAY);
-  wdg_player->StaticMove(to_point);
+  gui.wdg_player_->SetStateImage(WidgetPlayer::STAY);
+  gui.wdg_player_->StaticMove(to_point);
 }
 
 void show_player_movement(Windows& gui, int room)
 {
-  auto* wdg_player = gui.wdg_map_->GetPlayer();
   Point to_point = get_offsetted_point_of_room(gui, room);
 
-  wdg_player->SetStateImage(WidgetPlayer::WALK);
-  wdg_player->AnimateMove(to_point, Trajectory::LINE);
+  gui.wdg_player_->SetStateImage(WidgetPlayer::WALK);
+  gui.wdg_player_->AnimateMove(to_point, Trajectory::LINE);
 }
 
 void show_bats_movement(Windows& gui, int room)
 {
-  auto* wdg_player = gui.wdg_map_->GetPlayer();
   Point to_point = get_offsetted_point_of_room(gui, room);
     
-  wdg_player->SetStateImage(WidgetPlayer::MOVED_BATS);
-  wdg_player->AnimateMove(to_point, Trajectory::LINE);
+  gui.wdg_player_->SetStateImage(WidgetPlayer::MOVED_BATS);
+  gui.wdg_player_->AnimateMove(to_point, Trajectory::LINE);
 }
 
 void show_player_shot(Windows& gui)
 {
-  auto* wdg_player = gui.wdg_map_->GetPlayer();  
-  wdg_player->SetStateImage(WidgetPlayer::SHOT);
-
-  gui.wnd_main_->redraw();   
+  gui.wdg_player_->SetStateImage(WidgetPlayer::SHOT);
+  // gui.wnd_main_->redraw();   
 }
 
 void show_havent_arrows(Windows&)
@@ -253,17 +243,15 @@ void show_feels(Windows& gui, const Logic& model)
 
 void show_game_over(Windows& gui, const Logic& logic)
 {
-  auto* wdg_player = gui.wdg_map_->GetPlayer();
-
   switch (logic.GameOverCause()) {
     case Logic::SubjectID::PLAYER :
-      wdg_player->SetStateImage(WidgetPlayer::KILL_WUMP);
+      gui.wdg_player_->SetStateImage(WidgetPlayer::KILL_WUMP);
       break;
     case Logic::SubjectID::WUMP :
-      wdg_player->SetStateImage(WidgetPlayer::KILLED_BY_WUMP); 
+      gui.wdg_player_->SetStateImage(WidgetPlayer::KILLED_BY_WUMP); 
       break;
     case Logic::SubjectID::PIT :
-      wdg_player->SetStateImage(WidgetPlayer::KILLED_BY_PITS);  
+      gui.wdg_player_->SetStateImage(WidgetPlayer::KILLED_BY_PITS);  
       break;
     case Logic::SubjectID::UNKNOWN :
     default:

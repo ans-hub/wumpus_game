@@ -7,9 +7,9 @@
 
 namespace wumpus_game {
 
-std::string Bat::FeelsRepresent() const
+Bat::Bat(Map* cave) : Enemy(cave)
 {
-  return "FEELS: You feel the wind (possible the bats is near)";
+  type_ = Subject::BAT;
 }
 
 }  // namespace wumpus_game

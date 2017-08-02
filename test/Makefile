@@ -2,6 +2,7 @@ CC = g++
 
 SRC = ../src/
 ENT = $(SRC)entities/
+AUD = $(SRC)audio/
 HLP = $(ENT)helpers/
 CLI = $(SRC)cli/
 GUI = $(SRC)gui/

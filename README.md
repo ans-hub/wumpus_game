@@ -19,3 +19,4 @@ My educational implementation of the game ["Hunt the wumpus"](https://en.wikiped
 3. *(copy of note from labyrinth.h)* Connecting of the Rooms is auto-processed and based on plane projection of regular dodecahedron using Schlegel diagram. Neighbors Rooms are called as "left", "right" and "back". As you can see at the plane projection, here are presence three main pathes, called "center", "outer" and "inner". Center path consists of size/2 rooms, outer and inner pathes consists of size/4 rooms. Manually creating was avoided by me as not extentable. Scheme of connecting see in the `/info/graph.uml`
 4. This Wumpus implementation use *stl vectors* as containers and *raw pointers*. Since the main goal of implementing of this game was educational purpose, I was used raw pointer but not smart pointers.
 5. To switch on debug-mode for the labyrinth type `./main.out debug`
+6. Possible unreachable memory leaks: FormHelp() while using Fl_Text_Buffer().

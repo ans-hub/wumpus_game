@@ -29,13 +29,7 @@
 #include "entities/helpers/map_helpers.h"
 #include "entities/helpers/logic_helpers.h"
 #include "test_helpers.h"
-#include "cli/view.h"
-#include "cli/controller.h"
 #include "ai/controller.h"
-#include "gui/windows.h"
-#include "gui/view.h"
-#include "gui/controller.h"
-#include "audio/game_sounds.h"
 
 namespace wumpus_game {
 
@@ -51,7 +45,6 @@ struct TestSubject : Subject
 struct TestEnemy : Enemy
 {
   TestEnemy(Map* cave) : Enemy(cave) { }
-  std::string FeelsRepresent() const override { return ""; }
 };
 
 // Helper struct to give access to the rooms directly

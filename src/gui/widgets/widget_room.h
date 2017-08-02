@@ -14,38 +14,25 @@ namespace wumpus_game {
 
 struct WidgetRoom : Fl_Button
 {
-  int num_; 
-  int visited_;
-  Fl_PNG_Image* img_on_;
-  Fl_PNG_Image* img_off_;
-  Fl_PNG_Image* img_mark_;
-  int handle(int) override;
-
+  int num_;
   WidgetRoom(int num, int x, int y, int w, int h)
     : Fl_Button(x, y, w, h)
     , num_{num}
-    , visited_{false}
     , img_on_{(new Fl_PNG_Image("../src/gui/widgets/img/room_on.png"))}
     , img_off_{(new Fl_PNG_Image("../src/gui/widgets/img/room_off.png"))}
-    , img_mark_{(new Fl_PNG_Image("../src/gui/widgets/img/room_mark.png"))}     // ?? 
+    , img_mark_{(new Fl_PNG_Image("../src/gui/widgets/img/room_mark.png"))}
   {
     this->image(img_on_);
     this->deimage(img_off_);
     this->box(FL_NO_BOX);
+  }
+  ~WidgetRoom() { }
 
-    // May be delete this all below?
-    // this->align(Fl_Align(512));
-    // this->color((Fl_Color)36);
-    // this->selection_color((Fl_Color)69);
-    // this->labeltype(FL_SHADOW_LABEL);
-    // this->labelcolor((Fl_Color)94);
-  }
-  ~WidgetRoom()
-  {
-    delete img_on_;
-    delete img_off_;
-    delete img_mark_;
-  }
+private:
+  Fl_PNG_Image* img_on_;
+  Fl_PNG_Image* img_off_;
+  Fl_PNG_Image* img_mark_;
+  int handle(int) override;
 };
 
 inline int WidgetRoom::handle(int event)
@@ -60,7 +47,6 @@ inline int WidgetRoom::handle(int event)
         else 
           image(img_on_);
       }
-      // redraw();
       do_callback();
       Fl::pushed(nullptr);                
       return Fl_Widget::handle(event);        

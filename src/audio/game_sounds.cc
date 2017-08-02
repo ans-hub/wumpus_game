@@ -7,12 +7,15 @@
 
 namespace wumpus_game {
 
-GameSounds::GameSounds()
-  : inited_ {false}
+GameSounds::GameSounds(Logic& logic)
+  : inited_{false}
+  , logic_{logic}
   , handles_{ }
 {
-  if (BASS_Init(-1, 44100, BASS_DEVICE_DEFAULT, 0, 0))
+  if (BASS_Init(-1, 44100, BASS_DEVICE_DEFAULT, 0, 0)) {
     inited_ = true;
+    Play("../src/audio/wav/cave_theme.wav", true);
+  }
 }
 
 GameSounds::~GameSounds()
@@ -27,21 +30,18 @@ void GameSounds::Play(const char* file, bool repeat)
   handle = BASS_SampleGetChannel(handle, FALSE);
   handles_.push_back(handle);
 
-  BASS_ChannelSetAttribute(handle,BASS_ATTRIB_VOL,0.5f);
-  // BASS_ChannelSetAttribute(handle,BASS_ATTRIB_PAN,((rand()%201)-100)/100.f);
+  BASS_ChannelSetAttribute(handle, BASS_ATTRIB_VOL,0.5f);
   BASS_ChannelPlay(handle, FALSE);
 }
+
 // remake to queue model
 bool GameSounds::IncomingNotify(Event msg)
 {
   if (!Inited()) return false;
   switch(msg)
   {
-    case Event::NEW_LEVEL :
-      // Play("../src/audio/wav/cave_theme.wav", true);
-      break;
     case Event::PLAYER_DOES_MOVE :
-      Play("../src/audio/wav/player_walk.wav", false);
+      Play("../src/audio/wav/player_move.wav", false);
       break;
     case Event::PLAYER_DOES_SHOT :
       Play("../src/audio/wav/player_shot.wav", false);
@@ -49,6 +49,22 @@ bool GameSounds::IncomingNotify(Event msg)
     case Event::ONE_WUMP_KILLED :
       Play("../src/audio/wav/wump_killed.wav", false);
       break;
+    case Event::MOVED_BATS :
+      Play("../src/audio/wav/moved_bats.wav", false);
+      break;
+    case Event::GAME_OVER :
+      switch (logic_.GameOverCause()) {
+        case Logic::SubjectID::PLAYER :
+
+          break;
+        case Logic::SubjectID::WUMP :
+
+          break;
+        case Logic::SubjectID::PIT :
+          Play("../src/audio/wav/player_pits.wav", false);
+          break;
+        case Logic::SubjectID::UNKNOWN : default : break;
+      }
     default : break;
   }
   return true;

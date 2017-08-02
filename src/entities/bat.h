@@ -13,11 +13,8 @@ namespace wumpus_game {
 class Bat : public Enemy
 {
 public:
-  explicit Bat(Map* cave)
-  : Enemy(cave)
-  { type_ = Subject::BAT; }
-  
-  std::string FeelsRepresent() const override;
+  explicit Bat(Map*);
+  ~Bat() { }
 };
 
 }  // namespace wumpus_game

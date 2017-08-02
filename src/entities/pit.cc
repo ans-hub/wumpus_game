@@ -7,9 +7,9 @@
 
 namespace wumpus_game {
 
-std::string Pit::FeelsRepresent() const
+Pit::Pit(Map* cave) : Enemy(cave)
 {
-  return "FEELS: You feel the cold (possible the bottomless pit is near)";
+  type_ = Subject::PIT;
 }
 
 }  // namespace wumpus_game

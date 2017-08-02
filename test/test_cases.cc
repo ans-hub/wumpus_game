@@ -155,9 +155,9 @@ namespace test_level_behavior {
 
     constexpr int kCaveSize {5};
     constexpr int kArrows {5};
-    int wumps_cnt{rand_toolkit::get_rand(1, kCaveSize*4/6)};
-    int bats_cnt{rand_toolkit::get_rand(1, kCaveSize*4/6)};
-    int pits_cnt{rand_toolkit::get_rand(1, kCaveSize*4/6)};
+    int wumps_cnt{rand_toolkit::get_rand(1, kCaveSize*4/12)};
+    int bats_cnt{rand_toolkit::get_rand(1, kCaveSize*4/9)};
+    int pits_cnt{rand_toolkit::get_rand(1, kCaveSize*4/12)};
 
     int result{0};
 
@@ -630,27 +630,5 @@ namespace test_logic_behavior {
   }
   
 }  // namespace test_logic_behavior
-
-namespace test_experiments {
-
-  int experimental()
-  {
-    Logic logic{};
-    Windows windows{};
-    GuiView view {windows, logic};
-    CliView view2 {std::cout, logic};
-    GuiController ctrl{windows, logic};
-    GameSounds audio {};
-    audio.Play("../src/audio/wav/cave_theme.wav", true);
-
-
-    logic.RegisterObserver(view);
-    logic.RegisterObserver(view2);
-    logic.RegisterObserver(audio);
-    ctrl.RunModel();
-    return 0;
-  }
-
-}  // namespace test_experiments
 
 }  // namespace wumpus_game

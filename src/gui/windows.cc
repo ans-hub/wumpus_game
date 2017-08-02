@@ -20,8 +20,8 @@ Windows::Windows()
 
 Windows::~Windows()
 {
-  delete wnd_start_;
   delete wnd_help_;
+  delete wnd_start_;
   delete wnd_main_;
 }
 

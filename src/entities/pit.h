@@ -13,11 +13,8 @@ namespace wumpus_game {
 class Pit : public Enemy
 {
 public:
-  explicit Pit(Map* cave)
-  : Enemy(cave)
-  { type_ = Subject::PIT; }
-  
-  std::string FeelsRepresent() const override;
+  explicit Pit(Map*);
+  ~Pit() { }
 };
 
 }  // namespace wumpus_game

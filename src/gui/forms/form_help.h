@@ -13,12 +13,11 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
-#include <FL/Fl_JPEG_Image.H>
-#include <FL/Fl_Window.H>
+#include <FL/Fl_Double_Window.H>
 
 namespace wumpus_game {
 
-class FormHelp : public Fl_Window 
+class FormHelp : public Fl_Double_Window 
 {
 public: 
   FormHelp();
@@ -26,8 +25,8 @@ public:
   
   Fl_Box*           box_label_;
   Fl_Button*        btn_quit_help_;
-  Fl_Text_Buffer*   output_;
   Fl_Text_Display*  display_;
+  Fl_Text_Buffer*   output_;
 
 private:
   void TuneAppearance();

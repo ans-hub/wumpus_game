@@ -8,7 +8,7 @@
 namespace wumpus_game {
 
 WidgetPlayer::WidgetPlayer()
-  : Fl_Group(0, 0, 70, 80)
+  : Fl_Group{0, 0, 70, 80}
   , grp_player_{(new Fl_Group(10, 30, 50, 50))}
   , grp_feels_{(new Fl_Group(5, 0, 60, 30))}
   , box_wumps_{(new Fl_Box(15, 1, 15, 15))}
@@ -29,27 +29,6 @@ WidgetPlayer::WidgetPlayer()
   , trajectory_{}
 {
   TuneAppearance();
-}
-
-WidgetPlayer::~WidgetPlayer()
-{
-  delete img_walk_;
-  delete img_stay_;
-  delete img_shot_;
-  delete img_bats_;
-  delete img_kill_wump_;
-  delete img_unknown_;
-  delete img_dead_wump_;
-  delete img_dead_pits_;
-  delete img_feels_box_;
-  delete img_feels_bats_;
-  delete img_feels_pits_;
-  delete img_feels_wumps_;
-  delete box_wumps_;
-  delete box_bats_;
-  delete box_pits_;
-  delete grp_feels_;
-  delete grp_player_;
 }
 
 void WidgetPlayer::SetStateImage(State state)

@@ -8,8 +8,9 @@
 namespace wumpus_game {
 
 FormMain::FormMain ()
-: Fl_Double_Window(425, 380, "Hunt the Wumpus")
-, img_cover_{(new Fl_PNG_Image("../src/gui/forms/img/bg_main.png"))}
+: Fl_Double_Window{425, 380, "Hunt the Wumpus"}
+, img_cover_{(new Fl_PNG_Image("../src/gui/forms/img/rp_main.png"))}
+, img_bg_{new Fl_Tiled_Image(img_cover_, 0, 0)}
 , box_cover_{new Fl_Box(-5, 0, 435, 625)}
 , box_level_{new Fl_Box(2, 54, 425, 390)}
 , box_label_{new Fl_Box(30, 20, 370, 45, "HUNT THE WUMPUS")}
@@ -18,16 +19,6 @@ FormMain::FormMain ()
 {
   TuneAppearance();
   end();
-}
-
-FormMain::~FormMain()
-{
-  delete wdg_info_;
-  delete wdg_map_;
-  delete box_label_;
-  delete box_level_;
-  delete box_cover_;
-  delete img_cover_;
 }
 
 void FormMain::Redraw(int level)
@@ -53,7 +44,7 @@ void FormMain::TuneAppearance()
   set_modal();
   color((Fl_Color)34);
   position((Fl::w() - this->w())/2, (Fl::h() - this->h())/2);
-  box_cover_->image(img_cover_);
+  box_cover_->image(img_bg_);
   box_cover_->align(FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_CLIP);
   box_label_->box(FL_PLASTIC_UP_FRAME);
   box_label_->color((Fl_Color)84);

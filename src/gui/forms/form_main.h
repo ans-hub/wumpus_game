@@ -27,7 +27,7 @@ class FormMain : public Fl_Double_Window
 {
 public:
   FormMain();
-  ~FormMain();
+  ~FormMain() { }
   void Show() { show(); }
   void Hide() { hide(); }
   void Redraw(int);
