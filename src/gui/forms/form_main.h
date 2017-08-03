@@ -11,7 +11,6 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_PNG_Image.H>
-#include <FL/Fl_Tiled_Image.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
 
@@ -34,7 +33,6 @@ public:
   
 private:
   Fl_PNG_Image*     img_cover_;
-  Fl_Tiled_Image*   img_bg_;
   Fl_Box*           box_cover_;
   Fl_Box*           box_level_;
   Fl_Box*           box_label_;

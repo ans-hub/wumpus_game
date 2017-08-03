@@ -21,7 +21,6 @@ namespace draw_consts {
   constexpr int     main_wnd_offset = 30;
   constexpr int     animation_step = 3;
   constexpr double  animation_speed =  0.01;
-  // Fl_Text_Buffer* outputs_s = new Fl_Text_Buffer{};
 
   int     level_vertexes(int);
   double  level_width(int); 

@@ -11,13 +11,13 @@ namespace wumpus_game {
 
 WidgetInfo::WidgetInfo ()
 : Fl_Group(10, 70, 300, 35)
-, img_cover_{new Fl_PNG_Image("../src/gui/widgets/img/info_bg.png")}
+, img_cover_{new Fl_PNG_Image("gui/widgets/img/info_bg.png")}
 , img_bg_{new Fl_Tiled_Image(img_cover_, 0, 0)}
-, img_level_{new Fl_PNG_Image("../src/gui/widgets/img/info_level.png")}
-, img_wumps_{new Fl_PNG_Image("../src/gui/widgets/img/info_wumps.png")}
-, img_bats_{new Fl_PNG_Image("../src/gui/widgets/img/info_bats.png")}
-, img_pits_{new Fl_PNG_Image("../src/gui/widgets/img/info_pits.png")}
-, img_arrows_{new Fl_PNG_Image("../src/gui/widgets/img/info_arrows.png")}
+, img_level_{new Fl_PNG_Image("gui/widgets/img/info_level.png")}
+, img_wumps_{new Fl_PNG_Image("gui/widgets/img/info_wumps.png")}
+, img_bats_{new Fl_PNG_Image("gui/widgets/img/info_bats.png")}
+, img_pits_{new Fl_PNG_Image("gui/widgets/img/info_pits.png")}
+, img_arrows_{new Fl_PNG_Image("gui/widgets/img/info_arrows.png")}
 , box_level_{new Fl_Box(x()+10, y()+25, 15, 15)}
 , box_wumps_{new Fl_Box(1,1,1,1)}
 , box_bats_{new Fl_Box(1,1,1,1)}
