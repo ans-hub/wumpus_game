@@ -8,13 +8,22 @@
 namespace wumpus_game {
 
 WidgetNetdraw::WidgetNetdraw(int level)
-  : Fl_Group(1, 1, 1, 1, "")
+  : Fl_Widget(1, 1, 1, 1)
   , vxs_count_{draw_consts::level_vertexes(level)}
   , total_vxs_(vxs_count_)
   , inner_vxs_{}
   , middle_vxs_{}
   , outer_vxs_{}
 {
+  Redraw(level);
+  // end();
+}
+
+void WidgetNetdraw::Redraw(int level)
+{
+  vxs_count_ = draw_consts::level_vertexes(level);
+  total_vxs_.resize(vxs_count_);
+
   int w = draw_consts::level_width(level);
   int h = w;
   this->resize(1, 1, h, w);

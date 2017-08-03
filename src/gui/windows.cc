@@ -39,9 +39,6 @@ void Windows::SetFormsCallbacks()
   wnd_main_->callback(
     (Fl_Callback*)(gui_helpers::cb_close_wnd_main_), (void*)this
   );
-  wdg_info_->btn_help_->callback(
-    (Fl_Callback*)(gui_helpers::cb_help_button), (void*)this
-  );
 }
 
 void Windows::Show()

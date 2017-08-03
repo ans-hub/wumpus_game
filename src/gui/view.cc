@@ -132,9 +132,9 @@ void refresh_info_widget(Windows& gui, const Logic& model)
   gui.wdg_info_->box_arrows_->copy_label(arrows.c_str());
 
   if (model.GameOverCause() != Logic::SubjectID::PLAYER)
-    gui.wdg_info_->btn_continue_->copy_label("-^");         
+    gui.wdg_info_->btn_continue_->image(gui.wdg_info_->img_repeat_);
   else
-    gui.wdg_info_->btn_continue_->copy_label("->");     
+    gui.wdg_info_->btn_continue_->image(gui.wdg_info_->img_continue_); 
    
 }
 
@@ -170,9 +170,12 @@ void show_error_room(Windows& gui)
 
 Point get_offsetted_point_of_room(Windows& gui, int room)
 {
-  int offset = (gui.wdg_player_->w()) / 2;
-  double to_x = gui.wdg_map_->GetRoomCoordX(room)-offset;
-  double to_y = gui.wdg_map_->GetRoomCoordY(room)-offset;
+  int offset_x = (gui.wdg_player_->w()) / 2;
+  int offset_y = (gui.wdg_player_->h()) / 2;
+
+  double to_x = gui.wdg_map_->GetRoomCoordX(room)-offset_x;
+  double to_y = gui.wdg_map_->GetRoomCoordY(room)-offset_y;
+  
   return Point{to_x, to_y}; 
 }
 

@@ -37,3 +37,23 @@ int main()
 
   return 0;
 }
+
+
+  // Logic         logic {};
+  // Settings      settings {};
+  // Windows       windows {};
+
+  // Sounds      audio   {};
+  // Windows     gui     {};
+  // Media       media   {gui, audio, logic};
+  // Scores      scores  {};
+  // Controller  ctrl    {gui, logic};
+
+  // logic.RegisterObserver(media);
+  // logic.RegisterObserver(scores);
+
+  // gui.UseAudio(audio);
+  // gui.VoiceEvents();
+
+  // ctrl.SetControls(gui);
+  // ctrl.RunModel();

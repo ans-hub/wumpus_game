@@ -11,7 +11,7 @@
 #include <cmath>
 
 #include <FL/Fl.H>
-#include <FL/Fl_Group.H>
+#include <FL/Fl_Widget.H>
 #include <FL/fl_draw.H>
 
 #include "gui/helpers/draw_consts.h"
@@ -19,13 +19,14 @@
 
 namespace wumpus_game {
 
-struct WidgetNetdraw : public Fl_Group
+struct WidgetNetdraw : public Fl_Widget
 {
   using PointVec = std::vector<Point>;
   using cPointVec = const PointVec;
   
   WidgetNetdraw(int);
   ~WidgetNetdraw() { }
+  void Redraw(int);
   cPointVec& GetVertexes() const { return total_vxs_; }
 private:
   int      vxs_count_;
@@ -35,7 +36,6 @@ private:
   PointVec outer_vxs_;
   
   void FillAllVertexes();
-
   void draw() override;
 };
 

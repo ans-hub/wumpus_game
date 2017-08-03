@@ -49,13 +49,14 @@ private:
 
   void AnimateMoveContinue();
   void AnimateMoveFinish();
+
   static void cb_animate_move(void*);
 
-  Fl_Group*     grp_player_;
-  Fl_Group*     grp_feels_;
+  Fl_Box*       box_player_;
   Fl_Box*       box_wumps_;  
   Fl_Box*       box_bats_;  
-  Fl_Box*       box_pits_;  
+  Fl_Box*       box_pits_;
+  Fl_PNG_Image* img_bg_;
   Fl_PNG_Image* img_stay_;
   Fl_PNG_Image* img_shot_;
   Fl_PNG_Image* img_walk_;
@@ -68,6 +69,7 @@ private:
   Fl_PNG_Image* img_feels_bats_;
   Fl_PNG_Image* img_feels_pits_;
   Fl_PNG_Image* img_feels_wumps_;
+  
   Trajectory    trajectory_;  
 };
 

@@ -12,7 +12,6 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_PNG_Image.H>
-#include <FL/Fl_Tiled_Image.H>
 
 #include "gui/helpers/draw_consts.h"
 
@@ -28,24 +27,26 @@ public:
   void Redraw(int);
 
   Fl_PNG_Image*   img_cover_;
-  Fl_Tiled_Image* img_bg_;
   Fl_PNG_Image*   img_level_;
   Fl_PNG_Image*   img_wumps_;
   Fl_PNG_Image*   img_bats_;
   Fl_PNG_Image*   img_pits_;
   Fl_PNG_Image*   img_arrows_;
+  Fl_PNG_Image*   img_continue_;
+  Fl_PNG_Image*   img_repeat_;
+  Fl_PNG_Image*   img_help_;
   Fl_Box*         box_level_;
   Fl_Box*         box_wumps_;
   Fl_Box*         box_bats_;
   Fl_Box*         box_pits_;
   Fl_Box*         box_arrows_;
-  Fl_Button*      btn_next_;  
   Fl_Button*      btn_continue_;
-  Fl_Button*      btn_help_;
+  Fl_Button*      btn_next_;  
 
 private:
   void TuneAppearance();
 };
+
 
 }  // namespace wumpus_game
 

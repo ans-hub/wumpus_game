@@ -13,8 +13,8 @@ FormMain::FormMain ()
 , box_cover_{new Fl_Box(-5, 0, 435, 625)}
 , box_level_{new Fl_Box(2, 54, 425, 390)}
 , box_label_{new Fl_Box(30, 20, 370, 45, "HUNT THE WUMPUS")}
-, wdg_map_{new WidgetMap()}
 , wdg_info_{new WidgetInfo()}
+, wdg_map_{new WidgetMap()}
 {
   TuneAppearance();
   end();
@@ -30,16 +30,17 @@ void FormMain::Redraw(int level)
   position((Fl::w() - this->w())/2, (Fl::h() - this->h())/2);
   
   box_cover_->resize(-5, 0, this->w(), this->h());
+  box_cover_->image(img_cover_->copy(int(box_cover_->w()), int(box_cover_->h())));
   box_level_->resize(2, 54, this->w(), this->h()/2);
   box_label_->resize(30, 20, this->w()-60, 45);
   
   wdg_map_->Redraw(level);
   wdg_info_->Redraw(level);
   
-  box_cover_->image(img_cover_->copy(int(box_cover_->w()), int(box_cover_->h())));
-  box_cover_->redraw();
 
-  redraw();
+  // /box_cover_->redraw();
+
+  // redraw();
 }
 
 void FormMain::TuneAppearance()

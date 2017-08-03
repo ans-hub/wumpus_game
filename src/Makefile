@@ -111,4 +111,4 @@ game_sounds.o : $(SRC)audio/game_sounds.h $(SRC)audio/game_sounds.cc
 	$(CC) $(CFLAGS) -c $(SRC)audio/game_sounds.cc
 
 clean : 
-	rm ${OBJECTS} main.out
+	rm ${OBJECTS} main.out main

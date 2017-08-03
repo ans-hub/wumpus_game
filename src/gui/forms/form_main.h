@@ -36,8 +36,8 @@ private:
   Fl_Box*           box_cover_;
   Fl_Box*           box_level_;
   Fl_Box*           box_label_;
-  WidgetMap*        wdg_map_;
   WidgetInfo*       wdg_info_;
+  WidgetMap*        wdg_map_;
 
   void TuneAppearance();
   friend Windows;

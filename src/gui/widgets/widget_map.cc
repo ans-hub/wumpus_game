@@ -8,12 +8,14 @@
 namespace wumpus_game {
 
 WidgetMap::WidgetMap ()
-  : Fl_Group{30, 90, parent()->w(), parent()->h()}
+  // : Fl_Group{30, 90, parent()->w(), parent()->h()}
+  : Fl_Group{30, 90, 600, 600}    // here was a bug when parent()->w()...h()
   , rooms_{}
-  , pathes_{nullptr}
+  , pathes_{new WidgetNetdraw(1)}
   , player_{new WidgetPlayer()}
 {
   TuneAppearance();
+  end();
 } 
 
 WidgetMap::~WidgetMap()
@@ -22,8 +24,8 @@ WidgetMap::~WidgetMap()
     this->remove(v);
     delete v;
   }
-  remove(player_);
-  delete player_;
+  // remove(player_);
+  // delete player_;
 }
 
 int WidgetMap::GetRoomCoordX(int num) const
@@ -60,13 +62,15 @@ void WidgetMap::ResizeGroup(int level)
 
 void WidgetMap::DrawPlayer()
 {
+  remove(player_);    // needs for top level
   add(player_);
 }
 
 void WidgetMap::DrawLines(int level)
 {
-  pathes_ = new WidgetNetdraw(level);
-  add(pathes_);
+  // pathes_ = new WidgetNetdraw(level);
+  // add(pathes_);
+  pathes_->Redraw(level);
   pathes_->position(x(), y());
 }
 
@@ -99,13 +103,13 @@ void WidgetMap::ClearRooms()
 
 void WidgetMap::ClearPlayer()
 { 
-  remove(player_);
+  // remove(player_);
 }
 
 void WidgetMap::ClearLines()
 {
-  remove(pathes_);
-  delete pathes_;
+  // remove(pathes_);
+  // delete pathes_;
 }
 
 void WidgetMap::SetCallbacks()
