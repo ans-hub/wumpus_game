@@ -14,22 +14,26 @@
 #include "entities/events.h"
 #include "entities/logic.h"
 #include "helpers/trajectory.h"
+#include "settings/config.h"
+#include "audio/audio_output.h"
 
 namespace wumpus_game {
 
-struct GuiView : public mvc_set::Observer<Event>
+struct Media : public mvc_set::Observer<Event>
 { 
   using RoomEvent = std::pair<Event, int>;
   using Events = std::queue<RoomEvent>;
 
-  GuiView(Windows&, Logic&);
-  ~GuiView() { }
+  Media(Windows&, const AudioOutput&, const Logic&, const Config&);
+  ~Media() { }
 
 private:
   Windows& gui_;
-  Logic& model_;
-  Events events_;
-  bool ready_;
+  const Audio&  audio_;
+  const Logic&  model_;
+  const Config& conf_;
+  Events   events_;
+  bool     ready_;
 
   bool IncomingNotify(Event) override;    // register event
   void ProcessNextEvent();                // get event from queue

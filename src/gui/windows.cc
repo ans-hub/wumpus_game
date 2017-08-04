@@ -7,13 +7,14 @@
 
 namespace wumpus_game {
 
-Windows::Windows() 
+Windows::Windows(const Config& conf) 
   : wnd_start_ { new FormStart() }
   , wnd_help_ { new FormHelp() }
   , wnd_main_{ new FormMain() }
   , wdg_map_ { wnd_main_->wdg_map_ }
   , wdg_info_{ wnd_main_->wdg_info_ }
   , wdg_player_ { wnd_main_->wdg_map_->GetPlayer() }
+  , conf_{conf}
 {
   SetFormsCallbacks();
 }

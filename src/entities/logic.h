@@ -8,7 +8,6 @@
 
 #include <cassert>
 #include <string>
-// #include <queue>
 
 #include "entities/events.h"
 #include "entities/helpers/logic_helpers.h"
@@ -16,6 +15,7 @@
 #include "entities/level.h"
 #include "entities/subject.h"
 #include "3rdparty/observable.h"
+#include "settings/config.h"
 
 namespace wumpus_game {
 
@@ -27,7 +27,7 @@ public:
   using Rooms = std::vector<int>;
   using SubjectID = Subject::ID;
   
-  Logic();
+  explicit Logic(const Config&);
   Logic(const Logic&) =delete;
 
   void NewLevel();
@@ -38,12 +38,13 @@ public:
   int CurrentLevel() const { return curr_level_; }
   const Level& GetLevel() const { return level_; }
   const Rooms& RoomsHistory() const { return rooms_history_; }
-protected:
-  Level       level_;
-  bool        player_turn_;
-  Subject::ID game_over_cause_;
-  int         curr_level_;
-  Rooms       rooms_history_;
+private:
+  Level         level_;
+  bool          player_turn_;
+  Subject::ID   game_over_cause_;
+  int           curr_level_;
+  Rooms         rooms_history_;
+  const Config& config_;
 
   void PlayerTurn(int, int);
   bool PlayerShot(int);

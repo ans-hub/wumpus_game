@@ -15,10 +15,10 @@ FLTKFLAGS = `fltk-config --use-images --ldflags`
 
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 					level.o logic.o map_helpers.o logic_helpers.o cli_view.o \
-					cli_controller.o ai_controller.o gui_view.o gui_controller.o \
+					cli_controller.o ai_controller.o media.o gui_controller.o \
 					windows.o form_start.o form_help.o form_main.o widget_info.o \
 					widget_map.o widget_netdraw.o widget_player.o draw_consts.o \
-					trajectory.o game_sounds.o
+					trajectory.o game_sounds.o scores.o config.o
 
 release : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o2 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main
@@ -53,10 +53,10 @@ pit.o : $(ENT)pit.h $(ENT)pit.cc enemy.o
 level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 	$(CC) $(CFLAGS) -c $(ENT)level.cc
 
-logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(ENT)events.h $(SRC)3rdparty/observable.h
+logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(ENT)events.h $(SRC)3rdparty/observable.h config.o
 	$(CC) $(CFLAGS) -c $(ENT)logic.cc
 
-windows.o : $(GUI)windows.h $(GUI)windows.cc form_main.o widget_map.o form_help.o form_start.o
+windows.o : $(GUI)windows.h $(GUI)windows.cc form_main.o widget_map.o form_help.o form_start.o config.o
 	$(CC) $(CFLAGS) -c $(GUI)windows.cc
 
 form_start.o : $(GUI)forms/form_start.h $(GUI)forms/form_start.cc
@@ -86,8 +86,8 @@ widget_player.o : $(GUI)widgets/widget_player.h $(GUI)widgets/widget_player.cc $
 draw_consts.o : $(GUI)helpers/draw_consts.h $(GUI)helpers/draw_consts.cc
 	$(CC) $(CFLAGS) -c $(GUI)helpers/draw_consts.cc
 
-gui_view.o : $(GUI)view.h $(GUI)view.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h $(GUI)windows.h
-	$(CC) $(CFLAGS) -c $(GUI)view.cc -o gui_view.o 
+media.o : $(GUI)media.h $(GUI)media.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h $(GUI)windows.h config.o audio_output.o
+	$(CC) $(CFLAGS) -c $(GUI)media.cc -o media.o 
 
 gui_controller.o : $(GUI)controller.h $(GUI)controller.cc $(SRC)3rdparty/controller.h logic.o $(GUI)windows.h
 	$(CC) $(CFLAGS) -c $(GUI)controller.cc -o gui_controller.o 
@@ -109,6 +109,12 @@ logic_helpers.o : $(HLP)logic_helpers.h $(HLP)logic_helpers.cc
 
 game_sounds.o : $(SRC)audio/game_sounds.h $(SRC)audio/game_sounds.cc
 	$(CC) $(CFLAGS) -c $(SRC)audio/game_sounds.cc
+
+scores.o : $(SRC)scores/scores.h $(SRC)scores/scores.cc logic.o $(ENT)events.h $(SRC)3rdparty/observer.h config.o
+	$(CC) $(CFLAGS) -c $(SRC)scores/scores.cc
+
+config.o : $(SRC)settings/config.h $(SRC)settings/config.cc
+	$(CC) $(CFLAGS) -c $(SRC)settings/config.cc
 
 clean : 
 	rm ${OBJECTS} main.out main

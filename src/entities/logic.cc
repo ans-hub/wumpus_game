@@ -7,8 +7,9 @@
 
 namespace wumpus_game {
 
-Logic::Logic()
+Logic::Logic(const Config& config)
   : level_(5,5,1,1,1) // make def ctor in level which is level 1
+  , config_{config}
   , player_turn_{true}
   , game_over_cause_{Subject::EMPTY}
   , curr_level_{1}

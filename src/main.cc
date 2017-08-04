@@ -10,32 +10,32 @@
 #include "cli/controller.h"
 #include "ai/controller.h"
 #include "gui/windows.h"
-#include "gui/view.h"
+#include "gui/media.h"
 #include "gui/controller.h"
-#include "audio/game_sounds.h"
-// #include "scores/game_scores.h"
+#include "audio/audio_output.h"
+#include "scores/scores.h"
+#include "settings/config.h"
 
 int main()
 {
   using namespace wumpus_game;
 
-  Logic       logic   {};
-  Settings    settings{};
-  Windows     windows {};
+  Config        config  {};
+  Logic         logic   {config};
+  AudioOutput   sounds  {config};
+  Windows       gui     {config};
 
-  Sounds      audio   {settings};
-  Windows     gui     {settings};
-  Media       media   {gui, audio, logic, settings};
-  Scores      scores  {settings};
-  Controller  ctrl    {gui, logic, settings};
+  Media         media   {gui, sounds, logic, config};
+  GuiController ctrl    {gui, logic, config};
+  Scores        scores  {logic, config};
 
   logic.RegisterObserver(media);
   logic.RegisterObserver(scores);
 
-  gui.UseAudio(audio);
+  gui.UseAudio(sounds);
   gui.VoiceEvents();
 
-  ctrl.SetControls(gui);
+  ctrl.SetControls(gui);  // set callbacks explicit for more readable reason
   ctrl.RunModel();
 
   return 0;

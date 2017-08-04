@@ -7,10 +7,11 @@
 
 namespace wumpus_game {
 
-GuiController::GuiController(Windows& gui, Logic& model)
+GuiController::GuiController(Windows& gui, Logic& model, const Config& conf)
   : Controller() 
   , gui_{gui}
   , model_{model}
+  , conf_{conf}
 {
   SetLogicCommandsCallbacks();
   SetLevelProcessingCallbacks();

@@ -3,11 +3,11 @@
 // Author: Anton Novoselov, 2017
 // File: model's `view` using gui
 
-#include "view.h"
+#include "media.h"
 
 namespace wumpus_game {
 
-GuiView::GuiView(Windows& gui, Logic& model)
+Media::Media(Windows& gui, Logic& model)
   : gui_{gui}
   , model_{model}
   , events_{}

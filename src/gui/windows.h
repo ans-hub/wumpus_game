@@ -13,14 +13,16 @@
 #include "gui/forms/form_main.h"
 #include "gui/widgets/widget_info.h"
 #include "gui/widgets/widget_map.h"
+#include "settings/config.h"
 
 namespace wumpus_game {
 
 class Windows
 {
 public:
-  Windows();
+  explicit Windows(const Config&);
   ~Windows();
+
   void Show();
   void Close();
   
@@ -37,7 +39,8 @@ public:
   WidgetPlayer* wdg_player_;
 
 private:
-  void SetFormsCallbacks();    // see note #1
+  const Config& conf_;
+  void  SetFormsCallbacks();    // see note #1
 };
 
 namespace gui_helpers {
