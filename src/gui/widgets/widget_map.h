@@ -52,8 +52,6 @@ private:
   void DrawRooms(int);
   void DrawLines(int);
   void ClearRooms();
-  void ClearPlayer();
-  void ClearLines();
   void SetCallbacks();
   void TuneAppearance();
   

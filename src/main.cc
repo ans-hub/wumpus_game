@@ -19,41 +19,25 @@ int main()
 {
   using namespace wumpus_game;
 
-  Logic         logic {};
-  Windows       windows {};
+  Logic       logic   {};
+  Settings    settings{};
+  Windows     windows {};
 
-  GuiView       view  {windows, logic};
-  CliView       view2 {std::cout, logic};
-  GuiController ctrl  {windows, logic};
-  GameSounds    audio {logic};
-  // GameScores    scores{ }
+  Sounds      audio   {settings};
+  Windows     gui     {settings};
+  Media       media   {gui, audio, logic, settings};
+  Scores      scores  {settings};
+  Controller  ctrl    {gui, logic, settings};
 
-  logic.RegisterObserver(view);
-  logic.RegisterObserver(view2);
-  logic.RegisterObserver(audio);
-  // logic.RegisterObserver(scores);
+  logic.RegisterObserver(media);
+  logic.RegisterObserver(scores);
 
+  gui.UseAudio(audio);
+  gui.VoiceEvents();
+
+  ctrl.SetControls(gui);
   ctrl.RunModel();
 
   return 0;
 }
 
-
-  // Logic         logic {};
-  // Settings      settings {};
-  // Windows       windows {};
-
-  // Sounds      audio   {};
-  // Windows     gui     {};
-  // Media       media   {gui, audio, logic};
-  // Scores      scores  {};
-  // Controller  ctrl    {gui, logic};
-
-  // logic.RegisterObserver(media);
-  // logic.RegisterObserver(scores);
-
-  // gui.UseAudio(audio);
-  // gui.VoiceEvents();
-
-  // ctrl.SetControls(gui);
-  // ctrl.RunModel();
