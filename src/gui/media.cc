@@ -62,7 +62,7 @@ void Media::ExecuteEvent(Event msg, int room)
       break;
 
     case Event::READY_TO_INPUT : 
-      gui_helpers::show_feels(gui_, model_);
+      gui_helpers::show_feels(gui_, model_, room);
       break;
 
     case Event::ONE_WUMP_KILLED :
@@ -254,14 +254,15 @@ void show_havent_arrows(Windows& gui)
   gui.wnd_main_->redraw();
 }
 
-void show_feels(Windows& gui, const Logic& model)
+void show_feels(Windows& gui, const Logic& model, int room)
 {  
   bool wumps {false};
   bool bats {false};  
   bool pits {false};
 
-  auto feels = model.GetLevel().player_->Feels();
-
+  auto* cave = model.GetLevel().cave_.get();
+  auto  feels = helpers::subjects_in_neighboring_rooms(room, cave);
+  
   for (auto const feel : feels) {
     switch(feel)
     {

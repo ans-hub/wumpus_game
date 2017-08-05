@@ -129,7 +129,7 @@ bool Logic::PlayerMove(int room)
 
 void Logic::WumpsTurn()
 {
-  auto& player = level_.player_;      
+  auto& player = level_.player_;
   auto& wumps = level_.wumps_;
   
   for (auto& wump : wumps) {
@@ -140,7 +140,7 @@ void Logic::WumpsTurn()
     if (helpers::is_in_one_room(wump.get(), player.get())) {
       player->Kill();
       game_over_cause_ = Subject::WUMP;
-      NotifyObservers(Event::GAME_OVER);      
+      NotifyObservers(Event::GAME_OVER);
       break;
     }
   }
@@ -148,15 +148,15 @@ void Logic::WumpsTurn()
 
 void Logic::BatsTurn()
 {
-  auto& player = level_.player_;    
+  auto& player = level_.player_;
   auto& bats = level_.bats_;
 
   for (auto& bat : bats) {
     if (helpers::is_in_one_room(bat.get(), player.get())) {
       player->TeleportRandom();
       bat->TeleportRandom();
-      rooms_history_.push_back(player->GetCurrRoomNum());    
-      NotifyObservers(Event::MOVED_BATS);            
+      rooms_history_.push_back(player->GetCurrRoomNum());
+      NotifyObservers(Event::MOVED_BATS);
       break;
     }
   }
@@ -171,7 +171,7 @@ void Logic::PitsTurn()
     if (helpers::is_in_one_room(pit.get(), player.get())) {
       player->Kill();
       game_over_cause_ = Subject::PIT;
-      NotifyObservers(Event::GAME_OVER);      
+      NotifyObservers(Event::GAME_OVER);
       break;
     }
   }

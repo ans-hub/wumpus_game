@@ -52,7 +52,6 @@ Player::VSubjectsId Player::Feels() const
 bool Player::Shot()
 {
   if (!arrows_) {
-    // arrows_ = 5; // :)
     return false;
   }
   else {

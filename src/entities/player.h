@@ -7,6 +7,7 @@
 #define PLAYER_H
 
 #include "entities/subject.h"
+#include "helpers/map_helpers.h"
 
 namespace wumpus_game {
 
@@ -19,7 +20,7 @@ public:
   Player& operator=(Player&&);
   
   bool        Shot();
-  VSubjectsId Feels() const;
+  VSubjectsId Feels() const;   // remove, better use helpers
   int GetArrows() const { return arrows_; }
 private:
   int arrows_;

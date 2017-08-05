@@ -39,6 +39,31 @@ bool is_in_one_room(Subject* subj1, Subject* subj2)
   return false;
 }
 
+// Returns subjects, placed in neighboring rooms, exclude current
+
+std::vector<Subject::ID> subjects_in_neighboring_rooms(int room, Map* cave)
+{
+  std::vector<Subject::ID> res;
+  Room* curr = cave->GetRoom(room);
+  Room* next;
+  
+  next = curr->left_;
+  for (auto const p : next->subjects_) {
+    res.push_back(p->GetType());
+  }
+
+  next = curr->right_;
+  for (auto const p : next->subjects_) {
+    res.push_back(p->GetType());
+  }
+
+  next = curr->back_;
+  for (auto const p : next->subjects_) {
+    res.push_back(p->GetType());
+  }
+  return res;
+}
+
 }  // namespace helpers
 
 }  // namespace wumpus_game

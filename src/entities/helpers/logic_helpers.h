@@ -16,7 +16,7 @@
 #include "entities/subject.h"
 #include "entities/room.h"
 #include "entities/wump.h"
-// #include "helpers/entities_helpers.h"
+#include "entities/map.h"
 
 namespace wumpus_game {
 
@@ -27,13 +27,13 @@ namespace helpers {
   void worry_neighboring_wumps(VWumpsPtr&, std::vector<int>&);
   bool kill_one_wump_in_room(VWumpsPtr&, int);
   bool is_in_one_room(Subject*, Subject*);
-  
+  std::vector<Subject::ID> subjects_in_neighboring_rooms(int, Map*);
+
   template<class T>
   int alive_subjects_count(std::vector<std::unique_ptr<T>>&);
 
   template<class T>
   int find_in_vector(std::vector<T>, T);
-
 
   // Template functions realisation
 
