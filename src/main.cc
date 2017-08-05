@@ -12,7 +12,7 @@
 #include "gui/windows.h"
 #include "gui/media.h"
 #include "gui/controller.h"
-#include "audio/audio_output.h"
+#include "audio/audio_out.h"
 #include "scores/scores.h"
 #include "settings/config.h"
 
@@ -20,24 +20,19 @@ int main()
 {
   using namespace wumpus_game;
 
-  Config        config  {};
+  const Config  config  {};
+  
   Logic         logic   {config};
-  AudioOutput   sounds  {config};
-  Windows       gui     {config};
+  AudioOut      sounds  {config};
+  Windows       gui     {config, sounds};
 
-  Media         media   {gui, sounds, logic, config};
-  GuiController ctrl    {gui, logic, config};
-  Scores        scores  {logic, config};
+  GuiController ctrl    {config, logic, gui};
+  Media         media   {config, logic, gui, sounds};
+  Scores        scores  {config, logic};
 
   logic.RegisterObserver(media);
   logic.RegisterObserver(scores);
 
-  gui.UseAudio(sounds);
-  gui.VoiceEvents();
-
-  ctrl.SetControls(gui);  // set callbacks explicit for more readable reason
-  ctrl.RunModel();
-
-  return 0;
+  return ctrl.RunModel();
 }
 

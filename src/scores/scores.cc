@@ -7,9 +7,9 @@
 
 namespace wumpus_game {
 
-Scores::Scores(const Logic& logic, const Config& config)
-  : logic_{logic}
-  , config_{config}
+Scores::Scores(const Config& conf, const Logic& logic)
+  : conf_{conf}
+  , logic_{logic}
 {
 
 }

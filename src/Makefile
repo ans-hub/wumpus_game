@@ -18,7 +18,7 @@ OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 					cli_controller.o ai_controller.o media.o gui_controller.o \
 					windows.o form_start.o form_help.o form_main.o widget_info.o \
 					widget_map.o widget_netdraw.o widget_player.o draw_consts.o \
-					trajectory.o game_sounds.o scores.o config.o
+					trajectory.o scores.o config.o audio_out.o
 
 release : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o2 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main
@@ -86,7 +86,7 @@ widget_player.o : $(GUI)widgets/widget_player.h $(GUI)widgets/widget_player.cc $
 draw_consts.o : $(GUI)helpers/draw_consts.h $(GUI)helpers/draw_consts.cc
 	$(CC) $(CFLAGS) -c $(GUI)helpers/draw_consts.cc
 
-media.o : $(GUI)media.h $(GUI)media.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h $(GUI)windows.h config.o audio_output.o
+media.o : $(GUI)media.h $(GUI)media.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h $(GUI)windows.h config.o audio_out.o
 	$(CC) $(CFLAGS) -c $(GUI)media.cc -o media.o 
 
 gui_controller.o : $(GUI)controller.h $(GUI)controller.cc $(SRC)3rdparty/controller.h logic.o $(GUI)windows.h
@@ -107,8 +107,8 @@ map_helpers.o : $(HLP)map_helpers.h $(HLP)map_helpers.cc
 logic_helpers.o : $(HLP)logic_helpers.h $(HLP)logic_helpers.cc
 	$(CC) $(CFLAGS) -c $(HLP)logic_helpers.cc
 
-game_sounds.o : $(SRC)audio/game_sounds.h $(SRC)audio/game_sounds.cc
-	$(CC) $(CFLAGS) -c $(SRC)audio/game_sounds.cc
+audio_out.o : $(SRC)audio/audio_out.h $(SRC)audio/audio_out.cc
+	$(CC) $(CFLAGS) -c $(SRC)audio/audio_out.cc
 
 scores.o : $(SRC)scores/scores.h $(SRC)scores/scores.cc logic.o $(ENT)events.h $(SRC)3rdparty/observer.h config.o
 	$(CC) $(CFLAGS) -c $(SRC)scores/scores.cc

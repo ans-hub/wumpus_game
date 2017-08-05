@@ -36,11 +36,6 @@ void FormMain::Redraw(int level)
   
   wdg_map_->Redraw(level);
   wdg_info_->Redraw(level);
-  
-
-  // /box_cover_->redraw();
-
-  // redraw();
 }
 
 void FormMain::TuneAppearance()

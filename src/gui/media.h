@@ -3,11 +3,11 @@
 // Author: Anton Novoselov, 2017
 // File: model's `view` using gui
 
-#ifndef GUI_VIEW_H
-#define GUI_VIEW_H
+#ifndef MEDIA_H
+#define MEDIA_H
 
 #include <string>
-#include <queue>
+#include <deque>
 
 #include "3rdparty/observer.h"
 #include "gui/windows.h"
@@ -15,34 +15,36 @@
 #include "entities/logic.h"
 #include "helpers/trajectory.h"
 #include "settings/config.h"
-#include "audio/audio_output.h"
+#include "audio/audio_out.h"
 
 namespace wumpus_game {
 
 struct Media : public mvc_set::Observer<Event>
-{ 
+{
   using RoomEvent = std::pair<Event, int>;
-  using Events = std::queue<RoomEvent>;
+  using Events = std::deque<RoomEvent>;
 
-  Media(Windows&, const AudioOutput&, const Logic&, const Config&);
+  Media(const Config&, const Logic&, Windows&, const AudioOut&);
   ~Media() { }
 
 private:
-  Windows& gui_;
-  const Audio&  audio_;
-  const Logic&  model_;
-  const Config& conf_;
-  Events   events_;
-  bool     ready_;
+  const Config&   conf_;
+  const Logic&    model_;
+  Windows&        gui_;
+  const AudioOut& audio_;
+  Events          events_;
+  bool            ready_;
 
   bool IncomingNotify(Event) override;    // register event
   void ProcessNextEvent();                // get event from queue
   void ExecuteEvent(Event, int);          // execute concrete event
   void DoNotDistrubeWhileAnimate() { ready_ = false; }
   void CheckReadyToNextEvent();
+  void ReturnEventBack(Event, int);
 
   static void cb_process_next_event(void*);
   static void cb_check_ready_to_next_event(void*);
+
 };
 
 namespace gui_helpers {
@@ -54,8 +56,8 @@ namespace gui_helpers {
   void hide_level(Windows&);
   void show_error_room(Windows&);
   void show_player_position_instantly(Windows&, const Logic&);
-  void show_player_movement(Windows&, int);
-  void show_bats_movement(Windows&, int);
+  bool show_player_movement(Windows&, int);
+  bool show_bats_movement(Windows&, int);
   void show_player_shot(Windows&);
   void show_havent_arrows(Windows&);
   void show_feels(Windows&, const Logic&);
@@ -67,4 +69,4 @@ namespace gui_helpers {
 
 }  // namespace wumpus_game
 
-#endif //GUI_VIEW_H
+#endif //MEDIA_H

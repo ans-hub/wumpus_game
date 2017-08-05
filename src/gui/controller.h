@@ -16,14 +16,14 @@ namespace wumpus_game {
 class GuiController : public mvc_set::Controller
 {
 public:
-  GuiController(Windows&, Logic&, const Config&);
+  GuiController(const Config&, Logic&, Windows&);
   ~GuiController() { }
   bool RunModel() override;
   void StopModel();
 private:
-  Windows&      gui_;
-  Logic&        model_;
   const Config& conf_;
+  Logic&        model_;
+  Windows&      gui_;
 
   // Commands used by gui through callbacks
 

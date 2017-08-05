@@ -599,7 +599,7 @@ namespace test_logic_behavior {
     
     constexpr int kSteps{20};
     
-    Logic logic{};
+    Logic logic{Config{}};
     int i{1};
     do {
       logic.NewLevel(i);  // check here if one subj in one room and not unkn
@@ -615,7 +615,7 @@ namespace test_logic_behavior {
     constexpr int kLevel {5};
     constexpr int kSteps {100};
     
-    Logic logic{};
+    Logic logic{Config{}};
     AiController ctrl {logic, kLevel, kSteps};
     
     int result{0};

@@ -5,7 +5,6 @@ ENT = $(SRC)entities/
 AUD = $(SRC)audio/
 HLP = $(ENT)helpers/
 CLI = $(SRC)cli/
-GUI = $(SRC)gui/
 AI = $(SRC)ai/
 
 CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g -L $(SRC)3rdparty -lbass
@@ -13,9 +12,7 @@ FLTKFLAGS = `fltk-config --use-images --ldflags`
 
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 level.o logic.o map_helpers.o logic_helpers.o test_helpers.o test_cases.o \
-cli_view.o cli_controller.o ai_controller.o gui_view.o gui_controller.o \
-windows.o form_start.o form_help.o form_main.o widget_info.o widget_map.o \
-widget_netdraw.o widget_player.o draw_consts.o trajectory.o game_sounds.o
+cli_view.o cli_controller.o ai_controller.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main.out
@@ -50,41 +47,8 @@ level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(ENT)events.h $(SRC)3rdparty/observable.h
 	$(CC) $(CFLAGS) -c $(ENT)logic.cc
 
-windows.o : $(GUI)windows.h $(GUI)windows.cc form_main.o widget_map.o form_help.o form_start.o
-	$(CC) $(CFLAGS) -c $(GUI)windows.cc
-
-form_start.o : $(GUI)forms/form_start.h $(GUI)forms/form_start.cc
-	$(CC) $(CFLAGS) -c $(GUI)forms/form_start.cc
-
-form_help.o : $(GUI)forms/form_help.h $(GUI)forms/form_help.cc
-	$(CC) $(CFLAGS) -c $(GUI)forms/form_help.cc
-
-form_main.o : $(GUI)forms/form_main.h $(GUI)forms/form_main.cc
-	$(CC) $(CFLAGS) -c $(GUI)forms/form_main.cc
-
-widget_info.o : $(GUI)widgets/widget_info.h $(GUI)widgets/widget_info.cc draw_consts.o
-	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_info.cc
-
-widget_map.o : $(GUI)widgets/widget_map.h $(GUI)widgets/widget_map.cc $(GUI)widgets/widget_room.h widget_netdraw.o widget_player.o
-	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_map.cc
-
-widget_netdraw.o : $(GUI)widgets/widget_netdraw.h $(GUI)widgets/widget_netdraw.cc $(GUI)helpers/point.h
-	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_netdraw.cc
-
-trajectory.o : $(GUI)helpers/trajectory.h $(GUI)helpers/trajectory.cc $(GUI)helpers/point.h
-	$(CC) $(CFLAGS) -c $(GUI)helpers/trajectory.cc
-
-widget_player.o : $(GUI)widgets/widget_player.h $(GUI)widgets/widget_player.cc $(GUI)helpers/point.h trajectory.o
-	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_player.cc
-
 draw_consts.o : $(GUI)helpers/draw_consts.h $(GUI)helpers/draw_consts.cc
 	$(CC) $(CFLAGS) -c $(GUI)helpers/draw_consts.cc
-
-gui_view.o : $(GUI)view.h $(GUI)view.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h $(GUI)windows.h
-	$(CC) $(CFLAGS) -c $(GUI)view.cc -o gui_view.o 
-
-gui_controller.o : $(GUI)controller.h $(GUI)controller.cc $(SRC)3rdparty/controller.h logic.o $(GUI)windows.h
-	$(CC) $(CFLAGS) -c $(GUI)controller.cc -o gui_controller.o 
 
 cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h
 	$(CC) $(CFLAGS) -c $(CLI)view.cc -o cli_view.o 
@@ -106,9 +70,6 @@ test_helpers.o : test_helpers.h test_helpers.cc map.o subject.o
 
 test_cases.o : test_cases.h test_cases.cc $(OBJECTS)
 	$(CC) $(CFLAGS) -c test_cases.cc
-
-game_sounds.o : $(SRC)audio/game_sounds.h $(SRC)audio/game_sounds.cc
-	$(CC) $(CFLAGS) -c $(SRC)audio/game_sounds.cc
 
 clean : 
 	rm ${OBJECTS} main.out

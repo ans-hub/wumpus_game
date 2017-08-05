@@ -39,6 +39,19 @@ struct Point
     res.y_ = lhs.y_ * num;
     return res;
   }
+
+  friend bool operator==(const Point& lhs, const Point& rhs)
+  {
+    if ((lhs.x_ == rhs.x_) && (lhs.y_ == rhs.y_)) 
+      return true;
+    else
+      return false;
+  }
+
+  friend bool operator!=(const Point& lhs, const Point& rhs)
+  {
+    return !(lhs == rhs);
+  }
 };
 
 }  // namespace wumpus_game

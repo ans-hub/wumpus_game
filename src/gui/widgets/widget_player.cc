@@ -18,7 +18,8 @@ WidgetPlayer::WidgetPlayer()
   , img_shot_{(new Fl_PNG_Image("../src/gui/widgets/img/player_shot.png"))}
   , img_walk_{(new Fl_PNG_Image("../src/gui/widgets/img/player_walk.png"))}
   , img_bats_{(new Fl_PNG_Image("../src/gui/widgets/img/player_bats.png"))}  
-  , img_kill_wump_{(new Fl_PNG_Image("../src/gui/widgets/img/player_kill_w.png"))}
+  , img_kill_wump_{(new Fl_PNG_Image("../src/gui/widgets/img/wump_killed.png"))}
+  , img_no_arrows_{(new Fl_PNG_Image("../src/gui/widgets/img/unknown_actions.png"))}
   , img_unknown_{(new Fl_PNG_Image("../src/gui/widgets/img/unknown_action.png"))}
   , img_dead_wump_{(new Fl_PNG_Image("../src/gui/widgets/img/player_dead_w.png"))}
   , img_dead_pits_{(new Fl_PNG_Image("../src/gui/widgets/img/player_dead_p.png"))}
@@ -42,6 +43,7 @@ void WidgetPlayer::SetStateImage(State state)
     case KILLED_BY_WUMP : box_player_->image(img_dead_wump_); break;
     case KILLED_BY_PITS : box_player_->image(img_dead_pits_); break;
     case KILL_WUMP : box_player_->image(img_kill_wump_); break;
+    case HAVENT_ARROWS : box_player_->image(img_no_arrows_); break;
     case UNKNOWN_ACTION : box_player_->image(img_unknown_); break;    
     default : break;
   }

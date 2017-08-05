@@ -31,6 +31,7 @@ public:
     KILLED_BY_WUMP,
     KILLED_BY_PITS,
     KILL_WUMP,
+    HAVENT_ARROWS,
     UNKNOWN_ACTION
   };
 
@@ -62,6 +63,7 @@ private:
   Fl_PNG_Image* img_walk_;
   Fl_PNG_Image* img_bats_; 
   Fl_PNG_Image* img_kill_wump_;
+  Fl_PNG_Image* img_no_arrows_;
   Fl_PNG_Image* img_unknown_;
   Fl_PNG_Image* img_dead_wump_;
   Fl_PNG_Image* img_dead_pits_;

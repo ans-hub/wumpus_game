@@ -7,7 +7,7 @@
 
 namespace wumpus_game {
 
-Windows::Windows(const Config& conf) 
+Windows::Windows(const Config& conf, AudioOut& audio) 
   : wnd_start_ { new FormStart() }
   , wnd_help_ { new FormHelp() }
   , wnd_main_{ new FormMain() }
@@ -15,6 +15,7 @@ Windows::Windows(const Config& conf)
   , wdg_info_{ wnd_main_->wdg_info_ }
   , wdg_player_ { wnd_main_->wdg_map_->GetPlayer() }
   , conf_{conf}
+  , audio_{audio}
 {
   SetFormsCallbacks();
 }
@@ -29,23 +30,25 @@ Windows::~Windows()
 void Windows::SetFormsCallbacks()
 {
   wnd_start_->btn_help_->callback(
-    (Fl_Callback*)(gui_helpers::cb_help_button), (void*)this
+    (Fl_Callback*)(cb_help_button), (void*)this
   );
   wnd_start_->btn_quit_->callback(
-    (Fl_Callback*)(gui_helpers::cb_quit_button), (void*)this
+    (Fl_Callback*)(cb_quit_button), (void*)this
   );
   wnd_help_->btn_quit_help_->callback(
-    (Fl_Callback*)(gui_helpers::cb_quit_help_button), (void*)this
+    (Fl_Callback*)(cb_quit_help_button), (void*)this
   );
   wnd_main_->callback(
-    (Fl_Callback*)(gui_helpers::cb_close_wnd_main_), (void*)this
+    (Fl_Callback*)(cb_close_wnd_main_), (void*)this
   );
 }
 
-void Windows::Show()
+bool Windows::Show()
 {
   wnd_start_->show();
-  Fl::run();
+  audio_.Play(conf_.snd_background_, true);
+
+  return Fl::run();
 }
 
 void Windows::Close()
@@ -53,34 +56,32 @@ void Windows::Close()
   wnd_start_->hide();
 }
 
-namespace gui_helpers {
-
-void cb_help_button(void*, void* w)
+void Windows::cb_help_button(void*, void* w)
 {
   ((Windows*)w)->wnd_help_->show();
 }
 
-void cb_quit_help_button(void*, void* w)
+void Windows::cb_quit_help_button(void*, void* w)
 {
   ((Windows*)w)->wnd_help_->hide();
 }
 
-void cb_quit_button(void*, void* c)
+void Windows::cb_quit_button(void*, void* w)
 {
-  ((Windows*)c)->Close();
+  ((Windows*)w)->Close();
 }
 
-void cb_close_wnd_main_(void*, void* w)
+void Windows::cb_close_wnd_main_(void*, void* w)
 {
   fl_message_hotspot(0);
+
   auto result = fl_choice(
     "Are you want to stop game?", "No", "Yes", 0
   );
+
   if (result == 1) {
     ((Windows*)w)->wnd_main_->hide();
   }
 }
-
-}  // namespace gui_helpers
 
 }  // namespace wumpus_game

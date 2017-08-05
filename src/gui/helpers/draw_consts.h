@@ -19,8 +19,8 @@ namespace draw_consts {
   constexpr double  edge_len = 12;
   constexpr int     room_btn_size = 30;
   constexpr int     main_wnd_offset = 30;
-  constexpr int     animation_step = 3;
-  constexpr double  animation_speed =  0.01;
+  constexpr int     animation_step = 1;
+  constexpr double  animation_speed =  0.012;
 
   int     level_vertexes(int);
   double  level_width(int); 

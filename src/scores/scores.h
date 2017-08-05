@@ -15,12 +15,12 @@ namespace wumpus_game {
 
 struct Scores : public mvc_set::Observer<Event>
 {
-  Scores(const Logic&, const Config&);
-  ~Scores();
+  Scores(const Config&, const Logic&);
+  ~Scores() { }
 private:
   bool IncomingNotify(Event) override;
+  const Config& conf_;
   const Logic&  logic_;
-  const Config& config_;
 };
 
 }  // namespace wumpus_game

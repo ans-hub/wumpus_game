@@ -7,5 +7,4 @@
 
 namespace wumpus_game {
 
-
 }  // namespace wumpus_game

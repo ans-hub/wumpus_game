@@ -14,16 +14,17 @@
 #include "gui/widgets/widget_info.h"
 #include "gui/widgets/widget_map.h"
 #include "settings/config.h"
+#include "audio/audio_out.h"
 
 namespace wumpus_game {
 
 class Windows
 {
 public:
-  explicit Windows(const Config&);
+  explicit Windows(const Config&, AudioOut&);
   ~Windows();
 
-  void Show();
+  bool Show();
   void Close();
   
   // Form of all game
@@ -38,24 +39,23 @@ public:
   WidgetInfo*   wdg_info_;
   WidgetPlayer* wdg_player_;
 
+  const Config&   conf_;
+  AudioOut&       audio_;
+
 private:
-  const Config& conf_;
+
   void  SetFormsCallbacks();    // see note #1
+
+  static void cb_help_button(void*, void*);
+  static void cb_quit_help_button(void*, void*);
+  static void cb_quit_button(void*, void*);
+  static void cb_close_wnd_main_(void*, void*);
 };
-
-namespace gui_helpers {
-
-  void cb_help_button(void*, void*);
-  void cb_quit_help_button(void*, void*);
-  void cb_quit_button(void*, void* c);
-  void cb_close_wnd_main_(void*, void*);
-
-}  // namespace gui_helpers
 
 }  // namespace wumpus_game
 
 #endif  // GUI_WINDOWS_H
 
 // Note #1 : Windows sets callbacks that not depends on game logic,
-// but only based on form appearance logic. Callbacks based on game
+// but only based on the appearance logic. Callbacks based on game
 // logic sets in the GuiController
