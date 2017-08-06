@@ -34,6 +34,7 @@ public:
   Fl_PNG_Image*   img_arrows_;
   Fl_PNG_Image*   img_continue_;
   Fl_PNG_Image*   img_repeat_;
+  Fl_PNG_Image*   img_repeat_na_;
   Fl_PNG_Image*   img_help_;
   Fl_Box*         box_level_;
   Fl_Box*         box_wumps_;

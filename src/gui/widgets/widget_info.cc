@@ -17,12 +17,13 @@ WidgetInfo::WidgetInfo ()
 , img_arrows_{new Fl_PNG_Image("gui/widgets/img/info_arrows.png")}
 , img_continue_{new Fl_PNG_Image("gui/widgets/img/info_continue.png")}
 , img_repeat_{new Fl_PNG_Image("gui/widgets/img/info_repeat.png")}
+, img_repeat_na_{new Fl_PNG_Image("gui/widgets/img/info_repeat_na.png")}
 , box_level_{new Fl_Box(x()+55, y()+10, 20, 20)}
 , box_wumps_{new Fl_Box(x()+15, y()+10, 20, 20)}
 , box_bats_{new Fl_Box(x()+15, y()+60, 20, 20)}
 , box_pits_{new Fl_Box(x()+15, y()+35, 20, 20)}
 , box_arrows_{new Fl_Box(x()+55, y()+35, 20, 20)}
-, btn_continue_{new Fl_Button(x()+50, y()+60, 32, 20)}
+, btn_continue_{new Fl_Button(x()+50, y()+60, 28, 20)}
 , btn_next_{new Fl_Button(x()+15, y()+60, 20, 20)}
 {
   TuneAppearance();
@@ -61,7 +62,7 @@ void WidgetInfo::TuneAppearance()
   box_level_->image(img_level_);
   box_level_->align(Fl_Align(256));
   box_level_->labelcolor(FL_WHITE);
-  btn_continue_->image(img_continue_);
+  btn_continue_->image(img_repeat_na_);
   btn_continue_->align(Fl_Align(256));
 }
 

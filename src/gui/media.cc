@@ -51,7 +51,7 @@ void Media::ExecuteEvent(Event msg, int room)
 
     case Event::GAME_OVER :
       gui_helpers::show_game_over(gui_, model_);
-      gui_helpers::hide_level(gui_);
+      gui_helpers::hide_level(gui_, model_);
       gui_helpers::enable_buttons(gui_);
       gui_helpers::refresh_info_widget(gui_, model_);      
       break;
@@ -167,9 +167,12 @@ void show_level(Windows& gui, const Logic& model)
   gui.wdg_map_->Activate();
 }
 
-void hide_level(Windows& gui)
+void hide_level(Windows& gui, const Logic& model)
 {
-  gui.wdg_map_->Deactivate();
+  if (model.GameOverCause() == Subject::ID::PLAYER)
+    gui.wdg_map_->Deactivate(true);
+  else
+    gui.wdg_map_->Deactivate(false);    
 }
 
 void show_error_room(Windows& gui)

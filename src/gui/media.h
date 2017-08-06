@@ -13,9 +13,10 @@
 #include "gui/windows.h"
 #include "entities/events.h"
 #include "entities/logic.h"
-#include "helpers/trajectory.h"
+#include "gui/helpers/trajectory.h"
 #include "settings/config.h"
 #include "audio/audio_out.h"
+#include "entities/helpers.h"
 
 namespace wumpus_game {
 
@@ -53,7 +54,7 @@ namespace gui_helpers {
   void enable_buttons(Windows&);
   void disable_buttons(Windows&);
   void show_level(Windows&, const Logic&);
-  void hide_level(Windows&);
+  void hide_level(Windows&, const Logic&);
   void show_error_room(Windows&);
   void show_player_position_instantly(Windows&, const Logic&);
   bool show_player_movement(Windows&, int);
@@ -63,6 +64,7 @@ namespace gui_helpers {
   void show_feels(Windows&, const Logic&, int);
   void show_game_over(Windows&, const Logic&);
   void show_killed_one_wump(Windows&);
+
   Point get_offsetted_point_of_room(Windows&, int);
   
 }  // namespace gui_helpers

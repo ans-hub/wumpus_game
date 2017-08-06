@@ -3,8 +3,8 @@
 // Author: Anton Novoselov, 2017
 // File: interface to the Map class
 
-#ifndef LABYRINTH_H
-#define LABYRINTH_H
+#ifndef MAP_H
+#define MAP_H
 
 #include <iostream>
 #include <vector>
@@ -41,6 +41,13 @@ protected:
 
 std::ostream& operator<<(std::ostream&, const Map&);
 
+namespace helpers {
+
+  bool is_neighboring_rooms(int, int, Map*);
+  std::vector<int> get_neighboring_rooms(int, Map*);
+
+}  // namespace helpers
+
 }  // namespace wumpus_game
 
-#endif  // LABYRINTH_H
+#endif  // MAP_H

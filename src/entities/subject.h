@@ -9,7 +9,7 @@
 #include <string>
 #include "3rdparty/rand_toolkit.h"
 #include "entities/map.h"
-#include "entities/helpers/map_helpers.h"
+// #include "entities/helpers.h"
 
 namespace wumpus_game {
 

@@ -7,7 +7,7 @@
 #define PLAYER_H
 
 #include "entities/subject.h"
-#include "helpers/map_helpers.h"
+#include "entities/helpers.h"
 
 namespace wumpus_game {
 

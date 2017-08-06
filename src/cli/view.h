@@ -11,7 +11,7 @@
 #include "3rdparty/observer.h"
 #include "entities/events.h"
 #include "entities/logic.h"
-#include "entities/helpers/map_helpers.h"
+#include "entities/helpers.h"
 
 namespace wumpus_game {
 

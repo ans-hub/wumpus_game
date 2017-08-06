@@ -26,6 +26,7 @@ struct WidgetRoom : Fl_Button
     this->deimage(img_off_);
     this->box(FL_NO_BOX);
   }
+  void Deimage(bool d) { d ? this->deimage(img_mark_) : this->deimage(img_off_); }
   ~WidgetRoom() { }
 
 private:

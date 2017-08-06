@@ -14,7 +14,7 @@ CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g \
 FLTKFLAGS = `fltk-config --use-images --ldflags`
 
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
-					level.o logic.o map_helpers.o logic_helpers.o cli_view.o \
+					level.o logic.o helpers.o cli_view.o \
 					cli_controller.o ai_controller.o media.o gui_controller.o \
 					windows.o form_start.o form_help.o form_main.o widget_info.o \
 					widget_map.o widget_netdraw.o widget_player.o draw_consts.o \
@@ -32,10 +32,10 @@ room.o : $(ENT)room.h $(ENT)room.cc subject.o
 map.o : $(ENT)map.h $(ENT)map.cc room.o 
 	$(CC) $(CFLAGS) -c $(ENT)map.cc
 
-subject.o : $(ENT)subject.h $(ENT)subject.cc map.o map_helpers.o
+subject.o : $(ENT)subject.h $(ENT)subject.cc map.o helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)subject.cc
 
-player.o : $(ENT)player.h $(ENT)player.cc subject.o map_helpers.o
+player.o : $(ENT)player.h $(ENT)player.cc subject.o helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)player.cc
 
 enemy.o : $(ENT)enemy.h $(ENT)enemy.cc subject.o
@@ -101,11 +101,8 @@ cli_controller.o : $(CLI)controller.h $(CLI)controller.cc $(SRC)3rdparty/control
 ai_controller.o : $(AI)controller.h $(AI)controller.cc $(SRC)3rdparty/controller.h logic.o
 	$(CC) $(CFLAGS) -c $(AI)controller.cc -o ai_controller.o 
 
-map_helpers.o : $(HLP)map_helpers.h $(HLP)map_helpers.cc
-	$(CC) $(CFLAGS) -c $(HLP)map_helpers.cc
-
-logic_helpers.o : $(HLP)logic_helpers.h $(HLP)logic_helpers.cc
-	$(CC) $(CFLAGS) -c $(HLP)logic_helpers.cc
+helpers.o : $(ENT)helpers.h $(ENT)helpers.cc
+	$(CC) $(CFLAGS) -c $(ENT)helpers.cc
 
 audio_out.o : $(SRC)audio/audio_out.h $(SRC)audio/audio_out.cc
 	$(CC) $(CFLAGS) -c $(SRC)audio/audio_out.cc

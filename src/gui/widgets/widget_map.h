@@ -31,9 +31,9 @@ public:
   ~WidgetMap();
   void SetCallback(CallbackFunc* cb) { callback_ = cb; }
   void SetCommand(CommandFunc* cmd) { command_ = cmd; }
-  void Deactivate() { for (auto& r : rooms_) r->deactivate(); }
+  void Deactivate(bool d) { for (auto& r : rooms_) { r->Deimage(d); r->deactivate(); } }
   void Activate() { for (auto& r : rooms_) r->activate(); }
-  void RedrawRooms() { Deactivate(); Activate(); }
+  // void RedrawRooms() { Deactivate(); Activate(); }
   VRoomsRef  GetRooms() const { return rooms_; }
   WidgetPlayer* GetPlayer() { return player_; }
   int GetRoomCoordX(int) const;
