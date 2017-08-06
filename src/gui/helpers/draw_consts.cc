@@ -20,7 +20,8 @@ double level_width(int level)
   // if (level == 1 || level == 2 || level == 3) level = 2; // prevent too small window
   // return level_vertexes(level) * edge_len * 2;
   if (level <= 4) return level_vertexes(2) * edge_len * 2;
-  if (level <= 10) return level_vertexes(4) * edge_len * 2;
+  if (level <= 8) return level_vertexes(3) * edge_len * 2;
+  return level_vertexes(4) * edge_len * 2;
 } 
 
 }  // namespace draw_consts

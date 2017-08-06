@@ -41,7 +41,7 @@ void WidgetInfo::Redraw(int level)
 
 void WidgetInfo::TuneAppearance()
 {
-  btn_next_->hide();
+  // btn_next_->hide();
 
   image(img_cover_);
   align(FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_CLIP);

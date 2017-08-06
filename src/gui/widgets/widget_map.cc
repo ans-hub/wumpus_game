@@ -103,6 +103,7 @@ void WidgetMap::SetCallbacks()
 
 void WidgetMap::TuneAppearance()
 {
+  resizable(0); // not resize children
   box(FL_PLASTIC_UP_FRAME);
 }
 

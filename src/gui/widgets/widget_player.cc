@@ -9,7 +9,7 @@ namespace wumpus_game {
 
 WidgetPlayer::WidgetPlayer()
   : Fl_Group{0, 0, 60, 70}
-  , box_player_{(new Fl_Box((w() - 32) / 2, (h() + 10 - 32) / 2, 32, 32))}
+  , box_player_{(new Fl_Box((60 - 32) / 2, (70 + 10 - 32) / 2, 32, 32))}
   , box_wumps_{(new Fl_Box(20, 0, 20, 20))}
   , box_bats_{(new Fl_Box(40, 0, 20, 20))}
   , box_pits_{(new Fl_Box(0, 0, 20, 20))}
@@ -110,11 +110,11 @@ void WidgetPlayer::AnimateMoveFinish()
 
 void WidgetPlayer::TuneAppearance()
 {
-  this->image(img_bg_);
-  this->align(Fl_Align(513));
-  this->resizable(0);
-  box_player_->align(Fl_Align(513));
+  resizable(0);
+  image(img_bg_);
+  align(Fl_Align(513));
   box_player_->image(img_stay_);
+  box_player_->align(Fl_Align(513));
   box_wumps_->image(img_feels_wumps_);
   box_bats_->image(img_feels_bats_);
   box_pits_->image(img_feels_pits_);
