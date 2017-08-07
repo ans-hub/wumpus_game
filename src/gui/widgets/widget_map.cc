@@ -12,6 +12,7 @@ WidgetMap::WidgetMap ()
   , rooms_{}
   , pathes_{new WidgetNetdraw(1)}
   , player_{new WidgetPlayer()}
+  // , level_{0}
 {
   TuneAppearance();
   end();
@@ -37,15 +38,45 @@ int WidgetMap::GetRoomCoordY(int num) const
 
 void WidgetMap::Redraw(int level)
 {
+  // level_ = level;
   begin();
   ResizeGroup(level);
   ClearRooms();
   DrawLines(level);
   DrawRooms(level);
   DrawPlayer();
-  SetCallbacks();
+  // SetRotateCallback();
+  SetRoomsCallback();
   end();
 }
+
+// void WidgetMap::RedrawCurrentByRotate()
+// {
+  // auto angle = pathes_->GetCurrAngle() + 0.3;
+  // pathes_->SetCurrAngle(angle);
+  
+  // ClearRooms();
+  // DrawLines(level_);
+  // DrawRooms(level_);      // how to mem marks on the room? state in simply words
+  // SetRoomsCallback();
+  
+  // int offset_x = (player_->w()) / 2;
+  // int offset_y = (player_->h()) / 2;
+  // if (player_->IsReady()) {
+  //   int room = player_->curr_room_;
+  //   player_->position(GetRoomCoordX(room)-offset_x, GetRoomCoordY(room)-offset_y);
+  // }
+  // else {
+  //   int room = player_->curr_room_;    
+  //   // player_->position(, GetRoomCoordY(room)-offset_y);    
+  //   player_->to_x_ = GetRoomCoordX(room)-offset_x;
+  //   player_->to_y_ = GetRoomCoordY(room)-offset_y;
+  // }
+
+  // DrawPlayer();
+
+  // parent()->redraw();
+// }
 
 // REALISATION DETAILS
 
@@ -59,6 +90,8 @@ void WidgetMap::DrawPlayer()
 {
   remove(player_);    // needs for top level
   add(player_);
+  // move player every tick
+  // player_->StaticMove(Point{});
 }
 
 void WidgetMap::DrawLines(int level)
@@ -94,7 +127,15 @@ void WidgetMap::ClearRooms()
   rooms_.resize(0);
 }
 
-void WidgetMap::SetCallbacks()
+// void WidgetMap::SetRotateCallback()
+// {
+  // level - take speed from settings
+  // speed
+  // double speed = 0.1;
+  // Fl::add_timeout(speed, cb_rotate_map, this);
+// }
+
+void WidgetMap::SetRoomsCallback()
 {
   for (auto& b : rooms_) {
     b->callback((Fl_Callback*)this->callback_, this->command_);
@@ -106,5 +147,12 @@ void WidgetMap::TuneAppearance()
   resizable(0); // not resize children
   box(FL_PLASTIC_UP_FRAME);
 }
+
+// void WidgetMap::cb_rotate_map(void* w)
+// {
+  // Fl::remove_timeout(cb_rotate_map, w);
+  // ((WidgetMap*)w)->RedrawCurrentByRotate();
+  // Fl::repeat_timeout(0.1, cb_rotate_map, w);
+// }
 
 }  // namespace wumpus_game

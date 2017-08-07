@@ -6,15 +6,17 @@
 #ifndef POINT_GEO_H
 #define POINT_GEO_H
 
+#include <cmath>
+
 namespace wumpus_game {
 
 struct Point
 {
-  double x_;
-  double y_;
+  int x_;
+  int y_;
 
   Point() : x_{0}, y_{0} { }
-  Point(double x, double y) : x_{x}, y_{y} { }
+  Point(int x, int y) : x_{x}, y_{y} { }
   
   friend Point operator+(const Point& lhs, const Point& rhs)
   {
@@ -35,8 +37,8 @@ struct Point
   friend Point operator*(double num, const Point& lhs)
   {
     Point res{};
-    res.x_ = lhs.x_ * num;
-    res.y_ = lhs.y_ * num;
+    res.x_ = std::round(lhs.x_ * num);
+    res.y_ = std::round(lhs.y_ * num);
     return res;
   }
 

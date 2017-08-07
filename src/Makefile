@@ -21,7 +21,7 @@ OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 					trajectory.o scores.o config.o audio_out.o
 
 release : $(OBJECTS) main.cc
-	$(CC) $(CFLAGS) -o2 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main
+	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main.out
@@ -77,7 +77,7 @@ widget_map.o : $(GUI)widgets/widget_map.h $(GUI)widgets/widget_map.cc $(GUI)widg
 widget_netdraw.o : $(GUI)widgets/widget_netdraw.h $(GUI)widgets/widget_netdraw.cc $(GUI)helpers/point.h
 	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_netdraw.cc
 
-trajectory.o : $(GUI)helpers/trajectory.h $(GUI)helpers/trajectory.cc $(GUI)helpers/point.h
+trajectory.o : $(GUI)helpers/trajectory.h $(GUI)helpers/trajectory.cc $(GUI)helpers/point.h draw_consts.o
 	$(CC) $(CFLAGS) -c $(GUI)helpers/trajectory.cc
 
 widget_player.o : $(GUI)widgets/widget_player.h $(GUI)widgets/widget_player.cc $(GUI)helpers/point.h trajectory.o

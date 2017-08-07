@@ -59,6 +59,8 @@ std::vector<Point> build_line_trajectory(const Point& from, const Point& to, int
     v[steps-i] = p;
   }
   v[0] = to;
+  v.pop_back();   // remove current coord 
+
   return v;
 }
 

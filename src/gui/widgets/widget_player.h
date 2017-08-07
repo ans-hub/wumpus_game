@@ -38,11 +38,12 @@ public:
   WidgetPlayer();
   ~WidgetPlayer() { }
   
+  bool IsReady() const { return ready_; }
   void SetStateImage(State);
   void ShowFeelsIcons(bool, bool, bool);
   void StaticMove(const Point&);
-  void AnimateMove(const Point&, Trajectory::Type);
-  bool IsAnimateInProgress() const { return !trajectory_.Empty(); }
+  void AnimatePrepare(const Point&, Trajectory::Type);
+  void AnimateMove();
 
 private:
 
@@ -72,7 +73,8 @@ private:
   Fl_PNG_Image* img_feels_pits_;
   Fl_PNG_Image* img_feels_wumps_;
   
-  Trajectory    trajectory_;  
+  Trajectory    trajectory_;
+  bool          ready_;
 };
 
 }  // namespace wumpus_game

@@ -24,16 +24,21 @@ struct WidgetNetdraw : public Fl_Widget
   using PointVec = std::vector<Point>;
   using cPointVec = const PointVec;
   
-  WidgetNetdraw(int);
+  explicit WidgetNetdraw(int);
+  WidgetNetdraw(int, double);
   ~WidgetNetdraw() { }
   void Redraw(int);
   cPointVec& GetVertexes() const { return total_vxs_; }
+  void SetCurrAngle(double a) { curr_angle_ = a; }
+  double GetCurrAngle() const { return curr_angle_; }
 private:
+  constexpr static double kStartAngle = 90;
   int      vxs_count_;
   PointVec total_vxs_;
   PointVec inner_vxs_;
   PointVec middle_vxs_;
   PointVec outer_vxs_;
+  double   curr_angle_; // explain
   
   void FillAllVertexes();
   void draw() override;

@@ -14,9 +14,23 @@ WidgetNetdraw::WidgetNetdraw(int level)
   , inner_vxs_{}
   , middle_vxs_{}
   , outer_vxs_{}
+  , curr_angle_{kStartAngle}
 {
   Redraw(level);
-  // end();
+}
+
+// may be do second ctor more simply by using already ready first ctor?
+ 
+WidgetNetdraw::WidgetNetdraw(int level, double start_angle)
+  : Fl_Widget(1, 1, 1, 1)
+  , vxs_count_{draw_consts::level_vertexes(level)}
+  , total_vxs_(vxs_count_)
+  , inner_vxs_{}
+  , middle_vxs_{}
+  , outer_vxs_{}
+  , curr_angle_{start_angle}
+{
+  Redraw(level);  
 }
 
 void WidgetNetdraw::Redraw(int level)
@@ -26,7 +40,7 @@ void WidgetNetdraw::Redraw(int level)
 
   int w = draw_consts::level_width(level);
   int h = w;
-  this->resize(1, 1, h, w);
+  this->resize(1, 1, h, w);   // really needs?
   FillAllVertexes();
 }
 
@@ -43,7 +57,7 @@ void WidgetNetdraw::FillAllVertexes()
 
   double ivxs_count_ = vxs_count_/4;
   double irad = width / 6;
-  double istart_angle = 90;
+  double istart_angle = curr_angle_;
 
   inner_vxs_ = draw_helpers::get_poly_vertexes(
     ivxs_count_, irad, istart_angle, x0, y0
@@ -53,7 +67,7 @@ void WidgetNetdraw::FillAllVertexes()
 
   double mvxs_count_ = vxs_count_/2;
   double mrad = irad * 2 - (width / 20);
-  double mstart_angle = 90;
+  double mstart_angle = curr_angle_;
 
   middle_vxs_ = draw_helpers::get_poly_vertexes(
     mvxs_count_, mrad, mstart_angle, x0, y0
@@ -63,7 +77,7 @@ void WidgetNetdraw::FillAllVertexes()
 
   double ovxs_count_ = vxs_count_/4;
   double orad = (width / 2) - (width / 20);
-  double ostart_angle = 90 + (360 / ovxs_count_ / 2);
+  double ostart_angle = curr_angle_ + (360 / ovxs_count_ / 2);
 
   outer_vxs_ = draw_helpers::get_poly_vertexes(
     ovxs_count_, orad, ostart_angle, x0, y0

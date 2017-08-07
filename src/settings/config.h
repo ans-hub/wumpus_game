@@ -14,7 +14,7 @@ struct Config
 {
   Config()
     : snd_click_{"audio/wav/click.wav"}
-    , snd_background_{"audio/wav/cave_theme.wav"}
+    , snd_background_{"audio/wav/cave_theme_2.mp3"}
     , snd_steps_{"audio/wav/player_walk.wav"}
     , snd_bats_{"audio/wav/bats_movement.wav"}
     , snd_wump_attack_{"audio/wav/wump_attack.wav"}

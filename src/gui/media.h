@@ -34,17 +34,18 @@ private:
   Windows&        gui_;
   const AudioOut& audio_;
   Events          events_;
-  bool            ready_;
+  // bool            ready_;
 
+  bool IsReady() const;
   bool IncomingNotify(Event) override;    // register event
   void ProcessNextEvent();                // get event from queue
   void ExecuteEvent(Event, int);          // execute concrete event
-  void DoNotDistrubeWhileAnimate() { ready_ = false; }
-  void CheckReadyToNextEvent();
+  // void DoNotDistrubeWhileAnimate() { ready_ = false; }
+  // void CheckReadyToNextEvent();
   void ReturnEventBack(Event, int);
 
   static void cb_process_next_event(void*);
-  static void cb_check_ready_to_next_event(void*);
+  // static void cb_check_ready_to_next_event(void*);
 
 };
 

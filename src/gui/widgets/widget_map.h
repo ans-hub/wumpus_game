@@ -29,15 +29,19 @@ public:
   
   WidgetMap();
   ~WidgetMap();
-  void SetCallback(CallbackFunc* cb) { callback_ = cb; }
-  void SetCommand(CommandFunc* cmd) { command_ = cmd; }
-  void Deactivate(bool d) { for (auto& r : rooms_) { r->Deimage(d); r->deactivate(); } }
-  void Activate() { for (auto& r : rooms_) r->activate(); }
-  // void RedrawRooms() { Deactivate(); Activate(); }
+
   VRoomsRef  GetRooms() const { return rooms_; }
   WidgetPlayer* GetPlayer() { return player_; }
+
+  void SetCallback(CallbackFunc* cb) { callback_ = cb; }
+  void SetCommand(CommandFunc* cmd) { command_ = cmd; }
+
+  void Deactivate(bool d) { for (auto& r : rooms_) { r->Deimage(d); r->deactivate(); } }
+  void Activate() { for (auto& r : rooms_) r->activate(); }
+  
   int GetRoomCoordX(int) const;
   int GetRoomCoordY(int) const;
+
   void Redraw(int);
 
 private:
@@ -46,15 +50,19 @@ private:
   WidgetPlayer*   player_;
   CallbackFunc*   callback_;
   CommandFunc*    command_;
+  // int             level_;
 
   void ResizeGroup(int);
   void DrawPlayer();
   void DrawRooms(int);
   void DrawLines(int);
   void ClearRooms();
-  void SetCallbacks();
+  // void RedrawCurrentByRotate();
+  // void SetRotateCallback();
+  void SetRoomsCallback();
   void TuneAppearance();
   
+  // static void cb_rotate_map(void*);
 };
 
 }  // namespace wumpus_game

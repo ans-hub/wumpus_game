@@ -24,6 +24,7 @@ struct Trajectory
   Trajectory() : points_{ } { }
   void  Set(const Point&, const Point&, Type, int);
   Point Next() const { return points_.back(); }
+  Point First() const { return points_[0]; }
   void  Reset() { points_.clear(); points_.resize(0); }
   void  Pop() { points_.pop_back(); }
   bool  Empty() const { return points_.empty(); }

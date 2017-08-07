@@ -28,6 +28,7 @@ WidgetPlayer::WidgetPlayer()
   , img_feels_pits_{(new Fl_PNG_Image("../src/gui/widgets/img/feels_pits.png"))}
   , img_feels_wumps_{(new Fl_PNG_Image("../src/gui/widgets/img/feels_wumps.png"))}
   , trajectory_{}
+  , ready_{true}
 {
   TuneAppearance();
   end();
@@ -73,29 +74,40 @@ void WidgetPlayer::ShowFeelsIcons(bool wump, bool bats, bool pits)
   redraw();
 }
 
-void WidgetPlayer::AnimateMove(const Point& to, Trajectory::Type type)
+void WidgetPlayer::AnimatePrepare(const Point& to, Trajectory::Type type)
 {
-  double from_x = static_cast<double>(x());
-  double from_y = static_cast<double>(y());
-  
+  int from_x = x();
+  int from_y = y();
   auto step = draw_consts::animation_step;
-  auto speed = draw_consts::animation_speed;
 
   trajectory_.Set(Point{from_x, from_y}, to, type, step);
+}
+
+// void WidgetPlayer::AnimateRebuild()
+// {
+  // if (!trajectory_.Empty()) {
+    // Point to = trajectory_.First();
+    
+    // AnimatePrepare(Point{to_x_, to_y_}, Trajectory::LINE);
+  // }
+// }
+
+void WidgetPlayer::AnimateMove()
+{
+  auto speed = draw_consts::animation_speed;
+  ready_ = false;
   Fl::add_timeout(speed, cb_animate_move, this);
 }
 
 void WidgetPlayer::AnimateMoveContinue()
 {
-  if (!trajectory_.Empty()) {
-    int x = trajectory_.Next().x_;
-    int y = trajectory_.Next().y_;
-    trajectory_.Pop();
-    position(x, y);
+  int x = trajectory_.Next().x_;
+  int y = trajectory_.Next().y_;
+  trajectory_.Pop();
+  position(x, y);
 
-    redraw();
-    parent()->parent()->redraw();
-  }
+  redraw();
+  parent()->parent()->redraw();
 }
 
 void WidgetPlayer::AnimateMoveFinish()
@@ -125,12 +137,14 @@ void WidgetPlayer::TuneAppearance()
 void WidgetPlayer::cb_animate_move(void* w)
 {
   auto* p = ((WidgetPlayer*)w);
-  if (!p->IsAnimateInProgress()) {
+  if (p->trajectory_.Empty()) {
     p->AnimateMoveFinish();    
+    p->ready_ = true;
     Fl::remove_timeout(cb_animate_move, w); //  we can do this only here :(
   }
   else { 
     p->AnimateMoveContinue();
+    // p->AnimateRebuild(); // danger thing!
     auto speed = draw_consts::animation_speed;
     Fl::repeat_timeout(speed, cb_animate_move, w);   // 0.007 is the best
   }
