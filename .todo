@@ -2,7 +2,6 @@
 # 17-07-02 at 15:48  -  Enums in different files
 # 17-07-02 at 23:10  -  Remove actions from ctrl to string
 # 17-07-06 at 12:21  -  Rooms exits make in vector
-# 17-07-06 at 12:21  -  Map form or as dodecaedr or from file
 # 17-07-06 at 12:22  -  RoomButton - own drawed as with lightening un the top, or facel
 # 17-07-06 at 12:27  -  Decide about constness
 # 17-07-06 at 12:33  -  Make one namespace
