@@ -1,7 +1,7 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: control widget draw pathes between rooms
+// File: control widget draws pathes between rooms
 
 #ifndef WIDGET_NETDRAW_H
 #define WIDGET_NETDRAW_H
@@ -14,32 +14,54 @@
 #include <FL/Fl_Widget.H>
 #include <FL/fl_draw.H>
 
-#include "gui/helpers/draw_consts.h"
 #include "gui/helpers/point.h"
+#include "settings/config.h"
 
 namespace wumpus_game {
 
 struct WidgetNetdraw : public Fl_Widget
 {
-  using PointVec = std::vector<Point>;
-  using cPointVec = const PointVec;
+  using VPoint = std::vector<Point>;
+  using cVPoint = const VPoint;
   
   explicit WidgetNetdraw(int);
   WidgetNetdraw(int, double);
-  ~WidgetNetdraw() { }
-  void Redraw(int);
-  cPointVec& GetVertexes() const { return total_vxs_; }
-  void SetCurrAngle(double a) { curr_angle_ = a; }
-  double GetCurrAngle() const { return curr_angle_; }
-private:
-  constexpr static double kStartAngle = 90;
-  int      vxs_count_;
-  PointVec total_vxs_;
-  PointVec inner_vxs_;
-  PointVec middle_vxs_;
-  PointVec outer_vxs_;
-  double   curr_angle_; // explain
+  virtual ~WidgetNetdraw() { }
   
+  void      Redraw(int);
+  cVPoint&  GetVertexes() const { return total_vxs_; }
+
+  // Functions to set and get draw distances and angles for net
+
+  void      SetStartAngle(double a) { start_angle_ = a; }
+  double    GetStartAngle() const { return start_angle_; }
+  void      SetOuterAngleOffset(double a) { outer_angle_offset_ = a; }
+  void      SetMiddleAngleOffset(double a) { middle_angle_offset_ = a; }
+  void      SetInnerAngleOffset(double a) { inner_angle_offset_ = a; }
+  double    GetOuterAngleOffset() const { return outer_angle_offset_; }
+  double    GetMiddleAngleOffset() const { return middle_angle_offset_; }
+  double    GetInnerAngleOffset() const { return inner_angle_offset_; }
+  void      ResetAnglesToDefault();
+
+private:
+
+  // Default values of net
+
+  constexpr static double kStartAngle = 90;
+  constexpr static double kOuterAngleOffset = 0;
+  constexpr static double kMiddleAngleOffset = 0;
+  constexpr static double kInnerAngleOffset = 0;
+  
+  int     vxs_count_;
+  VPoint  total_vxs_;            // all coords of all circles
+  VPoint  inner_vxs_;            //
+  VPoint  middle_vxs_;           // coords of vertexes relative to concrete circle
+  VPoint  outer_vxs_;            //
+  double  start_angle_;          // angle from which starts calc coordinates of circles
+  double  outer_angle_offset_;   //  
+  double  middle_angle_offset_;  // offset of circles relative to start_angle_
+  double  inner_angle_offset_;   //
+
   void FillAllVertexes();
   void draw() override;
 };

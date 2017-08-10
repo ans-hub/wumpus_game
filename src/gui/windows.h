@@ -13,15 +13,15 @@
 #include "gui/forms/form_main.h"
 #include "gui/widgets/widget_info.h"
 #include "gui/widgets/widget_map.h"
-#include "settings/config.h"
 #include "audio/audio_out.h"
+#include "settings/config.h"
 
 namespace wumpus_game {
 
 class Windows
 {
 public:
-  explicit Windows(const Config&, AudioOut&);
+  explicit Windows(AudioOut&);
   ~Windows();
 
   bool Show();
@@ -38,9 +38,8 @@ public:
   WidgetMap*    wdg_map_;
   WidgetInfo*   wdg_info_;
   WidgetPlayer* wdg_player_;
-
-  const Config&   conf_;
-  AudioOut&       audio_;
+  
+  AudioOut&     audio_;
 
 private:
 

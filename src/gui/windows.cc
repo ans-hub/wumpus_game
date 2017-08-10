@@ -7,16 +7,16 @@
 
 namespace wumpus_game {
 
-Windows::Windows(const Config& conf, AudioOut& audio) 
+Windows::Windows(AudioOut& audio) 
   : wnd_start_ { new FormStart() }
   , wnd_help_ { new FormHelp() }
-  , wnd_main_{ new FormMain() }
+  , wnd_main_{ new FormMain(audio) }
   , wdg_map_ { wnd_main_->wdg_map_ }
   , wdg_info_{ wnd_main_->wdg_info_ }
   , wdg_player_ { wnd_main_->wdg_map_->GetPlayer() }
-  , conf_{conf}
   , audio_{audio}
 {
+  wdg_player_->UseAudio(audio_);
   SetFormsCallbacks();
 }
 
@@ -46,7 +46,7 @@ void Windows::SetFormsCallbacks()
 bool Windows::Show()
 {
   wnd_start_->show();
-  audio_.Play(conf_.snd_background_, true);
+  audio_.Play(config::GetBgMusic(1), true);
 
   return Fl::run();
 }
@@ -81,6 +81,7 @@ void Windows::cb_close_wnd_main_(void*, void* w)
 
   if (result == 1) {
     ((Windows*)w)->wnd_main_->hide();
+    
   }
 }
 

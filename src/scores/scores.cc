@@ -7,14 +7,13 @@
 
 namespace wumpus_game {
 
-Scores::Scores(const Config& conf, const Logic& logic)
-  : conf_{conf}
-  , logic_{logic}
+Scores::Scores(const Logic& logic)
+  : logic_{logic}
 {
 
 }
 
-bool Scores::IncomingNotify(Event msg)
+bool Scores::IncomingNotify(Event)
 {
   return true;
 }

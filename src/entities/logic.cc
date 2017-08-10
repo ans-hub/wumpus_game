@@ -7,9 +7,8 @@
 
 namespace wumpus_game {
 
-Logic::Logic(const Config& config)
-  : level_(5,5,1,1,1) // make def ctor in level which is level 1
-  , config_{config}
+Logic::Logic()
+  : level_{}
   , player_turn_{true}
   , game_over_cause_{Subject::EMPTY}
   , curr_level_{1}
@@ -23,30 +22,30 @@ void Logic::NewLevel()
   NewLevel(curr_level_); 
 }
 
-void Logic::NewLevel(unsigned int num)  // move level build logic in another class?? or file hel,pers?
+void Logic::NewLevel(unsigned int num)
 {
   curr_level_ = num;
 
-  int base = static_cast<int>(curr_level_); // simulate assert
-  int size = base + 4;
-  int arrows = size;
-  int wump = size*4/12;     // 
-  int bat = size*4/9;      // increases to 1 unit when size increases to x/y
-  int pit = size*4/12;       //
-  level_ = Level(size, arrows, wump, bat, pit);
+  int base = config::map_base(curr_level_);
+  int arrows = config::arrows_cnt(curr_level_);
+  int wump = config::wumps_cnt(curr_level_);
+  int bat = config::bats_cnt(curr_level_);
+  int pit = config::pits_cnt(curr_level_);
+
+  level_ = Level(base, arrows, wump, bat, pit);
+
   game_over_cause_ = Subject::UNKNOWN;
   player_turn_ = true;
   rooms_history_.clear();
+
   NotifyObservers(Event::NEW_LEVEL);
   NotifyObservers(Event::READY_TO_INPUT);
 }
 
 void Logic::Turn(int action, int room)
 {
-  // curr_request_.Set(action, room);
-
   if (!game_over_cause_) {
-    PlayerTurn(action, room);   // changes player_turn_;
+    PlayerTurn(action, room);   // changes player_turn_
   }
   if (!player_turn_ && !game_over_cause_) {
       PitsTurn();     //
@@ -156,7 +155,7 @@ void Logic::BatsTurn()
       player->TeleportRandom();
       bat->TeleportRandom();
       rooms_history_.push_back(player->GetCurrRoomNum());
-      NotifyObservers(Event::MOVED_BATS);
+      NotifyObservers(Event::MOVED_BY_BATS);
       break;
     }
   }

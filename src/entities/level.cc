@@ -7,12 +7,19 @@
 
 namespace wumpus_game {
 
+Level::Level()
+  : cave_{}
+  , player_{}
+  , wumps_{} 
+  , bats_{}
+  , pits_{} { }
+
 Level::Level(int size, int arrows, int wumps, int bats, int pits)
-  : cave_{ }
-  , player_{ }
-  , wumps_{ } 
-  , bats_ { }
-  , pits_ { }
+  : cave_{}
+  , player_{}
+  , wumps_{} 
+  , bats_{}
+  , pits_{}
 {
   cave_ = MapPtr {new Map{size}};
   player_ = PlayerPtr {new Player(cave_.get(), arrows)};

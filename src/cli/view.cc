@@ -19,7 +19,7 @@ bool CliView::IncomingNotify(Event msg)
       cli_helpers::print_game_over(ostream_, model_.GameOverCause());
       break;
     
-    case Event::MOVED_BATS :
+    case Event::MOVED_BY_BATS :
       cli_helpers::print_moved_bats(ostream_);
       break;
     

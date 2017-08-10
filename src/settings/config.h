@@ -7,34 +7,47 @@
 #define GAME_CONFIG_H
 
 #include <string>
+#include <cmath>
+
+#include "settings/enums.h"
 
 namespace wumpus_game {
 
-struct Config
-{
-  Config()
-    : snd_click_{"audio/wav/click.wav"}
-    , snd_background_{"audio/wav/cave_theme_2.mp3"}
-    , snd_steps_{"audio/wav/player_walk.wav"}
-    , snd_bats_{"audio/wav/bats_movement.wav"}
-    , snd_wump_attack_{"audio/wav/wump_attack.wav"}
-    , snd_wump_killed_{"audio/wav/wump_killed.wav"}
-    , snd_wump_feels_{"audio/wav/wump_feels.wav"}
-    , snd_unknown_act_{"audio/wav/unknown_action.wav"}
-    , snd_pits_{"audio/wav/player_pits.wav"}
-    , snd_shot_{"audio/wav/player_shot.wav"}
-    { }
-  std::string snd_click_;
-  std::string snd_background_;
-  std::string snd_steps_;
-  std::string snd_bats_;
-  std::string snd_wump_attack_;
-  std::string snd_wump_killed_;
-  std::string snd_wump_feels_;
-  std::string snd_unknown_act_;
-  std::string snd_pits_;
-  std::string snd_shot_; 
-};
+namespace config {
+
+  // Audio settings
+
+  std::string     GetBgMusic(int level);
+  std::string     GetSound(PlayerState);
+  
+  // Gui settings
+
+  std::string     GetBgImage(int level);
+
+  extern double   edge_len;
+  extern int      room_btn_size;
+  extern int      main_wnd_offset;
+  // extern double   rotate_speed;
+  extern double   animation_speed;
+  extern int      animation_step;
+
+  double          pi();
+  int             level_vertexes(int);
+  double          level_width(int);
+  double          rotate_map_speed(int);
+  extern double   rotate_map_step;
+  
+  // Logic settings 
+
+  extern int      levels_max;
+  int             map_base(int level);
+  int             rooms_cnt(int level);
+  int             arrows_cnt(int level);
+  int             wumps_cnt(int level);
+  int             bats_cnt(int level);
+  int             pits_cnt(int level);
+  
+}  // namespace conf
 
 }  // namespace wumpus_game
 

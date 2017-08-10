@@ -32,8 +32,8 @@ WidgetInfo::WidgetInfo ()
 
 void WidgetInfo::Redraw(int level)
 {
-  int w = draw_consts::level_width(level);
-  int offset = draw_consts::main_wnd_offset; 
+  int w = config::level_width(level);
+  int offset = config::main_wnd_offset; 
 
   resize(offset + (w/2) - (90/2), (90/2)+(w/2), 90, 90);
   redraw();

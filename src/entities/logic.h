@@ -6,19 +6,16 @@
 #ifndef LOGIC_H
 #define LOGIC_H
 
-#include <cassert>
 #include <string>
 
-#include "entities/events.h"
 #include "entities/helpers.h"
 #include "entities/level.h"
 #include "entities/subject.h"
 #include "3rdparty/observable.h"
+#include "settings/enums.h"
 #include "settings/config.h"
 
 namespace wumpus_game {
-
-// make inherit from Abc Model
 
 class Logic : public mvc_set::Observable<Event>
 {
@@ -26,20 +23,25 @@ public:
   using Rooms = std::vector<int>;
   using SubjectID = Subject::ID;
   
-  explicit Logic(const Config&);
+  Logic();
   Logic(const Logic&) =delete;
+
+  // Main control functions
 
   void NewLevel();
   void NewLevel(unsigned int num);
   void Turn(int, int);
+  
+  // Getters and setters
+
   bool GameOver() const { return (game_over_cause_ != Subject::UNKNOWN); }
   Subject::ID GameOverCause() const { return game_over_cause_; }
   int CurrentLevel() const { return curr_level_; }
   const Level& GetLevel() const { return level_; }
   const Rooms& RoomsHistory() const { return rooms_history_; }
+
 private:
   Level         level_;
-  const Config& config_;
   bool          player_turn_;
   Subject::ID   game_over_cause_;
   int           curr_level_;

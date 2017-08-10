@@ -21,7 +21,7 @@ class FormHelp : public Fl_Double_Window
 {
 public: 
   FormHelp();
-  ~FormHelp();
+  virtual ~FormHelp();
   
   Fl_Box*           box_label_;
   Fl_Button*        btn_quit_help_;

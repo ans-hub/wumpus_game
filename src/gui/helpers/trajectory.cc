@@ -45,6 +45,7 @@ Point get_point_on_vector(const Point& a, const Point& b, double part)
 }
 
 // Fill vector with points lies on the line in reversed order
+// without coord which is `from`
 
 std::vector<Point> build_line_trajectory(const Point& from, const Point& to, int step)
 {
@@ -59,7 +60,7 @@ std::vector<Point> build_line_trajectory(const Point& from, const Point& to, int
     v[steps-i] = p;
   }
   v[0] = to;
-  v.pop_back();   // remove current coord 
+  if (v.size() != 1) v.pop_back();   // remove current from coord
 
   return v;
 }

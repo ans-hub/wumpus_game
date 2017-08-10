@@ -24,7 +24,7 @@ namespace wumpus_game {
 
 Map::Map(int base)
   : base_{base}
-  , size_{base*4}
+  , size_{base*4}   // replace to constexpr
   , rooms_{}
 {
   CreateRooms();    // create graph (see note #1)

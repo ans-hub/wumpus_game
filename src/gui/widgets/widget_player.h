@@ -15,54 +15,43 @@
 
 #include "gui/helpers/point.h"
 #include "gui/helpers/trajectory.h"
-#include "gui/helpers/draw_consts.h"
+#include "audio/audio_out.h"
+#include "settings/config.h"
+#include "settings/enums.h"
 
 namespace wumpus_game {
 
 class WidgetPlayer : public Fl_Group
 {
 public:
-  enum State
-  {
-    MOVED_BATS,
-    STAY,
-    WALK,
-    SHOT,
-    KILLED_BY_WUMP,
-    KILLED_BY_PITS,
-    KILL_WUMP,
-    HAVENT_ARROWS,
-    UNKNOWN_ACTION
-  };
+  using State = PlayerState;
 
-  WidgetPlayer();
-  ~WidgetPlayer() { }
+  explicit WidgetPlayer(AudioOut&);
+  virtual ~WidgetPlayer() { }
   
-  bool IsReady() const { return ready_; }
-  void SetStateImage(State);
+  void UseAudio(AudioOut& audio) { audio_ = audio; }
+  void SetState(State);   // sets image and plays relevant sound
+  void SetDefaultState() { SetState(State::STAY); }
   void ShowFeelsIcons(bool, bool, bool);
-  void StaticMove(const Point&);
-  void AnimatePrepare(const Point&, Trajectory::Type);
-  void AnimateMove();
+  void SetCurrRoom(int room) { curr_room_ = room; }
+  int  GetCurrRoom() const { return curr_room_; }
 
 private:
-
   void TuneAppearance();
 
-  void AnimateMoveContinue();
-  void AnimateMoveFinish();
-
-  static void cb_animate_move(void*);
-
+  int           curr_room_;   // used by parent widgets for animate
+  AudioOut&     audio_;
+  State         last_state_;  // needs to determine which sound is playing
+  
   Fl_Box*       box_player_;
-  Fl_Box*       box_wumps_;  
-  Fl_Box*       box_bats_;  
+  Fl_Box*       box_wumps_;
+  Fl_Box*       box_bats_;
   Fl_Box*       box_pits_;
   Fl_PNG_Image* img_bg_;
   Fl_PNG_Image* img_stay_;
   Fl_PNG_Image* img_shot_;
   Fl_PNG_Image* img_walk_;
-  Fl_PNG_Image* img_bats_; 
+  Fl_PNG_Image* img_bats_;
   Fl_PNG_Image* img_kill_wump_;
   Fl_PNG_Image* img_no_arrows_;
   Fl_PNG_Image* img_unknown_;
@@ -72,9 +61,6 @@ private:
   Fl_PNG_Image* img_feels_bats_;
   Fl_PNG_Image* img_feels_pits_;
   Fl_PNG_Image* img_feels_wumps_;
-  
-  Trajectory    trajectory_;
-  bool          ready_;
 };
 
 }  // namespace wumpus_game

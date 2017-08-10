@@ -7,63 +7,90 @@
 #define WIDGET_MAP_H
 
 #include <vector>
+#include <tuple>
 
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
+#include <FL/Fl_Widget.H>
 #include <FL/Fl_Group.H>
 
 #include "gui/widgets/widget_room.h"
 #include "gui/widgets/widget_netdraw.h"
 #include "gui/widgets/widget_player.h"
-#include "gui/helpers/draw_consts.h"
+#include "audio/audio_out.h"
+#include "settings/config.h"
 
 namespace wumpus_game {
 
 class WidgetMap : public Fl_Group
 {
 public:
-  using VRooms = std::vector<WidgetRoom*>;
-  using VRoomsRef = const VRooms&;
+  using Marked = bool;
+  using Active = bool;
+  using Deimaged = bool;
   using CallbackFunc = void;
   using CommandFunc = void;
   
-  WidgetMap();
-  ~WidgetMap();
-
-  VRoomsRef  GetRooms() const { return rooms_; }
-  WidgetPlayer* GetPlayer() { return player_; }
-
-  void SetCallback(CallbackFunc* cb) { callback_ = cb; }
-  void SetCommand(CommandFunc* cmd) { command_ = cmd; }
-
-  void Deactivate(bool d) { for (auto& r : rooms_) { r->Deimage(d); r->deactivate(); } }
-  void Activate() { for (auto& r : rooms_) r->activate(); }
+  using VRooms = std::vector<WidgetRoom*>;
+  using VRoomsRef = const VRooms&;
+  using WPlayer = WidgetPlayer;
+  using RoomState = std::tuple<Marked,Active,Deimaged>;
+  using WRoomsState = std::vector<RoomState>;
   
-  int GetRoomCoordX(int) const;
-  int GetRoomCoordY(int) const;
+  explicit WidgetMap(AudioOut&);
+  virtual ~WidgetMap();
 
-  void Redraw(int);
+  bool      IsReady() const { return ready_; }
+  VRoomsRef GetRooms() const { return wdg_rooms_; }
+  WPlayer*  GetPlayer() { return wdg_player_; }
+  Point     GetRoomCoords(int) const;
+
+  void      Redraw(int);
+  void      MovePlayerInstantly(int);
+  void      MovePlayerAnimated(int);  
+  void      Deactivate(bool d);
+  void      Activate();
+  
+  void      SetCallback(CallbackFunc* cb) { callback_ = cb; }
+  void      SetCommand(CommandFunc* cmd) { command_ = cmd; }
 
 private:
-  VRooms          rooms_;     // mess in var names@!
-  WidgetNetdraw*  pathes_;
-  WidgetPlayer*   player_;
+  VRooms          wdg_rooms_;     // mess in var names@!
+  WidgetNetdraw*  wdg_pathes_;
+  WidgetPlayer*   wdg_player_;
   CallbackFunc*   callback_;
   CommandFunc*    command_;
-  // int             level_;
+  Trajectory      trajectory_;
+  WRoomsState     rooms_state_;
+  int             level_;
+  bool            ready_;
 
   void ResizeGroup(int);
   void DrawPlayer();
   void DrawRooms(int);
   void DrawLines(int);
+  void SetLinesAngles(int);
   void ClearRooms();
-  // void RedrawCurrentByRotate();
-  // void SetRotateCallback();
+  void SaveRoomsState();
+  void LoadRoomsState();
+  void RedrawCurrentByRotate();
+  void SetRotateCallback();
   void SetRoomsCallback();
   void TuneAppearance();
   
-  // static void cb_rotate_map(void*);
+  void RefreshAnimateTrajectory();
+  static void cb_move_player_animated(void*);
+  static void cb_rotate_map(void*);
 };
+
+namespace helpers {
+  
+  Point get_offset(Fl_Widget*);
+  void rotate_map_widget(WidgetNetdraw*, int);
+  void rotate_map_widget_all(WidgetNetdraw*, bool = false);
+  void rotate_map_widget_middle(WidgetNetdraw*, bool = false);
+
+}  // namespace helpers
 
 }  // namespace wumpus_game
 

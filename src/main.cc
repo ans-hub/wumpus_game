@@ -16,40 +16,36 @@
 #include "scores/scores.h"
 #include "settings/config.h"
 
+// Preloads big music files in memory
+
+void preload_bg_music(wumpus_game::AudioOut& sounds)
+{
+  using namespace wumpus_game;
+
+  for (int i = 1; i <= config::levels_max; ++i) 
+    sounds.Load(config::GetBgMusic(i), true);
+}
+
 int main()
 {
   using namespace wumpus_game;
 
-  const Config  config  {};
+  // const Config  config  {};
   
-  Logic         logic   {config};
-  AudioOut      sounds  {config};
-  Windows       gui     {config, sounds};
+  Logic         logic   {};
+  AudioOut      sounds  {};
+  Windows       gui     {sounds};
 
-  GuiController ctrl    {config, logic, gui};
-  Media         media   {config, logic, gui, sounds};
+  GuiController ctrl    {logic, gui};
+  Media         media   {logic, gui, sounds};
   CliView       cerr    {std::cout, logic};
-  Scores        scores  {config, logic};
+  Scores        scores  {logic};
 
   logic.RegisterObserver(media);
   logic.RegisterObserver(scores);
   logic.RegisterObserver(cerr);
 
-  // const Config  config  {};
-  
-  // Events        events  {};
-  // Logic         logic   {config};
-  // AudioOut      sounds  {config};
-  // Windows       gui     {config, sounds};
-
-  // GuiController ctrl    {config, logic, gui};
-  // Media         media   {config, events, logic, gui, sounds};
-  // CliView       cerr    {config, events, std::cout, logic};
-  // Scores        scores  {config, logic};
-
-  // logic.RegisterObserver(events);
-  // logic.RegisterObserver(scores);
-  // logic.RegisterObserver(cerr);
+  preload_bg_music(sounds);
 
   return ctrl.RunModel();
 }

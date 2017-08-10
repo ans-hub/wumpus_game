@@ -7,50 +7,44 @@
 #define MEDIA_H
 
 #include <string>
-#include <deque>
+#include <queue>
 
 #include "3rdparty/observer.h"
 #include "gui/windows.h"
-#include "entities/events.h"
 #include "entities/logic.h"
 #include "gui/helpers/trajectory.h"
-#include "settings/config.h"
 #include "audio/audio_out.h"
 #include "entities/helpers.h"
+#include "settings/enums.h"
+#include "settings/config.h"
 
 namespace wumpus_game {
 
 struct Media : public mvc_set::Observer<Event>
 {
   using RoomEvent = std::pair<Event, int>;
-  using Events = std::deque<RoomEvent>;
+  using Events = std::queue<RoomEvent>;
 
-  Media(const Config&, const Logic&, Windows&, const AudioOut&);
+  Media(const Logic&, Windows&, AudioOut&);
   ~Media() { }
 
 private:
-  const Config&   conf_;
   const Logic&    model_;
   Windows&        gui_;
-  const AudioOut& audio_;
+  AudioOut&       audio_;
   Events          events_;
-  // bool            ready_;
-
-  bool IsReady() const;
+  
   bool IncomingNotify(Event) override;    // register event
   void ProcessNextEvent();                // get event from queue
   void ExecuteEvent(Event, int);          // execute concrete event
-  // void DoNotDistrubeWhileAnimate() { ready_ = false; }
-  // void CheckReadyToNextEvent();
-  void ReturnEventBack(Event, int);
 
   static void cb_process_next_event(void*);
-  // static void cb_check_ready_to_next_event(void*);
 
 };
 
 namespace gui_helpers {
 
+  void play_bg_music(AudioOut&, const Logic&);
   void refresh_info_widget(Windows&, const Logic&);
   void enable_buttons(Windows&);
   void disable_buttons(Windows&);
@@ -58,8 +52,8 @@ namespace gui_helpers {
   void hide_level(Windows&, const Logic&);
   void show_error_room(Windows&);
   void show_player_position_instantly(Windows&, const Logic&);
-  bool show_player_movement(Windows&, int);
-  bool show_bats_movement(Windows&, int);
+  void show_player_movement(Windows&, int);
+  void show_bats_movement(Windows&, int);
   void show_player_shot(Windows&);
   void show_havent_arrows(Windows&);
   void show_feels(Windows&, const Logic&, int);

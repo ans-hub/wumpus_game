@@ -7,19 +7,18 @@
 #define SCORES_H
 
 #include "3rdparty/observer.h"
-#include "entities/events.h"
 #include "entities/logic.h"
+#include "settings/enums.h"
 #include "settings/config.h"
 
 namespace wumpus_game {
 
 struct Scores : public mvc_set::Observer<Event>
 {
-  Scores(const Config&, const Logic&);
+  explicit Scores(const Logic&);
   ~Scores() { }
 private:
   bool IncomingNotify(Event) override;
-  const Config& conf_;
   const Logic&  logic_;
 };
 

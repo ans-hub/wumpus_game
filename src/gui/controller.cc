@@ -7,9 +7,8 @@
 
 namespace wumpus_game {
 
-GuiController::GuiController(const Config& conf, Logic& model, Windows& gui)
-  : Controller() 
-  , conf_{conf}
+GuiController::GuiController(Logic& model, Windows& gui)
+  : Controller()
   , model_{model}
   , gui_{gui}
 {
@@ -90,7 +89,7 @@ void GuiController::cb_next_button(void*, void* c)
 
 void GuiController::cb_rooms_button(void* b, void* c)
 {
-  ((GuiController*)c)->CommandAction(((WidgetRoom*)b)->num_); // called by WidgetRoom
+  ((GuiController*)c)->CommandAction(((WidgetRoom*)b)->GetNum()); // called by WidgetRoom
 }
 
 }  // namespace wumpus_game

@@ -9,9 +9,9 @@
 #include <ostream>
 
 #include "3rdparty/observer.h"
-#include "entities/events.h"
 #include "entities/logic.h"
 #include "entities/helpers.h"
+#include "settings/enums.h"
 
 namespace wumpus_game {
 

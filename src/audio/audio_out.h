@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 #include "3rdparty/bass.h"
 #include "settings/config.h"
@@ -17,20 +18,26 @@ namespace wumpus_game {
 struct AudioOut
 {
   using Handle = HSAMPLE;
-  using Sounds = std::vector<std::pair<std::string, Handle>>;
+  using FileName = std::string;
+  using VHandles = std::vector<Handle>;
+  using VSounds = std::vector<std::pair<FileName, Handle>>;
 
-  explicit AudioOut(const Config&);
+  AudioOut();
   ~AudioOut();
 
-  bool Play(const std::string&, bool = false);
-  bool Stop(const std::string&);  // bool - stop immediately
+  bool      Play(const FileName&, bool = false);
+  bool      Stop(const FileName&);
+  Handle    Load(const FileName&, bool);
+  FileName  NowPlayingRepeated() const;
 private:
-  bool          inited_;
-  Sounds        loaded_;
-  const Config& conf_;
-
-  Handle  Load(const std::string&, bool);
-  Handle  Find(const std::string&) const;
+  bool        inited_;
+  VSounds     loaded_;
+  
+  Handle    Find(const FileName&) const;
+  bool      IsRepeatedSample(const Handle&) const;
+  VHandles  GetLoadedChannels(const Handle&) const;
+  bool      IsChannelsPlayingNow(const VHandles&) const;
+  
 };
 
 }  // namespace wumpus_game

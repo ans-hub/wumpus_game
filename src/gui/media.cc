@@ -7,41 +7,30 @@
 
 namespace wumpus_game {
 
-Media::Media(
-  const Config& conf, const Logic& model, Windows& gui, const AudioOut& audio)
-  : conf_{conf}
-  , model_{model}
+Media::Media(const Logic& model, Windows& gui, AudioOut& audio)
+  : model_{model}
   , gui_{gui}
   , audio_{audio}
   , events_{}
-  // , ready_{true}
 {
   Fl::add_timeout(0.02, cb_process_next_event, this);
-  // Fl::add_timeout(0.02, cb_check_ready_to_next_event, this);
-}
-
-bool Media::IsReady() const
-{
-  if (!gui_.wdg_player_->IsReady()) return false;
-  // if (!wdg_map_.IsReady())
-  return true;
 }
 
 bool Media::IncomingNotify(Event msg)
 {
   int room = model_.GetLevel().player_->GetCurrRoomNum();
-  events_.push_back(std::make_pair(msg, room));
+  events_.push(std::make_pair(msg, room));
   return true;
 }
 
 void Media::ProcessNextEvent()
 {
-  if (!events_.empty() && IsReady()) {
+  if (!events_.empty() && gui_.wdg_map_->IsReady()) {
     Event msg = events_.front().first;
     int room = events_.front().second;
 
     ExecuteEvent(msg, room);
-    events_.pop_front();
+    events_.pop();
   }
 }
 
@@ -50,6 +39,7 @@ void Media::ExecuteEvent(Event msg, int room)
   switch(msg)
   {
     case Event::NEW_LEVEL :
+      gui_helpers::play_bg_music(audio_, model_);
       gui_helpers::show_level(gui_, model_);
       gui_helpers::disable_buttons(gui_);
       gui_helpers::show_player_position_instantly(gui_, model_);
@@ -78,17 +68,11 @@ void Media::ExecuteEvent(Event msg, int room)
       break;
 
     case Event::PLAYER_DOES_MOVE :
-      if (gui_helpers::show_player_movement(gui_, room)) {
-        // this->DoNotDistrubeWhileAnimate();
-        this->ReturnEventBack(Event::PLAYER_DOES_MOVE, room); 
-      }
+      gui_helpers::show_player_movement(gui_, room);
       break;
 
-    case Event::MOVED_BATS :
-      if (gui_helpers::show_bats_movement(gui_, room)) {
-        // this->DoNotDistrubeWhileAnimate();
-        this->ReturnEventBack(Event::PLAYER_DOES_MOVE, room); 
-      }
+    case Event::MOVED_BY_BATS :
+      gui_helpers::show_bats_movement(gui_, room);
       break;
 
     case Event::PLAYER_DOES_SHOT :
@@ -106,30 +90,25 @@ void Media::ExecuteEvent(Event msg, int room)
   }
 }
 
-// void Media::CheckReadyToNextEvent()
-// { 
-//   if (!gui_.wdg_player_->IsAnimateInProgress())
-//     ready_ = true;
-// }
-
-void Media::ReturnEventBack(Event msg, int room)
-{
-  events_.push_front(std::make_pair(msg, room));
-}
-
 void Media::cb_process_next_event(void* w)
 {
   ((Media*)w)->ProcessNextEvent();
   Fl::repeat_timeout(0.02, cb_process_next_event, w);
 }
 
-// void Media::cb_check_ready_to_next_event(void* w)
-// {
-//   ((Media*)w)->CheckReadyToNextEvent();
-//   Fl::repeat_timeout(0.02, cb_check_ready_to_next_event, w);  
-// }
-
 namespace gui_helpers {
+
+void play_bg_music(AudioOut& audio, const Logic& model)
+{
+  auto curr_level = model.CurrentLevel();
+  auto level_music = config::GetBgMusic(curr_level);
+  auto now_playing = audio.NowPlayingRepeated();
+
+  if (now_playing != level_music) {
+    audio.Stop(now_playing);
+    audio.Play(level_music, true);
+  }
+}
 
 void refresh_info_widget(Windows& gui, const Logic& model)
 {
@@ -139,13 +118,13 @@ void refresh_info_widget(Windows& gui, const Logic& model)
   auto wumps = std::to_string(model.GetLevel().WumpsCountLive());
   gui.wdg_info_->box_wumps_->copy_label(wumps.c_str());
 
-  auto bats = std::to_string(model.GetLevel().BatsCount());
+  auto bats = std::to_string(model.GetLevel().bats_.size());
   gui.wdg_info_->box_bats_->copy_label(bats.c_str());
 
-  auto pits = std::to_string(model.GetLevel().PitsCount());
+  auto pits = std::to_string(model.GetLevel().pits_.size());
   gui.wdg_info_->box_pits_->copy_label(pits.c_str());
 
-  auto arrows = std::to_string(model.GetLevel().ArrowsCount());
+  auto arrows = std::to_string(model.GetLevel().player_->GetArrows());
   gui.wdg_info_->box_arrows_->copy_label(arrows.c_str());
 
   if (model.GameOverCause() != Logic::SubjectID::PLAYER)
@@ -170,7 +149,7 @@ void show_level(Windows& gui, const Logic& model)
   int level = model.CurrentLevel();
   
   gui.wnd_main_->show();
-  gui.wnd_main_->Redraw(level);//Redraw(level);
+  gui.wnd_main_->Redraw(level);
   gui.wdg_map_->Activate();
 }
 
@@ -184,88 +163,39 @@ void hide_level(Windows& gui, const Logic& model)
 
 void show_error_room(Windows& gui)
 {
-  gui.wdg_player_->SetStateImage(WidgetPlayer::UNKNOWN_ACTION);
-  gui.audio_.Play(gui.conf_.snd_click_);
-  gui.audio_.Play(gui.conf_.snd_unknown_act_);  
-  gui.wnd_main_->redraw();   
-}
-
-Point get_offsetted_point_of_room(Windows& gui, int room)
-{
-  int offset_x = (gui.wdg_player_->w()) / 2;
-  int offset_y = (gui.wdg_player_->h()) / 2;
-
-  int to_x = gui.wdg_map_->GetRoomCoordX(room)-offset_x;
-  int to_y = gui.wdg_map_->GetRoomCoordY(room)-offset_y;
-  
-  return Point{to_x, to_y}; 
+  gui.wdg_player_->SetState(PlayerState::UNKNOWN_ACTION);
+  gui.audio_.Play(config::GetSound(PlayerState::UNKNOWN_ACTION), false);
+  gui.wnd_main_->redraw();
 }
 
 void show_player_position_instantly(Windows& gui, const Logic& model)
 {
-  int room = model.GetLevel().player_->GetCurrRoomNum();
-  Point to_point = get_offsetted_point_of_room(gui, room);
-  
-  gui.wdg_player_->SetStateImage(WidgetPlayer::STAY);
-  gui.wdg_player_->StaticMove(to_point);
-  // gui.wdg_player_->curr_room_ = room;  
+  int to_room = model.GetLevel().player_->GetCurrRoomNum();
+  gui.wdg_player_->SetState(PlayerState::STAY);
+  gui.wdg_map_->MovePlayerInstantly(to_room);
 }
 
-// Returns true if movement has been animated, and false if points
-// from and to is equal
-
-bool show_player_movement(Windows& gui, int room)
+void show_player_movement(Windows& gui, int to_room)
 {
-  Point to_point = get_offsetted_point_of_room(gui, room);
-  Point this_point {gui.wdg_player_->x(), gui.wdg_player_->y()};
-
-  if (to_point != this_point) {
-    gui.wdg_player_->SetStateImage(WidgetPlayer::WALK);
-    gui.wdg_player_->AnimatePrepare(to_point, Trajectory::LINE);
-    gui.wdg_player_->AnimateMove();
-    // gui.wdg_player_->curr_room_ = room;
-    gui.audio_.Play(gui.conf_.snd_steps_, true);
-    return true;
-  }
-  else {
-    gui.audio_.Stop(gui.conf_.snd_steps_);
-    return false;
-  }
+  gui.wdg_player_->SetState(PlayerState::WALK);
+  gui.wdg_map_->MovePlayerAnimated(to_room);
 }
 
-// Returns true if movement has been animated, and false if points
-// from and to is equal
-
-bool show_bats_movement(Windows& gui, int room)
+void show_bats_movement(Windows& gui, int to_room)
 {
-  Point to_point = get_offsetted_point_of_room(gui, room);
-  Point this_point {gui.wdg_player_->x(), gui.wdg_player_->y()};
-    
-  if (to_point != this_point) {
-    gui.wdg_player_->SetStateImage(WidgetPlayer::MOVED_BATS);
-    gui.wdg_player_->AnimatePrepare(to_point, Trajectory::LINE);
-    gui.wdg_player_->AnimateMove();
-    // gui.wdg_player_->curr_room_ = room;    
-    gui.audio_.Play(gui.conf_.snd_bats_, true);
-    return true;
-  }
-  else {
-    gui.audio_.Stop(gui.conf_.snd_bats_);
-    return false;        
-  }
+  gui.wdg_player_->SetState(PlayerState::MOVED_BY_BATS);
+  gui.wdg_map_->MovePlayerAnimated(to_room);
 }
 
 void show_player_shot(Windows& gui)
 {
-  gui.wdg_player_->SetStateImage(WidgetPlayer::SHOT);
-  gui.audio_.Play(gui.conf_.snd_shot_);
+  gui.wdg_player_->SetState(PlayerState::SHOT);
   gui.wnd_main_->redraw();   
 }
 
 void show_havent_arrows(Windows& gui)
 {
-  gui.wdg_player_->SetStateImage(WidgetPlayer::HAVENT_ARROWS);
-  gui.audio_.Play(gui.conf_.snd_unknown_act_);
+  gui.wdg_player_->SetState(PlayerState::HAVENT_ARROWS);
   gui.wnd_main_->redraw();
 }
 
@@ -283,7 +213,7 @@ void show_feels(Windows& gui, const Logic& model, int room)
     {
       case Logic::SubjectID::WUMP :
         wumps = true;
-        gui.audio_.Play(gui.conf_.snd_wump_feels_);              
+        gui.audio_.Play(config::GetSound(PlayerState::FEELS_WUMP));
         break;
       case Logic::SubjectID::BAT  :
         bats = true;
@@ -302,16 +232,13 @@ void show_game_over(Windows& gui, const Logic& logic)
 {
   switch (logic.GameOverCause()) {
     case Logic::SubjectID::PLAYER :
-      gui.wdg_player_->SetStateImage(WidgetPlayer::KILL_WUMP);
-      gui.audio_.Play(gui.conf_.snd_wump_killed_);      
+      gui.wdg_player_->SetState(PlayerState::KILL_WUMP);
       break;
     case Logic::SubjectID::WUMP :
-      gui.wdg_player_->SetStateImage(WidgetPlayer::KILLED_BY_WUMP);
-      gui.audio_.Play(gui.conf_.snd_wump_attack_);       
+      gui.wdg_player_->SetState(PlayerState::KILLED_BY_WUMP);
       break;
     case Logic::SubjectID::PIT :
-      gui.wdg_player_->SetStateImage(WidgetPlayer::KILLED_BY_PITS);
-      gui.audio_.Play(gui.conf_.snd_pits_);
+      gui.wdg_player_->SetState(PlayerState::KILLED_BY_PITS);
       break;
     case Logic::SubjectID::UNKNOWN :
     default:
@@ -325,8 +252,8 @@ void show_game_over(Windows& gui, const Logic& logic)
 
 void show_killed_one_wump(Windows& gui)
 {
-  gui.wdg_player_->SetStateImage(WidgetPlayer::KILL_WUMP);
-  gui.audio_.Play(gui.conf_.snd_wump_killed_);
+  gui.wdg_player_->SetState(PlayerState::KILL_WUMP);
+  gui.audio_.Play(config::GetSound(PlayerState::KILL_WUMP));
 }
 
 }  // namespace gui_helpers

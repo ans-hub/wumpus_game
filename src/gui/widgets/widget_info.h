@@ -13,7 +13,8 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_PNG_Image.H>
 
-#include "gui/helpers/draw_consts.h"
+// #include "gui/helpers/draw_consts.h"
+#include "settings/config.h"
 
 namespace wumpus_game {
 
@@ -21,7 +22,7 @@ class WidgetInfo : public Fl_Group
 {
 public:
   WidgetInfo();
-  ~WidgetInfo() { }
+  virtual ~WidgetInfo() { }
   void Show() { show(); }
   void Hide() { hide(); }
   void Redraw(int);
