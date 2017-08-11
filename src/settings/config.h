@@ -52,14 +52,28 @@ namespace config {
   // Logic settings 
 
   extern int      levels_max;
-  int             map_base(int level);
-  int             rooms_cnt(int level);
-  int             arrows_cnt(int level);
-  int             wumps_cnt(int level);
-  int             bats_cnt(int level);
-  int             pits_cnt(int level);
+  int             MapBase(int level);
+  int             RoomsCount(int level);
+  int             ArrowsCount(int level);
+  int             WumpsCount(int level);
+  int             BatsCount(int level);
+  int             PitsCount(int level);
   
 }  // namespace conf
+
+namespace helpers {
+
+  void ChangeTotalAngle(NetdrawParams&, double);
+
+  void ChangeMiddleAngle(NetdrawParams&, double);             // + step
+  void ChangeMiddleAngle(NetdrawParams&, double, double);     // + range
+  
+  void ChangeMiddleRadius(NetdrawParams&, double);  
+  void ChangeMiddleRadius(NetdrawParams&, double, double);
+
+  void ChangeAllDoublesRandom(NetdrawParams&);
+
+}  // namespace helpers
 
 }  // namespace wumpus_game
 

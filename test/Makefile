@@ -2,6 +2,7 @@ CC = g++
 
 SRC = ../src/
 ENT = $(SRC)entities/
+CFG = $(SRC)settings/
 AUD = $(SRC)audio/
 HLP = $(ENT)helpers/
 CLI = $(SRC)cli/
@@ -11,8 +12,8 @@ CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g -L $(SRC)3
 FLTKFLAGS = `fltk-config --use-images --ldflags`
 
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
-level.o logic.o map_helpers.o logic_helpers.o test_helpers.o test_cases.o \
-cli_view.o cli_controller.o ai_controller.o
+					level.o logic.o helpers.o cli_view.o cli_controller.o \
+					ai_controller.o config.o test_cases.o test_helpers.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main.out
@@ -23,10 +24,10 @@ room.o : $(ENT)room.h $(ENT)room.cc subject.o
 map.o : $(ENT)map.h $(ENT)map.cc room.o 
 	$(CC) $(CFLAGS) -c $(ENT)map.cc
 
-subject.o : $(ENT)subject.h $(ENT)subject.cc map.o map_helpers.o
+subject.o : $(ENT)subject.h $(ENT)subject.cc map.o helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)subject.cc
 
-player.o : $(ENT)player.h $(ENT)player.cc subject.o map_helpers.o
+player.o : $(ENT)player.h $(ENT)player.cc subject.o helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)player.cc
 
 enemy.o : $(ENT)enemy.h $(ENT)enemy.cc subject.o
@@ -44,23 +45,8 @@ pit.o : $(ENT)pit.h $(ENT)pit.cc enemy.o
 level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 	$(CC) $(CFLAGS) -c $(ENT)level.cc
 
-logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(ENT)events.h $(SRC)3rdparty/observable.h
+logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(CFG)enums.h $(SRC)3rdparty/observable.h config.o
 	$(CC) $(CFLAGS) -c $(ENT)logic.cc
-
-draw_consts.o : $(GUI)helpers/draw_consts.h $(GUI)helpers/draw_consts.cc
-	$(CC) $(CFLAGS) -c $(GUI)helpers/draw_consts.cc
-
-cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(ENT)events.h
-	$(CC) $(CFLAGS) -c $(CLI)view.cc -o cli_view.o 
-
-cli_controller.o : $(CLI)controller.h $(CLI)controller.cc $(SRC)3rdparty/controller.h logic.o
-	$(CC) $(CFLAGS) -c $(CLI)controller.cc -o cli_controller.o 
-
-ai_controller.o : $(AI)controller.h $(AI)controller.cc $(SRC)3rdparty/controller.h logic.o
-	$(CC) $(CFLAGS) -c $(AI)controller.cc -o ai_controller.o 
-
-map_helpers.o : $(HLP)map_helpers.h $(HLP)map_helpers.cc
-	$(CC) $(CFLAGS) -c $(HLP)map_helpers.cc
 
 logic_helpers.o : $(HLP)logic_helpers.h $(HLP)logic_helpers.cc
 	$(CC) $(CFLAGS) -c $(HLP)logic_helpers.cc
@@ -70,6 +56,21 @@ test_helpers.o : test_helpers.h test_helpers.cc map.o subject.o
 
 test_cases.o : test_cases.h test_cases.cc $(OBJECTS)
 	$(CC) $(CFLAGS) -c test_cases.cc
+
+cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(CFG)enums.h
+	$(CC) $(CFLAGS) -c $(CLI)view.cc -o cli_view.o 
+
+cli_controller.o : $(CLI)controller.h $(CLI)controller.cc $(SRC)3rdparty/controller.h logic.o
+	$(CC) $(CFLAGS) -c $(CLI)controller.cc -o cli_controller.o 
+
+ai_controller.o : $(AI)controller.h $(AI)controller.cc $(SRC)3rdparty/controller.h logic.o
+	$(CC) $(CFLAGS) -c $(AI)controller.cc -o ai_controller.o 
+
+helpers.o : $(ENT)helpers.h $(ENT)helpers.cc
+	$(CC) $(CFLAGS) -c $(ENT)helpers.cc
+
+config.o : $(SRC)settings/config.h $(SRC)settings/config.cc
+	$(CC) $(CFLAGS) -c $(SRC)settings/config.cc
 
 clean : 
 	rm ${OBJECTS} main.out

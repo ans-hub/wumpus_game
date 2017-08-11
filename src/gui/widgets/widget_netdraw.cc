@@ -53,8 +53,8 @@ void WidgetNetdraw::FillAllVertexes()
   // Get points of inner polygon 
 
   double ivxs_count_ = vxs_count_/4;
-  double irad = (width / 6) + params_.inner_rad_offset_;
-  double istart_angle = params_.start_angle_ + params_.inner_angle_offset_;
+  double irad = (width / 6) + params_.i_rad_offset_;
+  double istart_angle = params_.start_angle_ + params_.i_angle_offset_;
 
   inner_vxs_ = draw_helpers::get_poly_vertexes(
     ivxs_count_, irad, istart_angle, x0, y0
@@ -63,8 +63,8 @@ void WidgetNetdraw::FillAllVertexes()
   // Get points of middle polygon
 
   double mvxs_count_ = vxs_count_/2;
-  double mrad = (irad * 2) - (width / 20) + params_.middle_rad_offset_;
-  double mstart_angle = params_.start_angle_ + params_.middle_angle_offset_;
+  double mrad = (irad * 2) - (width / 20) + params_.m_rad_offset_;
+  double mstart_angle = params_.start_angle_ + params_.m_angle_offset_;
 
   middle_vxs_ = draw_helpers::get_poly_vertexes(
     mvxs_count_, mrad, mstart_angle, x0, y0
@@ -73,9 +73,9 @@ void WidgetNetdraw::FillAllVertexes()
   // Get points of outer polygon
 
   double ovxs_count_ = vxs_count_/4;
-  double orad = (width / 2) - (width / 20) + params_.outer_rad_offset_;
+  double orad = (width / 2) - (width / 20) + params_.o_rad_offset_;
   double ostart_angle = 
-    params_.start_angle_ + (360 / ovxs_count_ / 2) + params_.outer_angle_offset_;
+    params_.start_angle_ + (360 / ovxs_count_ / 2) + params_.o_angle_offset_;
 
   outer_vxs_ = draw_helpers::get_poly_vertexes(
     ovxs_count_, orad, ostart_angle, x0, y0

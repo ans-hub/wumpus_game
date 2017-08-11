@@ -40,6 +40,7 @@ private:
   void TuneAppearance();
 
   int           curr_room_;   // used by parent widgets for animate
+  // int           curr_level_;
   AudioOut&     audio_;
   State         last_state_;  // needs to determine which sound is playing
   

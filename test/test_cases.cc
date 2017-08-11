@@ -153,17 +153,17 @@ namespace test_level_behavior {
   {   
     std::cerr << "Check Level move semantic:" << '\n';   
 
-    constexpr int kCaveSize {5};
+    // constexpr int kCaveSize {5};
     constexpr int kArrows {5};
-    int wumps_cnt{rand_toolkit::get_rand(1, kCaveSize*4/12)};
-    int bats_cnt{rand_toolkit::get_rand(1, kCaveSize*4/9)};
-    int pits_cnt{rand_toolkit::get_rand(1, kCaveSize*4/12)};
+    int wumps_cnt{rand_toolkit::get_rand(1,3)};
+    int bats_cnt{rand_toolkit::get_rand(1,3)};
+    int pits_cnt{rand_toolkit::get_rand(1,3)};
 
     int result{0};
 
     Level level(5, 5, 4, 2, 3);
     level = Level(6, kArrows, wumps_cnt, pits_cnt, bats_cnt);  // make 2 loops with diff moves
-    Level level_1 {Level(6, kArrows, wumps_cnt, pits_cnt, bats_cnt)};
+    Level level_1 {Level(6, kArrows, wumps_cnt, bats_cnt, pits_cnt)};
 
     int assume = wumps_cnt;
     int actual = test_helpers::persons_in_cave(level_1.cave_.get(), Subject::WUMP);
@@ -599,7 +599,7 @@ namespace test_logic_behavior {
     
     constexpr int kSteps{20};
     
-    Logic logic{Config{}};
+    Logic logic{};
     int i{1};
     do {
       logic.NewLevel(i);  // check here if one subj in one room and not unkn
@@ -615,7 +615,7 @@ namespace test_logic_behavior {
     constexpr int kLevel {5};
     constexpr int kSteps {100};
     
-    Logic logic{Config{}};
+    Logic logic{};
     AiController ctrl {logic, kLevel, kSteps};
     
     int result{0};

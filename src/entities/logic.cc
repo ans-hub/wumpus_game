@@ -26,11 +26,11 @@ void Logic::NewLevel(unsigned int num)
 {
   curr_level_ = num;
 
-  int base = config::map_base(curr_level_);
-  int arrows = config::arrows_cnt(curr_level_);
-  int wump = config::wumps_cnt(curr_level_);
-  int bat = config::bats_cnt(curr_level_);
-  int pit = config::pits_cnt(curr_level_);
+  int base = config::MapBase(curr_level_);
+  int arrows = config::ArrowsCount(curr_level_);
+  int wump = config::WumpsCount(curr_level_);
+  int bat = config::BatsCount(curr_level_);
+  int pit = config::PitsCount(curr_level_);
 
   level_ = Level(base, arrows, wump, bat, pit);
 
@@ -57,7 +57,7 @@ void Logic::Turn(int action, int room)
   }
   else {
     if (game_over_cause_ == Subject::PLAYER) {
-      ++curr_level_;
+      curr_level_ != config::levels_max ? ++curr_level_ : curr_level_ = 1;
     }
   }
 }

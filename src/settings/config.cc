@@ -57,57 +57,42 @@ void ChangeNetdrawParams(NetdrawParams& params, int level)
 {
   auto step = config::rotate_map_step;
 
-  if (level > 3 && level < 7) {
-    params.start_angle_ += step;
-  }
-  else if (level < 9) {
-    params.start_angle_ += step;
-    params.middle_angle_offset_ += step;
-  }
-  else if (level < 10) {
-    params.start_angle_ += step;
-    params.middle_angle_offset_ -= step * 2;
-    params.middle_rad_offset_ += step;
-  }
-  else if (level < 11) {
-    params.start_angle_ += step;
-    params.middle_angle_offset_ -= step * 2;
-    params.is_draw_poly_ = false;
-    params.is_draw_digits_ = false;    
-  }
-  else if (level < 12) {
-    // params.Reset();
-    double step = rand_toolkit::get_rand(0, 5);
-    
-    if (rand_toolkit::coin_toss())
-      params.start_angle_ += step;
-    else
-      params.start_angle_ -= step;
-    
-    if (rand_toolkit::coin_toss())          
-      params.middle_angle_offset_ -= step * 2;
-    else 
-      params.middle_angle_offset_ += step * 2; 
-
-    if (rand_toolkit::coin_toss())
-      params.outer_rad_offset_ -= step;
-    else 
-      params.outer_rad_offset_ -= step;      
-
-    if (rand_toolkit::coin_toss())
-      params.middle_rad_offset_ -= step;
-    else 
-      params.middle_rad_offset_ -= step;      
-
-    if (rand_toolkit::coin_toss())
-      params.inner_rad_offset_ -= step;
-    else 
-      params.inner_rad_offset_ -= step;      
-    // params.is_draw_poly_ = false;
-    // params.is_draw_digits_ = false;
-  }
-  else if (level < 13) {
-    params.Reset();
+  switch (level) {
+    case 3 : case 4 : case 5 :
+      helpers::ChangeTotalAngle(params, step);
+      break;
+    case 6 :
+      helpers::ChangeTotalAngle(params, step);
+      helpers::ChangeMiddleRadius(params, step, 20.0);
+      break;
+    case 7 :
+      helpers::ChangeTotalAngle(params, step);
+      helpers::ChangeMiddleAngle(params, step, 30.0);    
+      break;
+    case 8 : 
+      helpers::ChangeTotalAngle(params, step);
+      helpers::ChangeMiddleAngle(params, step);
+      break;
+    case 9 : 
+      helpers::ChangeTotalAngle(params, step);
+      helpers::ChangeMiddleAngle(params, -step*2);
+      helpers::ChangeMiddleRadius(params, step, 20.0);
+      break;
+    case 10 :
+      params.m_rad_offset_ = 0;
+      helpers::ChangeTotalAngle(params, step);   
+      helpers::ChangeMiddleAngle(params, -step*2); 
+      params.is_draw_poly_ = true;
+      params.is_draw_digits_ = true;
+      break;
+    case 11 :
+      helpers::ChangeAllDoublesRandom(params);
+      params.is_draw_digits_ = !params.is_draw_digits_;
+      params.is_draw_poly_ = false;
+      break;
+    case 12 :
+      params = NetdrawParams();
+      break;
   }
 }
 
@@ -121,7 +106,7 @@ double pi()
 
 int level_vertexes(int level)
 { 
-  return (map_base(level))*4;
+  return (MapBase(level))*4;
 }
 
 double level_width(int)
@@ -139,7 +124,7 @@ double rotate_map_speed(int level)
   if (level < 9) return 0.05;
   if (level < 10) return 0.04;
   if (level < 11) return 0.02;
-  if (level < 12) return 0.8;
+  if (level < 12) return 1;
   if (level < 13) return 0;
   return 0;
 }
@@ -148,29 +133,131 @@ double rotate_map_step = 0.3;
 
 // LOGIC SETTINGS
 
-int levels_max = 13;
+int levels_max = 12;
 
-int map_base(int level)
+int MapBase(int level)
 {
   if (level < 4) return level + 4;
   if (level < 7) return level + 1;
   if (level < 11) return level - 2;
   if (level < 12) return level - 6;
   if (level < 13) return level - 7;
-  // return level + 4;
-  return 1; 
+  return 5;
 }
 
-int rooms_cnt(int level) { return (map_base(level) * 4); }
+int RoomsCount(int level)
+{
+  return (MapBase(level) * 4);
+}
 
-int arrows_cnt(int level) { return rooms_cnt(level) / 4; }
+int ArrowsCount(int level)
+{ 
+  return RoomsCount(level) / 4; 
+}
 
-int wumps_cnt(int level) { return rooms_cnt(level) / 9; }
+int WumpsCount(int level)
+{ 
+  return RoomsCount(level) / 9; 
+}
 
-int bats_cnt(int level) { return rooms_cnt(level) / 9; }
+int BatsCount(int level)
+{
+  return RoomsCount(level) / 9;
+}
 
-int pits_cnt(int level) { return rooms_cnt(level) / 9; }
+int PitsCount(int level)
+{ 
+  return RoomsCount(level) / 9;
+}
 
 }  // namespace conf
+
+namespace helpers {
+
+// Changes total angle of middle circle in NetdrawWidget
+
+void ChangeTotalAngle(NetdrawParams& params, double step)
+{
+  params.start_angle_ += step;
+}
+
+// Changes angle offset of middle circle in NetdrawWidget
+
+void ChangeMiddleAngle(NetdrawParams& params, double step)
+{
+  params.m_angle_offset_ += step;
+}
+
+// Changes angle offset of middle circle in Netdraw by range (+/-)
+
+void ChangeMiddleAngle(NetdrawParams& params, double step, double range)
+{
+  if (params.m_angle_offset_ > (step * range))
+    params.m_angle_offset_positive_ = false;
+  else if (params.m_angle_offset_ < -(step * range * 2)) 
+    params.m_angle_offset_positive_ = true;
+
+  if (params.m_angle_offset_positive_)
+    params.m_angle_offset_ += step;
+  else
+    params.m_angle_offset_ -= step * 2;
+}
+
+// Changes radius offset of middle circle in NetdrawWidget
+
+void ChangeMiddleRadius(NetdrawParams& params, double step)
+{
+  params.m_rad_offset_ += step;
+}
+
+// Changes radius offset of middle circle in Netdraw by range (+/-)
+
+void ChangeMiddleRadius(NetdrawParams& params, double step, double range)
+{
+  if (params.m_rad_offset_ > (step * range)) 
+    params.m_rad_offset_positive_ = false;
+  else if (params.m_rad_offset_ < -(step * range * 2))
+    params.m_rad_offset_positive_ = true;
+
+  if (params.m_rad_offset_positive_)
+    params.m_rad_offset_ += step;
+  else 
+    params.m_rad_offset_ -= step * 2;
+}
+
+// Changes all parametrs contains doubles values in random order
+
+void ChangeAllDoublesRandom(NetdrawParams& params)
+{    
+  params = NetdrawParams();
+  double step = rand_toolkit::get_rand(0,10);
+
+  if (rand_toolkit::coin_toss())
+    params.start_angle_ += step;
+  else
+    params.start_angle_ -= step;
+
+  if (rand_toolkit::coin_toss())          
+    params.m_angle_offset_ -= step * 2;
+  else 
+    params.m_angle_offset_ += step * 2; 
+
+  if (rand_toolkit::coin_toss())
+    params.o_rad_offset_ -= step;
+  else 
+    params.o_rad_offset_ -= step;      
+
+  if (rand_toolkit::coin_toss())
+    params.m_rad_offset_ -= step;
+  else 
+    params.m_rad_offset_ -= step;      
+
+  if (rand_toolkit::coin_toss())
+    params.i_rad_offset_ -= step;
+  else 
+    params.i_rad_offset_ -= step;  
+}
+
+}  // namespace helpers
 
 }  // namespace wumpus_game
