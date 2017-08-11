@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include "3rdparty/rand_toolkit.h"
+
 #include "entities/logic.h"
 #include "cli/view.h"
 #include "cli/controller.h"
@@ -16,14 +18,17 @@
 #include "scores/scores.h"
 #include "settings/config.h"
 
-// Preloads big music files in memory
-
-void preload_bg_music(wumpus_game::AudioOut& sounds)
+void preload_background_music(wumpus_game::AudioOut& sounds)
 {
   using namespace wumpus_game;
 
   for (int i = 1; i <= config::levels_max; ++i) 
     sounds.Load(config::GetBgMusic(i), true);
+}
+
+void start_random_generator()
+{
+  rand_toolkit::start_rand();
 }
 
 int main()
@@ -45,7 +50,8 @@ int main()
   logic.RegisterObserver(scores);
   logic.RegisterObserver(cerr);
 
-  preload_bg_music(sounds);
+  preload_background_music(sounds);
+  start_random_generator();
 
   return ctrl.RunModel();
 }

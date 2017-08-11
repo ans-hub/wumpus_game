@@ -86,9 +86,6 @@ private:
 namespace helpers {
   
   Point get_offset(Fl_Widget*);
-  void rotate_map_widget(WidgetNetdraw*, int);
-  void rotate_map_widget_all(WidgetNetdraw*, bool = false);
-  void rotate_map_widget_middle(WidgetNetdraw*, bool = false);
 
 }  // namespace helpers
 

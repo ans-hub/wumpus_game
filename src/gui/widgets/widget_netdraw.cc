@@ -12,34 +12,22 @@
 
 namespace wumpus_game {
 
-WidgetNetdraw::WidgetNetdraw(int level)
+WidgetNetdraw::WidgetNetdraw()
   : Fl_Widget(0,0,0,0)
-  , vxs_count_{config::level_vertexes(level)}
-  , total_vxs_(vxs_count_)
+  , params_{}
+  , vxs_count_{}
+  , total_vxs_{}
   , inner_vxs_{}
   , middle_vxs_{}
   , outer_vxs_{}
-  , start_angle_{kStartAngle}
-  , outer_angle_offset_{kOuterAngleOffset}
-  , middle_angle_offset_{kMiddleAngleOffset}
-  , inner_angle_offset_{kInnerAngleOffset}
 {
-  Redraw(level);
+
 }
 
-WidgetNetdraw::WidgetNetdraw(int level, double start_angle)
-  : WidgetNetdraw(level)
+WidgetNetdraw::WidgetNetdraw(double start_angle)
+  : WidgetNetdraw()
 {
-  start_angle_ = start_angle;
-  Redraw(level);  
-}
-
-void WidgetNetdraw::ResetAnglesToDefault()
-{
-  start_angle_ = kStartAngle;
-  outer_angle_offset_ = kOuterAngleOffset;
-  middle_angle_offset_ = kMiddleAngleOffset;
-  inner_angle_offset_ = kInnerAngleOffset;
+  params_.start_angle_ = start_angle;
 }
 
 void WidgetNetdraw::Redraw(int level)
@@ -65,8 +53,8 @@ void WidgetNetdraw::FillAllVertexes()
   // Get points of inner polygon 
 
   double ivxs_count_ = vxs_count_/4;
-  double irad = width / 6;
-  double istart_angle = start_angle_ + inner_angle_offset_;
+  double irad = (width / 6) + params_.inner_rad_offset_;
+  double istart_angle = params_.start_angle_ + params_.inner_angle_offset_;
 
   inner_vxs_ = draw_helpers::get_poly_vertexes(
     ivxs_count_, irad, istart_angle, x0, y0
@@ -75,8 +63,8 @@ void WidgetNetdraw::FillAllVertexes()
   // Get points of middle polygon
 
   double mvxs_count_ = vxs_count_/2;
-  double mrad = irad * 2 - (width / 20);
-  double mstart_angle = start_angle_ + middle_angle_offset_;
+  double mrad = (irad * 2) - (width / 20) + params_.middle_rad_offset_;
+  double mstart_angle = params_.start_angle_ + params_.middle_angle_offset_;
 
   middle_vxs_ = draw_helpers::get_poly_vertexes(
     mvxs_count_, mrad, mstart_angle, x0, y0
@@ -85,8 +73,9 @@ void WidgetNetdraw::FillAllVertexes()
   // Get points of outer polygon
 
   double ovxs_count_ = vxs_count_/4;
-  double orad = (width / 2) - (width / 20);
-  double ostart_angle = start_angle_ + (360 / ovxs_count_ / 2) + outer_angle_offset_;
+  double orad = (width / 2) - (width / 20) + params_.outer_rad_offset_;
+  double ostart_angle = 
+    params_.start_angle_ + (360 / ovxs_count_ / 2) + params_.outer_angle_offset_;
 
   outer_vxs_ = draw_helpers::get_poly_vertexes(
     ovxs_count_, orad, ostart_angle, x0, y0
@@ -115,15 +104,16 @@ void WidgetNetdraw::FillAllVertexes()
 
 void WidgetNetdraw::draw()
 {
-  // Draw inner, middle and outer polygons
+  if (params_.is_draw_poly_) {
+    draw_helpers::draw_poly(inner_vxs_, this);
+    draw_helpers::draw_poly(middle_vxs_, this);
+    draw_helpers::draw_poly(outer_vxs_, this);
+    draw_helpers::draw_edges(total_vxs_, this);
+  }
 
-  draw_helpers::draw_poly(inner_vxs_, this);
-  draw_helpers::draw_poly(middle_vxs_, this);
-  draw_helpers::draw_poly(outer_vxs_, this);
-
-  // Connect polygons as in 3 dimension dodecaedron
-
-  draw_helpers::draw_edges(total_vxs_, this);
+  if (params_.is_draw_digits_) {
+    draw_helpers::draw_digits(total_vxs_, this);
+  }
 }
 
 namespace draw_helpers {
@@ -165,7 +155,7 @@ void draw_points(const PointVec& v, WidgetNetdraw*, int)
 {
   for (const auto& v0 : v) {
     fl_line_style(1,5);
-    fl_color(FL_WHITE);    
+    fl_color(FL_WHITE);
     fl_point(v0.x_, v0.y_);
   }
   fl_line_style(0,1);
@@ -173,8 +163,14 @@ void draw_points(const PointVec& v, WidgetNetdraw*, int)
 
 void draw_poly(const PointVec& v, WidgetNetdraw* surface)
 {
-  fl_color(183,103,0);    
-  fl_line_style(3,5);
+  const auto& p = surface->GetParamsReference();
+
+  fl_color(
+    std::get<0>(p.poly_color_),
+    std::get<1>(p.poly_color_),
+    std::get<2>(p.poly_color_)
+  );
+  fl_line_style(p.line_type_, p.line_width_);
 
   for (std::size_t i = 0; i < v.size(); ++i) {
     auto p1 = v[i];
@@ -192,23 +188,37 @@ void draw_poly(const PointVec& v, WidgetNetdraw* surface)
 
 void draw_edges(const PointVec& v, WidgetNetdraw* surface)
 {
+  const auto& p = surface->GetParamsReference();
+  
   double half = static_cast<int>(v.size()/2);
+
   for (int i = 0; i < half; ++i) {
     auto p1 = v[i];
     auto p2 = v[i+half];
-    
-    // Draw edges
 
-    fl_color(FL_WHITE);    
-    fl_line_style(2,5);    
+    fl_color(
+      std::get<0>(p.poly_color_),
+      std::get<1>(p.poly_color_),
+      std::get<2>(p.poly_color_)
+    );
+    fl_line_style(p.line_type_, p.line_width_);
+  
     fl_line(
       surface->x()+p1.x_, surface->y()+p1.y_,
       surface->x()+p2.x_, surface->y()+p2.y_
     );
     fl_line_style(0,1);
+  }
+}
+
+void draw_digits(const PointVec& v, WidgetNetdraw* surface)
+{
+  double half = static_cast<int>(v.size()/2);
+
+  for (int i = 0; i < half; ++i) {
+    auto p1 = v[i];
+    auto p2 = v[i+half];
     
-    // Draw numbers
-  
     std::ostringstream s1{};
     std::ostringstream s2{};
     s1 << i;

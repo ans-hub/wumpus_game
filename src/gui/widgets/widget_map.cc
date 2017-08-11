@@ -10,7 +10,7 @@ namespace wumpus_game {
 WidgetMap::WidgetMap(AudioOut& audio)
   : Fl_Group{30, 90, 600, 600}    // here was a bug when parent()->w()...h()
   , wdg_rooms_{}    // make WidgetRooms consists of WidgetRoom* elements
-  , wdg_pathes_{new WidgetNetdraw(1)}
+  , wdg_pathes_{new WidgetNetdraw()}
   , wdg_player_{new WidgetPlayer(audio)}
   , trajectory_{}
   , rooms_state_{}
@@ -146,9 +146,10 @@ void WidgetMap::SetLinesAngles(int level)
   auto speed = config::rotate_map_speed(level);
 
   if (!speed)
-    wdg_pathes_->ResetAnglesToDefault();
+    wdg_pathes_->ResetDrawParamsToDefault();
   else {
-    helpers::rotate_map_widget(wdg_pathes_, level);
+    auto& params = wdg_pathes_->GetParamsReference();
+    config::ChangeNetdrawParams(params, level);
   }
 }
 
@@ -249,40 +250,6 @@ namespace helpers {
 Point get_offset(Fl_Widget* w)
 {
   return {w->w() / 2, w->h() / 2};
-}
-
-void rotate_map_widget(WidgetNetdraw* w, int level)
-{
-  if (level > 3 && level < 7) {
-    rotate_map_widget_all(w);
-  }
-  else if (level < 9) {
-    rotate_map_widget_all(w);
-    rotate_map_widget_middle(w);    
-  }
-  else if (level < 11) {
-    rotate_map_widget_all(w);
-    rotate_map_widget_middle(w, true);
-  }
-  // else {
-
-  // }
-}
-
-void rotate_map_widget_all(WidgetNetdraw* w, bool back)
-{
-  auto step = config::rotate_map_step;
-  if (back) step = -step;  
-  auto angle = w->GetStartAngle() + step;
-  w->SetStartAngle(angle);
-}
-
-void rotate_map_widget_middle(WidgetNetdraw* w, bool back)
-{
-  auto step = config::rotate_map_step;
-  if (back) step = -step*2;
-  auto angle = w->GetMiddleAngleOffset() + step;
-  w->SetMiddleAngleOffset(angle);
 }
 
 }  // namespace helpers
