@@ -34,7 +34,7 @@ public:
   Params&   GetParamsReference() { return params_; }
   void      Redraw(int);
   cVPoint&  GetVertexes() const { return total_vxs_; }
-  void      ResetDrawParamsToDefault() { params_ = NetdrawParams(); }
+  // void      ResetDrawParamsToDefault() { params_ = NetdrawParams(); }
 
 private:
   Params    params_;

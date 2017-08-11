@@ -13,6 +13,7 @@
 #include "gui/forms/form_main.h"
 #include "gui/widgets/widget_info.h"
 #include "gui/widgets/widget_map.h"
+#include "gui/images/images.h"
 #include "audio/audio_out.h"
 #include "settings/config.h"
 
@@ -21,7 +22,7 @@ namespace wumpus_game {
 class Windows
 {
 public:
-  explicit Windows(AudioOut&);
+  Windows(AudioOut&, Images&);
   ~Windows();
 
   bool Show();
@@ -40,6 +41,7 @@ public:
   WidgetPlayer* wdg_player_;
   
   AudioOut&     audio_;
+  // Images&       images_;
 
 private:
 

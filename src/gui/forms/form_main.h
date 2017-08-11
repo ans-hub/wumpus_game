@@ -18,6 +18,7 @@
 
 #include "gui/widgets/widget_info.h"
 #include "gui/widgets/widget_map.h"
+#include "gui/images/images.h"
 #include "audio/audio_out.h"
 #include "settings/config.h"
 
@@ -28,30 +29,23 @@ class Windows;
 class FormMain : public Fl_Double_Window
 {
 public:
-  explicit FormMain(AudioOut&);
-  virtual ~FormMain();
+  explicit FormMain(AudioOut&, Images&);
+  virtual ~FormMain() { }
   
   void Redraw(int);
   
 private:
-  Fl_Image*         img_cover_;
-  Fl_Box*           box_cover_;
-  Fl_Box*           box_label_;
-  WidgetInfo*       wdg_info_;
-  WidgetMap*        wdg_map_;
+  Fl_Box*     box_cover_;
+  Fl_Box*     box_label_;
+  WidgetInfo* wdg_info_;
+  WidgetMap*  wdg_map_;
+
+  Images&     images_;
 
   void TuneAppearance();
-  void SetBackgroundImage(int);
-  void ClearBackgroundImage();
 
   friend Windows;
 };
-
-namespace helpers {
-
-  Fl_Image* resize_fl_image(Fl_Image*, Fl_Widget*);
-
-}  // namespace helpers
 
 }  // namespace wumpus_game
 

@@ -10,18 +10,23 @@
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Button.H>
 
+#include "gui/images/images.h"
+#include "settings/enums.h"
+
 namespace wumpus_game {
 
 struct WidgetRoom : Fl_Button
 {
-  WidgetRoom(int num, int x, int y, int w, int h)
+  WidgetRoom(int num, int level, Images& images, int x, int y, int w, int h)
     : Fl_Button(x, y, w, h)
     , num_{num}
+    , level_{level}
     , marked_{value() ? true : false}
     , deimaged_{false}
-    , img_on_{(new Fl_PNG_Image("gui/widgets/img/room_on.png"))}
-    , img_off_{(new Fl_PNG_Image("gui/widgets/img/room_off.png"))}
-    , img_mark_{(new Fl_PNG_Image("gui/widgets/img/room_mark.png"))}
+    , images_{images}
+    , img_on_{images_.GetRoomImage(RoomState::ON, level_)}
+    , img_off_{images_.GetRoomImage(RoomState::OFF, level_)}
+    , img_mark_{images_.GetRoomImage(RoomState::MARK, level_)}
   {
     image(img_on_);
     deimage(img_off_);
@@ -41,20 +46,16 @@ struct WidgetRoom : Fl_Button
   bool IsActive() const { return active() ? true : false; }
   void SetActive(bool b) { b ? activate() : deactivate(); }
 
-  virtual ~WidgetRoom() 
-  {
-    delete img_on_;
-    delete img_off_;
-    delete img_mark_;
-  }
-
 private:
-  int           num_;
-  bool          marked_;
-  bool          deimaged_;
-  Fl_PNG_Image* img_on_;
-  Fl_PNG_Image* img_off_;
-  Fl_PNG_Image* img_mark_;
+  int       num_;
+  int       level_;
+  bool      marked_;
+  bool      deimaged_;
+
+  Images&   images_;
+  Fl_Image* img_on_;
+  Fl_Image* img_off_;
+  Fl_Image* img_mark_;
   
   int handle(int) override;
 };

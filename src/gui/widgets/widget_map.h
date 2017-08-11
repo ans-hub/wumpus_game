@@ -14,6 +14,7 @@
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Group.H>
 
+#include "gui/images/images.h"
 #include "gui/widgets/widget_room.h"
 #include "gui/widgets/widget_netdraw.h"
 #include "gui/widgets/widget_player.h"
@@ -37,7 +38,7 @@ public:
   using RoomState = std::tuple<Marked,Active,Deimaged>;
   using WRoomsState = std::vector<RoomState>;
   
-  explicit WidgetMap(AudioOut&);
+  WidgetMap(AudioOut&, Images&);
   virtual ~WidgetMap();
 
   bool      IsReady() const { return ready_; }
@@ -64,6 +65,7 @@ private:
   WRoomsState     rooms_state_;
   int             level_;
   bool            ready_;
+  Images&         images_;
 
   void ResizeGroup(int);
   void DrawPlayer();

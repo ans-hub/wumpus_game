@@ -24,11 +24,11 @@ namespace config {
   // Audio settings
 
   std::string     GetBgMusic(int level);
-  std::string     GetSound(PlayerState);
+  std::string     GetPlayerSound(PlayerState, int level = 1);
   
   // Gui settings
 
-  std::string     GetBgImage(int level);
+  // std::string     GetBgImage(int level);
 
   // Widget_netdraw settings
   
@@ -39,12 +39,12 @@ namespace config {
   void            ChangeNetdrawParams(NetdrawParams&, int level);
 
   double          pi();
-  int             level_vertexes(int);
-  double          level_width(int);
+  int             level_vertexes(int level);
+  double          level_width(int level);
 
   // Widget_map settings
 
-  double          rotate_map_speed(int);
+  double          rotate_map_speed(int level);
   extern double   rotate_map_step;
   extern double   animation_speed;      // anim who?? explain
   extern int      animation_step;

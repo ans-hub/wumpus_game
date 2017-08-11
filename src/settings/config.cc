@@ -19,30 +19,20 @@ std::string GetBgMusic(int level)
   return "";
 }
 
-std::string GetSound(PlayerState type)
+std::string GetPlayerSound(PlayerState type, int level)
 {
   switch(type) {
-    case PlayerState::MOVED_BY_BATS : return "audio/wav/bats_movement.wav"; break;
-    case PlayerState::WALK : return "audio/wav/player_walk.wav"; break;
-    case PlayerState::SHOT : return "audio/wav/player_shot.wav"; break;
-    case PlayerState::KILLED_BY_PITS : return "audio/wav/player_pits.wav"; break;
-    case PlayerState::KILLED_BY_WUMP : return "audio/wav/wump_attack.wav"; break;
-    case PlayerState::KILL_WUMP : return "audio/wav/wump_killed.wav"; break;
-    case PlayerState::HAVENT_ARROWS : return "audio/wav/click.wav"; break;
-    case PlayerState::FEELS_WUMP : return "audio/wav/wump_feels.wav"; break;
-    case PlayerState::UNKNOWN_ACTION : return "audio/wav/click.wav"; break;
+    case PlayerState::MOVED_BY_BATS : return "audio/wav/bats_movement.wav";
+    case PlayerState::WALK : return "audio/wav/player_walk.wav";
+    case PlayerState::SHOT : return "audio/wav/player_shot.wav";
+    case PlayerState::KILLED_BY_PITS : return "audio/wav/player_pits.wav";
+    case PlayerState::KILLED_BY_WUMP : return "audio/wav/wump_attack.wav";
+    case PlayerState::KILL_WUMP : return "audio/wav/wump_killed.wav";
+    case PlayerState::HAVENT_ARROWS : return "audio/wav/click.wav";
+    case PlayerState::FEELS_WUMP : return "audio/wav/wump_feels.wav";
+    case PlayerState::UNKNOWN_STATE : return "audio/wav/click.wav";
     default : break;
   }
-  return "";
-}
-
-std::string GetBgImage(int level)
-{
-  if (level < 4) return "gui/forms/img/cv_main.png";
-  if (level < 7) return "gui/forms/img/uw_main.png";
-  if (level < 11) return "gui/forms/img/dt_main.png";
-  if (level < 12) return "gui/forms/img/cp_main.png"; 
-  if (level < 13) return "gui/forms/img/hm_main.png";   
   return "";
 }
 

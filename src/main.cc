@@ -16,6 +16,7 @@
 #include "gui/controller.h"
 #include "audio/audio_out.h"
 #include "scores/scores.h"
+#include "gui/images/images.h"
 #include "settings/config.h"
 
 void preload_background_music(wumpus_game::AudioOut& sounds)
@@ -34,12 +35,11 @@ void start_random_generator()
 int main()
 {
   using namespace wumpus_game;
-
-  // const Config  config  {};
   
   Logic         logic   {};
   AudioOut      sounds  {};
-  Windows       gui     {sounds};
+  Images        images  {};
+  Windows       gui     {sounds, images};
 
   GuiController ctrl    {logic, gui};
   Media         media   {logic, gui, sounds};

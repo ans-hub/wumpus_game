@@ -7,15 +7,16 @@
 
 namespace wumpus_game {
 
-WidgetMap::WidgetMap(AudioOut& audio)
+WidgetMap::WidgetMap(AudioOut& audio, Images& images)
   : Fl_Group{30, 90, 600, 600}    // here was a bug when parent()->w()...h()
   , wdg_rooms_{}    // make WidgetRooms consists of WidgetRoom* elements
   , wdg_pathes_{new WidgetNetdraw()}
-  , wdg_player_{new WidgetPlayer(audio)}
+  , wdg_player_{new WidgetPlayer(audio, images)}
   , trajectory_{}
   , rooms_state_{}
   , level_{-1}
   , ready_{true}
+  , images_{images}
 {
   TuneAppearance();
   end();
@@ -46,6 +47,7 @@ void WidgetMap::Redraw(int level)
   SetLinesAngles(level);
   DrawLines(level);
   DrawRooms(level);
+  wdg_player_->Redraw(level);
   DrawPlayer();
   SetRotateCallback();
   SetRoomsCallback();
@@ -144,12 +146,13 @@ void WidgetMap::RedrawCurrentByRotate()
 void WidgetMap::SetLinesAngles(int level)
 { 
   auto speed = config::rotate_map_speed(level);
+  auto& params = wdg_pathes_->GetParamsReference();
 
   if (!speed)
-    wdg_pathes_->ResetDrawParamsToDefault();
+    params = NetdrawParams();
+    // wdg_pathes_->ResetDrawParamsToDefault();
   else {
-    auto& params = wdg_pathes_->GetParamsReference();
-    config::ChangeNetdrawParams(params, level);
+    config::ChangeNetdrawParams(params, level);   // may be 'get' for more associated?
   }
 }
 
@@ -196,6 +199,8 @@ void WidgetMap::DrawRooms(int level)
     Point coords = GetRoomCoords(i);
     WidgetRoom* btn = new WidgetRoom(
       i,
+      level_,
+      images_,
       coords.x_ - btn_size / 2,
       coords.y_ - btn_size / 2,
       btn_size,

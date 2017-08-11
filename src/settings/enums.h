@@ -35,9 +35,29 @@ namespace wumpus_game {
     KILL_WUMP,
     HAVENT_ARROWS,
     FEELS_WUMP,
-    UNKNOWN_ACTION
+    FEELS_BATS,
+    FEELS_PITS,
+    UNKNOWN_STATE
   };
 
+  enum class RoomState
+  {
+    ON,
+    OFF,
+    MARK
+  };
+
+  enum class InfoStuff
+  {
+    COVER,
+    ARROWS,
+    PITS,
+    BATS,
+    WUMPS,
+    LEVEL,
+    CONTINUE
+  };
+   
 }  // namespace wumpus_game
 
 #endif  // EVENTS_H

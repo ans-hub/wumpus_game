@@ -13,7 +13,8 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_PNG_Image.H>
 
-// #include "gui/helpers/draw_consts.h"
+#include "gui/images/images.h"
+#include "settings/enums.h"
 #include "settings/config.h"
 
 namespace wumpus_game {
@@ -21,29 +22,20 @@ namespace wumpus_game {
 class WidgetInfo : public Fl_Group
 {
 public:
-  WidgetInfo();
+  explicit WidgetInfo(Images&);
   virtual ~WidgetInfo() { }
   void Show() { show(); }
   void Hide() { hide(); }
-  void Redraw(int);
+  void Redraw(int level);
 
-  Fl_PNG_Image*   img_cover_;
-  Fl_PNG_Image*   img_level_;
-  Fl_PNG_Image*   img_wumps_;
-  Fl_PNG_Image*   img_bats_;
-  Fl_PNG_Image*   img_pits_;
-  Fl_PNG_Image*   img_arrows_;
-  Fl_PNG_Image*   img_continue_;
-  Fl_PNG_Image*   img_repeat_;
-  Fl_PNG_Image*   img_repeat_na_;
-  Fl_PNG_Image*   img_help_;
-  Fl_Box*         box_level_;
-  Fl_Box*         box_wumps_;
-  Fl_Box*         box_bats_;
-  Fl_Box*         box_pits_;
-  Fl_Box*         box_arrows_;
-  Fl_Button*      btn_continue_;
-  Fl_Button*      btn_next_;  
+  Images&     images_;
+  Fl_Box*     box_level_;
+  Fl_Box*     box_wumps_;
+  Fl_Box*     box_bats_;
+  Fl_Box*     box_pits_;
+  Fl_Box*     box_arrows_;
+  Fl_Button*  btn_continue_;
+  Fl_Button*  btn_next_;  
 
 private:
   void TuneAppearance();

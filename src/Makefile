@@ -7,6 +7,7 @@ AUD = $(SRC)audio/
 HLP = $(ENT)helpers/
 CLI = $(SRC)cli/
 GUI = $(SRC)gui/
+IMG = $(GUI)images/
 AI = $(SRC)ai/
 
 CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g \
@@ -19,7 +20,7 @@ OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 					cli_controller.o ai_controller.o media.o gui_controller.o \
 					windows.o form_start.o form_help.o form_main.o widget_info.o \
 					widget_map.o widget_netdraw.o widget_player.o \
-					trajectory.o scores.o config.o audio_out.o
+					trajectory.o scores.o config.o audio_out.o images.o
 
 release : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o2 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main
@@ -56,6 +57,9 @@ level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 
 logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(CFG)enums.h $(SRC)3rdparty/observable.h config.o
 	$(CC) $(CFLAGS) -c $(ENT)logic.cc
+
+images.o : $(IMG)images.h $(IMG)images.cc $(CFG)enums.h
+	$(CC) $(CFLAGS) -c $(IMG)images.cc
 
 windows.o : $(GUI)windows.h $(GUI)windows.cc form_main.o widget_map.o form_help.o form_start.o config.o
 	$(CC) $(CFLAGS) -c $(GUI)windows.cc

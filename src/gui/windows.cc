@@ -7,10 +7,10 @@
 
 namespace wumpus_game {
 
-Windows::Windows(AudioOut& audio) 
+Windows::Windows(AudioOut& audio, Images& images)
   : wnd_start_ { new FormStart() }
   , wnd_help_ { new FormHelp() }
-  , wnd_main_{ new FormMain(audio) }
+  , wnd_main_{ new FormMain(audio, images) }
   , wdg_map_ { wnd_main_->wdg_map_ }
   , wdg_info_{ wnd_main_->wdg_info_ }
   , wdg_player_ { wnd_main_->wdg_map_->GetPlayer() }

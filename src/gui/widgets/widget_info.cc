@@ -7,17 +7,9 @@
 
 namespace wumpus_game {
 
-WidgetInfo::WidgetInfo ()
+WidgetInfo::WidgetInfo (Images& images)
 : Fl_Group(10, 70, 90, 90)
-, img_cover_{new Fl_PNG_Image("gui/widgets/img/info_bg.png")}
-, img_level_{new Fl_PNG_Image("gui/widgets/img/info_level.png")}
-, img_wumps_{new Fl_PNG_Image("gui/widgets/img/info_wumps.png")}
-, img_bats_{new Fl_PNG_Image("gui/widgets/img/info_bats.png")}
-, img_pits_{new Fl_PNG_Image("gui/widgets/img/info_pits.png")}
-, img_arrows_{new Fl_PNG_Image("gui/widgets/img/info_arrows.png")}
-, img_continue_{new Fl_PNG_Image("gui/widgets/img/info_continue.png")}
-, img_repeat_{new Fl_PNG_Image("gui/widgets/img/info_repeat.png")}
-, img_repeat_na_{new Fl_PNG_Image("gui/widgets/img/info_repeat_na.png")}
+, images_{images}
 , box_level_{new Fl_Box(x()+55, y()+10, 20, 20)}
 , box_wumps_{new Fl_Box(x()+15, y()+10, 20, 20)}
 , box_bats_{new Fl_Box(x()+15, y()+60, 20, 20)}
@@ -35,6 +27,28 @@ void WidgetInfo::Redraw(int level)
   int w = config::level_width(level);
   int offset = config::main_wnd_offset; 
 
+  this->image(
+    images_.GetInfoImages(InfoStuff::COVER, level)
+  );
+  box_arrows_->image(
+    images_.GetInfoImages(InfoStuff::ARROWS, level)
+  );
+  box_wumps_->image(
+    images_.GetInfoImages(InfoStuff::WUMPS, level)
+  );
+  box_bats_->image(
+    images_.GetInfoImages(InfoStuff::BATS, level)
+  );
+  box_pits_->image(
+    images_.GetInfoImages(InfoStuff::PITS, level)
+  );
+  box_level_->image(
+    images_.GetInfoImages(InfoStuff::LEVEL, level)
+  );
+  btn_continue_->image(
+    images_.GetInfoImages(InfoStuff::CONTINUE, level)
+  );
+
   resize(offset + (w/2) - (90/2), (90/2)+(w/2), 90, 90);
   redraw();
 }
@@ -43,26 +57,19 @@ void WidgetInfo::TuneAppearance()
 {
   // btn_next_->hide();
 
-  image(img_cover_);
   align(FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_CLIP);
   labelcolor(FL_WHITE);
 
-  box_arrows_->image(img_arrows_);
   box_arrows_->align(Fl_Align(256));
   box_arrows_->labelcolor(FL_WHITE);
-  box_pits_->image(img_pits_);
   box_pits_->align(Fl_Align(256));
   box_pits_->labelcolor(FL_WHITE);
-  box_bats_->image(img_bats_);
   box_bats_->align(Fl_Align(256));
   box_bats_->labelcolor(FL_WHITE);
-  box_wumps_->image(img_wumps_);
   box_wumps_->align(Fl_Align(256));
   box_wumps_->labelcolor(FL_WHITE);
-  box_level_->image(img_level_);
   box_level_->align(Fl_Align(256));
   box_level_->labelcolor(FL_WHITE);
-  btn_continue_->image(img_repeat_na_);
   btn_continue_->align(Fl_Align(256));
 }
 

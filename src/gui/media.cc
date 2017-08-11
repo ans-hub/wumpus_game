@@ -63,7 +63,7 @@ void Media::ExecuteEvent(Event msg, int room)
       break;
 
     case Event::ONE_WUMP_KILLED :
-      gui_helpers::show_killed_one_wump(gui_);
+      gui_helpers::show_killed_one_wump(gui_, model_);
       gui_helpers::refresh_info_widget(gui_, model_);
       break;
 
@@ -127,10 +127,10 @@ void refresh_info_widget(Windows& gui, const Logic& model)
   auto arrows = std::to_string(model.GetLevel().player_->GetArrows());
   gui.wdg_info_->box_arrows_->copy_label(arrows.c_str());
 
-  if (model.GameOverCause() != Logic::SubjectID::PLAYER)
-    gui.wdg_info_->btn_continue_->image(gui.wdg_info_->img_repeat_);
-  else
-    gui.wdg_info_->btn_continue_->image(gui.wdg_info_->img_continue_); 
+  // if (model.GameOverCause() != Logic::SubjectID::PLAYER)
+  //   gui.wdg_info_->btn_continue_->image(gui.wdg_info_->img_repeat_);
+  // else
+  //   gui.wdg_info_->btn_continue_->image(gui.wdg_info_->img_continue_); 
    
 }
 
@@ -163,8 +163,8 @@ void hide_level(Windows& gui, const Logic& model)
 
 void show_error_room(Windows& gui)
 {
-  gui.wdg_player_->SetState(PlayerState::UNKNOWN_ACTION);
-  gui.audio_.Play(config::GetSound(PlayerState::UNKNOWN_ACTION), false);
+  gui.wdg_player_->SetState(PlayerState::UNKNOWN_STATE);
+  gui.audio_.Play(config::GetPlayerSound(PlayerState::UNKNOWN_STATE));
   gui.wnd_main_->redraw();
 }
 
@@ -212,9 +212,12 @@ void show_feels(Windows& gui, const Logic& model, int room)
     switch(feel)
     {
       case Logic::SubjectID::WUMP :
+      {
         wumps = true;
-        gui.audio_.Play(config::GetSound(PlayerState::FEELS_WUMP));
+        auto level = model.CurrentLevel();
+        gui.audio_.Play(config::GetPlayerSound(PlayerState::FEELS_WUMP, level));
         break;
+      }
       case Logic::SubjectID::BAT  :
         bats = true;
         break;
@@ -250,10 +253,11 @@ void show_game_over(Windows& gui, const Logic& logic)
   gui.wnd_main_->redraw();     
 }
 
-void show_killed_one_wump(Windows& gui)
+void show_killed_one_wump(Windows& gui, const Logic& model)
 {
+  auto level = model.CurrentLevel();
   gui.wdg_player_->SetState(PlayerState::KILL_WUMP);
-  gui.audio_.Play(config::GetSound(PlayerState::KILL_WUMP));
+  gui.audio_.Play(config::GetPlayerSound(PlayerState::KILL_WUMP, level));
 }
 
 }  // namespace gui_helpers

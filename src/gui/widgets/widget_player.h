@@ -13,6 +13,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_PNG_Image.H>
 
+#include "gui/images/images.h"
 #include "gui/helpers/point.h"
 #include "gui/helpers/trajectory.h"
 #include "audio/audio_out.h"
@@ -26,42 +27,32 @@ class WidgetPlayer : public Fl_Group
 public:
   using State = PlayerState;
 
-  explicit WidgetPlayer(AudioOut&);
+  WidgetPlayer(AudioOut&, Images&);
   virtual ~WidgetPlayer() { }
   
+  void Redraw(int level);
   void UseAudio(AudioOut& audio) { audio_ = audio; }
   void SetState(State);   // sets image and plays relevant sound
   void SetDefaultState() { SetState(State::STAY); }
   void ShowFeelsIcons(bool, bool, bool);
-  void SetCurrRoom(int room) { curr_room_ = room; }
-  int  GetCurrRoom() const { return curr_room_; }
+  void SetCurrRoom(int room) { room_ = room; }
+  int  GetCurrRoom() const { return room_; }
 
 private:
   void TuneAppearance();
 
-  int           curr_room_;   // used by parent widgets for animate
-  // int           curr_level_;
+  int           room_;   // used by parent widgets for animate
+  int           level_;
+  State         state_;  // needs to determine which sound is playing
   AudioOut&     audio_;
-  State         last_state_;  // needs to determine which sound is playing
+  Images&       images_;
   
   Fl_Box*       box_player_;
   Fl_Box*       box_wumps_;
   Fl_Box*       box_bats_;
   Fl_Box*       box_pits_;
-  Fl_PNG_Image* img_bg_;
-  Fl_PNG_Image* img_stay_;
-  Fl_PNG_Image* img_shot_;
-  Fl_PNG_Image* img_walk_;
-  Fl_PNG_Image* img_bats_;
-  Fl_PNG_Image* img_kill_wump_;
-  Fl_PNG_Image* img_no_arrows_;
-  Fl_PNG_Image* img_unknown_;
-  Fl_PNG_Image* img_dead_wump_;
-  Fl_PNG_Image* img_dead_pits_;
-  Fl_PNG_Image* img_feels_box_;
-  Fl_PNG_Image* img_feels_bats_;
-  Fl_PNG_Image* img_feels_pits_;
-  Fl_PNG_Image* img_feels_wumps_;
+
+
 };
 
 }  // namespace wumpus_game
