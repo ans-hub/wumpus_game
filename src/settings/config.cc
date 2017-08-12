@@ -11,29 +11,44 @@ namespace config {
 
 std::string GetBgMusic(int level)
 {
-  if (level < 4) return "audio/wav/theme_cave.wav";
-  if (level < 7) return "audio/wav/theme_underwater.mp3";
-  if (level < 11) return "audio/wav/theme_dead_town.ogg";
-  if (level < 12) return "audio/wav/theme_broken_cpu.mp3";
-  if (level < 13) return "audio/wav/theme_home.mp3";
-  return "";
+  switch (level) {
+    case 1 : case 2 : case 3 : default :
+      return "audio/wav/theme_cave.wav";
+    case 4 : case 5 : case 6 : 
+      return "audio/wav/theme_underwater.mp3";
+    case 7  : case 8  : case 9  : case 10 :
+      return "audio/wav/theme_dead_town.ogg";
+    case 11 : case 12 : 
+      return "audio/wav/theme_broken_cpu.mp3";
+    case 13 : 
+      return "audio/wav/theme_last_battle.mp3";
+    case 14 : 
+      return "audio/wav/theme_home.mp3";
+  }
 }
 
 std::string GetPlayerSound(PlayerState type, int level)
 {
   switch(type) {
-    case PlayerState::MOVED_BY_BATS : return "audio/wav/bats_movement.wav";
-    case PlayerState::WALK : return "audio/wav/player_walk.wav";
-    case PlayerState::SHOT : return "audio/wav/player_shot.wav";
-    case PlayerState::KILLED_BY_PITS : return "audio/wav/player_pits.wav";
-    case PlayerState::KILLED_BY_WUMP : return "audio/wav/wump_attack.wav";
-    case PlayerState::KILL_WUMP : return "audio/wav/wump_killed.wav";
-    case PlayerState::HAVENT_ARROWS : return "audio/wav/click.wav";
-    case PlayerState::FEELS_WUMP : return "audio/wav/wump_feels.wav";
-    case PlayerState::UNKNOWN_STATE : return "audio/wav/click.wav";
-    default : break;
+    case PlayerState::MOVED_BY_BATS : 
+      return "audio/wav/bats_movement.wav";
+    case PlayerState::WALK : 
+      return "audio/wav/player_walk.wav";
+    case PlayerState::SHOT : 
+      return "audio/wav/player_shot.wav";
+    case PlayerState::KILLED_BY_PITS :
+      return "audio/wav/player_pits.wav";
+    case PlayerState::KILLED_BY_WUMP : 
+      return "audio/wav/wump_attack.wav";
+    case PlayerState::KILL_WUMP : 
+      return "audio/wav/wump_killed.wav";
+    case PlayerState::HAVENT_ARROWS : 
+      return "audio/wav/click.wav";
+    case PlayerState::FEELS_WUMP : 
+      return "audio/wav/wump_feels.wav";
+    case PlayerState::UNKNOWN_STATE : default : 
+      return "audio/wav/click.wav";
   }
-  return "";
 }
 
 // GUI SETTINGS
@@ -72,8 +87,6 @@ void ChangeNetdrawParams(NetdrawParams& params, int level)
       params.m_rad_offset_ = 0;
       helpers::ChangeTotalAngle(params, step);   
       helpers::ChangeMiddleAngle(params, -step*2); 
-      params.is_draw_poly_ = true;
-      params.is_draw_digits_ = true;
       break;
     case 11 :
       helpers::ChangeAllDoublesRandom(params);
@@ -81,6 +94,18 @@ void ChangeNetdrawParams(NetdrawParams& params, int level)
       params.is_draw_poly_ = false;
       break;
     case 12 :
+      helpers::ChangeAllDoublesRandom(params);
+      params.is_draw_digits_ = !params.is_draw_digits_;
+      params.is_draw_poly_ = false;
+      break;
+    case 13 :
+      helpers::ChangeTotalAngle(params, step);   
+      helpers::ChangeMiddleAngle(params, -step*2);
+      helpers::ChangeMiddleRadius(params, step, 20.0);      
+      params.is_draw_digits_ = true;
+      params.is_draw_poly_ = true;
+      break;
+    case 14 :
       params = NetdrawParams();
       break;
   }
@@ -106,17 +131,28 @@ double level_width(int)
 
 double rotate_map_speed(int level)
 {
-  if (level < 4) return 0;
-  if (level < 5) return 0.05;
-  if (level < 6) return 0.04;
-  if (level < 7) return 0.03;
-  if (level < 8) return 0.06;
-  if (level < 9) return 0.05;
-  if (level < 10) return 0.04;
-  if (level < 11) return 0.02;
-  if (level < 12) return 1;
-  if (level < 13) return 0;
-  return 0;
+  switch (level) {
+    case 1 : case 2 : case 3 :
+      return 0;
+    case 4 : 
+      return 0.05;
+    case 5 : case 6 : 
+      return 0.03;
+    case 7 :
+      return 0.06;
+    case 8 : 
+      return 0.05;
+    case 9 :
+      return 0.04;
+    case 10 : 
+      return 0.02;
+    case 11 : case 12 :
+      return 1.0;
+    case 13 :
+      return 0.01;
+    case 14 : default :
+      return 0;
+  }
 }
 
 double rotate_map_step = 0.3;
@@ -127,12 +163,20 @@ int levels_max = 12;
 
 int MapBase(int level)
 {
-  if (level < 4) return level + 4;
-  if (level < 7) return level + 1;
-  if (level < 11) return level - 2;
-  if (level < 12) return level - 6;
-  if (level < 13) return level - 7;
-  return 5;
+  switch (level) {
+    case 1 : case 2 : case 3 : 
+      return level + 4;
+    case 4 : case 5 : case 6 : 
+      return level + 1;
+    case 7 : case 8 : case 9 : case 10 : 
+      return level - 2;
+    case 11 : case 12 :
+      return level - 6;
+    case 13 : 
+      return level - 7;
+    case 14 : default :
+      return level - 9;
+  }
 }
 
 int RoomsCount(int level)
@@ -142,22 +186,34 @@ int RoomsCount(int level)
 
 int ArrowsCount(int level)
 { 
-  return RoomsCount(level) / 4; 
+  if (level == 13)
+    return RoomsCount(level) - 4;
+  else
+    return RoomsCount(level) / 4; 
 }
 
 int WumpsCount(int level)
 { 
-  return RoomsCount(level) / 9; 
+  if (level == 13)
+    return RoomsCount(level) - 4;
+  else
+    return RoomsCount(level) / 9; 
 }
 
 int BatsCount(int level)
 {
-  return RoomsCount(level) / 9;
+  if (level == 13) 
+    return 0;
+  else
+    return RoomsCount(level) / 9;
 }
 
 int PitsCount(int level)
-{ 
-  return RoomsCount(level) / 9;
+{
+  if (level == 13)
+    return 0;
+  else 
+    return RoomsCount(level) / 9;    
 }
 
 }  // namespace conf

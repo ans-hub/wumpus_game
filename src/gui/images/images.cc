@@ -36,6 +36,7 @@ Images::Images()
   , bg_uw_main_{new Fl_PNG_Image("gui/images/forms/uw_main.png")}
   , bg_dt_main_{new Fl_PNG_Image("gui/images/forms/dt_main.png")}
   , bg_cp_main_{new Fl_PNG_Image("gui/images/forms/cp_main.png")}
+  , bg_lb_main_{new Fl_PNG_Image("gui/images/forms/lb_main.png")}
   , bg_hm_main_{new Fl_PNG_Image("gui/images/forms/hm_main.png")}
 {
 
@@ -71,30 +72,31 @@ Images::~Images()
   delete bg_uw_main_;
   delete bg_dt_main_;
   delete bg_cp_main_;
+  delete bg_lb_main_;
   delete bg_hm_main_;
 }
 
 Fl_Image* Images::GetMainBackground(int level, int w, int h)
 {
-  if (level < 4) {
-    bg_cv_main_ = helpers::resize_img(bg_cv_main_, w, h);
-    return bg_cv_main_;
-  }
-  else if (level < 7) {
-    bg_uw_main_ = helpers::resize_img(bg_uw_main_, w, h);
-    return bg_uw_main_;
-  }
-  else if (level < 11) {
-    bg_dt_main_ = helpers::resize_img(bg_dt_main_, w, h);
-    return bg_dt_main_;
-  }
-  else if (level < 12) {
-    bg_cp_main_ = helpers::resize_img(bg_cp_main_, w, h);
-    return bg_cp_main_;
-  }
-  else if (level < 13) {
-    bg_hm_main_ = helpers::resize_img(bg_hm_main_, w, h);   
-    return bg_hm_main_;
+  switch (level) {
+    case 1 : case 2 : case 3 : default :
+      bg_cv_main_ = helpers::resize_img(bg_cv_main_, w, h);
+      return bg_cv_main_;
+    case 4 : case 5 : case 6 :
+      bg_uw_main_ = helpers::resize_img(bg_uw_main_, w, h);
+      return bg_uw_main_;
+    case 7 : case 8 : case 9 : case 10 :
+      bg_dt_main_ = helpers::resize_img(bg_dt_main_, w, h);
+      return bg_dt_main_;
+    case 11 : case 12 :
+      bg_cp_main_ = helpers::resize_img(bg_cp_main_, w, h);
+      return bg_cp_main_;
+    case 13 :
+      bg_lb_main_ = helpers::resize_img(bg_lb_main_, w, h);   
+      return bg_lb_main_;    
+    case 14 :
+      bg_hm_main_ = helpers::resize_img(bg_hm_main_, w, h);   
+      return bg_hm_main_;
   }
   return bg_cv_main_;
 }

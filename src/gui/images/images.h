@@ -58,6 +58,7 @@ struct Images
   Fl_PNG_Image* bg_uw_main_;
   Fl_PNG_Image* bg_dt_main_;
   Fl_PNG_Image* bg_cp_main_;
+  Fl_PNG_Image* bg_lb_main_;
   Fl_PNG_Image* bg_hm_main_;
 };
 
