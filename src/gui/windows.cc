@@ -1,22 +1,22 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: windows container for `gui` view and cotroller
+// File: container of forms and resources
 
 #include "windows.h"
 
 namespace wumpus_game {
 
-Windows::Windows(AudioOut& audio, Images& images)
-  : wnd_start_ { new FormStart() }
-  , wnd_help_ { new FormHelp() }
-  , wnd_main_{ new FormMain(audio, images) }
-  , wdg_map_ { wnd_main_->wdg_map_ }
-  , wdg_info_{ wnd_main_->wdg_info_ }
-  , wdg_player_ { wnd_main_->wdg_map_->GetPlayer() }
+Windows::Windows(Images& images, AudioOut& audio)
+  : images_{images}
   , audio_{audio}
+  , wnd_start_{ new FormStart(images_) }    // see note #1 after code
+  , wnd_help_{ new FormHelp(images_) }
+  , wnd_main_{ new FormMain(images_, audio_) }
+  , wdg_map_ { wnd_main_->wdg_map_ }
+  , wdg_info_{ wnd_main_->wdg_map_->wdg_info_ }
+  , wdg_player_ { wnd_main_->wdg_map_->wdg_player_ }
 {
-  wdg_player_->UseAudio(audio_);
   SetFormsCallbacks();
 }
 
@@ -46,7 +46,7 @@ void Windows::SetFormsCallbacks()
 bool Windows::Show()
 {
   wnd_start_->show();
-  audio_.Play(config::GetBgMusic(1), true);
+  PlayBackgroundMusic();  
 
   return Fl::run();
 }
@@ -54,6 +54,17 @@ bool Windows::Show()
 void Windows::Close()
 {
   wnd_start_->hide();
+}
+
+void Windows::PlayBackgroundMusic(int level)
+{
+  auto level_music = config::GetBgMusic(level);
+  auto now_playing = audio_.NowPlayingRepeated();
+
+  if (now_playing != level_music) {
+    audio_.Stop(now_playing);
+    audio_.Play(level_music, true);
+  }
 }
 
 void Windows::cb_help_button(void*, void* w)
@@ -86,3 +97,8 @@ void Windows::cb_close_wnd_main_(void*, void* w)
 }
 
 }  // namespace wumpus_game
+
+// Note #1 : main reason to set audio through constructor is that audio is
+// stored as reference. Since it is changable through object life time, here is
+// just one right way to do this - send it throught constructors. The second way 
+// is make pointers, but it would entail unnecessary checking inside classes 

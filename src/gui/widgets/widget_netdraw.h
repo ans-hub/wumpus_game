@@ -16,7 +16,8 @@
 
 #include "gui/helpers/netdraw_params.h"
 #include "gui/helpers/point.h"
-#include "settings/config.h"
+#include "gui/helpers/draw_helpers.h"
+#include "config.h"
 
 namespace wumpus_game {
 
@@ -43,6 +44,7 @@ private:
   VPoint    inner_vxs_;            //
   VPoint    middle_vxs_;           // coords of vertexes relative to concrete circle
   VPoint    outer_vxs_;            //
+  Point     center_;
   
   void FillAllVertexes();
   void draw() override;
@@ -56,6 +58,7 @@ namespace draw_helpers {
   bool fill_vector_by_another(PointVec&, const PointVec&, double, double);
   void draw_points(const PointVec&, WidgetNetdraw*, int);
   void draw_poly(const PointVec&, WidgetNetdraw*);
+  void draw_circle(const Point&, double, WidgetNetdraw*);
   void draw_edges(const PointVec&, WidgetNetdraw*);
   void draw_digits(const PointVec&, WidgetNetdraw*);
   

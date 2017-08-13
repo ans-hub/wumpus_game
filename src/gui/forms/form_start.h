@@ -12,19 +12,24 @@
 #include <FL/Fl_JPEG_Image.H>
 #include <FL/Fl_Window.H>
 
+#include "config.h"
+#include "gui/images.h"
+
 namespace wumpus_game {
 
 class FormStart : public Fl_Window 
 {
 public: 
-  FormStart();
+  explicit FormStart(Images&);
   virtual ~FormStart() { }
 
-  Fl_Box*           box_btns_;
-  Fl_Box*           box_label_;
-  Fl_Button*        btn_start_;
-  Fl_Button*        btn_help_;
-  Fl_Button*        btn_quit_;
+  Images&     images_;
+  
+  Fl_Box*     box_btns_;
+  Fl_Box*     box_label_;
+  Fl_Button*  btn_start_;
+  Fl_Button*  btn_help_;
+  Fl_Button*  btn_quit_;
 private:
   void TuneAppearance();
 };

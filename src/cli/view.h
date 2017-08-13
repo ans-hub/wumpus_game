@@ -11,7 +11,7 @@
 #include "3rdparty/observer.h"
 #include "entities/logic.h"
 #include "entities/helpers.h"
-#include "settings/enums.h"
+#include "enums/enums.h"
 
 namespace wumpus_game {
 

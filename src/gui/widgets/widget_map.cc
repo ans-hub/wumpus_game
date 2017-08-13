@@ -9,14 +9,15 @@ namespace wumpus_game {
 
 WidgetMap::WidgetMap(AudioOut& audio, Images& images)
   : Fl_Group{30, 90, 600, 600}    // here was a bug when parent()->w()...h()
-  , wdg_rooms_{}    // make WidgetRooms consists of WidgetRoom* elements
+  , wdg_info_  {new WidgetInfo(images)}
+  , wdg_rooms_ {}    // make WidgetRooms consists of WidgetRoom* elements
   , wdg_pathes_{new WidgetNetdraw()}
   , wdg_player_{new WidgetPlayer(audio, images)}
   , trajectory_{}
   , rooms_state_{}
   , level_{-1}
   , ready_{true}
-  , images_{images}
+  , images_{images} // if wdg_rooms_ be a widget, this would be not necessary
 {
   TuneAppearance();
   end();
@@ -51,6 +52,7 @@ void WidgetMap::Redraw(int level)
   DrawPlayer();
   SetRotateCallback();
   SetRoomsCallback();
+  wdg_info_->Redraw(level);
   end();
 }
 
@@ -71,7 +73,10 @@ void WidgetMap::MovePlayerAnimated(int to_room)
   this->ready_ = false;
   wdg_player_->SetCurrRoom(to_room);
 
-  Fl::add_timeout(config::animation_speed, cb_move_player_animated, this);
+  Fl::add_timeout(
+    config::GetPlayerAnimationSpeed(level_),
+    cb_move_player_animated, this
+  );
 }
 
 void WidgetMap::RefreshAnimateTrajectory()
@@ -99,7 +104,10 @@ void WidgetMap::cb_move_player_animated(void* w)
     this_->ready_ = true;
   }
   else {
-    Fl::repeat_timeout(config::animation_speed, cb_move_player_animated, w);
+    Fl::repeat_timeout(
+      config::GetPlayerAnimationSpeed(this_->level_),    
+      cb_move_player_animated, w
+    );
   }
 
   this_->redraw();
@@ -132,13 +140,16 @@ void WidgetMap::LoadRoomsState()
 void WidgetMap::RedrawCurrentByRotate()
 {
   SaveRoomsState();    
-  ClearRooms();
+  // ClearRooms();
   SetLinesAngles(level_);
   DrawLines(level_);
-  DrawRooms(level_);
+  RepositionRooms();  // may be make reposition of rooms??
   LoadRoomsState();
   SetRoomsCallback();
   DrawPlayer();
+  remove(wdg_info_);
+  add(wdg_info_);
+  // wdg_info_->redraw();
 
   parent()->redraw();
 }
@@ -173,7 +184,7 @@ void WidgetMap::Activate() {
 
 void WidgetMap::ResizeGroup(int level)
 {
-  int w = config::level_width(level);
+  int w = config::GetLevelWidth(level);
   resize(30, 90, w, w);
 }
 
@@ -193,7 +204,7 @@ void WidgetMap::DrawLines(int level)
 void WidgetMap::DrawRooms(int level)
 {
   int btn_size = config::room_btn_size;
-  int rooms = config::level_vertexes(level);
+  int rooms = config::GetVertexesCount(level);
   
   for (int i = 0; i < rooms; ++i) {
     Point coords = GetRoomCoords(i);
@@ -207,6 +218,24 @@ void WidgetMap::DrawRooms(int level)
       btn_size);
     this->add(btn);
     wdg_rooms_.push_back(btn);
+  }
+}
+
+void WidgetMap::RepositionRooms()
+{
+  int i{0};
+  int btn_size = config::room_btn_size;
+  
+  for (auto& r : wdg_rooms_) {
+    Point coords = GetRoomCoords(i);
+    r->position(
+      coords.x_ - btn_size / 2,
+      coords.y_ - btn_size / 2
+    );
+    remove(r);
+    add(r);
+    redraw();
+    ++i;
   }
 }
 

@@ -13,17 +13,17 @@ std::string GetBgMusic(int level)
 {
   switch (level) {
     case 1 : case 2 : case 3 : default :
-      return "audio/wav/theme_cave.wav";
+      return "resources/sounds/theme_cave.wav";
     case 4 : case 5 : case 6 : 
-      return "audio/wav/theme_underwater.mp3";
+      return "resources/sounds/theme_underwater.mp3";
     case 7  : case 8  : case 9  : case 10 :
-      return "audio/wav/theme_dead_town.ogg";
+      return "resources/sounds/theme_dead_town.ogg";
     case 11 : case 12 : 
-      return "audio/wav/theme_broken_cpu.mp3";
+      return "resources/sounds/theme_broken_cpu.mp3";
     case 13 : 
-      return "audio/wav/theme_last_battle.mp3";
+      return "resources/sounds/theme_last_battle.mp3";
     case 14 : 
-      return "audio/wav/theme_home.mp3";
+      return "resources/sounds/theme_home.mp3";
   }
 }
 
@@ -31,23 +31,23 @@ std::string GetPlayerSound(PlayerState type, int level)
 {
   switch(type) {
     case PlayerState::MOVED_BY_BATS : 
-      return "audio/wav/bats_movement.wav";
+      return "resources/sounds/bats_movement.wav";
     case PlayerState::WALK : 
-      return "audio/wav/player_walk.wav";
+      return "resources/sounds/player_walk.wav";
     case PlayerState::SHOT : 
-      return "audio/wav/player_shot.wav";
+      return "resources/sounds/player_shot.wav";
     case PlayerState::KILLED_BY_PITS :
-      return "audio/wav/player_pits.wav";
+      return "resources/sounds/player_pits.wav";
     case PlayerState::KILLED_BY_WUMP : 
-      return "audio/wav/wump_attack.wav";
+      return "resources/sounds/wump_attack.wav";
     case PlayerState::KILL_WUMP : 
-      return "audio/wav/wump_killed.wav";
+      return "resources/sounds/wump_killed.wav";
     case PlayerState::HAVENT_ARROWS : 
-      return "audio/wav/click.wav";
+      return "resources/sounds/click.wav";
     case PlayerState::FEELS_WUMP : 
-      return "audio/wav/wump_feels.wav";
+      return "resources/sounds/wump_feels.wav";
     case PlayerState::UNKNOWN_STATE : default : 
-      return "audio/wav/click.wav";
+      return "resources/sounds/click.wav";
   }
 }
 
@@ -101,7 +101,9 @@ void ChangeNetdrawParams(NetdrawParams& params, int level)
     case 13 :
       helpers::ChangeTotalAngle(params, step);   
       helpers::ChangeMiddleAngle(params, -step*2);
-      helpers::ChangeMiddleRadius(params, step, 20.0);      
+      helpers::ChangeMiddleRadius(params, step*2, 30.0);
+      helpers::ChangeOuterRadius(params, step, 10.0);
+
       params.is_draw_digits_ = true;
       params.is_draw_poly_ = true;
       break;
@@ -111,7 +113,18 @@ void ChangeNetdrawParams(NetdrawParams& params, int level)
   }
 }
 
-double  animation_speed = 0.03;
+double GetPlayerAnimationSpeed(int level)
+{
+  switch(level) {
+    case 13 : 
+      return 0.01;
+    case 14 :
+      return 0.04;
+    default :
+      return 0.03;
+  }
+}
+
 int     animation_step = 5;
 
 double pi()
@@ -119,14 +132,14 @@ double pi()
   return std::atan(1)*4;
 }
 
-int level_vertexes(int level)
+int GetVertexesCount(int level)
 { 
   return (MapBase(level))*4;
 }
 
-double level_width(int)
+double GetLevelWidth(int)
 {
-  return level_vertexes(2) * edge_len * 2;
+  return GetVertexesCount(2) * edge_len * 2;
 } 
 
 double rotate_map_speed(int level)
@@ -142,9 +155,7 @@ double rotate_map_speed(int level)
       return 0.06;
     case 8 : 
       return 0.05;
-    case 9 :
-      return 0.04;
-    case 10 : 
+    case 9 : case 10 :
       return 0.02;
     case 11 : case 12 :
       return 1.0;
@@ -159,7 +170,7 @@ double rotate_map_step = 0.3;
 
 // LOGIC SETTINGS
 
-int levels_max = 12;
+int levels_max = 14;
 
 int MapBase(int level)
 {
@@ -186,34 +197,46 @@ int RoomsCount(int level)
 
 int ArrowsCount(int level)
 { 
-  if (level == 13)
-    return RoomsCount(level) - 4;
-  else
-    return RoomsCount(level) / 4; 
+  switch(level) {
+    case 13 :
+      return RoomsCount(level) - 2;
+    default :
+      return RoomsCount(level) / 4;    
+  }
 }
 
 int WumpsCount(int level)
 { 
-  if (level == 13)
-    return RoomsCount(level) - 4;
-  else
-    return RoomsCount(level) / 9; 
+  switch(level) {
+    case 13 :
+      return RoomsCount(level) - 6;
+    case 14 :
+      return RoomsCount(level) - (RoomsCount(level)/2); 
+    default :
+      return RoomsCount(level) / 9;
+  }
 }
 
 int BatsCount(int level)
 {
-  if (level == 13) 
-    return 0;
-  else
-    return RoomsCount(level) / 9;
+  switch(level) {
+    case 13 : case 14 :
+      return 0;
+    default :
+      return RoomsCount(level) / 9;
+  }
 }
 
 int PitsCount(int level)
 {
-  if (level == 13)
-    return 0;
-  else 
-    return RoomsCount(level) / 9;    
+  switch(level) {
+    case 13 : 
+      return 0;
+    case 14 :
+      return 1;
+    default :
+      return RoomsCount(level) / 9;        
+  }
 }
 
 }  // namespace conf
@@ -269,6 +292,21 @@ void ChangeMiddleRadius(NetdrawParams& params, double step, double range)
     params.m_rad_offset_ += step;
   else 
     params.m_rad_offset_ -= step * 2;
+}
+
+// Changes radius offset of middle circle in Netdraw by range (+/-)
+
+void ChangeOuterRadius(NetdrawParams& params, double step, double range)
+{
+  if (params.o_rad_offset_ > (step * range)) 
+    params.o_rad_offset_positive_ = false;
+  else if (params.o_rad_offset_ < -(step * range * 2))
+    params.o_rad_offset_positive_ = true;
+
+  if (params.o_rad_offset_positive_)
+    params.o_rad_offset_ += step;
+  else 
+    params.o_rad_offset_ -= step * 2;
 }
 
 // Changes all parametrs contains doubles values in random order

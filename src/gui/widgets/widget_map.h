@@ -14,12 +14,13 @@
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Group.H>
 
-#include "gui/images/images.h"
+#include "gui/images.h"
+#include "audio/audio_out.h"
 #include "gui/widgets/widget_room.h"
 #include "gui/widgets/widget_netdraw.h"
 #include "gui/widgets/widget_player.h"
-#include "audio/audio_out.h"
-#include "settings/config.h"
+#include "gui/widgets/widget_info.h"
+#include "config.h"
 
 namespace wumpus_game {
 
@@ -42,8 +43,6 @@ public:
   virtual ~WidgetMap();
 
   bool      IsReady() const { return ready_; }
-  VRoomsRef GetRooms() const { return wdg_rooms_; }
-  WPlayer*  GetPlayer() { return wdg_player_; }
   Point     GetRoomCoords(int) const;
 
   void      Redraw(int);
@@ -55,10 +54,12 @@ public:
   void      SetCallback(CallbackFunc* cb) { callback_ = cb; }
   void      SetCommand(CommandFunc* cmd) { command_ = cmd; }
 
-private:
+  WidgetInfo*     wdg_info_;
   VRooms          wdg_rooms_;     // mess in var names@!
-  WidgetNetdraw*  wdg_pathes_;
   WidgetPlayer*   wdg_player_;
+
+private:
+  WidgetNetdraw*  wdg_pathes_;
   CallbackFunc*   callback_;
   CommandFunc*    command_;
   Trajectory      trajectory_;
@@ -72,6 +73,7 @@ private:
   void DrawRooms(int);
   void DrawLines(int);
   void SetLinesAngles(int);
+  void RepositionRooms();  
   void ClearRooms();
   void SaveRoomsState();
   void LoadRoomsState();

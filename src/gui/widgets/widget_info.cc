@@ -24,7 +24,7 @@ WidgetInfo::WidgetInfo (Images& images)
 
 void WidgetInfo::Redraw(int level)
 {
-  int w = config::level_width(level);
+  int w = config::GetLevelWidth(level);
   int offset = config::main_wnd_offset; 
 
   this->image(

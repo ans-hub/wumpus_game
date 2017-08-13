@@ -10,6 +10,7 @@
 #include <cmath>
 
 #include "gui/helpers/point.h"
+#include "gui/helpers/draw_helpers.h"
 
 namespace wumpus_game {
 
@@ -33,16 +34,6 @@ private:
   std::vector<Point> points_;
 };
 
-namespace draw_helpers {
-
-  Point eval_vector_coordinates(const Point&, const Point&);
-  double eval_vector_length(const Point&, const Point&);
-  Point get_point_on_vector(const Point&, const Point&, int);
-  std::vector<Point> build_line_trajectory(const Point&, const Point&, int);
-  std::vector<Point> build_bezier_trajectory(const Point&, const Point&, int);
-
-}  // namespace draw_helpers
- 
 }  // namespace wumpus_game
 
 #endif  // TRAJECTORY_GEO_H

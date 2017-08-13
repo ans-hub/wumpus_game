@@ -20,6 +20,7 @@ WidgetNetdraw::WidgetNetdraw()
   , inner_vxs_{}
   , middle_vxs_{}
   , outer_vxs_{}
+  , center_{}
 {
 
 }
@@ -32,11 +33,11 @@ WidgetNetdraw::WidgetNetdraw(double start_angle)
 
 void WidgetNetdraw::Redraw(int level)
 {
-  vxs_count_ = config::level_vertexes(level); // gets by Map too
+  vxs_count_ = config::GetVertexesCount(level); // gets by Map too
   total_vxs_.resize(vxs_count_);
 
-  int w = config::level_width(level);
-  this->resize(0, 0, w, w);
+  int w = config::GetLevelWidth(level);
+  resize(0, 0, w, w);
 
   FillAllVertexes();
 }
@@ -47,8 +48,8 @@ void WidgetNetdraw::FillAllVertexes()
 
   double width = w();
   double height = h();
-  double x0 = width/2;
-  double y0 = height/2;
+  center_.x_ = width/2;
+  center_.y_ = height/2;
 
   // Get points of inner polygon 
 
@@ -57,7 +58,7 @@ void WidgetNetdraw::FillAllVertexes()
   double istart_angle = params_.start_angle_ + params_.i_angle_offset_;
 
   inner_vxs_ = draw_helpers::get_poly_vertexes(
-    ivxs_count_, irad, istart_angle, x0, y0
+    ivxs_count_, irad, istart_angle, center_.x_, center_.y_
   );
   
   // Get points of middle polygon
@@ -67,7 +68,7 @@ void WidgetNetdraw::FillAllVertexes()
   double mstart_angle = params_.start_angle_ + params_.m_angle_offset_;
 
   middle_vxs_ = draw_helpers::get_poly_vertexes(
-    mvxs_count_, mrad, mstart_angle, x0, y0
+    mvxs_count_, mrad, mstart_angle, center_.x_, center_.y_
   );
   
   // Get points of outer polygon
@@ -78,7 +79,7 @@ void WidgetNetdraw::FillAllVertexes()
     params_.start_angle_ + (360 / ovxs_count_ / 2) + params_.o_angle_offset_;
 
   outer_vxs_ = draw_helpers::get_poly_vertexes(
-    ovxs_count_, orad, ostart_angle, x0, y0
+    ovxs_count_, orad, ostart_angle, center_.x_, center_.y_
   );
 
   // Fill total map vector by previously recieved polygons points
@@ -163,14 +164,14 @@ void draw_points(const PointVec& v, WidgetNetdraw*, int)
 
 void draw_poly(const PointVec& v, WidgetNetdraw* surface)
 {
-  const auto& p = surface->GetParamsReference();
+  const auto& params = surface->GetParamsReference();
 
   fl_color(
-    std::get<0>(p.poly_color_),
-    std::get<1>(p.poly_color_),
-    std::get<2>(p.poly_color_)
+    std::get<0>(params.poly_color_),
+    std::get<1>(params.poly_color_),
+    std::get<2>(params.poly_color_)
   );
-  fl_line_style(p.line_type_, p.line_width_);
+  fl_line_style(params.line_type_, params.line_width_);
 
   for (std::size_t i = 0; i < v.size(); ++i) {
     auto p1 = v[i];
@@ -179,16 +180,31 @@ void draw_poly(const PointVec& v, WidgetNetdraw* surface)
       p2 = v[i+1];
     }
     fl_line(
-      surface->x()+p1.x_, surface->y()+p1.y_,
-      surface->x()+p2.x_, surface->y()+p2.y_
+      surface->x() + p1.x_, surface->y() + p1.y_,
+      surface->x() + p2.x_, surface->y() + p2.y_
     );
   }
   fl_line_style(0,1);
 }
 
+void draw_circle(const Point& p, double radius, WidgetNetdraw* surface)
+{
+  const auto& param = surface->GetParamsReference();
+
+  fl_color(
+    std::get<0>(param.poly_color_),
+    std::get<1>(param.poly_color_),
+    std::get<2>(param.poly_color_)
+  );
+  fl_line_style(param.line_type_, param.line_width_);
+
+  fl_circle(
+    surface->x() + p.x_, surface->y() + p.y_, radius);  
+}
+
 void draw_edges(const PointVec& v, WidgetNetdraw* surface)
 {
-  const auto& p = surface->GetParamsReference();
+  const auto& param = surface->GetParamsReference();
   
   double half = static_cast<int>(v.size()/2);
 
@@ -197,15 +213,15 @@ void draw_edges(const PointVec& v, WidgetNetdraw* surface)
     auto p2 = v[i+half];
 
     fl_color(
-      std::get<0>(p.poly_color_),
-      std::get<1>(p.poly_color_),
-      std::get<2>(p.poly_color_)
+      std::get<0>(param.poly_color_),
+      std::get<1>(param.poly_color_),
+      std::get<2>(param.poly_color_)
     );
-    fl_line_style(p.line_type_, p.line_width_);
+    fl_line_style(param.line_type_, param.line_width_);
   
     fl_line(
-      surface->x()+p1.x_, surface->y()+p1.y_,
-      surface->x()+p2.x_, surface->y()+p2.y_
+      surface->x() + p1.x_, surface->y() + p1.y_,
+      surface->x() + p2.x_, surface->y() + p2.y_
     );
     fl_line_style(0,1);
   }
@@ -225,16 +241,16 @@ void draw_digits(const PointVec& v, WidgetNetdraw* surface)
     s2 << i+half;  
 
     fl_color(Fl_Color(99));
-    fl_font(fl_font(), 14);
+    fl_font(fl_font(),14);
     fl_draw(
       s1.str().c_str(),
-      surface->x()+p1.x_ + 20,
-      surface->y()+p1.y_ + 20
+      surface->x() + p1.x_ + 20,
+      surface->y() + p1.y_ + 20
     );
     fl_draw(
       s2.str().c_str(),
-      surface->x()+p2.x_ + 20,
-      surface->y()+p2.y_ + 20
+      surface->x() + p2.x_ + 20,
+      surface->y() + p2.y_ + 20
     );
   }
 }

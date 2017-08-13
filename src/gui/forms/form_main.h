@@ -16,11 +16,10 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
 
-#include "gui/widgets/widget_info.h"
-#include "gui/widgets/widget_map.h"
-#include "gui/images/images.h"
+#include "gui/images.h"
 #include "audio/audio_out.h"
-#include "settings/config.h"
+#include "gui/widgets/widget_map.h"
+#include "config.h"
 
 namespace wumpus_game {
 
@@ -29,7 +28,7 @@ class Windows;
 class FormMain : public Fl_Double_Window
 {
 public:
-  explicit FormMain(AudioOut&, Images&);
+  FormMain(Images&, AudioOut&);
   virtual ~FormMain() { }
   
   void Redraw(int);
@@ -37,7 +36,7 @@ public:
 private:
   Fl_Box*     box_cover_;
   Fl_Box*     box_label_;
-  WidgetInfo* wdg_info_;
+  // WidgetInfo* wdg_info_;
   WidgetMap*  wdg_map_;
 
   Images&     images_;

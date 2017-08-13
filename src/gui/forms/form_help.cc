@@ -7,8 +7,9 @@
 
 namespace wumpus_game {
 
-FormHelp::FormHelp ()
+FormHelp::FormHelp (Images& images)
   : Fl_Double_Window(330, 470, "Help")
+  , images_{images}
   , box_label_{new Fl_Box(30, 20, 270, 45, "HELP")}
   , btn_quit_help_{new Fl_Button(30, 420, 270, 25, "Close")}
   , display_{new Fl_Text_Display(30, 90, 270, 310) }

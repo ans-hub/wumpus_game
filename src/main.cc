@@ -8,16 +8,16 @@
 #include "3rdparty/rand_toolkit.h"
 
 #include "entities/logic.h"
+#include "ai/controller.h"
 #include "cli/view.h"
 #include "cli/controller.h"
-#include "ai/controller.h"
 #include "gui/windows.h"
-#include "gui/media.h"
+#include "gui/view.h"
 #include "gui/controller.h"
+#include "gui/images.h"
 #include "audio/audio_out.h"
 #include "scores/scores.h"
-#include "gui/images/images.h"
-#include "settings/config.h"
+#include "config.h"
 
 void preload_background_music(wumpus_game::AudioOut& sounds)
 {
@@ -37,20 +37,20 @@ int main()
   using namespace wumpus_game;
   
   Logic         logic   {};
-  AudioOut      sounds  {};
+  AudioOut      audio   {};
   Images        images  {};
-  Windows       gui     {sounds, images};
 
+  Windows       gui     {images, audio};
   GuiController ctrl    {logic, gui};
-  Media         media   {logic, gui, sounds};
+  GuiView       view    {logic, gui};
   CliView       cerr    {std::cout, logic};
   Scores        scores  {logic};
 
-  logic.RegisterObserver(media);
+  logic.RegisterObserver(view);
   logic.RegisterObserver(scores);
   logic.RegisterObserver(cerr);
 
-  preload_background_music(sounds);
+  preload_background_music(audio);
   start_random_generator();
 
   return ctrl.RunModel();

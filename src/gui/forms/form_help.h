@@ -15,14 +15,19 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Double_Window.H>
 
+#include "config.h"
+#include "gui/images.h"
+
 namespace wumpus_game {
 
 class FormHelp : public Fl_Double_Window 
 {
 public: 
-  FormHelp();
+  explicit FormHelp(Images&);
   virtual ~FormHelp();
   
+  Images&           images_;
+
   Fl_Box*           box_label_;
   Fl_Button*        btn_quit_help_;
   Fl_Text_Display*  display_;

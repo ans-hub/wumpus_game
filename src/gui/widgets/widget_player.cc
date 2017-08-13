@@ -68,11 +68,14 @@ void WidgetPlayer::SetState(State state)
   redraw();
 }
 
-void WidgetPlayer::ShowFeelsIcons(bool wump, bool bats, bool pits)
+void WidgetPlayer::ShowFeels(bool wump, bool bats, bool pits)
 {
   wump ? box_wumps_->show() : box_wumps_->hide();
   bats ? box_bats_->show()  : box_bats_->hide();
   pits ? box_pits_->show()  : box_pits_->hide();
+
+  if(wump)
+    audio_.Play(config::GetPlayerSound(State::FEELS_WUMP, level_));
 
   redraw();
 }

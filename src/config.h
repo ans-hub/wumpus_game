@@ -14,7 +14,7 @@
 
 #include "3rdparty/rand_toolkit.h"
 
-#include "settings/enums.h"
+#include "enums/enums.h"
 #include "gui/helpers/netdraw_params.h"
 
 namespace wumpus_game {
@@ -23,7 +23,7 @@ namespace config {
 
   // Audio settings
 
-  std::string     GetBgMusic(int level);
+  std::string     GetBgMusic(int level = 1);
   std::string     GetPlayerSound(PlayerState, int level = 1);
   
   // Gui settings
@@ -39,14 +39,14 @@ namespace config {
   void            ChangeNetdrawParams(NetdrawParams&, int level);
 
   double          pi();
-  int             level_vertexes(int level);
-  double          level_width(int level);
+  int             GetVertexesCount(int level);
+  double          GetLevelWidth(int level);
 
   // Widget_map settings
 
   double          rotate_map_speed(int level);
   extern double   rotate_map_step;
-  extern double   animation_speed;      // anim who?? explain
+  double GetPlayerAnimationSpeed(int level);
   extern int      animation_step;
   
   // Logic settings 
@@ -68,8 +68,10 @@ namespace helpers {
   void ChangeMiddleAngle(NetdrawParams&, double);             // + step
   void ChangeMiddleAngle(NetdrawParams&, double, double);     // + range
   
-  void ChangeMiddleRadius(NetdrawParams&, double);  
+  void ChangeMiddleRadius(NetdrawParams&, double);            // ???
   void ChangeMiddleRadius(NetdrawParams&, double, double);
+
+  void ChangeOuterRadius(NetdrawParams&, double, double);
 
   void ChangeAllDoublesRandom(NetdrawParams&);
 

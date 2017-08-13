@@ -3,8 +3,8 @@
 // Author: Anton Novoselov, 2017
 // File: model's `view` using gui
 
-#ifndef MEDIA_H
-#define MEDIA_H
+#ifndef GUI_VIEW_H
+#define GUI_VIEW_H
 
 #include <string>
 #include <queue>
@@ -13,25 +13,24 @@
 #include "gui/windows.h"
 #include "entities/logic.h"
 #include "gui/helpers/trajectory.h"
-#include "audio/audio_out.h"
 #include "entities/helpers.h"
-#include "settings/enums.h"
-#include "settings/config.h"
+#include "enums/enums.h"
+#include "config.h"
 
 namespace wumpus_game {
 
-struct Media : public mvc_set::Observer<Event>
+class GuiView : public mvc_set::Observer<Event>
 {
+public:
   using RoomEvent = std::pair<Event, int>;
   using Events = std::queue<RoomEvent>;
 
-  Media(const Logic&, Windows&, AudioOut&);
-  ~Media() { }
+  GuiView(const Logic&, Windows&);
+  ~GuiView() { }
 
 private:
   const Logic&    model_;
   Windows&        gui_;
-  AudioOut&       audio_;
   Events          events_;
   
   bool IncomingNotify(Event) override;    // register event
@@ -44,7 +43,7 @@ private:
 
 namespace gui_helpers {
 
-  void play_bg_music(AudioOut&, const Logic&);
+  void play_bg_music(Windows&, const Logic&);
   void refresh_info_widget(Windows&, const Logic&);
   void enable_buttons(Windows&);
   void disable_buttons(Windows&);
@@ -66,4 +65,4 @@ namespace gui_helpers {
 
 }  // namespace wumpus_game
 
-#endif //MEDIA_H
+#endif // GUI_VIEW_H

@@ -12,8 +12,8 @@
 #include "entities/level.h"
 #include "entities/subject.h"
 #include "3rdparty/observable.h"
-#include "settings/enums.h"
-#include "settings/config.h"
+#include "enums/enums.h"
+#include "config.h"
 
 namespace wumpus_game {
 

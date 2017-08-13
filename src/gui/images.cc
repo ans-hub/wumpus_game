@@ -8,36 +8,36 @@
 namespace wumpus_game {
 
 Images::Images()
-  : img_bg_cv_{(new Fl_PNG_Image("gui/images/widgets/player_bg.png"))}
-  , img_stay_cv_{(new Fl_PNG_Image("gui/images/widgets/player_stay.png"))}
-  , img_shot_cv_{(new Fl_PNG_Image("gui/images/widgets/player_shot.png"))}
-  , img_walk_cv_{(new Fl_PNG_Image("gui/images/widgets/player_walk.png"))}
-  , img_bats_cv_{(new Fl_PNG_Image("gui/images/widgets/player_bats.png"))}  
-  , img_kill_wump_cv_{(new Fl_PNG_Image("gui/images/widgets/wump_killed.png"))}
-  , img_no_arrows_cv_{(new Fl_PNG_Image("gui/images/widgets/unknown_state.png"))}
-  , img_unknown_cv_{(new Fl_PNG_Image("gui/images/widgets/unknown_state.png"))}
-  , img_dead_wump_cv_{(new Fl_PNG_Image("gui/images/widgets/player_dead_w.png"))}
-  , img_dead_pits_cv_{(new Fl_PNG_Image("gui/images/widgets/player_dead_p.png"))}
-  , img_feels_box_cv_{(new Fl_PNG_Image("gui/images/widgets/feels_box.png"))}
-  , img_feels_bats_cv_{(new Fl_PNG_Image("gui/images/widgets/feels_bats.png"))}
-  , img_feels_pits_cv_{(new Fl_PNG_Image("gui/images/widgets/feels_pits.png"))}
-  , img_feels_wumps_cv_{(new Fl_PNG_Image("gui/images/widgets/feels_wumps.png"))}
-  , img_room_on_cv_{(new Fl_PNG_Image("gui/images/widgets/room_on.png"))}
-  , img_room_off_cv_{(new Fl_PNG_Image("gui/images/widgets/room_off.png"))}
-  , img_room_mark_cv_{(new Fl_PNG_Image("gui/images/widgets/room_mark.png"))}
-  , wdg_info_cover_cv_{new Fl_PNG_Image("gui/images/widgets/info_bg.png")}
-  , wdg_info_level_cv_{new Fl_PNG_Image("gui/images/widgets/info_level.png")}
-  , wdg_info_wumps_cv_{new Fl_PNG_Image("gui/images/widgets/info_wumps.png")}
-  , wdg_info_bats_cv_{new Fl_PNG_Image("gui/images/widgets/info_bats.png")}
-  , wdg_info_pits_cv_{new Fl_PNG_Image("gui/images/widgets/info_pits.png")}
-  , wdg_info_arrows_cv_{new Fl_PNG_Image("gui/images/widgets/info_arrows.png")}
-  , wdg_info_continue_cv_{new Fl_PNG_Image("gui/images/widgets/info_continue.png")}
-  , bg_cv_main_{new Fl_PNG_Image("gui/images/forms/cv_main.png")}
-  , bg_uw_main_{new Fl_PNG_Image("gui/images/forms/uw_main.png")}
-  , bg_dt_main_{new Fl_PNG_Image("gui/images/forms/dt_main.png")}
-  , bg_cp_main_{new Fl_PNG_Image("gui/images/forms/cp_main.png")}
-  , bg_lb_main_{new Fl_PNG_Image("gui/images/forms/lb_main.png")}
-  , bg_hm_main_{new Fl_PNG_Image("gui/images/forms/hm_main.png")}
+  : img_bg_cv_{(new Fl_PNG_Image("resources/images/widgets/player_bg.png"))}
+  , img_stay_cv_{(new Fl_PNG_Image("resources/images/widgets/player_stay.png"))}
+  , img_shot_cv_{(new Fl_PNG_Image("resources/images/widgets/player_shot.png"))}
+  , img_walk_cv_{(new Fl_PNG_Image("resources/images/widgets/player_walk.png"))}
+  , img_bats_cv_{(new Fl_PNG_Image("resources/images/widgets/player_bats.png"))}  
+  , img_kill_wump_cv_{(new Fl_PNG_Image("resources/images/widgets/wump_killed.png"))}
+  , img_no_arrows_cv_{(new Fl_PNG_Image("resources/images/widgets/unknown_state.png"))}
+  , img_unknown_cv_{(new Fl_PNG_Image("resources/images/widgets/unknown_state.png"))}
+  , img_dead_wump_cv_{(new Fl_PNG_Image("resources/images/widgets/player_dead_w.png"))}
+  , img_dead_pits_cv_{(new Fl_PNG_Image("resources/images/widgets/player_dead_p.png"))}
+  , img_feels_box_cv_{(new Fl_PNG_Image("resources/images/widgets/feels_box.png"))}
+  , img_feels_bats_cv_{(new Fl_PNG_Image("resources/images/widgets/feels_bats.png"))}
+  , img_feels_pits_cv_{(new Fl_PNG_Image("resources/images/widgets/feels_pits.png"))}
+  , img_feels_wumps_cv_{(new Fl_PNG_Image("resources/images/widgets/feels_wumps.png"))}
+  , img_room_on_cv_{(new Fl_PNG_Image("resources/images/widgets/room_on.png"))}
+  , img_room_off_cv_{(new Fl_PNG_Image("resources/images/widgets/room_off.png"))}
+  , img_room_mark_cv_{(new Fl_PNG_Image("resources/images/widgets/room_mark.png"))}
+  , wdg_info_cover_cv_{new Fl_PNG_Image("resources/images/widgets/info_bg.png")}
+  , wdg_info_level_cv_{new Fl_PNG_Image("resources/images/widgets/info_level.png")}
+  , wdg_info_wumps_cv_{new Fl_PNG_Image("resources/images/widgets/info_wumps.png")}
+  , wdg_info_bats_cv_{new Fl_PNG_Image("resources/images/widgets/info_bats.png")}
+  , wdg_info_pits_cv_{new Fl_PNG_Image("resources/images/widgets/info_pits.png")}
+  , wdg_info_arrows_cv_{new Fl_PNG_Image("resources/images/widgets/info_arrows.png")}
+  , wdg_info_continue_cv_{new Fl_PNG_Image("resources/images/widgets/info_continue.png")}
+  , bg_cv_main_{new Fl_PNG_Image("resources/images/forms/cv_main.png")}
+  , bg_uw_main_{new Fl_PNG_Image("resources/images/forms/uw_main.png")}
+  , bg_dt_main_{new Fl_PNG_Image("resources/images/forms/dt_main.png")}
+  , bg_cp_main_{new Fl_PNG_Image("resources/images/forms/cp_main.png")}
+  , bg_lb_main_{new Fl_PNG_Image("resources/images/forms/lb_main.png")}
+  , bg_hm_main_{new Fl_PNG_Image("resources/images/forms/hm_main.png")}
 {
 
 }

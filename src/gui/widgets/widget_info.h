@@ -13,9 +13,9 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_PNG_Image.H>
 
-#include "gui/images/images.h"
-#include "settings/enums.h"
-#include "settings/config.h"
+#include "gui/images.h"
+#include "enums/enums.h"
+#include "config.h"
 
 namespace wumpus_game {
 

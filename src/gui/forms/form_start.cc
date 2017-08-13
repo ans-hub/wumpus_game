@@ -7,8 +7,9 @@
 
 namespace wumpus_game {
 
-FormStart::FormStart ()
+FormStart::FormStart (Images& images)
 : Fl_Window{330, 270, "Hunt the Wumpus"}
+, images_{images}
 , box_btns_{new Fl_Box(30, 80, 270, 170)}
 , box_label_{new Fl_Box(30, 20, 270, 45, "HUNT THE WUMPUS")}
 , btn_start_{new Fl_Button(90, 100, 150, 25, "Start new")}

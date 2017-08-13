@@ -3,27 +3,27 @@
 // Author: Anton Novoselov, 2017
 // File: model's `view` using gui
 
-#include "media.h"
+#include "view.h"
 
 namespace wumpus_game {
 
-Media::Media(const Logic& model, Windows& gui, AudioOut& audio)
+GuiView::GuiView(const Logic& model, Windows& gui)
   : model_{model}
   , gui_{gui}
-  , audio_{audio}
+  // , audio_{audio}
   , events_{}
 {
   Fl::add_timeout(0.02, cb_process_next_event, this);
 }
 
-bool Media::IncomingNotify(Event msg)
+bool GuiView::IncomingNotify(Event msg)
 {
   int room = model_.GetLevel().player_->GetCurrRoomNum();
   events_.push(std::make_pair(msg, room));
   return true;
 }
 
-void Media::ProcessNextEvent()
+void GuiView::ProcessNextEvent()
 {
   if (!events_.empty() && gui_.wdg_map_->IsReady()) {
     Event msg = events_.front().first;
@@ -34,12 +34,12 @@ void Media::ProcessNextEvent()
   }
 }
 
-void Media::ExecuteEvent(Event msg, int room)
+void GuiView::ExecuteEvent(Event msg, int room)
 {
   switch(msg)
   {
     case Event::NEW_LEVEL :
-      gui_helpers::play_bg_music(audio_, model_);
+      gui_helpers::play_bg_music(gui_, model_); // see note #1 after code
       gui_helpers::show_level(gui_, model_);
       gui_helpers::disable_buttons(gui_);
       gui_helpers::show_player_position_instantly(gui_, model_);
@@ -90,24 +90,19 @@ void Media::ExecuteEvent(Event msg, int room)
   }
 }
 
-void Media::cb_process_next_event(void* w)
+void GuiView::cb_process_next_event(void* w)
 {
-  ((Media*)w)->ProcessNextEvent();
+  ((GuiView*)w)->ProcessNextEvent();
   Fl::repeat_timeout(0.02, cb_process_next_event, w);
 }
 
 namespace gui_helpers {
 
-void play_bg_music(AudioOut& audio, const Logic& model)
+void play_bg_music(Windows& gui, const Logic& model)
 {
-  auto curr_level = model.CurrentLevel();
-  auto level_music = config::GetBgMusic(curr_level);
-  auto now_playing = audio.NowPlayingRepeated();
-
-  if (now_playing != level_music) {
-    audio.Stop(now_playing);
-    audio.Play(level_music, true);
-  }
+  gui.PlayBackgroundMusic(model.CurrentLevel());
+  // I made this here for non-confusing and simple search where 
+  // music is switch-on
 }
 
 void refresh_info_widget(Windows& gui, const Logic& model)
@@ -126,12 +121,6 @@ void refresh_info_widget(Windows& gui, const Logic& model)
 
   auto arrows = std::to_string(model.GetLevel().player_->GetArrows());
   gui.wdg_info_->box_arrows_->copy_label(arrows.c_str());
-
-  // if (model.GameOverCause() != Logic::SubjectID::PLAYER)
-  //   gui.wdg_info_->btn_continue_->image(gui.wdg_info_->img_repeat_);
-  // else
-  //   gui.wdg_info_->btn_continue_->image(gui.wdg_info_->img_continue_); 
-   
 }
 
 void enable_buttons(Windows& gui)
@@ -164,7 +153,6 @@ void hide_level(Windows& gui, const Logic& model)
 void show_error_room(Windows& gui)
 {
   gui.wdg_player_->SetState(PlayerState::UNKNOWN_STATE);
-  gui.audio_.Play(config::GetPlayerSound(PlayerState::UNKNOWN_STATE));
   gui.wnd_main_->redraw();
 }
 
@@ -215,7 +203,6 @@ void show_feels(Windows& gui, const Logic& model, int room)
       {
         wumps = true;
         auto level = model.CurrentLevel();
-        gui.audio_.Play(config::GetPlayerSound(PlayerState::FEELS_WUMP, level));
         break;
       }
       case Logic::SubjectID::BAT  :
@@ -227,7 +214,7 @@ void show_feels(Windows& gui, const Logic& model, int room)
       default : break;
     } 
   }
-  gui.wdg_map_->GetPlayer()->ShowFeelsIcons(wumps, bats, pits);
+  gui.wdg_player_->ShowFeels(wumps, bats, pits);
   gui.wnd_main_->redraw();
 }
 
@@ -257,7 +244,6 @@ void show_killed_one_wump(Windows& gui, const Logic& model)
 {
   auto level = model.CurrentLevel();
   gui.wdg_player_->SetState(PlayerState::KILL_WUMP);
-  gui.audio_.Play(config::GetPlayerSound(PlayerState::KILL_WUMP, level));
 }
 
 }  // namespace gui_helpers

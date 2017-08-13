@@ -2,6 +2,7 @@
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
 // File: helper struct represents parameters of draw net in WidgetNetdraw
+// Contains default paramnetrs, may be changed in config.cc
 
 #ifndef NETDRAW_PARAMS_H
 #define NETDRAW_PARAMS_H
@@ -57,7 +58,7 @@ struct NetdrawParams
     , o_rad_offset_positive_{true}
     , m_rad_offset_positive_{true}
     , i_rad_offset_positive_{true}
-    , line_type_{3}
+    , line_type_{4}
     , line_width_{5}
     , poly_color_{255, 255, 255}  // in RGB - white color
   { }

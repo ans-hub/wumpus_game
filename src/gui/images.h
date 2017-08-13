@@ -10,7 +10,7 @@
 #include <FL/Fl_Image.H>
 #include <FL/Fl_PNG_Image.H>
 
-#include "settings/enums.h"
+#include "enums/enums.h"
 
 namespace wumpus_game {
 

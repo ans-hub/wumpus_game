@@ -13,12 +13,12 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_PNG_Image.H>
 
-#include "gui/images/images.h"
+#include "gui/images.h"
 #include "gui/helpers/point.h"
 #include "gui/helpers/trajectory.h"
 #include "audio/audio_out.h"
-#include "settings/config.h"
-#include "settings/enums.h"
+#include "config.h"
+#include "enums/enums.h"
 
 namespace wumpus_game {
 
@@ -31,10 +31,10 @@ public:
   virtual ~WidgetPlayer() { }
   
   void Redraw(int level);
-  void UseAudio(AudioOut& audio) { audio_ = audio; }
+  // void UseAudio(AudioOut& audio) { audio_ = audio; }
   void SetState(State);   // sets image and plays relevant sound
   void SetDefaultState() { SetState(State::STAY); }
-  void ShowFeelsIcons(bool, bool, bool);
+  void ShowFeels(bool, bool, bool);
   void SetCurrRoom(int room) { room_ = room; }
   int  GetCurrRoom() const { return room_; }
 

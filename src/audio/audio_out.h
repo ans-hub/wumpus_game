@@ -11,7 +11,6 @@
 #include <memory>
 
 #include "3rdparty/bass.h"
-#include "settings/config.h"
 
 namespace wumpus_game {
 
@@ -30,8 +29,8 @@ struct AudioOut
   Handle    Load(const FileName&, bool);
   FileName  NowPlayingRepeated() const;
 private:
-  bool        inited_;
-  VSounds     loaded_;
+  bool      inited_;
+  VSounds   loaded_;
   
   Handle    Find(const FileName&) const;
   bool      IsRepeatedSample(const Handle&) const;

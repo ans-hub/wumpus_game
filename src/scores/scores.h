@@ -8,8 +8,8 @@
 
 #include "3rdparty/observer.h"
 #include "entities/logic.h"
-#include "settings/enums.h"
-#include "settings/config.h"
+#include "enums/enums.h"
+#include "config.h"
 
 namespace wumpus_game {
 
