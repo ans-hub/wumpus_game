@@ -45,6 +45,7 @@ Images::Images()
   , wdg_info_wumps_cv_{new Fl_PNG_Image("resources/images/widgets/info_wumps.png")}
   , wdg_info_wumps_hm_{new Fl_PNG_Image("resources/images/widgets/info_wumps_hm.png")}
   , wdg_info_bats_cv_{new Fl_PNG_Image("resources/images/widgets/info_bats.png")}
+  , wdg_info_bats_uw_{new Fl_PNG_Image("resources/images/widgets/info_bats_uw.png")}
   , wdg_info_bats_bc_{new Fl_PNG_Image("resources/images/widgets/info_bats_bc.png")}
   , wdg_info_pits_cv_{new Fl_PNG_Image("resources/images/widgets/info_pits.png")}
   , wdg_info_pits_bc_{new Fl_PNG_Image("resources/images/widgets/info_pits_bc.png")}
@@ -99,6 +100,7 @@ Images::~Images()
   delete wdg_info_wumps_cv_;
   delete wdg_info_wumps_hm_;
   delete wdg_info_bats_cv_;
+  delete wdg_info_bats_uw_;  
   delete wdg_info_bats_bc_;
   delete wdg_info_pits_cv_;
   delete wdg_info_pits_bc_;
@@ -261,7 +263,9 @@ Fl_Image* Images::GetInfoImages(InfoStuff state, int level)
         return wdg_info_pits_cv_;
     
     case InfoStuff::BATS :
-      if (level == 11 || level == 12)
+      if (level == 4 || level == 5 || level == 6)
+        return wdg_info_bats_uw_;        
+      else if (level == 11 || level == 12)
         return wdg_info_bats_bc_;
       else
         return wdg_info_bats_cv_;
