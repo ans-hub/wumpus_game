@@ -41,6 +41,13 @@ private:
   void TuneAppearance();
 };
 
+namespace helpers {
+
+  void TuneLhsIcons(Fl_Widget*);
+  void TuneRhsIcons(Fl_Widget*);
+  void TuneRhsButtons(Fl_Widget*);
+
+}  // namespace helpers
 
 }  // namespace wumpus_game
 

@@ -19,6 +19,7 @@ struct NetdrawParams
 
   bool    is_draw_poly_;
   bool    is_draw_digits_;
+  bool    is_m_is_circle_;
 
   double  start_angle_;           // angle from which starts calc coordinates of circles
   
@@ -45,6 +46,7 @@ struct NetdrawParams
   NetdrawParams() 
     : is_draw_poly_{true}
     , is_draw_digits_{true}
+    , is_m_is_circle_{false}
     , start_angle_{90}            // value = 90 allows to draws polys north-oriented
     , o_angle_offset_{0}
     , m_angle_offset_{0}

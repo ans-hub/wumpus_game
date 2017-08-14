@@ -11,8 +11,8 @@ WidgetMap::WidgetMap(AudioOut& audio, Images& images)
   : Fl_Group{30, 90, 600, 600}    // here was a bug when parent()->w()...h()
   , wdg_info_  {new WidgetInfo(images)}
   , wdg_rooms_ {}    // make WidgetRooms consists of WidgetRoom* elements
-  , wdg_pathes_{new WidgetNetdraw()}
   , wdg_player_{new WidgetPlayer(audio, images)}
+  , wdg_pathes_{new WidgetNetdraw()}
   , trajectory_{}
   , rooms_state_{}
   , level_{-1}
@@ -156,15 +156,8 @@ void WidgetMap::RedrawCurrentByRotate()
 
 void WidgetMap::SetLinesAngles(int level)
 { 
-  auto speed = config::rotate_map_speed(level);
   auto& params = wdg_pathes_->GetParamsReference();
-
-  if (!speed)
-    params = NetdrawParams();
-    // wdg_pathes_->ResetDrawParamsToDefault();
-  else {
-    config::ChangeNetdrawParams(params, level);   // may be 'get' for more associated?
-  }
+  config::ChangeNetdrawParams(params, level);
 }
 
 void WidgetMap::Deactivate(bool d)
@@ -251,7 +244,7 @@ void WidgetMap::ClearRooms()
 
 void WidgetMap::SetRotateCallback()
 {
-  double speed = config::rotate_map_speed(level_);
+  double speed = config::GetRotateMapSpeed(level_);
   Fl::remove_timeout(cb_rotate_map, this);    // remove old if present
   if (speed)
     Fl::add_timeout(speed, cb_rotate_map, this);
@@ -273,7 +266,7 @@ void WidgetMap::TuneAppearance()
 void WidgetMap::cb_rotate_map(void* w)
 {
   int level = ((WidgetMap*)w)->level_;
-  double speed = config::rotate_map_speed(level);  
+  double speed = config::GetRotateMapSpeed(level);  
   
   ((WidgetMap*)w)->RedrawCurrentByRotate();
   Fl::repeat_timeout(speed, cb_rotate_map, w);

@@ -20,16 +20,17 @@ void worry_neighboring_wumps(VWumpsPtr& wumps, std::vector<int>& neighbors)
 bool kill_one_wump_in_room(VWumpsPtr& wumps, int room)
 {
   // remake to more pretty
+  bool kill{false};
   for (auto it = wumps.begin(); it != wumps.end();) {
     if (it->get()->GetCurrRoomNum() == room) {
       it->reset();
       it = wumps.erase(it);
-      return true;
+      kill = true;
     } else {
       ++it;
     }
   }
-  return false;
+  return kill;
 }
 
 bool is_in_one_room(Subject* subj1, Subject* subj2)

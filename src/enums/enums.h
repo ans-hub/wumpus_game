@@ -55,7 +55,8 @@ namespace wumpus_game {
     BATS,
     WUMPS,
     LEVEL,
-    CONTINUE
+    CONTINUE_IMAGE,
+    CONTINUE_DEIMAGE
   };
    
 }  // namespace wumpus_game

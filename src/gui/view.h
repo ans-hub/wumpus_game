@@ -57,10 +57,9 @@ namespace gui_helpers {
   void show_havent_arrows(Windows&);
   void show_feels(Windows&, const Logic&, int);
   void show_game_over(Windows&, const Logic&);
-  void show_killed_one_wump(Windows&, const Logic&);
+  void show_killed_one_wump(Windows&);
+  void mark_room_as_wisited(Windows&, const Logic&, int);
 
-  Point get_offsetted_point_of_room(Windows&, int);
-  
 }  // namespace gui_helpers
 
 }  // namespace wumpus_game

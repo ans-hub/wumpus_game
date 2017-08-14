@@ -107,9 +107,16 @@ void WidgetNetdraw::draw()
 {
   if (params_.is_draw_poly_) {
     draw_helpers::draw_poly(inner_vxs_, this);
-    draw_helpers::draw_poly(middle_vxs_, this);
     draw_helpers::draw_poly(outer_vxs_, this);
     draw_helpers::draw_edges(total_vxs_, this);
+    
+    if (params_.is_m_is_circle_) {
+      double rad = draw_helpers::eval_vector_length(center_, middle_vxs_[0]);
+      draw_helpers::draw_circle(center_, rad, this);
+    } 
+    else {
+      draw_helpers::draw_poly(middle_vxs_, this);
+    }
   }
 
   if (params_.is_draw_digits_) {

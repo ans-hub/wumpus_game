@@ -10,13 +10,13 @@ namespace wumpus_game {
 WidgetInfo::WidgetInfo (Images& images)
 : Fl_Group(10, 70, 90, 90)
 , images_{images}
-, box_level_{new Fl_Box(x()+55, y()+10, 20, 20)}
-, box_wumps_{new Fl_Box(x()+15, y()+10, 20, 20)}
-, box_bats_{new Fl_Box(x()+15, y()+60, 20, 20)}
-, box_pits_{new Fl_Box(x()+15, y()+35, 20, 20)}
-, box_arrows_{new Fl_Box(x()+55, y()+35, 20, 20)}
-, btn_continue_{new Fl_Button(x()+50, y()+60, 28, 20)}
-, btn_next_{new Fl_Button(x()+15, y()+60, 20, 20)}
+, box_level_{new Fl_Box(x()+82, y()+20, 0, 0)}    // w and h is 0 since only
+, box_wumps_{new Fl_Box(x()+8, y()+20, 0, 0)}     // this way i can arrange
+, box_bats_{new Fl_Box(x()+8, y()+70, 0, 0)}
+, box_pits_{new Fl_Box(x()+8, y()+45, 0, 0)}
+, box_arrows_{new Fl_Box(x()+82, y()+45, 0, 0)}
+, btn_continue_{new Fl_Button(x()+52, y()+60, 28, 20)}
+, btn_next_{new Fl_Button(0,0,0,0)}
 {
   TuneAppearance();
   end();
@@ -46,7 +46,10 @@ void WidgetInfo::Redraw(int level)
     images_.GetInfoImages(InfoStuff::LEVEL, level)
   );
   btn_continue_->image(
-    images_.GetInfoImages(InfoStuff::CONTINUE, level)
+    images_.GetInfoImages(InfoStuff::CONTINUE_IMAGE, level)
+  );
+  btn_continue_->deimage(
+    images_.GetInfoImages(InfoStuff::CONTINUE_DEIMAGE, level)
   );
 
   resize(offset + (w/2) - (90/2), (90/2)+(w/2), 90, 90);
@@ -60,17 +63,37 @@ void WidgetInfo::TuneAppearance()
   align(FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_CLIP);
   labelcolor(FL_WHITE);
 
-  box_arrows_->align(Fl_Align(256));
-  box_arrows_->labelcolor(FL_WHITE);
-  box_pits_->align(Fl_Align(256));
-  box_pits_->labelcolor(FL_WHITE);
-  box_bats_->align(Fl_Align(256));
-  box_bats_->labelcolor(FL_WHITE);
-  box_wumps_->align(Fl_Align(256));
-  box_wumps_->labelcolor(FL_WHITE);
-  box_level_->align(Fl_Align(256));
-  box_level_->labelcolor(FL_WHITE);
-  btn_continue_->align(Fl_Align(256));
+  helpers::TuneLhsIcons(box_wumps_);
+  helpers::TuneLhsIcons(box_bats_);
+  helpers::TuneLhsIcons(box_pits_);
+
+  helpers::TuneRhsIcons(box_level_);
+  helpers::TuneRhsIcons(box_arrows_);
+
+  helpers::TuneRhsButtons(btn_continue_);
 }
+
+namespace helpers {
+  
+void TuneLhsIcons(Fl_Widget* w)
+{
+  w->align(Fl_Align(264));
+  w->labelcolor(FL_WHITE);
+  w->labelsize(10);
+}
+
+void TuneRhsIcons(Fl_Widget* w)
+{
+  w->align(Fl_Align(292));
+  w->labelcolor(FL_WHITE);
+  w->labelsize(10);
+}
+
+void TuneRhsButtons(Fl_Widget* w)
+{
+  w->align(Fl_Align(256));  
+}
+
+}  // namespace helpers
 
 }  // namespace wumpus_game

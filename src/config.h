@@ -44,11 +44,12 @@ namespace config {
 
   // Widget_map settings
 
-  double          rotate_map_speed(int level);
+  double          GetRotateMapSpeed(int level);
+  double          GetPlayerAnimationSpeed(int level);
   extern double   rotate_map_step;
-  double GetPlayerAnimationSpeed(int level);
   extern int      animation_step;
-  
+  bool            WhetherToMarkVisitedRooms(int level);
+
   // Logic settings 
 
   extern int      levels_max;
@@ -66,12 +67,13 @@ namespace helpers {
   void ChangeTotalAngle(NetdrawParams&, double);
 
   void ChangeMiddleAngle(NetdrawParams&, double);             // + step
-  void ChangeMiddleAngle(NetdrawParams&, double, double);     // + range
+  void ChangeMiddleAngle(NetdrawParams&, double, double, double);     // + range
   
   void ChangeMiddleRadius(NetdrawParams&, double);            // ???
-  void ChangeMiddleRadius(NetdrawParams&, double, double);
-
-  void ChangeOuterRadius(NetdrawParams&, double, double);
+  void ChangeMiddleRadius(NetdrawParams&, double, double, double);
+  
+  void ChangeOuterRadius(NetdrawParams&, double);
+  void ChangeOuterRadius(NetdrawParams&, double, double, double);
 
   void ChangeAllDoublesRandom(NetdrawParams&);
 

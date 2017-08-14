@@ -60,10 +60,12 @@ void GuiView::ExecuteEvent(Event msg, int room)
 
     case Event::READY_TO_INPUT : 
       gui_helpers::show_feels(gui_, model_, room);
+      gui_helpers::mark_room_as_wisited(gui_, model_, room);
       break;
 
     case Event::ONE_WUMP_KILLED :
-      gui_helpers::show_killed_one_wump(gui_, model_);
+      gui_helpers::show_player_shot(gui_);    
+      gui_helpers::show_killed_one_wump(gui_);
       gui_helpers::refresh_info_widget(gui_, model_);
       break;
 
@@ -240,10 +242,16 @@ void show_game_over(Windows& gui, const Logic& logic)
   gui.wnd_main_->redraw();     
 }
 
-void show_killed_one_wump(Windows& gui, const Logic& model)
+void show_killed_one_wump(Windows& gui)
+{
+  gui.wdg_player_->SetState(PlayerState::KILL_WUMP);
+}
+
+void mark_room_as_wisited(Windows& gui, const Logic& model, int room)
 {
   auto level = model.CurrentLevel();
-  gui.wdg_player_->SetState(PlayerState::KILL_WUMP);
+  if (config::WhetherToMarkVisitedRooms(level))
+    gui.wdg_map_->wdg_rooms_[room]->SetMarked(true);
 }
 
 }  // namespace gui_helpers
