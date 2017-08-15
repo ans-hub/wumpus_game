@@ -38,53 +38,52 @@ void GuiView::ExecuteEvent(Event msg, int room)
   switch(msg)
   {
     case Event::NEW_LEVEL :
-      // gui_helpers::play_bg_music(gui_, model_); // see note #1 after code
-      gui_helpers::show_level(gui_, model_);
-      gui_helpers::disable_buttons(gui_);
-      gui_helpers::show_player_position_instantly(gui_, model_);
-      gui_helpers::refresh_info_widget(gui_, model_);
+      helpers::ShowLevel(gui_, model_);
+      helpers::DisableFormButtons(gui_);
+      helpers::ShowPlayerPositionInstantly(gui_, model_);
+      helpers::RefreshInfoWidget(gui_, model_);
       break;
 
     case Event::GAME_OVER :
-      gui_helpers::show_game_over(gui_, model_);
-      gui_helpers::hide_level(gui_, model_);
-      gui_helpers::enable_buttons(gui_);
-      gui_helpers::refresh_info_widget(gui_, model_);      
+      helpers::ShowGameOver(gui_, model_);
+      helpers::HideLevel(gui_, model_);
+      helpers::EnableFormButtons(gui_);
+      helpers::RefreshInfoWidget(gui_, model_);      
       break;
 
     case Event::HAVE_NOT_ARROWS :
-      gui_helpers::show_havent_arrows(gui_);
-      gui_helpers::refresh_info_widget(gui_, model_);      
+      helpers::ShowHaventArrows(gui_);
+      helpers::RefreshInfoWidget(gui_, model_);      
       break;
 
     case Event::READY_TO_INPUT : 
-      gui_helpers::show_feels(gui_, model_, room);
-      gui_helpers::mark_room_as_wisited(gui_, model_, room);
+      helpers::ShowFeels(gui_, model_, room);
+      helpers::MarkRoomAsVisited(gui_, model_, room);
       break;
 
     case Event::ONE_WUMP_KILLED :
-      gui_helpers::show_player_shot(gui_);    
-      gui_helpers::show_killed_one_wump(gui_);
-      gui_helpers::refresh_info_widget(gui_, model_);
+      helpers::ShowPlayerShot(gui_);    
+      helpers::ShowKilledOneWump(gui_);
+      helpers::RefreshInfoWidget(gui_, model_);
       break;
 
     case Event::PLAYER_DOES_MOVE :
-      gui_helpers::show_player_movement(gui_, room);
+      helpers::ShowPlayerMovement(gui_, room);
       break;
 
     case Event::MOVED_BY_BATS :
-      gui_helpers::show_bats_movement(gui_, room);
+      helpers::ShowBatsMovement(gui_, room);
       break;
 
     case Event::PLAYER_DOES_SHOT :
-      gui_helpers::show_player_shot(gui_);
-      gui_helpers::refresh_info_widget(gui_, model_);      
+      helpers::ShowPlayerShot(gui_);
+      helpers::RefreshInfoWidget(gui_, model_);      
       break;    
     
     case Event::UNKNOWN_COMMAND :
     case Event::MOVE_NOT_NEIGHBOR :
     case Event::SHOT_NOT_NEIGHBOR :
-      gui_helpers::show_error_room(gui_);
+      helpers::ShowErrorRoom(gui_);
       break;
 
     case Event::MODEL_READY : default: break;
@@ -97,23 +96,9 @@ void GuiView::cb_process_next_event(void* w)
   Fl::repeat_timeout(0.02, cb_process_next_event, w);
 }
 
-namespace gui_helpers {
+namespace helpers {
 
-// This function is needs here to simplify searching and non confusing
-
-void play_bg_music(Windows& gui, const Logic& model)
-{
-  auto level = model.CurrentLevel();
-  auto level_music = config::GetBackgroundMusic(level);
-  bool is_playing = audio_helpers::IsNowPlaying(gui.audio_, level_music);
-  
-  if (!is_playing) {
-    audio_helpers::StopAllNowPlaying(gui.audio_, false);
-    gui.audio_.Play(level_music);
-  }
-}
-
-void refresh_info_widget(Windows& gui, const Logic& model)
+void RefreshInfoWidget(Windows& gui, const Logic& model)
 {
   auto level = std::to_string(model.CurrentLevel());
   gui.wdg_info_->box_level_->copy_label(level.c_str());
@@ -131,17 +116,17 @@ void refresh_info_widget(Windows& gui, const Logic& model)
   gui.wdg_info_->box_arrows_->copy_label(arrows.c_str());
 }
 
-void enable_buttons(Windows& gui)
+void EnableFormButtons(Windows& gui)
 {
   gui.wdg_info_->btn_continue_->activate();
 }
 
-void disable_buttons(Windows& gui)
+void DisableFormButtons(Windows& gui)
 {
   gui.wdg_info_->btn_continue_->deactivate();
 }
 
-void show_level(Windows& gui, const Logic& model)
+void ShowLevel(Windows& gui, const Logic& model)
 {
   int level = model.CurrentLevel();
   
@@ -150,7 +135,7 @@ void show_level(Windows& gui, const Logic& model)
   gui.wdg_map_->Activate();
 }
 
-void hide_level(Windows& gui, const Logic& model)
+void HideLevel(Windows& gui, const Logic& model)
 {
   if (model.GameOverCause() == Subject::ID::PLAYER)
     gui.wdg_map_->Deactivate(true);
@@ -158,44 +143,44 @@ void hide_level(Windows& gui, const Logic& model)
     gui.wdg_map_->Deactivate(false);    
 }
 
-void show_error_room(Windows& gui)
+void ShowErrorRoom(Windows& gui)
 {
   gui.wdg_player_->SetState(PlayerState::UNKNOWN_STATE);
   gui.wnd_main_->redraw();
 }
 
-void show_player_position_instantly(Windows& gui, const Logic& model)
+void ShowPlayerPositionInstantly(Windows& gui, const Logic& model)
 {
   int to_room = model.GetLevel().player_->GetCurrRoomNum();
   gui.wdg_player_->SetState(PlayerState::STAY);
   gui.wdg_map_->MovePlayerInstantly(to_room);
 }
 
-void show_player_movement(Windows& gui, int to_room)
+void ShowPlayerMovement(Windows& gui, int to_room)
 {
   gui.wdg_player_->SetState(PlayerState::WALK);
   gui.wdg_map_->MovePlayerAnimated(to_room);
 }
 
-void show_bats_movement(Windows& gui, int to_room)
+void ShowBatsMovement(Windows& gui, int to_room)
 {
   gui.wdg_player_->SetState(PlayerState::MOVED_BY_BATS);
   gui.wdg_map_->MovePlayerAnimated(to_room);
 }
 
-void show_player_shot(Windows& gui)
+void ShowPlayerShot(Windows& gui)
 {
   gui.wdg_player_->SetState(PlayerState::SHOT);
   gui.wnd_main_->redraw();   
 }
 
-void show_havent_arrows(Windows& gui)
+void ShowHaventArrows(Windows& gui)
 {
   gui.wdg_player_->SetState(PlayerState::HAVENT_ARROWS);
   gui.wnd_main_->redraw();
 }
 
-void show_feels(Windows& gui, const Logic& model, int room)
+void ShowFeels(Windows& gui, const Logic& model, int room)
 {  
   bool wumps {false};
   bool bats {false};  
@@ -217,7 +202,7 @@ void show_feels(Windows& gui, const Logic& model, int room)
   gui.wnd_main_->redraw();
 }
 
-void show_game_over(Windows& gui, const Logic& logic)
+void ShowGameOver(Windows& gui, const Logic& logic)
 {
   switch (logic.GameOverCause()) {
     case Logic::SubjectID::PLAYER :
@@ -238,18 +223,18 @@ void show_game_over(Windows& gui, const Logic& logic)
   gui.wnd_main_->redraw();     
 }
 
-void show_killed_one_wump(Windows& gui)
+void ShowKilledOneWump(Windows& gui)
 {
   gui.wdg_player_->SetState(PlayerState::KILL_WUMP);
 }
 
-void mark_room_as_wisited(Windows& gui, const Logic& model, int room)
+void MarkRoomAsVisited(Windows& gui, const Logic& model, int room)
 {
   auto level = model.CurrentLevel();
   if (config::WhetherToMarkVisitedRooms(level))
     gui.wdg_map_->wdg_rooms_[room]->SetMarked(true);
 }
 
-}  // namespace gui_helpers
+}  // namespace helpers
 
 }  // namespace wumpus_game

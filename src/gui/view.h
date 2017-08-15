@@ -42,26 +42,25 @@ private:
   static void cb_process_next_event(void*);
 };
 
-namespace gui_helpers {
+namespace helpers {
 
-  void play_bg_music(Windows&, const Logic&);
-  void refresh_info_widget(Windows&, const Logic&);
-  void enable_buttons(Windows&);
-  void disable_buttons(Windows&);
-  void show_level(Windows&, const Logic&);
-  void hide_level(Windows&, const Logic&);
-  void show_error_room(Windows&);
-  void show_player_position_instantly(Windows&, const Logic&);
-  void show_player_movement(Windows&, int);
-  void show_bats_movement(Windows&, int);
-  void show_player_shot(Windows&);
-  void show_havent_arrows(Windows&);
-  void show_feels(Windows&, const Logic&, int);
-  void show_game_over(Windows&, const Logic&);
-  void show_killed_one_wump(Windows&);
-  void mark_room_as_wisited(Windows&, const Logic&, int);
+  void RefreshInfoWidget(Windows&, const Logic&);
+  void EnableFormButtons(Windows&);
+  void DisableFormButtons(Windows&);
+  void ShowLevel(Windows&, const Logic&);
+  void HideLevel(Windows&, const Logic&);
+  void ShowErrorRoom(Windows&);
+  void ShowPlayerPositionInstantly(Windows&, const Logic&);
+  void ShowPlayerMovement(Windows&, int);
+  void ShowBatsMovement(Windows&, int);
+  void ShowPlayerShot(Windows&);
+  void ShowHaventArrows(Windows&);
+  void ShowFeels(Windows&, const Logic&, int);
+  void ShowGameOver(Windows&, const Logic&);
+  void ShowKilledOneWump(Windows&);
+  void MarkRoomAsVisited(Windows&, const Logic&, int);
 
-}  // namespace gui_helpers
+}  // namespace helpers
 
 }  // namespace wumpus_game
 
