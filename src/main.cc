@@ -1,7 +1,7 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: main game
+// File: main game file
 
 #include <iostream>
 
@@ -17,15 +17,7 @@
 #include "gui/controller.h"
 #include "gui/images.h"
 #include "scores/scores.h"
-#include "config.h"
-
-void preload_background_music(wumpus_game::AudioOut& sounds)
-{
-  using namespace wumpus_game;
-
-  for (int i = 1; i <= config::levels_max; ++i) 
-    sounds.Load(config::GetBackgroundMusic(i), true);
-}
+#include "music/music.h"
 
 void start_random_generator()
 {
@@ -36,23 +28,28 @@ int main()
 {
   using namespace wumpus_game;
   
-  Logic         logic   {};
-  AudioOut      audio   {};
-  Images        images  {};
+  Logic         logic     {};
+  AudioOut      audio_out {};
+  Images        images    {};
 
-  Windows       gui     {images, audio};
-  GuiController ctrl    {logic, gui};
-  GuiView       view    {logic, gui};
-  CliView       cerr    {std::cout, logic};
-  Scores        scores  {logic};
+  Windows       gui       {images, audio_out};
+  GuiView       view      {logic, gui};
+  CliView       debug     {std::cout, logic};
+  Scores        scores    {logic};
+  GuiController ctrl      {logic, gui};
+  Music background_music  {logic, audio_out};   // see note #1
 
   logic.RegisterObserver(view);
+  logic.RegisterObserver(background_music);
   logic.RegisterObserver(scores);
-  logic.RegisterObserver(cerr);
+  logic.RegisterObserver(debug);
 
-  preload_background_music(audio);
   start_random_generator();
-
+  
   return ctrl.RunModel();
 }
 
+// Note #1 : background music plays through Music class instance, but
+// sounds plays by each widgets ownself. Reference to audio output 
+// transmitted over Windows class instance (this class is owner of all
+// gui widgets and forms)

@@ -38,7 +38,7 @@ void GuiView::ExecuteEvent(Event msg, int room)
   switch(msg)
   {
     case Event::NEW_LEVEL :
-      gui_helpers::play_bg_music(gui_, model_); // see note #1 after code
+      // gui_helpers::play_bg_music(gui_, model_); // see note #1 after code
       gui_helpers::show_level(gui_, model_);
       gui_helpers::disable_buttons(gui_);
       gui_helpers::show_player_position_instantly(gui_, model_);
@@ -104,12 +104,12 @@ namespace gui_helpers {
 void play_bg_music(Windows& gui, const Logic& model)
 {
   auto level = model.CurrentLevel();
-  auto prev_level_music = config::GetBackgroundMusic(level - 1);
-  auto curr_level_music = config::GetBackgroundMusic(level);
-
-  if (prev_level_music != curr_level_music) {
-    gui.audio_.Stop(prev_level_music); 
-    gui.audio_.Play(curr_level_music);
+  auto level_music = config::GetBackgroundMusic(level);
+  bool is_playing = audio_helpers::IsNowPlaying(gui.audio_, level_music);
+  
+  if (!is_playing) {
+    audio_helpers::StopAllNowPlaying(gui.audio_, false);
+    gui.audio_.Play(level_music);
   }
 }
 

@@ -19,8 +19,8 @@ OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 					level.o logic.o helpers.o cli_view.o \
 					cli_controller.o ai_controller.o gui_view.o gui_controller.o \
 					windows.o form_start.o form_help.o form_main.o widget_info.o \
-					widget_map.o widget_netdraw.o widget_player.o \
-					trajectory.o scores.o config.o audio_out.o images.o math_helpers.o
+					widget_map.o widget_netdraw.o widget_player.o trajectory.o \
+					scores.o config.o audio_out.o images.o math_helpers.o music.o
 
 release : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o2 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main.out
@@ -60,6 +60,9 @@ logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(ENM)enums.h $(SRC)3rdparty/obse
 
 images.o : $(GUI)images.h $(GUI)images.cc $(ENM)enums.h
 	$(CC) $(CFLAGS) -c $(GUI)images.cc
+
+music.o : $(SRC)music/music.h $(SRC)music/music.cc $(ENM)enums.h config.o logic.o
+	$(CC) $(CFLAGS) -c $(SRC)music/music.cc
 
 windows.o : $(GUI)windows.h $(GUI)windows.cc form_main.o widget_map.o form_help.o form_start.o config.o
 	$(CC) $(CFLAGS) -c $(GUI)windows.cc

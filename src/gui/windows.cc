@@ -45,8 +45,8 @@ void Windows::SetFormsCallbacks()
 
 bool Windows::Show()
 {
-  auto bg_music = config::GetBackgroundMusic(1);
-  audio_.Play(bg_music);
+  // auto bg_music = config::GetBackgroundMusic(1);
+  // audio_.Play(bg_music);
 
   wnd_start_->show();
   return Fl::run();
@@ -79,11 +79,8 @@ void Windows::cb_close_wnd_main_(void*, void* w)
   auto result = fl_choice(
     "Are you want to stop game?", "No", "Yes", 0
   );
-
-  if (result == 1) {
+  if (result == 1)
     ((Windows*)w)->wnd_main_->hide();
-    
-  }
 }
 
 }  // namespace wumpus_game

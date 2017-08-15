@@ -1,7 +1,7 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: functions set represents current configuration in game 
+// File: functions set represents current configuration in the game 
 // usually in depends of given level value
 
 #ifndef GAME_CONFIG_H
@@ -51,7 +51,7 @@ namespace config {
   bool          WhetherToMarkVisitedRooms(int level);
   void          ChangeNetdrawParams(NetdrawParams&, int level);
   
-}  // namespace conf
+}  // namespace config
 
 namespace helpers {
 

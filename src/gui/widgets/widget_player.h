@@ -52,8 +52,6 @@ private:
   Fl_Box*       box_wumps_;
   Fl_Box*       box_bats_;
   Fl_Box*       box_pits_;
-
-
 };
 
 }  // namespace wumpus_game
