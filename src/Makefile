@@ -20,7 +20,7 @@ OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 					cli_controller.o ai_controller.o gui_view.o gui_controller.o \
 					windows.o form_start.o form_help.o form_main.o widget_info.o \
 					widget_map.o widget_netdraw.o widget_player.o \
-					trajectory.o scores.o config.o audio_out.o images.o draw_helpers.o
+					trajectory.o scores.o config.o audio_out.o images.o math_helpers.o
 
 release : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o2 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main
@@ -79,14 +79,14 @@ widget_info.o : $(GUI)widgets/widget_info.h $(GUI)widgets/widget_info.cc
 widget_map.o : $(GUI)widgets/widget_map.h $(GUI)widgets/widget_map.cc $(GUI)widgets/widget_room.h widget_netdraw.o widget_player.o
 	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_map.cc
 
-widget_netdraw.o : $(GUI)widgets/widget_netdraw.h $(GUI)widgets/widget_netdraw.cc $(GUI)helpers/point.h draw_helpers.o
+widget_netdraw.o : $(GUI)widgets/widget_netdraw.h $(GUI)widgets/widget_netdraw.cc $(GUI)helpers/point.h math_helpers.o
 	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_netdraw.cc
 
-trajectory.o : $(GUI)helpers/trajectory.h $(GUI)helpers/trajectory.cc $(GUI)helpers/point.h draw_helpers.o
+trajectory.o : $(GUI)helpers/trajectory.h $(GUI)helpers/trajectory.cc $(GUI)helpers/point.h math_helpers.o
 	$(CC) $(CFLAGS) -c $(GUI)helpers/trajectory.cc
 
-draw_helpers.o : $(GUI)helpers/draw_helpers.h $(GUI)helpers/draw_helpers.cc $(GUI)helpers/point.h 
-	$(CC) $(CFLAGS) -c $(GUI)helpers/draw_helpers.cc
+math_helpers.o : $(GUI)helpers/math_helpers.h $(GUI)helpers/math_helpers.cc $(GUI)helpers/point.h 
+	$(CC) $(CFLAGS) -c $(GUI)helpers/math_helpers.cc
 
 widget_player.o : $(GUI)widgets/widget_player.h $(GUI)widgets/widget_player.cc $(GUI)helpers/point.h trajectory.o
 	$(CC) $(CFLAGS) -c $(GUI)widgets/widget_player.cc

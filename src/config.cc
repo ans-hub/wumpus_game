@@ -1,35 +1,44 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: class that represents current configuration in game
+// File: functions set represents current configuration in game 
+// usually in depends of given level value
 
 #include "config.h"
 
 namespace wumpus_game {
 
-namespace config {
+// namespace config {
 
-std::string GetBgMusic(int level)
+// AUDIO SETTINGS REALISATION
+
+std::string config::GetBackgroundMusic(int level)
 {
   switch (level) {
     case 1 : case 2 : case 3 : default :
       return "resources/sounds/theme_cave.wav";
+
     case 4 : case 5 : case 6 : 
       return "resources/sounds/theme_underwater.mp3";
+
     case 7  : case 8  : case 9  : case 10 :
       return "resources/sounds/theme_dead_town.ogg";
+
     case 11 : case 12 : 
       return "resources/sounds/theme_broken_cpu.mp3";
+
     case 13 : 
       return "resources/sounds/theme_last_battle.mp3";
+
     case 14 : 
       return "resources/sounds/theme_home.mp3";
   }
 }
 
-std::string GetPlayerSound(PlayerState type, int level)
+std::string config::GetPlayerSound(PlayerState type, int level)
 {
   switch(type) {
+
     case PlayerState::MOVED_BY_BATS :
       if (level == 4 || level == 5 || level == 6)
         return "resources/sounds/bats_movement_uw.mp3";
@@ -83,73 +92,111 @@ std::string GetPlayerSound(PlayerState type, int level)
   }
 }
 
-// GUI SETTINGS
+// LOGIC SETTINGS
 
-double  edge_len = 12;
-int     room_btn_size = 30;
-int     main_wnd_offset = 30;
-double  netdraw_start_angle = 90;
+int config::levels_max = 14;
 
-void ChangeNetdrawParams(NetdrawParams& params, int level)
+int config::GetMapBase(int level)
 {
-  auto step = config::rotate_map_step;
-
   switch (level) {
-    case 3 : case 4 : case 5 :
-      helpers::ChangeTotalAngle(params, step);
-      break;
-    case 6 :
-      helpers::ChangeTotalAngle(params, step);
-      helpers::ChangeMiddleRadius(params, step, step*2, 20.0);
-      break;
-    case 7 :
-      helpers::ChangeTotalAngle(params, step);
-      helpers::ChangeMiddleAngle(params, step, step*2, 30.0);    
-      break;
-    case 8 : 
-      helpers::ChangeTotalAngle(params, step);
-      helpers::ChangeMiddleAngle(params, step);
-      break;
-    case 9 : 
-      helpers::ChangeTotalAngle(params, step);
-      helpers::ChangeMiddleAngle(params, -step*2);
-      helpers::ChangeMiddleRadius(params, step, step*2, 20.0);
-      break;
-    case 10 :
-      params.m_rad_offset_ = 0;
-      helpers::ChangeTotalAngle(params, step);   
-      helpers::ChangeMiddleAngle(params, -step*2); 
-      break;
-    case 11 :
-      helpers::ChangeAllDoublesRandom(params);
-      params.is_draw_digits_ = !params.is_draw_digits_;
-      params.is_draw_poly_ = false;
-      break;
-    case 12 :
-      helpers::ChangeAllDoublesRandom(params);
-      params.is_draw_digits_ = !params.is_draw_digits_;
-      params.is_draw_poly_ = false;
-      break;
-    case 13 :
-      helpers::ChangeTotalAngle(params, step*2);   
-      helpers::ChangeMiddleAngle(params, -step*4);
-      helpers::ChangeMiddleRadius(params, step, step*2, 10.0);
-      helpers::ChangeOuterRadius(params, step, step*2, 10.0);
-      params.is_draw_digits_ = true;
-      params.is_draw_poly_ = true;
-      break;
-    case 14 :
-      params.start_angle_ = 0;
-      params.o_rad_offset_ = 80;
-      helpers::ChangeMiddleAngle(params, step*2, step*2, 20);
-      helpers::ChangeMiddleRadius(params, step*2, step*2, 15);
-      break;
-    default :
-      params = NetdrawParams();
+    case 1 : case 2 : case 3 : 
+      return level + 4;
+    case 4 : case 5 : case 6 : 
+      return level + 1;
+    case 7 : case 8 : case 9 : case 10 : 
+      return level - 2;
+    case 11 : case 12 :
+      return level - 6;
+    case 13 : 
+      return level - 7;
+    case 14 : default :
+      return level - 10;
   }
 }
 
-double GetPlayerAnimationSpeed(int level)
+int config::GetRoomsCount(int level)
+{
+  using namespace config;
+
+  return (GetMapBase(level) * 4);
+}
+
+int config::GetArrowsCount(int level)
+{ 
+  using namespace config;
+  
+  switch(level) {
+    case 13 :
+      return GetRoomsCount(level) - 2;
+    case 14 :
+      return GetRoomsCount(level) - (GetRoomsCount(level) / 2);   
+    default :
+      return GetRoomsCount(level) / 4;    
+  }
+}
+
+int config::GetWumpsCount(int level)
+{ 
+  using namespace config;
+
+  switch(level) {
+    case 13 :
+      return GetRoomsCount(level) / 2;
+    case 14 :
+      return GetRoomsCount(level) - (GetRoomsCount(level) / 2); 
+    default :
+      return GetRoomsCount(level) / 9;
+  }
+}
+
+int config::GetBatsCount(int level)
+{
+  using namespace config;
+
+  switch(level) {
+    case 13 : case 14 :
+      return 0;
+    default :
+      return GetRoomsCount(level) / 9;
+  }
+}
+
+int config::GetPitsCount(int level)
+{
+  using namespace config;
+  
+  switch(level) {
+    case 13 : case 14 : 
+      return 0;
+    default :
+      return GetRoomsCount(level) / 9;        
+  }
+}
+
+// WIDGET_NETDRAW SETTINGS
+
+double config::edge_len = 12;
+
+int config::room_btn_size = 30;
+
+int config::main_wnd_offset = 30;
+
+double config::netdraw_start_angle = 90;
+
+// Returns min width of screen needs to place WidgetNetdraw in depends of level
+
+double config::GetLevelWidth(int)
+{
+  return GetRoomsCount(2) * edge_len * 2;
+}
+
+// WIDGET_MAP SETTINGS
+
+// Pixels count to every animation player tick
+
+int config::animation_step = 5; 
+
+double config::GetPlayerAnimationSpeed(int level)
 {
   switch(level) {
     case 11 : case 12 :
@@ -163,34 +210,11 @@ double GetPlayerAnimationSpeed(int level)
   }
 }
 
-bool WhetherToMarkVisitedRooms(int level)
-{
-  switch(level) {
-    case 7 : case 8 : case 9: case 10 : case 14 : 
-      return true;
-    default : 
-      return false;
-  }
-}
+// Pixels count to every animation rotate map tick
 
-int     animation_step = 5;
+double config::rotate_map_step = 0.3;
 
-double pi()
-{
-  return std::atan(1)*4;
-}
-
-int GetVertexesCount(int level)
-{ 
-  return (MapBase(level))*4;
-}
-
-double GetLevelWidth(int)
-{
-  return GetVertexesCount(2) * edge_len * 2;
-} 
-
-double GetRotateMapSpeed(int level)
+double config::GetRotateMapSpeed(int level)
 {
   switch (level) {
     case 1 : case 2 : case 3 :
@@ -216,93 +240,103 @@ double GetRotateMapSpeed(int level)
   }
 }
 
-double rotate_map_step = 0.3;
+// Returns true if widget_map should mark rooms after its visiting
 
-// LOGIC SETTINGS
-
-int levels_max = 14;
-
-int MapBase(int level)
+bool config::WhetherToMarkVisitedRooms(int level)
 {
+  switch(level) {
+    case 7 : case 8 : case 9: case 10 : case 14 : 
+      return true;
+    default : 
+      return false;
+  }
+}
+
+// Changes NetdrawParams& object (used by WidgetNetdraw) in depends of level
+// Called in every `rotate_map_step` seconds from WidgetMap to emulate rotating
+// of WidgetNetdraw
+
+void config::ChangeNetdrawParams(NetdrawParams& params, int level)
+{
+  auto step = config::rotate_map_step;
+
   switch (level) {
-    case 1 : case 2 : case 3 : 
-      return level + 4;
-    case 4 : case 5 : case 6 : 
-      return level + 1;
-    case 7 : case 8 : case 9 : case 10 : 
-      return level - 2;
-    case 11 : case 12 :
-      return level - 6;
-    case 13 : 
-      return level - 7;
-    case 14 : default :
-      return level - 10;
-  }
-}
 
-int RoomsCount(int level)
-{
-  return (MapBase(level) * 4);
-}
+    case 3 : case 4 : case 5 :
+      helpers::ChangeTotalAngle(params, step);
+      break;
 
-int ArrowsCount(int level)
-{ 
-  switch(level) {
+    case 6 :
+      helpers::ChangeTotalAngle(params, step);
+      helpers::ChangeMiddleRadius(params, step, step*2, 20.0);
+      break;
+
+    case 7 :
+      helpers::ChangeTotalAngle(params, step);
+      helpers::ChangeMiddleAngle(params, step, step*2, 30.0);    
+      break;
+    case 8 : 
+      helpers::ChangeTotalAngle(params, step);
+      helpers::ChangeMiddleAngle(params, step);
+      break;
+
+    case 9 : 
+      helpers::ChangeTotalAngle(params, step);
+      helpers::ChangeMiddleAngle(params, -step*2);
+      helpers::ChangeMiddleRadius(params, step, step*2, 20.0);
+      break;
+
+    case 10 :
+      params.m_rad_offset_ = 0;
+      helpers::ChangeTotalAngle(params, step);   
+      helpers::ChangeMiddleAngle(params, -step*2); 
+      break;
+
+    case 11 :
+      helpers::ChangeAllDoublesRandom(params);
+      params.is_draw_digits_ = !params.is_draw_digits_;
+      params.is_draw_poly_ = false;
+      break;
+
+    case 12 :
+      helpers::ChangeAllDoublesRandom(params);
+      params.is_draw_digits_ = !params.is_draw_digits_;
+      params.is_draw_poly_ = false;
+
+      break;
     case 13 :
-      return RoomsCount(level) - 2;
+      helpers::ChangeTotalAngle(params, step*2);   
+      helpers::ChangeMiddleAngle(params, -step*4);
+      helpers::ChangeMiddleRadius(params, step, step*2, 10.0);
+      helpers::ChangeOuterRadius(params, step, step*2, 10.0);
+      params.is_draw_digits_ = true;
+      params.is_draw_poly_ = true;
+      break;
+
     case 14 :
-      return RoomsCount(level) - (RoomsCount(level)/2);      
+      params.start_angle_ = 0;
+      params.o_rad_offset_ = 80;
+      helpers::ChangeMiddleAngle(params, step*2, step*2, 20);
+      helpers::ChangeMiddleRadius(params, step*2, step*2, 15);
+      break;
+      
     default :
-      return RoomsCount(level) / 4;    
+      params = NetdrawParams();
   }
 }
 
-int WumpsCount(int level)
-{ 
-  switch(level) {
-    case 13 :
-      return RoomsCount(level) / 2;
-    case 14 :
-      return RoomsCount(level) - (RoomsCount(level) / 2); 
-    default :
-      return RoomsCount(level) / 9;
-  }
-}
-
-int BatsCount(int level)
-{
-  switch(level) {
-    case 13 : case 14 :
-      return 0;
-    default :
-      return RoomsCount(level) / 9;
-  }
-}
-
-int PitsCount(int level)
-{
-  switch(level) {
-    case 13 : case 14 : 
-      return 0;
-    default :
-      return RoomsCount(level) / 9;        
-  }
-}
-
-}  // namespace conf
-
-namespace helpers {
+// HELPERS
 
 // Changes total angle of middle circle in NetdrawWidget
 
-void ChangeTotalAngle(NetdrawParams& params, double step)
+void helpers::ChangeTotalAngle(NetdrawParams& params, double step)
 {
   params.start_angle_ += step;
 }
 
 // Changes angle offset of middle circle in NetdrawWidget
 
-void ChangeMiddleAngle(NetdrawParams& params, double step)
+void helpers::ChangeMiddleAngle(NetdrawParams& params, double step)
 {
   params.m_angle_offset_ += step;
 }
@@ -311,7 +345,7 @@ void ChangeMiddleAngle(NetdrawParams& params, double step)
 // step_f - step forward, step_b - step back. Sometimes its needs to 
 // make step_b in double size, since some levels rotate total_angle forward
 
-void ChangeMiddleAngle(
+void helpers::ChangeMiddleAngle(
   NetdrawParams& params, double step_f, double step_b, double range)
 {
   if (params.m_angle_offset_ > (step_f * range))
@@ -327,14 +361,14 @@ void ChangeMiddleAngle(
 
 // Changes radius offset of middle circle in NetdrawWidget
 
-void ChangeMiddleRadius(NetdrawParams& params, double step)
+void helpers::ChangeMiddleRadius(NetdrawParams& params, double step)
 {
   params.m_rad_offset_ += step;
 }
 
 // Changes radius offset of middle circle in Netdraw by range (+/-)
 
-void ChangeMiddleRadius(
+void helpers::ChangeMiddleRadius(
   NetdrawParams& params, double step_f, double step_b, double range)
 {
   if (params.m_rad_offset_ > (step_f * range)) 
@@ -350,14 +384,14 @@ void ChangeMiddleRadius(
 
 // Changes radius offset of outer circle in NetdrawWidget
 
-void ChangeOuterRadius(NetdrawParams& params, double step)
+void helpers::ChangeOuterRadius(NetdrawParams& params, double step)
 {
   params.o_rad_offset_ += step;
 }
 
 // Changes radius offset of middle circle in Netdraw by range (+/-)
 
-void ChangeOuterRadius(
+void helpers::ChangeOuterRadius(
   NetdrawParams& params, double step_f, double step_b, double range)
 {
   if (params.o_rad_offset_ > (step_f * range)) 
@@ -373,7 +407,7 @@ void ChangeOuterRadius(
 
 // Changes all parametrs contains doubles values in random order
 
-void ChangeAllDoublesRandom(NetdrawParams& params)
+void helpers::ChangeAllDoublesRandom(NetdrawParams& params)
 {    
   params = NetdrawParams();
   double step = rand_toolkit::get_rand(0,10);
@@ -403,7 +437,5 @@ void ChangeAllDoublesRandom(NetdrawParams& params)
   else 
     params.i_rad_offset_ -= step;  
 }
-
-}  // namespace helpers
 
 }  // namespace wumpus_game

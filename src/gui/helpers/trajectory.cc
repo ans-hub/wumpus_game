@@ -11,10 +11,10 @@ void Trajectory::Set(const Point& from, const Point& to, Type t, int step)
 {
   switch(t) {
     case LINE :
-      points_ = draw_helpers::build_line_trajectory(from, to, step);
+      points_ = math_helpers::BuildLineTrajectory(from, to, step);
       break;
     case CURVE :
-      points_ = draw_helpers::build_bezier_trajectory(from, to, step);
+      points_ = math_helpers::BuildBezierTrajectory(from, to, step);
       break;
     default : break;
   }

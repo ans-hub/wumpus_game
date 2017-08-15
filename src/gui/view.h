@@ -38,7 +38,6 @@ private:
   void ExecuteEvent(Event, int);          // execute concrete event
 
   static void cb_process_next_event(void*);
-
 };
 
 namespace gui_helpers {

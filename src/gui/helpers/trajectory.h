@@ -10,7 +10,7 @@
 #include <cmath>
 
 #include "gui/helpers/point.h"
-#include "gui/helpers/draw_helpers.h"
+#include "gui/helpers/math_helpers.h"
 
 namespace wumpus_game {
 

@@ -58,7 +58,7 @@ void Windows::Close()
 
 void Windows::PlayBackgroundMusic(int level)
 {
-  auto level_music = config::GetBgMusic(level);
+  auto level_music = config::GetBackgroundMusic(level);
   auto now_playing = audio_.NowPlayingRepeated();
 
   if (now_playing != level_music) {

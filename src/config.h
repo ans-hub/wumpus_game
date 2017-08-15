@@ -1,10 +1,8 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: class that represents current configuration in game
-
-// This file represents functions, which returns parametrs depends
-// on given level value 
+// File: functions set represents current configuration in game 
+// usually in depends of given level value
 
 #ifndef GAME_CONFIG_H
 #define GAME_CONFIG_H
@@ -23,42 +21,35 @@ namespace config {
 
   // Audio settings
 
-  std::string     GetBgMusic(int level = 1);
-  std::string     GetPlayerSound(PlayerState, int level = 1);
-  
-  // Gui settings
-
-  // std::string     GetBgImage(int level);
-
-  // Widget_netdraw settings
-  
-  extern double   edge_len;
-  extern int      room_btn_size; 
-  extern int      main_wnd_offset;
-  extern double   netdraw_start_angle;
-  void            ChangeNetdrawParams(NetdrawParams&, int level);
-
-  double          pi();
-  int             GetVertexesCount(int level);
-  double          GetLevelWidth(int level);
-
-  // Widget_map settings
-
-  double          GetRotateMapSpeed(int level);
-  double          GetPlayerAnimationSpeed(int level);
-  extern double   rotate_map_step;
-  extern int      animation_step;
-  bool            WhetherToMarkVisitedRooms(int level);
+  std::string   GetBackgroundMusic(int level = 1);
+  std::string   GetPlayerSound(PlayerState, int level = 1);
 
   // Logic settings 
 
-  extern int      levels_max;
-  int             MapBase(int level);
-  int             RoomsCount(int level);
-  int             ArrowsCount(int level);
-  int             WumpsCount(int level);
-  int             BatsCount(int level);
-  int             PitsCount(int level);
+  extern int    levels_max;
+  int           GetMapBase(int level);
+  int           GetRoomsCount(int level);
+  int           GetArrowsCount(int level);
+  int           GetWumpsCount(int level);
+  int           GetBatsCount(int level);
+  int           GetPitsCount(int level);
+  
+  // Widget_netdraw.h settings
+  
+  extern double edge_len;           // see terms inside widget_netdraw.h
+  extern int    room_btn_size; 
+  extern int    main_wnd_offset;
+  extern double netdraw_start_angle;
+  double        GetLevelWidth(int level);
+
+  // Widget_map settings
+
+  extern int    animation_step;
+  double        GetPlayerAnimationSpeed(int level);
+  extern double rotate_map_step;
+  double        GetRotateMapSpeed(int level);
+  bool          WhetherToMarkVisitedRooms(int level);
+  void          ChangeNetdrawParams(NetdrawParams&, int level);
   
 }  // namespace conf
 

@@ -197,7 +197,7 @@ void WidgetMap::DrawLines(int level)
 void WidgetMap::DrawRooms(int level)
 {
   int btn_size = config::room_btn_size;
-  int rooms = config::GetVertexesCount(level);
+  int rooms = config::GetRoomsCount(level);
   
   for (int i = 0; i < rooms; ++i) {
     Point coords = GetRoomCoords(i);

@@ -24,7 +24,7 @@ void preload_background_music(wumpus_game::AudioOut& sounds)
   using namespace wumpus_game;
 
   for (int i = 1; i <= config::levels_max; ++i) 
-    sounds.Load(config::GetBgMusic(i), true);
+    sounds.Load(config::GetBackgroundMusic(i), true);
 }
 
 void start_random_generator()

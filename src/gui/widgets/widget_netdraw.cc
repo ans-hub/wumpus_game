@@ -20,10 +20,7 @@ WidgetNetdraw::WidgetNetdraw()
   , inner_vxs_{}
   , middle_vxs_{}
   , outer_vxs_{}
-  , center_{}
-{
-
-}
+  , center_{} { }
 
 WidgetNetdraw::WidgetNetdraw(double start_angle)
   : WidgetNetdraw()
@@ -33,7 +30,7 @@ WidgetNetdraw::WidgetNetdraw(double start_angle)
 
 void WidgetNetdraw::Redraw(int level)
 {
-  vxs_count_ = config::GetVertexesCount(level); // gets by Map too
+  vxs_count_ = config::GetRoomsCount(level); // gets by Map too
   total_vxs_.resize(vxs_count_);
 
   int w = config::GetLevelWidth(level);
@@ -57,7 +54,7 @@ void WidgetNetdraw::FillAllVertexes()
   double irad = (width / 6) + params_.i_rad_offset_;
   double istart_angle = params_.start_angle_ + params_.i_angle_offset_;
 
-  inner_vxs_ = draw_helpers::get_poly_vertexes(
+  inner_vxs_ = helpers::GetPolyVertexes(
     ivxs_count_, irad, istart_angle, center_.x_, center_.y_
   );
   
@@ -67,7 +64,7 @@ void WidgetNetdraw::FillAllVertexes()
   double mrad = (irad * 2) - (width / 20) + params_.m_rad_offset_;
   double mstart_angle = params_.start_angle_ + params_.m_angle_offset_;
 
-  middle_vxs_ = draw_helpers::get_poly_vertexes(
+  middle_vxs_ = helpers::GetPolyVertexes(
     mvxs_count_, mrad, mstart_angle, center_.x_, center_.y_
   );
   
@@ -78,7 +75,7 @@ void WidgetNetdraw::FillAllVertexes()
   double ostart_angle = 
     params_.start_angle_ + (360 / ovxs_count_ / 2) + params_.o_angle_offset_;
 
-  outer_vxs_ = draw_helpers::get_poly_vertexes(
+  outer_vxs_ = helpers::GetPolyVertexes(
     ovxs_count_, orad, ostart_angle, center_.x_, center_.y_
   );
 
@@ -86,19 +83,19 @@ void WidgetNetdraw::FillAllVertexes()
 
   double step = 2;
   double start_ivx = vxs_count_/2;
-  draw_helpers::fill_vector_by_another(
+  helpers::FillVectorByAnother(
     total_vxs_, inner_vxs_, start_ivx, step
   );
 
   step = 1;
   double start_mvx = 0;
-  draw_helpers::fill_vector_by_another(
+  helpers::FillVectorByAnother(
     total_vxs_, middle_vxs_, start_mvx, step
   );
 
   step = 2;
   double start_ovx = (vxs_count_/2)+1;
-  draw_helpers::fill_vector_by_another(
+  helpers::FillVectorByAnother(
     total_vxs_, outer_vxs_, start_ovx, step
   );
 }
@@ -106,27 +103,30 @@ void WidgetNetdraw::FillAllVertexes()
 void WidgetNetdraw::draw()
 {
   if (params_.is_draw_poly_) {
-    draw_helpers::draw_poly(inner_vxs_, this);
-    draw_helpers::draw_poly(outer_vxs_, this);
-    draw_helpers::draw_edges(total_vxs_, this);
+    helpers::DrawPoly(inner_vxs_, this);
+    helpers::DrawPoly(outer_vxs_, this);
+    helpers::DrawEdges(total_vxs_, this);
     
     if (params_.is_m_is_circle_) {
-      double rad = draw_helpers::eval_vector_length(center_, middle_vxs_[0]);
-      draw_helpers::draw_circle(center_, rad, this);
+      double rad = math_helpers::EvalVectorLength(center_, middle_vxs_[0]);
+      helpers::DrawCircle(center_, rad, this);
     } 
     else {
-      draw_helpers::draw_poly(middle_vxs_, this);
+      helpers::DrawPoly(middle_vxs_, this);
     }
   }
 
   if (params_.is_draw_digits_) {
-    draw_helpers::draw_digits(total_vxs_, this);
+    helpers::DrawDigits(total_vxs_, this);
   }
 }
 
-namespace draw_helpers {
+// Function that not need to be member of WidgetNetdraw, but may be used only this
+// version of netdraw, since draw logic of net with 3 edges is depends
 
-PointVec get_poly_vertexes(
+namespace helpers {
+
+VPoints GetPolyVertexes(
   double edges, double rad, double angle_start, double x0, double y0)
 {
   std::vector<Point> res (edges);
@@ -136,16 +136,16 @@ PointVec get_poly_vertexes(
   for (double i = 0; i < edges; ++i) {
     if (angle > 360) angle = angle - 360;
     Point p;
-    p.x_ = cos(angle * config::pi() / 180) * rad + x0;
-    p.y_ = sin(angle * config::pi() / 180) * rad + y0;
+    p.x_ = cos(angle * math_helpers::GetPi() / 180) * rad + x0;
+    p.y_ = sin(angle * math_helpers::GetPi() / 180) * rad + y0;
     res[i] = p;
     angle += angle_step;
   }
   return res;
 }
 
-bool fill_vector_by_another(
-  PointVec& res, const PointVec& v, double start, double step)
+bool FillVectorByAnother(
+  VPoints& res, const VPoints& v, double start, double step)
 {
   if (res.size() < v.size())
     return false;
@@ -159,7 +159,7 @@ bool fill_vector_by_another(
   return true;
 }
 
-void draw_points(const PointVec& v, WidgetNetdraw*, int)
+void DrawPoints(const VPoints& v, WidgetNetdraw*, int)
 {
   for (const auto& v0 : v) {
     fl_line_style(1,5);
@@ -169,7 +169,7 @@ void draw_points(const PointVec& v, WidgetNetdraw*, int)
   fl_line_style(0,1);
 }
 
-void draw_poly(const PointVec& v, WidgetNetdraw* surface)
+void DrawPoly(const VPoints& v, WidgetNetdraw* surface)
 {
   const auto& params = surface->GetParamsReference();
 
@@ -194,7 +194,7 @@ void draw_poly(const PointVec& v, WidgetNetdraw* surface)
   fl_line_style(0,1);
 }
 
-void draw_circle(const Point& p, double radius, WidgetNetdraw* surface)
+void DrawCircle(const Point& p, double radius, WidgetNetdraw* surface)
 {
   const auto& param = surface->GetParamsReference();
 
@@ -209,7 +209,7 @@ void draw_circle(const Point& p, double radius, WidgetNetdraw* surface)
     surface->x() + p.x_, surface->y() + p.y_, radius);  
 }
 
-void draw_edges(const PointVec& v, WidgetNetdraw* surface)
+void DrawEdges(const VPoints& v, WidgetNetdraw* surface)
 {
   const auto& param = surface->GetParamsReference();
   
@@ -234,7 +234,7 @@ void draw_edges(const PointVec& v, WidgetNetdraw* surface)
   }
 }
 
-void draw_digits(const PointVec& v, WidgetNetdraw* surface)
+void DrawDigits(const VPoints& v, WidgetNetdraw* surface)
 {
   double half = static_cast<int>(v.size()/2);
 

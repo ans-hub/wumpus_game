@@ -26,11 +26,11 @@ void Logic::NewLevel(unsigned int num)
 {
   curr_level_ = num;
 
-  int base = config::MapBase(curr_level_);
-  int arrows = config::ArrowsCount(curr_level_);
-  int wump = config::WumpsCount(curr_level_);
-  int bat = config::BatsCount(curr_level_);
-  int pit = config::PitsCount(curr_level_);
+  int base = config::GetMapBase(curr_level_);
+  int arrows = config::GetArrowsCount(curr_level_);
+  int wump = config::GetWumpsCount(curr_level_);
+  int bat = config::GetBatsCount(curr_level_);
+  int pit = config::GetPitsCount(curr_level_);
 
   level_ = Level(base, arrows, wump, bat, pit);
 
