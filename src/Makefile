@@ -3,14 +3,14 @@ CC = g++
 SRC = ./
 ENT = $(SRC)entities/
 CFG = $(SRC)settings/
-AUD = $(SRC)audio/
+AUD = $(SRC)3rdparty/
 HLP = $(ENT)helpers/
 CLI = $(SRC)cli/
 GUI = $(SRC)gui/
 ENM = $(SRC)enums/
 AI = $(SRC)ai/
 
-CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g \
+CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++14 -g \
 				 -L $(SRC)3rdparty -lbass
 
 FLTKFLAGS = `fltk-config --use-images --ldflags`
@@ -109,8 +109,8 @@ ai_controller.o : $(AI)controller.h $(AI)controller.cc $(SRC)3rdparty/controller
 helpers.o : $(ENT)helpers.h $(ENT)helpers.cc
 	$(CC) $(CFLAGS) -c $(ENT)helpers.cc
 
-audio_out.o : $(SRC)audio/audio_out.h $(SRC)audio/audio_out.cc
-	$(CC) $(CFLAGS) -c $(SRC)audio/audio_out.cc
+audio_out.o : $(AUD)audio_out.h $(AUD)audio_out.cc
+	$(CC) $(CFLAGS) -c $(AUD)audio_out.cc
 
 scores.o : $(SRC)scores/scores.h $(SRC)scores/scores.cc logic.o $(ENM)enums.h $(SRC)3rdparty/observer.h config.o
 	$(CC) $(CFLAGS) -c $(SRC)scores/scores.cc

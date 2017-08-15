@@ -8,8 +8,6 @@
 
 namespace wumpus_game {
 
-// namespace config {
-
 // AUDIO SETTINGS REALISATION
 
 std::string config::GetBackgroundMusic(int level)
@@ -263,33 +261,33 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
   switch (level) {
 
     case 3 : case 4 : case 5 :
-      helpers::ChangeTotalAngle(params, step);
+      params.start_angle_ += step;
       break;
 
     case 6 :
-      helpers::ChangeTotalAngle(params, step);
+      params.start_angle_ += step;
       helpers::ChangeMiddleRadius(params, step, step*2, 20.0);
       break;
 
     case 7 :
-      helpers::ChangeTotalAngle(params, step);
+      params.start_angle_ += step;
       helpers::ChangeMiddleAngle(params, step, step*2, 30.0);    
       break;
     case 8 : 
-      helpers::ChangeTotalAngle(params, step);
-      helpers::ChangeMiddleAngle(params, step);
+      params.start_angle_ += step;
+      params.m_angle_offset_ += step;
       break;
 
     case 9 : 
-      helpers::ChangeTotalAngle(params, step);
-      helpers::ChangeMiddleAngle(params, -step*2);
+      params.start_angle_ += step;    
+      params.m_angle_offset_ += -(step*2);
       helpers::ChangeMiddleRadius(params, step, step*2, 20.0);
       break;
 
     case 10 :
       params.m_rad_offset_ = 0;
-      helpers::ChangeTotalAngle(params, step);   
-      helpers::ChangeMiddleAngle(params, -step*2); 
+      params.start_angle_ += step;      
+      params.m_angle_offset_ += -(step*2);      
       break;
 
     case 11 :
@@ -302,11 +300,11 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
       helpers::ChangeAllDoublesRandom(params);
       params.is_draw_digits_ = !params.is_draw_digits_;
       params.is_draw_poly_ = false;
-
       break;
+      
     case 13 :
-      helpers::ChangeTotalAngle(params, step*2);   
-      helpers::ChangeMiddleAngle(params, -step*4);
+      params.start_angle_ += step * 2;      
+      params.m_angle_offset_ += -(step*4);            
       helpers::ChangeMiddleRadius(params, step, step*2, 10.0);
       helpers::ChangeOuterRadius(params, step, step*2, 10.0);
       params.is_draw_digits_ = true;
@@ -327,20 +325,6 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
 
 // HELPERS
 
-// Changes total angle of middle circle in NetdrawWidget
-
-void helpers::ChangeTotalAngle(NetdrawParams& params, double step)
-{
-  params.start_angle_ += step;
-}
-
-// Changes angle offset of middle circle in NetdrawWidget
-
-void helpers::ChangeMiddleAngle(NetdrawParams& params, double step)
-{
-  params.m_angle_offset_ += step;
-}
-
 // Changes angle offset of middle circle in Netdraw by range (+/-)
 // step_f - step forward, step_b - step back. Sometimes its needs to 
 // make step_b in double size, since some levels rotate total_angle forward
@@ -359,13 +343,6 @@ void helpers::ChangeMiddleAngle(
     params.m_angle_offset_ -= step_b;
 }
 
-// Changes radius offset of middle circle in NetdrawWidget
-
-void helpers::ChangeMiddleRadius(NetdrawParams& params, double step)
-{
-  params.m_rad_offset_ += step;
-}
-
 // Changes radius offset of middle circle in Netdraw by range (+/-)
 
 void helpers::ChangeMiddleRadius(
@@ -380,13 +357,6 @@ void helpers::ChangeMiddleRadius(
     params.m_rad_offset_ += step_f;
   else 
     params.m_rad_offset_ -= step_b;
-}
-
-// Changes radius offset of outer circle in NetdrawWidget
-
-void helpers::ChangeOuterRadius(NetdrawParams& params, double step)
-{
-  params.o_rad_offset_ += step;
 }
 
 // Changes radius offset of middle circle in Netdraw by range (+/-)

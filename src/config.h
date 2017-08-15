@@ -55,17 +55,9 @@ namespace config {
 
 namespace helpers {
 
-  void ChangeTotalAngle(NetdrawParams&, double);
-
-  void ChangeMiddleAngle(NetdrawParams&, double);             // + step
-  void ChangeMiddleAngle(NetdrawParams&, double, double, double);     // + range
-  
-  void ChangeMiddleRadius(NetdrawParams&, double);            // ???
+  void ChangeMiddleAngle(NetdrawParams&, double, double, double);
   void ChangeMiddleRadius(NetdrawParams&, double, double, double);
-  
-  void ChangeOuterRadius(NetdrawParams&, double);
   void ChangeOuterRadius(NetdrawParams&, double, double, double);
-
   void ChangeAllDoublesRandom(NetdrawParams&);
 
 }  // namespace helpers

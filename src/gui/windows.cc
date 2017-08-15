@@ -45,26 +45,16 @@ void Windows::SetFormsCallbacks()
 
 bool Windows::Show()
 {
-  wnd_start_->show();
-  PlayBackgroundMusic();  
+  auto bg_music = config::GetBackgroundMusic(1);
+  audio_.Play(bg_music);
 
+  wnd_start_->show();
   return Fl::run();
 }
 
 void Windows::Close()
 {
   wnd_start_->hide();
-}
-
-void Windows::PlayBackgroundMusic(int level)
-{
-  auto level_music = config::GetBackgroundMusic(level);
-  auto now_playing = audio_.NowPlayingRepeated();
-
-  if (now_playing != level_music) {
-    audio_.Stop(now_playing);
-    audio_.Play(level_music, true);
-  }
 }
 
 void Windows::cb_help_button(void*, void* w)

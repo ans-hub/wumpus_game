@@ -6,10 +6,11 @@
 #ifndef IMAGES_H
 #define IMAGES_H
 
+#include <memory>
+
 #include <FL/Fl.H>
 #include <FL/Fl_Image.H>
 #include <FL/Fl_PNG_Image.H>
-#include <FL/Fl_GIF_Image.H>
 
 #include "enums/enums.h"
 
@@ -17,8 +18,10 @@ namespace wumpus_game {
 
 struct Images
 {
+  using Image = Fl_PNG_Image;
+  using ImagePtr = std::unique_ptr<Image>;
+
   Images();
-  ~Images();
 
   Fl_Image* GetMainBackground(int level, int w, int h);
   Fl_Image* GetPlayerImage(PlayerState, int level);
@@ -26,69 +29,78 @@ struct Images
   Fl_Image* GetRoomImage(RoomState, int level);
   Fl_Image* GetInfoImages(InfoStuff, int level);
 
-  // For cave level
+  // FormMain background
 
-  Fl_PNG_Image* img_bg_cv_;
-  Fl_PNG_Image* img_bg_uw_;
-  Fl_PNG_Image* img_bg_bc_;
-  Fl_PNG_Image* img_bg_hm_;
-  Fl_PNG_Image* img_stay_cv_;
-  Fl_PNG_Image* img_shot_cv_;
-  Fl_PNG_Image* img_shot_bc_;
-  Fl_PNG_Image* img_shot_lb_;
-  Fl_PNG_Image* img_walk_cv_;
-  Fl_PNG_Image* img_walk_hm_;
-  Fl_PNG_Image* img_bats_uw_;
-  Fl_PNG_Image* img_bats_cv_;
-  Fl_PNG_Image* img_bats_bc_;
-  Fl_PNG_Image* img_kill_wump_cv_;
-  Fl_PNG_Image* img_kill_wump_bc_;
-  Fl_PNG_Image* img_kill_wump_hm_;
-  Fl_PNG_Image* img_no_arrows_cv_;
-  Fl_PNG_Image* img_unknown_cv_;
-  Fl_PNG_Image* img_dead_wump_cv_;
-  Fl_PNG_Image* img_dead_pits_cv_;
-  Fl_PNG_Image* img_dead_pits_bc_;
-  Fl_PNG_Image* img_feels_box_cv_;
-  Fl_PNG_Image* img_feels_bats_uw_;
-  Fl_PNG_Image* img_feels_bats_cv_;
-  Fl_PNG_Image* img_feels_bats_bc_;
-  Fl_PNG_Image* img_feels_pits_cv_;
-  Fl_PNG_Image* img_feels_pits_bc_;
-  Fl_PNG_Image* img_feels_wumps_cv_;
-  Fl_PNG_Image* img_feels_wumps_hm_;
+  ImagePtr img_cv_;
+  ImagePtr img_uw_;
+  ImagePtr img_dt_;
+  ImagePtr img_bc_;
+  ImagePtr img_lb_;
+  ImagePtr img_hm_;
 
-  Fl_PNG_Image* img_room_on_cv_;
-  Fl_PNG_Image* img_room_off_cv_;
-  Fl_PNG_Image* img_room_mark_cv_;
+  // WidgetPlayer background
 
-  Fl_PNG_Image* wdg_info_cover_cv_;
-  Fl_PNG_Image* wdg_info_level_cv_;
-  Fl_PNG_Image* wdg_info_wumps_cv_;
-  Fl_PNG_Image* wdg_info_wumps_hm_;
-  Fl_PNG_Image* wdg_info_bats_uw_;
-  Fl_PNG_Image* wdg_info_bats_cv_;
-  Fl_PNG_Image* wdg_info_bats_bc_;
-  Fl_PNG_Image* wdg_info_pits_cv_;
-  Fl_PNG_Image* wdg_info_pits_bc_;
-  Fl_PNG_Image* wdg_info_arrows_cv_;
-  Fl_PNG_Image* wdg_info_arrows_lb_;
-  Fl_PNG_Image* wdg_info_arrows_bc_;
-  Fl_PNG_Image* wdg_info_arrows_hm_;
-  Fl_PNG_Image* wdg_info_continue_cv_;
-  Fl_PNG_Image* wdg_info_continue_de_cv_;
+  ImagePtr img_player_cv_;
+  ImagePtr img_player_uw_;
+  ImagePtr img_player_bc_;
+  ImagePtr img_player_hm_;
 
-  Fl_PNG_Image* bg_cv_main_;
-  Fl_PNG_Image* bg_uw_main_;
-  Fl_PNG_Image* bg_dt_main_;
-  Fl_PNG_Image* bg_cp_main_;
-  Fl_PNG_Image* bg_lb_main_;
-  Fl_PNG_Image* bg_hm_main_;
+  // WidgetPlayer states
+
+  ImagePtr img_stay_cv_;
+  ImagePtr img_shot_cv_;
+  ImagePtr img_shot_bc_;
+  ImagePtr img_shot_lb_;
+  ImagePtr img_walk_cv_;
+  ImagePtr img_walk_hm_;
+  ImagePtr img_bats_cv_;
+  ImagePtr img_bats_uw_;
+  ImagePtr img_bats_bc_;
+  ImagePtr img_kill_wump_cv_;
+  ImagePtr img_kill_wump_bc_;
+  ImagePtr img_kill_wump_hm_;
+  ImagePtr img_no_arrows_cv_;
+  ImagePtr img_unknown_cv_;
+  ImagePtr img_dead_wump_cv_;
+  ImagePtr img_dead_pits_cv_;
+  ImagePtr img_dead_pits_bc_;
+  ImagePtr img_feels_box_cv_;
+  ImagePtr img_feels_bats_cv_;
+  ImagePtr img_feels_bats_uw_;
+  ImagePtr img_feels_bats_bc_;
+  ImagePtr img_feels_pits_cv_;
+  ImagePtr img_feels_pits_bc_;
+  ImagePtr img_feels_wumps_cv_;
+  ImagePtr img_feels_wumps_hm_;
+
+  // WidgetRoom states
+
+  ImagePtr img_room_on_cv_;
+  ImagePtr img_room_off_cv_;
+  ImagePtr img_room_mark_cv_;
+
+  // WidgetInfo states
+
+  ImagePtr wdg_info_cover_cv_;
+  ImagePtr wdg_info_level_cv_;
+  ImagePtr wdg_info_wumps_cv_;
+  ImagePtr wdg_info_wumps_hm_;
+  ImagePtr wdg_info_bats_cv_;
+  ImagePtr wdg_info_bats_uw_;
+  ImagePtr wdg_info_bats_bc_;
+  ImagePtr wdg_info_pits_cv_;
+  ImagePtr wdg_info_pits_bc_;
+  ImagePtr wdg_info_arrows_cv_;
+  ImagePtr wdg_info_arrows_lb_;
+  ImagePtr wdg_info_arrows_bc_;
+  ImagePtr wdg_info_arrows_hm_;
+  ImagePtr wdg_info_continue_cv_;
+  ImagePtr wdg_info_continue_de_cv_;
 };
 
 namespace helpers {
 
-  Fl_PNG_Image* resize_img(Fl_PNG_Image*, int, int);
+  void ResizeImage(Images::ImagePtr&, int, int);
 
 }  // namespace helpers
 

@@ -1,7 +1,7 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: model's `view` using gui
+// File: gui view of game logic
 
 #include "view.h"
 
@@ -10,7 +10,6 @@ namespace wumpus_game {
 GuiView::GuiView(const Logic& model, Windows& gui)
   : model_{model}
   , gui_{gui}
-  // , audio_{audio}
   , events_{}
 {
   Fl::add_timeout(0.02, cb_process_next_event, this);
@@ -100,11 +99,18 @@ void GuiView::cb_process_next_event(void* w)
 
 namespace gui_helpers {
 
+// This function is needs here to simplify searching and non confusing
+
 void play_bg_music(Windows& gui, const Logic& model)
 {
-  gui.PlayBackgroundMusic(model.CurrentLevel());
-  // I made this here for non-confusing and simple search where 
-  // music is switch-on
+  auto level = model.CurrentLevel();
+  auto prev_level_music = config::GetBackgroundMusic(level - 1);
+  auto curr_level_music = config::GetBackgroundMusic(level);
+
+  if (prev_level_music != curr_level_music) {
+    gui.audio_.Stop(prev_level_music); 
+    gui.audio_.Play(curr_level_music);
+  }
 }
 
 void refresh_info_widget(Windows& gui, const Logic& model)
@@ -201,20 +207,11 @@ void show_feels(Windows& gui, const Logic& model, int room)
   for (auto const feel : feels) {
     switch(feel)
     {
-      case Logic::SubjectID::WUMP :
-      {
-        wumps = true;
-        auto level = model.CurrentLevel();
-        break;
-      }
-      case Logic::SubjectID::BAT  :
-        bats = true;
-        break;
-      case Logic::SubjectID::PIT  :
-        pits = true;
-        break;
+      case Logic::SubjectID::WUMP : wumps = true; break;
+      case Logic::SubjectID::BAT  : bats = true; break;
+      case Logic::SubjectID::PIT  : pits = true; break;
       default : break;
-    } 
+    }
   }
   gui.wdg_player_->ShowFeels(wumps, bats, pits);
   gui.wnd_main_->redraw();
@@ -237,7 +234,6 @@ void show_game_over(Windows& gui, const Logic& logic)
       gui.wnd_main_->hide();
       break;
   }
-
   gui.wdg_player_->redraw();     
   gui.wnd_main_->redraw();     
 }

@@ -13,10 +13,11 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_PNG_Image.H>
 
+#include "3rdparty/audio_out.h"
+
 #include "gui/images.h"
 #include "gui/helpers/point.h"
 #include "gui/helpers/trajectory.h"
-#include "audio/audio_out.h"
 #include "config.h"
 #include "enums/enums.h"
 

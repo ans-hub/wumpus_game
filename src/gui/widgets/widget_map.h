@@ -14,8 +14,9 @@
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Group.H>
 
+#include "3rdparty/audio_out.h"
+
 #include "gui/images.h"
-#include "audio/audio_out.h"
 #include "gui/widgets/widget_room.h"
 #include "gui/widgets/widget_netdraw.h"
 #include "gui/widgets/widget_player.h"

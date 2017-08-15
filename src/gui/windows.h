@@ -8,8 +8,9 @@
 
 #include "FL/fl_ask.H"
 
+#include "3rdparty/audio_out.h"
+
 #include "gui/images.h"
-#include "audio/audio_out.h"
 #include "gui/forms/form_start.h"
 #include "gui/forms/form_help.h"
 #include "gui/forms/form_main.h"
@@ -27,7 +28,6 @@ public:
 
   bool Show();
   void Close();
-  void PlayBackgroundMusic(int level = 1);
 
   // Resources
   
