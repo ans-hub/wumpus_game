@@ -45,9 +45,6 @@ void Windows::SetFormsCallbacks()
 
 bool Windows::Show()
 {
-  // auto bg_music = config::GetBackgroundMusic(1);
-  // audio_.Play(bg_music);
-
   wnd_start_->show();
   return Fl::run();
 }

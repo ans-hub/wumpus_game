@@ -13,7 +13,8 @@ Music::Music(const Logic& model, AudioOut& audio)
   , events_{}
 {
   helpers::PreloadBackgroundMusic(audio_);
-  helpers::PlayBackgroundMusic(audio_, model_);
+  helpers::PlayMainMusic(audio_);
+  
   Fl::add_timeout(0.02, cb_process_next_event, this);
 }
 
@@ -34,14 +35,8 @@ void Music::ProcessNextEvent()
 
 void Music::ExecuteEvent(Event msg)
 {
-  switch(msg)
-  {
-    case Event::NEW_LEVEL :
-      helpers::PlayBackgroundMusic(audio_, model_); // see note #1 after code
-      break;
-
-    default : break;
-  }
+  if (msg ==  Event::NEW_LEVEL)
+    helpers::PlayBackgroundMusic(audio_, model_);
 }
 
 void Music::cb_process_next_event(void* m)
@@ -50,7 +45,13 @@ void Music::cb_process_next_event(void* m)
   Fl::repeat_timeout(0.02, cb_process_next_event, m);
 }
 
-// HELPERS
+// CLASS HELPERS
+
+void helpers::PlayMainMusic(AudioOut& audio)
+{
+  auto main_music = config::GetBackgroundMusic(1);  
+  audio.Play(main_music);
+}
 
 void helpers::PlayBackgroundMusic(AudioOut& audio, const Logic& model)
 {

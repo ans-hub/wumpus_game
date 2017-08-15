@@ -35,13 +35,14 @@ private:
   
   bool IncomingNotify(Event) override;    // register event
   void ProcessNextEvent();                // get event from queue
-  void ExecuteEvent(Event);          // execute concrete event
+  void ExecuteEvent(Event);               // execute concrete event
 
   static void cb_process_next_event(void*);
 };
 
 namespace helpers {
 
+  void PlayMainMusic(AudioOut&);
   void PlayBackgroundMusic(AudioOut&, const Logic&);
   void PreloadBackgroundMusic(AudioOut&);
 

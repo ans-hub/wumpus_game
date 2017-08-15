@@ -6,6 +6,8 @@
 #ifndef GUI_WINDOWS_H
 #define GUI_WINDOWS_H
 
+#include <memory>
+
 #include "FL/fl_ask.H"
 
 #include "3rdparty/audio_out.h"
