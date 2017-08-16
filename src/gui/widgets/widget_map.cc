@@ -39,7 +39,7 @@ void WidgetMap::Redraw(int level)
   wdg_player_->Redraw(level_);
   RefreshPlayerPos();
   wdg_info_->Redraw(level_);
-  helpers::MakeTop(wdg_player_, this);
+  wdg_helpers::MakeTop(wdg_player_, this);
   
   end();
   SetRotateCallback();
@@ -51,7 +51,7 @@ void WidgetMap::MovePlayerInstantly(int to_room)
 {
   this->ready_ = false;
   
-  Point to = GetRoomCoords(to_room) - helpers::GetOffset(wdg_player_);
+  Point to = GetRoomCoords(to_room) - wdg_helpers::GetOffset(wdg_player_);
   wdg_player_->SetCurrRoom(to_room);
   wdg_player_->position(to.x_, to.y_);
   
@@ -222,7 +222,7 @@ void WidgetMap::RefreshAnimateTrajectory()
 {
   int room = wdg_player_->GetCurrRoom();
 
-  Point to = GetRoomCoords(room) - helpers::GetOffset(wdg_player_);
+  Point to = GetRoomCoords(room) - wdg_helpers::GetOffset(wdg_player_);
   Point from (wdg_player_->x(), wdg_player_->y());
   
   trajectory_.Set(from, to, Trajectory::LINE, config::animation_step);
@@ -260,26 +260,25 @@ void WidgetMap::RedrawCurrentByRotate()
   RepositionRooms();
   RefreshPlayerPos();
   
-  helpers::MakeTop(wdg_player_, this);
-  helpers::MakeTop(wdg_info_, this);
+  wdg_helpers::MakeTop(wdg_player_, this);
+  wdg_helpers::MakeTop(wdg_info_, this);
   
   parent()->redraw();
 }
 
-namespace helpers {
+// Returns offset of widget to center it
 
-Point GetOffset(Fl_Widget* w)
+Point wdg_helpers::GetOffset(Fl_Widget* w)
 {
   return {w->w() / 2, w->h() / 2};
 }
 
-void MakeTop(Fl_Widget* w, Fl_Group* surface)
+// Make widget top on the surface
+
+void wdg_helpers::MakeTop(Fl_Widget* w, Fl_Group* surface)
 {
   surface->remove(w);
   surface->add(w);
-
 }
-
-}  // namespace helpers
 
 }  // namespace wumpus_game

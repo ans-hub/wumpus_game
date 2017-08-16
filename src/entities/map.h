@@ -41,12 +41,12 @@ protected:
 
 std::ostream& operator<<(std::ostream&, const Map&);
 
-namespace helpers {
+namespace map_helpers {
 
-  bool is_neighboring_rooms(int, int, Map*);
-  std::vector<int> get_neighboring_rooms(int, Map*);
+  bool IsNeighboringRooms(int, int, Map*);
+  std::vector<int> GetNeighboringRooms(int, Map*);
 
-}  // namespace helpers
+}  // namespace map_helpers
 
 }  // namespace wumpus_game
 

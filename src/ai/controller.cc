@@ -16,7 +16,7 @@ bool AiController::RunModel()
     const Level& level = model_.GetLevel();
     do {
       int curr_room = level.player_->GetCurrRoomNum();
-      auto rooms = helpers::get_neighboring_rooms(curr_room, level.cave_.get());
+      auto rooms = map_helpers::GetNeighboringRooms(curr_room, level.cave_.get());
       auto feels = level.player_->Feels();
       
       bool wump = false;

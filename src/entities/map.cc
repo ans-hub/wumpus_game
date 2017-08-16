@@ -139,11 +139,9 @@ std::ostream& operator<<(std::ostream& oss, const Map& cave)
   return oss;
 }
 
-namespace helpers {
-
 // Returns neighbor room numbers 
 
-std::vector<int> get_neighboring_rooms(int room_num, Map* cave)
+std::vector<int> map_helpers::GetNeighboringRooms(int room_num, Map* cave)
 {
   Room* room = cave->GetRoom(room_num);
   return { room->left_->num_
@@ -154,11 +152,11 @@ std::vector<int> get_neighboring_rooms(int room_num, Map* cave)
 
 // Returns bool if room num_1 and room num_2 is neighbors
 
-bool is_neighboring_rooms(int num_1, int num_2, Map* cave)
+bool map_helpers::IsNeighboringRooms(int num_1, int num_2, Map* cave)
 {
   if (num_1 == num_2) return false;
 
-  auto neighbors = get_neighboring_rooms(num_1, cave);
+  auto neighbors = GetNeighboringRooms(num_1, cave);
   auto result = std::find(std::begin(neighbors), std::end(neighbors), num_2);
 
   if (result != std::end(neighbors)) {
@@ -166,7 +164,5 @@ bool is_neighboring_rooms(int num_1, int num_2, Map* cave)
   }
   return false;
 }
-
-}  // namespace helpers
 
 }  // namespace wumpus_game

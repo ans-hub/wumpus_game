@@ -43,6 +43,8 @@ void WidgetPlayer::Redraw(int level)
   image(images_.GetPlayerBackground(level_));
 }
 
+// Sets relevant image and plays sound
+
 void WidgetPlayer::SetState(State state)
 {
   // Stop playing track if it is repeated
@@ -67,6 +69,8 @@ void WidgetPlayer::SetState(State state)
 
   redraw();
 }
+
+// Show feels icons
 
 void WidgetPlayer::ShowFeels(bool wump, bool bats, bool pits)
 {

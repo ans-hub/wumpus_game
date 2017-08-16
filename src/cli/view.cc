@@ -12,48 +12,43 @@ bool CliView::IncomingNotify(Event msg)
   switch(msg)
   {
     case Event::NEW_LEVEL :
-      cli_helpers::print_intro(ostream_, model_);
+      cli_helpers::PrintIntro(ostream_, model_);
       break;
     
     case Event::GAME_OVER :
-      cli_helpers::print_game_over(ostream_, model_.GameOverCause());
+      cli_helpers::PrintGameOver(ostream_, model_.GameOverCause());
       break;
     
     case Event::MOVED_BY_BATS :
-      cli_helpers::print_moved_bats(ostream_);
+      cli_helpers::PrintMovedBats(ostream_);
       break;
     
     case Event::HAVE_NOT_ARROWS :
-      cli_helpers::print_shot_no_arrays(ostream_);
+      cli_helpers::PrintShotNoArrows(ostream_);
       break;
 
     case Event::SHOT_NOT_NEIGHBOR :
-      cli_helpers::print_shot_not_neighboring(ostream_);
+      cli_helpers::PrintShotNotNeighboring(ostream_);
       break;
 
     case Event::MOVE_NOT_NEIGHBOR :
-      cli_helpers::print_error_room(ostream_);
+      cli_helpers::PrintErrorRoom(ostream_);
       break;
     
     case Event::ONE_WUMP_KILLED :
-      cli_helpers::print_killed_one_wump(ostream_);
+      cli_helpers::PrintKilledOneWump(ostream_);
       break;
     
     case Event::READY_TO_INPUT :
-      cli_helpers::print_neighbors(ostream_, model_);  
-      cli_helpers::print_feels(ostream_, model_);    
-      cli_helpers::print_prompt(ostream_);
+      cli_helpers::PrintNeighbors(ostream_, model_);  
+      cli_helpers::PrintFeels(ostream_, model_);    
+      cli_helpers::PrintPrompt(ostream_);
       break;
+
     case Event::UNKNOWN_COMMAND : 
-      cli_helpers::print_unknown_command(ostream_);
+      cli_helpers::PrintUnknownCommand(ostream_);
       break;
-    // case Event::ERROR_ACTION :
-    //   cli_helpers::print_error_action(ostream_);
-    //   break;
-    
-    // case Event::ERROR_ROOM :
-    //   cli_helpers::print_error_room(ostream_);
-    //   break;
+
     case Event::MODEL_READY : default: break;
   }
   return true;
@@ -63,27 +58,27 @@ bool CliView::IncomingNotify(Event msg)
 
 namespace cli_helpers {
 
-void print_prompt(std::ostream& ostream)
+void PrintPrompt(std::ostream& ostream)
 {
   ostream << "What to do? Move or shot? In which room? > ";
 }
 
-void print_error_room(std::ostream& ostream)
+void PrintErrorRoom(std::ostream& ostream)
 {
   ostream << "ERROR: You input not neighbor room to move, please repeat\n";
 }
 
-void  print_shot_no_arrays(std::ostream& ostream)
+void PrintErrorActions(std::ostream& ostream)
 {
   ostream << "ERROR: You have not enought arrays to show\n";
 }
 
-void  print_shot_not_neighboring(std::ostream& ostream)
+void PrintShotNotNeighboring(std::ostream& ostream)
 {
   ostream << "ERROR: You shot not neighboring room, please repeat\n";
 }
 
-void print_intro(std::ostream& ostream, const Logic& logic)
+void PrintIntro(std::ostream& ostream, const Logic& logic)
 {
   auto& level = logic.GetLevel();
   ostream << "You are in the dark cave with " << level.cave_->GetSize()
@@ -96,7 +91,12 @@ void print_intro(std::ostream& ostream, const Logic& logic)
           << "and the " << level.pits_.size() << " Bottomless pits\n";
 }
 
-void print_game_over(std::ostream& ostream, Logic::SubjectID person)
+void PrintShotNoArrows(std::ostream& ostream)
+{
+  ostream << "ERROR: You have not enought arrows to shot\n";  
+}
+
+void PrintGameOver(std::ostream& ostream, Logic::SubjectID person)
 {
   switch (person) {
     case Logic::SubjectID::PLAYER:
@@ -115,7 +115,7 @@ void print_game_over(std::ostream& ostream, Logic::SubjectID person)
   }
 }
 
-void print_feels(std::ostream& ostream, const Logic& logic)
+void PrintFeels(std::ostream& ostream, const Logic& logic)
 {
   auto feels = logic.GetLevel().player_->Feels();
   for (auto const feel : feels) {
@@ -135,10 +135,10 @@ void print_feels(std::ostream& ostream, const Logic& logic)
   }
 }
 
-void print_neighbors(std::ostream& ostream, const Logic& model)
+void PrintNeighbors(std::ostream& ostream, const Logic& model)
 {
   auto current { model.GetLevel().player_->GetCurrRoomNum() };
-  auto neighbor = helpers::get_neighboring_rooms
+  auto neighbor = map_helpers::GetNeighboringRooms
   (
     current,
     model.GetLevel().cave_.get()
@@ -147,21 +147,21 @@ void print_neighbors(std::ostream& ostream, const Logic& model)
   ostream << "-\nYou see the legend on the floor with current room "
           << "number and directions:\n";
   ostream << "*** Room # " << current
-          << ", tunnels to " << helpers::vint_to_string(neighbor, ", ")
+          << ", tunnels to " << helpers::VintToString(neighbor, ", ")
           << " rooms ***\n";
 }
 
-void print_moved_bats(std::ostream& ostream)
+void PrintMovedBats(std::ostream& ostream)
 {
   ostream << "INFO: You have been moved by the Bats to another room\n";
 }
 
-void print_killed_one_wump(std::ostream& ostream)
+void PrintKilledOneWump(std::ostream& ostream)
 {
   ostream << "INFO: You killed one wumpus\n";
 }
 
-void print_unknown_command(std::ostream& ostream)
+void PrintUnknownCommand(std::ostream& ostream)
 {
   ostream << "ERROR: Your input is not recognized\n";  
 }

@@ -38,52 +38,52 @@ void GuiView::ExecuteEvent(Event msg, int room)
   switch(msg)
   {
     case Event::NEW_LEVEL :
-      helpers::ShowLevel(gui_, model_);
-      helpers::DisableFormButtons(gui_);
-      helpers::ShowPlayerPositionInstantly(gui_, model_);
-      helpers::RefreshInfoWidget(gui_, model_);
+      gui_helpers::ShowLevel(gui_, model_);
+      gui_helpers::DisableFormButtons(gui_);
+      gui_helpers::ShowPlayerPositionInstantly(gui_, model_);
+      gui_helpers::RefreshInfoWidget(gui_, model_);
       break;
 
     case Event::GAME_OVER :
-      helpers::ShowGameOver(gui_, model_);
-      helpers::HideLevel(gui_, model_);
-      helpers::EnableFormButtons(gui_);
-      helpers::RefreshInfoWidget(gui_, model_);      
+      gui_helpers::ShowGameOver(gui_, model_);
+      gui_helpers::HideLevel(gui_, model_);
+      gui_helpers::EnableFormButtons(gui_);
+      gui_helpers::RefreshInfoWidget(gui_, model_);      
       break;
 
     case Event::HAVE_NOT_ARROWS :
-      helpers::ShowHaventArrows(gui_);
-      helpers::RefreshInfoWidget(gui_, model_);      
+      gui_helpers::ShowHaventArrows(gui_);
+      gui_helpers::RefreshInfoWidget(gui_, model_);      
       break;
 
     case Event::READY_TO_INPUT : 
-      helpers::ShowFeels(gui_, model_, room);
-      helpers::MarkRoomAsVisited(gui_, model_, room);
+      gui_helpers::ShowFeels(gui_, model_, room);
+      gui_helpers::MarkRoomAsVisited(gui_, model_, room);
       break;
 
     case Event::ONE_WUMP_KILLED :
-      helpers::ShowPlayerShot(gui_);    
-      helpers::ShowKilledOneWump(gui_);
-      helpers::RefreshInfoWidget(gui_, model_);
+      gui_helpers::ShowPlayerShot(gui_);    
+      gui_helpers::ShowKilledOneWump(gui_);
+      gui_helpers::RefreshInfoWidget(gui_, model_);
       break;
 
     case Event::PLAYER_DOES_MOVE :
-      helpers::ShowPlayerMovement(gui_, room);
+      gui_helpers::ShowPlayerMovement(gui_, room);
       break;
 
     case Event::MOVED_BY_BATS :
-      helpers::ShowBatsMovement(gui_, room);
+      gui_helpers::ShowBatsMovement(gui_, room);
       break;
 
     case Event::PLAYER_DOES_SHOT :
-      helpers::ShowPlayerShot(gui_);
-      helpers::RefreshInfoWidget(gui_, model_);      
+      gui_helpers::ShowPlayerShot(gui_);
+      gui_helpers::RefreshInfoWidget(gui_, model_);      
       break;    
     
     case Event::UNKNOWN_COMMAND :
     case Event::MOVE_NOT_NEIGHBOR :
     case Event::SHOT_NOT_NEIGHBOR :
-      helpers::ShowErrorRoom(gui_);
+      gui_helpers::ShowErrorRoom(gui_);
       break;
 
     case Event::MODEL_READY : default: break;
@@ -96,7 +96,7 @@ void GuiView::cb_process_next_event(void* w)
   Fl::repeat_timeout(0.02, cb_process_next_event, w);
 }
 
-namespace helpers {
+namespace gui_helpers {
 
 void RefreshInfoWidget(Windows& gui, const Logic& model)
 {
@@ -187,7 +187,7 @@ void ShowFeels(Windows& gui, const Logic& model, int room)
   bool pits {false};
 
   auto* cave = model.GetLevel().cave_.get();
-  auto  feels = helpers::subjects_in_neighboring_rooms(room, cave);
+  auto  feels = helpers::SubjectsInNeighboringRooms(room, cave);
   
   for (auto const feel : feels) {
     switch(feel)
@@ -235,6 +235,6 @@ void MarkRoomAsVisited(Windows& gui, const Logic& model, int room)
     gui.wdg_map_->wdg_rooms_[room]->SetMarked();
 }
 
-}  // namespace helpers
+}  // namespace gui_helpers
 
 }  // namespace wumpus_game

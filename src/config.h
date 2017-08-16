@@ -53,14 +53,14 @@ namespace config {
   
 }  // namespace config
 
-namespace helpers {
+namespace cfg_helpers {
 
   void ChangeMiddleAngle(NetdrawParams&, double, double, double);
   void ChangeMiddleRadius(NetdrawParams&, double, double, double);
   void ChangeOuterRadius(NetdrawParams&, double, double, double);
   void ChangeAllDoublesRandom(NetdrawParams&);
 
-}  // namespace helpers
+}  // namespace cfg_helpers
 
 }  // namespace wumpus_game
 

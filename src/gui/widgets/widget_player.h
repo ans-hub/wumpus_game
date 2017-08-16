@@ -32,8 +32,7 @@ public:
   virtual ~WidgetPlayer() { }
   
   void Redraw(int level);
-  // void UseAudio(AudioOut& audio) { audio_ = audio; }
-  void SetState(State);   // sets image and plays relevant sound
+  void SetState(State);
   void SetDefaultState() { SetState(State::STAY); }
   void ShowFeels(bool, bool, bool);
   void SetCurrRoom(int room) { room_ = room; }
@@ -42,16 +41,16 @@ public:
 private:
   void TuneAppearance();
 
-  int           room_;   // used by parent widgets for animate
-  int           level_;
-  State         state_;  // needs to determine which sound is playing
-  AudioOut&     audio_;
-  Images&       images_;
+  int         room_;   // used by parent widgets for animate
+  int         level_;
+  State       state_;
+  AudioOut&   audio_;
+  Images&     images_;
   
-  Fl_Box*       box_player_;
-  Fl_Box*       box_wumps_;
-  Fl_Box*       box_bats_;
-  Fl_Box*       box_pits_;
+  Fl_Box*     box_player_;
+  Fl_Box*     box_wumps_;
+  Fl_Box*     box_bats_;
+  Fl_Box*     box_pits_;
 };
 
 }  // namespace wumpus_game

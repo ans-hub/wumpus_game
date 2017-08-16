@@ -54,7 +54,7 @@ void WidgetNetdraw::FillAllVertexes()
   double irad = (width / 6) + params_.i_rad_offset_;
   double istart_angle = params_.start_angle_ + params_.i_angle_offset_;
 
-  inner_vxs_ = helpers::GetPolyVertexes(
+  inner_vxs_ = wdg_helpers::GetPolyVertexes(
     ivxs_count_, irad, istart_angle, center_.x_, center_.y_
   );
   
@@ -64,7 +64,7 @@ void WidgetNetdraw::FillAllVertexes()
   double mrad = (irad * 2) - (width / 20) + params_.m_rad_offset_;
   double mstart_angle = params_.start_angle_ + params_.m_angle_offset_;
 
-  middle_vxs_ = helpers::GetPolyVertexes(
+  middle_vxs_ = wdg_helpers::GetPolyVertexes(
     mvxs_count_, mrad, mstart_angle, center_.x_, center_.y_
   );
   
@@ -75,7 +75,7 @@ void WidgetNetdraw::FillAllVertexes()
   double ostart_angle = 
     params_.start_angle_ + (360 / ovxs_count_ / 2) + params_.o_angle_offset_;
 
-  outer_vxs_ = helpers::GetPolyVertexes(
+  outer_vxs_ = wdg_helpers::GetPolyVertexes(
     ovxs_count_, orad, ostart_angle, center_.x_, center_.y_
   );
 
@@ -83,19 +83,19 @@ void WidgetNetdraw::FillAllVertexes()
 
   double step = 2;
   double start_ivx = vxs_count_/2;
-  helpers::FillVectorByAnother(
+  wdg_helpers::FillVectorByAnother(
     total_vxs_, inner_vxs_, start_ivx, step
   );
 
   step = 1;
   double start_mvx = 0;
-  helpers::FillVectorByAnother(
+  wdg_helpers::FillVectorByAnother(
     total_vxs_, middle_vxs_, start_mvx, step
   );
 
   step = 2;
   double start_ovx = (vxs_count_/2)+1;
-  helpers::FillVectorByAnother(
+  wdg_helpers::FillVectorByAnother(
     total_vxs_, outer_vxs_, start_ovx, step
   );
 }
@@ -103,28 +103,28 @@ void WidgetNetdraw::FillAllVertexes()
 void WidgetNetdraw::draw()
 {
   if (params_.is_draw_poly_) {
-    helpers::DrawPoly(inner_vxs_, this);
-    helpers::DrawPoly(outer_vxs_, this);
-    helpers::DrawEdges(total_vxs_, this);
+    wdg_helpers::DrawPoly(inner_vxs_, this);
+    wdg_helpers::DrawPoly(outer_vxs_, this);
+    wdg_helpers::DrawEdges(total_vxs_, this);
     
     if (params_.is_m_is_circle_) {
       double rad = math_helpers::EvalVectorLength(center_, middle_vxs_[0]);
-      helpers::DrawCircle(center_, rad, this);
+      wdg_helpers::DrawCircle(center_, rad, this);
     } 
     else {
-      helpers::DrawPoly(middle_vxs_, this);
+      wdg_helpers::DrawPoly(middle_vxs_, this);
     }
   }
 
   if (params_.is_draw_digits_) {
-    helpers::DrawDigits(total_vxs_, this);
+    wdg_helpers::DrawDigits(total_vxs_, this);
   }
 }
 
 // Function that not need to be member of WidgetNetdraw, but may be used only this
 // version of netdraw, since draw logic of net with 3 edges is depends
 
-namespace helpers {
+namespace wdg_helpers {
 
 VPoints GetPolyVertexes(
   double edges, double rad, double angle_start, double x0, double y0)
@@ -262,6 +262,6 @@ void DrawDigits(const VPoints& v, WidgetNetdraw* surface)
   }
 }
 
-}  // namespace draw_helpers
+}  // namespace wdg_helpers
 
 }  // namespace wumpus_game

@@ -12,8 +12,8 @@ Music::Music(const Logic& model, AudioOut& audio)
   , audio_{audio}
   , events_{}
 {
-  helpers::PreloadBackgroundMusic(audio_);
-  helpers::PlayMainMusic(audio_);
+  music_helpers::PreloadBackgroundMusic(audio_);
+  music_helpers::PlayMainMusic(audio_);
   
   Fl::add_timeout(0.02, cb_process_next_event, this);
 }
@@ -36,7 +36,7 @@ void Music::ProcessNextEvent()
 void Music::ExecuteEvent(Event msg)
 {
   if (msg ==  Event::NEW_LEVEL)
-    helpers::PlayBackgroundMusic(audio_, model_);
+    music_helpers::PlayBackgroundMusic(audio_, model_);
 }
 
 void Music::cb_process_next_event(void* m)
@@ -47,13 +47,13 @@ void Music::cb_process_next_event(void* m)
 
 // CLASS HELPERS
 
-void helpers::PlayMainMusic(AudioOut& audio)
+void music_helpers::PlayMainMusic(AudioOut& audio)
 {
   auto main_music = config::GetBackgroundMusic(1);  
   audio.Play(main_music);
 }
 
-void helpers::PlayBackgroundMusic(AudioOut& audio, const Logic& model)
+void music_helpers::PlayBackgroundMusic(AudioOut& audio, const Logic& model)
 {
   auto level = model.CurrentLevel();
   auto level_music = config::GetBackgroundMusic(level);
@@ -65,7 +65,7 @@ void helpers::PlayBackgroundMusic(AudioOut& audio, const Logic& model)
   }
 }
 
-void helpers::PreloadBackgroundMusic(AudioOut& audio)
+void music_helpers::PreloadBackgroundMusic(AudioOut& audio)
 {
   for (int i = 1; i <= config::levels_max; ++i)
     audio.Load(config::GetBackgroundMusic(i), true);

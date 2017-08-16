@@ -30,10 +30,6 @@ private:
   int steps_;
 };
 
-namespace ai_helpers {
-
-}  // namespace ai_helpers
-
 }  // namespace wumpus_game
 
 #endif  // AI_CONTROLLER_H

@@ -65,33 +65,33 @@ void WidgetInfo::TuneAppearance()
   align(FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_CLIP);
   labelcolor(FL_WHITE);
 
-  helpers::TuneLhsIcons(box_wumps_);
-  helpers::TuneLhsIcons(box_bats_);
-  helpers::TuneLhsIcons(box_pits_);
+  wdg_helpers::TuneLhsIcons(box_wumps_);
+  wdg_helpers::TuneLhsIcons(box_bats_);
+  wdg_helpers::TuneLhsIcons(box_pits_);
 
-  helpers::TuneRhsIcons(box_level_);
-  helpers::TuneRhsIcons(box_arrows_);
+  wdg_helpers::TuneRhsIcons(box_level_);
+  wdg_helpers::TuneRhsIcons(box_arrows_);
 
-  helpers::TuneRhsButtons(btn_continue_);
+  wdg_helpers::TuneRhsButtons(btn_continue_);
 }
 
 // CLASS HELPERS
 
-void helpers::TuneLhsIcons(Fl_Widget* w)
+void wdg_helpers::TuneLhsIcons(Fl_Widget* w)
 {
   w->align(Fl_Align(264));
   w->labelcolor(FL_WHITE);
   w->labelsize(10);
 }
 
-void helpers::TuneRhsIcons(Fl_Widget* w)
+void wdg_helpers::TuneRhsIcons(Fl_Widget* w)
 {
   w->align(Fl_Align(292));
   w->labelcolor(FL_WHITE);
   w->labelsize(10);
 }
 
-void helpers::TuneRhsButtons(Fl_Widget* w)
+void wdg_helpers::TuneRhsButtons(Fl_Widget* w)
 {
   w->align(Fl_Align(256));  
 }

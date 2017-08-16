@@ -92,12 +92,12 @@ private:
   void RedrawCurrentByRotate();
 };
 
-namespace helpers {
+namespace wdg_helpers {
   
   Point GetOffset(Fl_Widget*);
   void MakeTop(Fl_Widget*, Fl_Group*);
 
-}  // namespace helpers
+}  // namespace wdg_helpers
 
 }  // namespace wumpus_game
 

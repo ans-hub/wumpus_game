@@ -9,15 +9,15 @@ namespace wumpus_game {
 
 namespace helpers {
 
-void worry_neighboring_wumps(VWumpsPtr& wumps, std::vector<int>& neighbors)
+void WorryNeighboringWumps(VWumpsPtr& wumps, std::vector<int>& neighbors)
 {
   for (auto& w : wumps) {
     int room = w->GetCurrRoomNum(); 
-    if (find_in_vector(neighbors, room)) w->Worried(true);
+    if (FindInVector(neighbors, room)) w->Worried(true);
   }
 }
 
-bool kill_one_wump_in_room(VWumpsPtr& wumps, int room)
+bool KillOneWumpInRoom(VWumpsPtr& wumps, int room)
 {
   // remake to more pretty
   bool kill{false};
@@ -33,7 +33,7 @@ bool kill_one_wump_in_room(VWumpsPtr& wumps, int room)
   return kill;
 }
 
-bool is_in_one_room(Subject* subj1, Subject* subj2)
+bool IsInOneRoom(Subject* subj1, Subject* subj2)
 {
   if (subj1->GetCurrRoomNum() == subj2->GetCurrRoomNum())
     return true;
@@ -42,7 +42,7 @@ bool is_in_one_room(Subject* subj1, Subject* subj2)
 
 // Returns subjects, placed in neighboring rooms, exclude current
 
-std::vector<Subject::ID> subjects_in_neighboring_rooms(int room, Map* cave)
+std::vector<Subject::ID> SubjectsInNeighboringRooms(int room, Map* cave)
 {
   std::vector<Subject::ID> res;
   Room* curr = cave->GetRoom(room);
@@ -67,7 +67,7 @@ std::vector<Subject::ID> subjects_in_neighboring_rooms(int room, Map* cave)
 
 // Convert std::vector<int> in std::string
 
-std::string vint_to_string(const std::vector<int> &v, std::string delim)
+std::string VintToString(const std::vector<int> &v, std::string delim)
 {
   std::stringstream sst;
   for (std::size_t i = 0; i < v.size(); ++i) {

@@ -83,7 +83,7 @@ bool Logic::PlayerShot(int to_room)
   
   int from_room = player->GetCurrRoomNum();
   
-  if (!helpers::is_neighboring_rooms(to_room, from_room, cave)) {
+  if (!map_helpers::IsNeighboringRooms(to_room, from_room, cave)) {
     NotifyObservers(Event::SHOT_NOT_NEIGHBOR);
     return false;
   }
@@ -97,14 +97,14 @@ bool Logic::PlayerShot(int to_room)
   
   NotifyObservers(Event::PLAYER_DOES_SHOT);
 
-  auto neighbors = helpers::get_neighboring_rooms(from_room, cave);
-  helpers::worry_neighboring_wumps(wumps, neighbors);
+  auto neighbors = map_helpers::GetNeighboringRooms(from_room, cave);
+  helpers::WorryNeighboringWumps(wumps, neighbors);
 
-  if (helpers::kill_one_wump_in_room(wumps, to_room)) {
+  if (helpers::KillOneWumpInRoom(wumps, to_room)) {
     NotifyObservers(Event::ONE_WUMP_KILLED);
   }
 
-  if (helpers::alive_subjects_count(wumps) == 0) {
+  if (helpers::AliveSubjectsCount(wumps) == 0) {
     game_over_cause_ = Subject::PLAYER;
     NotifyObservers(Event::GAME_OVER);
   }
@@ -136,7 +136,7 @@ void Logic::WumpsTurn()
       wump->MoveRandom();
       wump->Worried(false);
     }
-    if (helpers::is_in_one_room(wump.get(), player.get())) {
+    if (helpers::IsInOneRoom(wump.get(), player.get())) {
       player->Kill();
       game_over_cause_ = Subject::WUMP;
       NotifyObservers(Event::GAME_OVER);
@@ -151,7 +151,7 @@ void Logic::BatsTurn()
   auto& bats = level_.bats_;
 
   for (auto& bat : bats) {
-    if (helpers::is_in_one_room(bat.get(), player.get())) {
+    if (helpers::IsInOneRoom(bat.get(), player.get())) {
       player->TeleportRandom();
       bat->TeleportRandom();
       rooms_history_.push_back(player->GetCurrRoomNum());
@@ -167,7 +167,7 @@ void Logic::PitsTurn()
   auto& pits = level_.pits_;
 
   for (auto& pit : pits) {
-    if (helpers::is_in_one_room(pit.get(), player.get())) {
+    if (helpers::IsInOneRoom(pit.get(), player.get())) {
       player->Kill();
       game_over_cause_ = Subject::PIT;
       NotifyObservers(Event::GAME_OVER);

@@ -47,6 +47,10 @@ private:
   int handle(int) override;
 };
 
+// Handle event on widget, used for determine event of middle button.
+// Other events such as right and left btn click is deteremine in controller
+// by callback function
+
 inline int WidgetRoom::handle(int event)
 {
   switch(event)

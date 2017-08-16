@@ -24,12 +24,12 @@ public:
   virtual ~FormStart() { }
 
   Images&     images_;
-  
   Fl_Box*     box_btns_;
   Fl_Box*     box_label_;
   Fl_Button*  btn_start_;
   Fl_Button*  btn_help_;
   Fl_Button*  btn_quit_;
+  
 private:
   void TuneAppearance();
 };

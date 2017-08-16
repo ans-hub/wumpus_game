@@ -32,25 +32,26 @@ public:
   explicit WidgetNetdraw(double);
   virtual ~WidgetNetdraw() { }
   
-  Params&   GetParamsReference() { return params_; }
   void      Redraw(int);
+  Params&   GetParamsReference() { return params_; }
   cVPoints& GetVertexes() const { return total_vxs_; }
-  // void      ResetDrawParamsToDefault() { params_ = NetdrawParams(); }
 
 private:
-  Params    params_;
-  int       vxs_count_;            // total vertexes count  
-  VPoints   total_vxs_;            // all coords of all circles
-  VPoints   inner_vxs_;            //
-  VPoints   middle_vxs_;           // coords of vertexes relative to concrete circle
-  VPoints   outer_vxs_;            //
+  Params    params_;        // changable drawing parametrs
+  int       vxs_count_;     // total vertexes count  
+  VPoints   total_vxs_;     // contains coords of all vertexes of net
+
+  VPoints   inner_vxs_;     //
+  VPoints   middle_vxs_;    // coords of vertexes relative to concrete circle
+  VPoints   outer_vxs_;     //
+  
   Point     center_;
   
   void FillAllVertexes();
   void draw() override;
 };
 
-namespace helpers {
+namespace wdg_helpers {
 
   using VPoints = std::vector<Point>;
 
@@ -63,7 +64,7 @@ namespace helpers {
   void    DrawDigits(const VPoints&, WidgetNetdraw*);
   
 
-}  // namespace draw_helpers
+}  // namespace wdg_helpers
 
 }  // namespace wumpus_game
 

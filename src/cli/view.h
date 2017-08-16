@@ -29,18 +29,18 @@ private:
 
 namespace cli_helpers {
 
-  void print_prompt(std::ostream&);
-  void print_error_room(std::ostream&);
-  void print_error_action(std::ostream&);
-  void print_intro(std::ostream&, const Logic&);
-  void print_shot_no_arrays(std::ostream&);
-  void print_shot_not_neighboring(std::ostream&);
-  void print_game_over(std::ostream&, Subject::ID);
-  void print_feels(std::ostream&, const Logic&);
-  void print_neighbors(std::ostream&, const Logic&);
-  void print_moved_bats(std::ostream&);
-  void print_killed_one_wump(std::ostream&);
-  void print_unknown_command(std::ostream&);
+  void PrintPrompt(std::ostream&);
+  void PrintErrorRoom(std::ostream&);
+  void PrintErrorActions(std::ostream&);
+  void PrintIntro(std::ostream&, const Logic&);
+  void PrintShotNoArrows(std::ostream&);
+  void PrintShotNotNeighboring(std::ostream&);
+  void PrintGameOver(std::ostream&, Subject::ID);
+  void PrintFeels(std::ostream&, const Logic&);
+  void PrintNeighbors(std::ostream&, const Logic&);
+  void PrintMovedBats(std::ostream&);
+  void PrintKilledOneWump(std::ostream&);
+  void PrintUnknownCommand(std::ostream&);
 
 }  // namespace cli_helpers 
 

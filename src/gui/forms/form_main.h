@@ -37,9 +37,7 @@ public:
 private:
   Fl_Box*     box_cover_;
   Fl_Box*     box_label_;
-  // WidgetInfo* wdg_info_;
   WidgetMap*  wdg_map_;
-
   Images&     images_;
 
   void TuneAppearance();

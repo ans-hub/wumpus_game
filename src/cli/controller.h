@@ -27,10 +27,6 @@ private:
   Logic& model_;
 };
 
-namespace cli_helpers {
-
-}  // namespace cli_helpers
-
 }  // namespace wumpus_game
 
 #endif  // CLI_CONTROLLER_H

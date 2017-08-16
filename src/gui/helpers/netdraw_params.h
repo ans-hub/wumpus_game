@@ -2,7 +2,7 @@
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
 // File: helper struct represents parameters of draw net in WidgetNetdraw
-// Contains default paramnetrs, may be changed in config.cc
+// Contains default parametrs, may be changed in config.cc
 
 #ifndef NETDRAW_PARAMS_H
 #define NETDRAW_PARAMS_H
@@ -21,22 +21,22 @@ struct NetdrawParams
   bool    is_draw_digits_;
   bool    is_m_is_circle_;
 
-  double  start_angle_;           // angle from which starts calc coordinates of circles
+  double  start_angle_;             // angle from which starts calc coordinates of circles
   
-  double  o_angle_offset_;    //  
-  double  m_angle_offset_;   // offset of circles relative to start_angle_
-  double  i_angle_offset_;    //
+  double  o_angle_offset_;          //  
+  double  m_angle_offset_;          // offset of circles relative to start_angle_
+  double  i_angle_offset_;          //
 
   bool    o_angle_offset_positive_;
   bool    m_angle_offset_positive_; // helper vars for 3rdparty functions
   bool    i_angle_offset_positive_;
   
-  double  o_rad_offset_;      //
-  double  m_rad_offset_;     // offset to radius of circles
-  double  i_rad_offset_;      //
+  double  o_rad_offset_;            //
+  double  m_rad_offset_;            // offset to radius of circles
+  double  i_rad_offset_;            //
 
   bool    o_rad_offset_positive_;
-  bool    m_rad_offset_positive_; // helper vars for 3rdparty functions
+  bool    m_rad_offset_positive_;   // helper vars for 3rdparty functions
   bool    i_rad_offset_positive_;
 
   int     line_type_;
@@ -47,7 +47,7 @@ struct NetdrawParams
     : is_draw_poly_{true}
     , is_draw_digits_{true}
     , is_m_is_circle_{false}
-    , start_angle_{90}            // value = 90 allows to draws polys north-oriented
+    , start_angle_{90}            // value = 90 is allows to draws polys north-oriented
     , o_angle_offset_{0}
     , m_angle_offset_{0}
     , i_angle_offset_{0}
@@ -64,7 +64,6 @@ struct NetdrawParams
     , line_width_{5}
     , poly_color_{255, 255, 255}  // in RGB - white color
   { }
-  // void Reset() { NetdrawParams(); }
 };
 
 }  // namespace wumpus_game

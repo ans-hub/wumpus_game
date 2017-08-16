@@ -40,13 +40,13 @@ private:
   static void cb_process_next_event(void*);
 };
 
-namespace helpers {
+namespace music_helpers {
 
   void PlayMainMusic(AudioOut&);
   void PlayBackgroundMusic(AudioOut&, const Logic&);
   void PreloadBackgroundMusic(AudioOut&);
 
-}  // namespace helpers
+}  // namespace music_helpers
 
 }  // namespace wumpus_game
 

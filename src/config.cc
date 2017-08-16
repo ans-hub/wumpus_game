@@ -266,12 +266,12 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
 
     case 6 :
       params.start_angle_ += step;
-      helpers::ChangeMiddleRadius(params, step, step*2, 20.0);
+      cfg_helpers::ChangeMiddleRadius(params, step, step*2, 20.0);
       break;
 
     case 7 :
       params.start_angle_ += step;
-      helpers::ChangeMiddleAngle(params, step, step*2, 30.0);    
+      cfg_helpers::ChangeMiddleAngle(params, step, step*2, 30.0);    
       break;
     case 8 : 
       params.start_angle_ += step;
@@ -281,7 +281,7 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
     case 9 : 
       params.start_angle_ += step;    
       params.m_angle_offset_ += -(step*2);
-      helpers::ChangeMiddleRadius(params, step, step*2, 20.0);
+      cfg_helpers::ChangeMiddleRadius(params, step, step*2, 20.0);
       break;
 
     case 10 :
@@ -291,13 +291,13 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
       break;
 
     case 11 :
-      helpers::ChangeAllDoublesRandom(params);
+      cfg_helpers::ChangeAllDoublesRandom(params);
       params.is_draw_digits_ = !params.is_draw_digits_;
       params.is_draw_poly_ = false;
       break;
 
     case 12 :
-      helpers::ChangeAllDoublesRandom(params);
+      cfg_helpers::ChangeAllDoublesRandom(params);
       params.is_draw_digits_ = !params.is_draw_digits_;
       params.is_draw_poly_ = false;
       break;
@@ -305,8 +305,8 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
     case 13 :
       params.start_angle_ += step * 2;      
       params.m_angle_offset_ += -(step*4);            
-      helpers::ChangeMiddleRadius(params, step, step*2, 10.0);
-      helpers::ChangeOuterRadius(params, step, step*2, 10.0);
+      cfg_helpers::ChangeMiddleRadius(params, step, step*2, 10.0);
+      cfg_helpers::ChangeOuterRadius(params, step, step*2, 10.0);
       params.is_draw_digits_ = true;
       params.is_draw_poly_ = true;
       break;
@@ -318,7 +318,7 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
       params.is_m_is_circle_ = true;
       params.line_type_ = 0;
       params.line_width_ = 2;
-      helpers::ChangeMiddleRadius(params, step, step, 20);
+      cfg_helpers::ChangeMiddleRadius(params, step, step, 20);
       break;
       
     default :
@@ -332,7 +332,7 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
 // step_f - step forward, step_b - step back. Sometimes its useful to 
 // make step_b in double size, since some levels rotate total_angle forward
 
-void helpers::ChangeMiddleAngle(
+void cfg_helpers::ChangeMiddleAngle(
   NetdrawParams& params, double step_f, double step_b, double range)
 {
   if (params.m_angle_offset_ > (step_f * range))
@@ -348,7 +348,7 @@ void helpers::ChangeMiddleAngle(
 
 // Changes radius offset of middle circle in Netdraw by range (+/-)
 
-void helpers::ChangeMiddleRadius(
+void cfg_helpers::ChangeMiddleRadius(
   NetdrawParams& params, double step_f, double step_b, double range)
 {
   if (params.m_rad_offset_ > (step_f * range)) 
@@ -364,7 +364,7 @@ void helpers::ChangeMiddleRadius(
 
 // Changes radius offset of middle circle in Netdraw by range (+/-)
 
-void helpers::ChangeOuterRadius(
+void cfg_helpers::ChangeOuterRadius(
   NetdrawParams& params, double step_f, double step_b, double range)
 {
   if (params.o_rad_offset_ > (step_f * range)) 
@@ -380,7 +380,7 @@ void helpers::ChangeOuterRadius(
 
 // Changes all parametrs contains doubles values in random order
 
-void helpers::ChangeAllDoublesRandom(NetdrawParams& params)
+void cfg_helpers::ChangeAllDoublesRandom(NetdrawParams& params)
 {    
   params = NetdrawParams();
   double step = rand_toolkit::get_rand(0,10);

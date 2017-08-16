@@ -42,7 +42,7 @@ bool Subject::Move(int to_room, std::string& msg)
     msg = "Wrong room number";
     return false;
   }
-  else if (helpers::is_neighboring_rooms(to_room, from_room, cave_)) {
+  else if (map_helpers::IsNeighboringRooms(to_room, from_room, cave_)) {
     return Teleport(to_room, msg);
   }
   else {
@@ -69,7 +69,7 @@ bool Subject::Teleport(int to_room, std::string& msg)
     curr_room_ = cave_->GetRoom(to_room);
     CheckIn();
     return true;
-  } 
+  }
 }
 
 bool Subject::MoveRandom()

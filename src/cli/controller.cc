@@ -9,16 +9,6 @@ namespace wumpus_game {
 
 bool CliController::RunModel()
 {
-  // model_.NewLevel(1);
-  // do {
-  //   int action { 1};
-  //   int room {0};
-  //   if (istream_ >> action >> room) {
-  //     model_.Turn(action, room);
-  //   }
-  // } while(!model_.GameOver());
-  // return true;
-
   if (!istream_) { return false; }
   
   model_.NewLevel(1);

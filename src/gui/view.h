@@ -51,7 +51,7 @@ private:
   static void cb_process_next_event(void*);
 };
 
-namespace helpers {
+namespace gui_helpers {
 
   void RefreshInfoWidget(Windows&, const Logic&);
   void EnableFormButtons(Windows&);
@@ -69,7 +69,7 @@ namespace helpers {
   void ShowKilledOneWump(Windows&);
   void MarkRoomAsVisited(Windows&, const Logic&, int);
 
-}  // namespace helpers
+}  // namespace gui_helpers
 
 }  // namespace wumpus_game
 

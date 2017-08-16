@@ -44,13 +44,13 @@ private:
   void TuneAppearance();
 };
 
-namespace helpers {
+namespace wdg_helpers {
 
   void TuneLhsIcons(Fl_Widget*);
   void TuneRhsIcons(Fl_Widget*);
   void TuneRhsButtons(Fl_Widget*);
 
-}  // namespace helpers
+}  // namespace wdg_helpers
 
 }  // namespace wumpus_game
 

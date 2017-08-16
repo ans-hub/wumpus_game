@@ -24,7 +24,7 @@ namespace math_helpers {
   VPoints BuildLineTrajectory(const Point&, const Point&, int);
   VPoints BuildBezierTrajectory(const Point&, const Point&, int);
 
-}  // namespace draw_helpers
+}  // namespace math_helpers
  
 }  // namespace wumpus_game
 
