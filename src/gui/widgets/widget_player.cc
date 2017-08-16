@@ -47,11 +47,11 @@ void WidgetPlayer::Redraw(int level)
 
 void WidgetPlayer::SetState(State state)
 {
-  // Stop playing track if it is repeated
+  // Schedule stop track playback if it is repeated
 
   bool repeat_snd{false};
   auto last_snd = config::GetPlayerSound(state_, level_);
-  audio_.Stop(last_snd);
+  audio_.Stop(last_snd, false);
 
   state_ = state;
 
