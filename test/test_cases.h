@@ -16,7 +16,7 @@
 #include "3rdparty/test_toolkit.h"
 #include "3rdparty/rand_toolkit.h"
 
-#include "settings/config.h"
+#include "config.h"
 #include "entities/map.h"
 #include "entities/room.h"
 #include "entities/subject.h"

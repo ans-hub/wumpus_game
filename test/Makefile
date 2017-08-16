@@ -6,6 +6,7 @@ CFG = $(SRC)settings/
 AUD = $(SRC)audio/
 HLP = $(ENT)helpers/
 CLI = $(SRC)cli/
+ENM = $(SRC)enums/
 AI = $(SRC)ai/
 
 CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g -L $(SRC)3rdparty -lbass
@@ -45,7 +46,7 @@ pit.o : $(ENT)pit.h $(ENT)pit.cc enemy.o
 level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 	$(CC) $(CFLAGS) -c $(ENT)level.cc
 
-logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(CFG)enums.h $(SRC)3rdparty/observable.h config.o
+logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(ENM)enums.h $(SRC)3rdparty/observable.h config.o
 	$(CC) $(CFLAGS) -c $(ENT)logic.cc
 
 logic_helpers.o : $(HLP)logic_helpers.h $(HLP)logic_helpers.cc
@@ -57,7 +58,7 @@ test_helpers.o : test_helpers.h test_helpers.cc map.o subject.o
 test_cases.o : test_cases.h test_cases.cc $(OBJECTS)
 	$(CC) $(CFLAGS) -c test_cases.cc
 
-cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(CFG)enums.h
+cli_view.o : $(CLI)view.h $(CLI)view.cc $(SRC)3rdparty/observer.h logic.o $(ENM)enums.h
 	$(CC) $(CFLAGS) -c $(CLI)view.cc -o cli_view.o 
 
 cli_controller.o : $(CLI)controller.h $(CLI)controller.cc $(SRC)3rdparty/controller.h logic.o
@@ -69,8 +70,8 @@ ai_controller.o : $(AI)controller.h $(AI)controller.cc $(SRC)3rdparty/controller
 helpers.o : $(ENT)helpers.h $(ENT)helpers.cc
 	$(CC) $(CFLAGS) -c $(ENT)helpers.cc
 
-config.o : $(SRC)settings/config.h $(SRC)settings/config.cc
-	$(CC) $(CFLAGS) -c $(SRC)settings/config.cc
+config.o : $(SRC)config.h $(SRC)config.cc
+	$(CC) $(CFLAGS) -c $(SRC)config.cc
 
 clean : 
 	rm ${OBJECTS} main.out

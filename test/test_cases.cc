@@ -295,7 +295,7 @@ namespace test_subject_behavior {
 
     do {
       int curr_room = person.GetCurrRoomNum();
-      std::vector<int> neighbors = helpers::get_neighboring_rooms(curr_room, &cave);
+      std::vector<int> neighbors = map_helpers::GetNeighboringRooms(curr_room, &cave);
       int rand_direction = neighbors[rand_toolkit::get_rand(0,2)];
       
       std::string assume {"Succesfull"};
@@ -507,7 +507,7 @@ namespace test_subject_behavior {
 
     do {
       int curr_room = person.GetCurrRoomNum();
-      std::vector<int> neighbors = helpers::get_neighboring_rooms(curr_room, &cave);
+      std::vector<int> neighbors = map_helpers::GetNeighboringRooms(curr_room, &cave);
       int rand_direction = neighbors[rand_toolkit::get_rand(0,2)];
       
       std::string msg {};
