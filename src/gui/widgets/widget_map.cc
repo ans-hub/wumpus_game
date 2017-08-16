@@ -14,7 +14,6 @@ WidgetMap::WidgetMap(AudioOut& audio, Images& images)
   , wdg_player_{new WidgetPlayer(audio, images)}
   , wdg_pathes_{new WidgetNetdraw()}
   , trajectory_{}
-  , rooms_state_{}
   , level_{-1}
   , ready_{true}
   , images_{images} // if wdg_rooms_ be a widget, this would be not necessary
@@ -22,14 +21,6 @@ WidgetMap::WidgetMap(AudioOut& audio, Images& images)
   TuneAppearance();
   end();
 } 
-
-WidgetMap::~WidgetMap()
-{
-  for (auto& v : wdg_rooms_) {
-    this->remove(v);
-    delete v;
-  }
-}
 
 Point WidgetMap::GetRoomCoords(int room) const
 {
@@ -60,7 +51,7 @@ void WidgetMap::MovePlayerInstantly(int to_room)
 {
   this->ready_ = false;
   
-  Point to = GetRoomCoords(to_room) - helpers::get_offset(wdg_player_);
+  Point to = GetRoomCoords(to_room) - helpers::GetOffset(wdg_player_);
   wdg_player_->SetCurrRoom(to_room);
   wdg_player_->position(to.x_, to.y_);
   
@@ -83,7 +74,7 @@ void WidgetMap::RefreshAnimateTrajectory()
 {
   int room = wdg_player_->GetCurrRoom();
 
-  Point to = GetRoomCoords(room) - helpers::get_offset(wdg_player_);
+  Point to = GetRoomCoords(room) - helpers::GetOffset(wdg_player_);
   Point from (wdg_player_->x(), wdg_player_->y());
   
   trajectory_.Set(from, to, Trajectory::LINE, config::animation_step);
@@ -114,42 +105,15 @@ void WidgetMap::cb_move_player_animated(void* w)
   this_->parent()->redraw();
 }
 
-void WidgetMap::SaveRoomsState()
-{
-  rooms_state_.clear();
-
-  for (const auto& w : wdg_rooms_ ) {
-    auto t = std::make_tuple(
-      w->IsMarked(), 
-      w->IsActive(), 
-      w->IsDeimaged()
-    );
-    rooms_state_.push_back(t);
-  }
-}
-
-void WidgetMap::LoadRoomsState()
-{
-  for (std::size_t i = 0; i < wdg_rooms_.size(); ++i) {
-    wdg_rooms_[i]->SetMarked(std::get<0>(rooms_state_[i]));
-    wdg_rooms_[i]->SetActive(std::get<1>(rooms_state_[i]));
-    wdg_rooms_[i]->SetDeimage(std::get<2>(rooms_state_[i]));
-  }  
-}
-
 void WidgetMap::RedrawCurrentByRotate()
 {
-  SaveRoomsState();    
-  // ClearRooms();
   SetLinesAngles(level_);
   DrawLines(level_);
-  RepositionRooms();  // may be make reposition of rooms??
-  LoadRoomsState();
+  RepositionRooms();
   SetRoomsCallback();
   DrawPlayer();
   remove(wdg_info_);
   add(wdg_info_);
-  // wdg_info_->redraw();
 
   parent()->redraw();
 }
@@ -201,16 +165,16 @@ void WidgetMap::DrawRooms(int level)
   
   for (int i = 0; i < rooms; ++i) {
     Point coords = GetRoomCoords(i);
-    WidgetRoom* btn = new WidgetRoom(
+    auto btn = std::make_unique<WidgetRoom>(
       i,
       level_,
       images_,
       coords.x_ - btn_size / 2,
       coords.y_ - btn_size / 2,
       btn_size,
-      btn_size);
-    this->add(btn);
-    wdg_rooms_.push_back(btn);
+      btn_size
+    );
+    wdg_rooms_.push_back(std::move(btn));
   }
 }
 
@@ -225,27 +189,21 @@ void WidgetMap::RepositionRooms()
       coords.x_ - btn_size / 2,
       coords.y_ - btn_size / 2
     );
-    remove(r);
-    add(r);
-    redraw();
     ++i;
   }
 }
 
 void WidgetMap::ClearRooms()
 {
-  for (auto& v : wdg_rooms_) {
-    remove(v);
-    delete v;
-  }
   wdg_rooms_.clear();
   wdg_rooms_.resize(0);
 }
 
 void WidgetMap::SetRotateCallback()
 {
-  double speed = config::GetRotateMapSpeed(level_);
   Fl::remove_timeout(cb_rotate_map, this);    // remove old if present
+  
+  double speed = config::GetRotateMapSpeed(level_);
   if (speed)
     Fl::add_timeout(speed, cb_rotate_map, this);
 }
@@ -274,7 +232,7 @@ void WidgetMap::cb_rotate_map(void* w)
 
 namespace helpers {
 
-Point get_offset(Fl_Widget* w)
+Point GetOffset(Fl_Widget* w)
 {
   return {w->w() / 2, w->h() / 2};
 }

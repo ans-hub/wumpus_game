@@ -3,6 +3,16 @@
 // Author: Anton Novoselov, 2017
 // File: gui view of game logic
 
+// Short work principle : GuiView as derived class from Observer is push
+// recieved events into the queue. Extracting events from queue is executed
+// by timer callback function every n mseconds. This callback sets in
+// constructor.
+//
+// Callback function calls member function, which checks, if system is ready
+// thus events can be processed. This feature need for cases, for example,
+// when Logic state is changed, but animation of widget, based on previous
+// state, still in progress
+
 #ifndef GUI_VIEW_H
 #define GUI_VIEW_H
 
@@ -12,7 +22,6 @@
 #include "3rdparty/observer.h"
 
 #include "gui/windows.h"
-#include "gui/helpers/trajectory.h"
 #include "entities/logic.h"
 #include "entities/helpers.h"
 

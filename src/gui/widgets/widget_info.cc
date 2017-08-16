@@ -10,13 +10,13 @@ namespace wumpus_game {
 WidgetInfo::WidgetInfo (Images& images)
 : Fl_Group(10, 70, 90, 90)
 , images_{images}
-, box_level_{new Fl_Box(x()+82, y()+20, 0, 0)}    // w and h is 0 since only
-, box_wumps_{new Fl_Box(x()+8, y()+20, 0, 0)}     // this way i can arrange
-, box_bats_{new Fl_Box(x()+8, y()+70, 0, 0)}
-, box_pits_{new Fl_Box(x()+8, y()+45, 0, 0)}
-, box_arrows_{new Fl_Box(x()+82, y()+45, 0, 0)}
-, btn_continue_{new Fl_Button(x()+52, y()+60, 28, 20)}
-, btn_next_{new Fl_Button(0,0,0,0)}
+, box_level_{new Fl_Box(x() + 82, y() + 20, 0, 0)}  // see note #1 after code
+, box_wumps_{new Fl_Box(x() + 8, y() + 20, 0, 0)} 
+, box_bats_{new Fl_Box(x() + 8, y() + 70, 0, 0)}      
+, box_pits_{new Fl_Box(x() + 8, y() + 45, 0, 0)}
+, box_arrows_{new Fl_Box(x() + 82, y() + 45, 0, 0)}
+, btn_continue_{new Fl_Button(x() + 52, y() + 60, 28, 20)}
+, btn_skip_{new Fl_Button(0,0,0,0)}
 {
   TuneAppearance();
   end();
@@ -24,10 +24,9 @@ WidgetInfo::WidgetInfo (Images& images)
 
 void WidgetInfo::Redraw(int level)
 {
-  int w = config::GetLevelWidth(level);
-  int offset = config::main_wnd_offset; 
+  // Redraw images on the boxes
 
-  this->image(
+  image(
     images_.GetInfoImages(InfoStuff::COVER, level)
   );
   box_arrows_->image(
@@ -52,14 +51,17 @@ void WidgetInfo::Redraw(int level)
     images_.GetInfoImages(InfoStuff::CONTINUE_DEIMAGE, level)
   );
 
-  resize(offset + (w/2) - (90/2), (90/2)+(w/2), 90, 90);
+  // Resize box in depends of level width
+
+  int width = config::GetLevelWidth(level);
+  int offset = config::main_wnd_offset; 
+  resize(offset + (width/2) - (w()/2), (w()/2) + (width/2), w(), w());
+
   redraw();
 }
 
 void WidgetInfo::TuneAppearance()
 {
-  // btn_next_->hide();
-
   align(FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_CLIP);
   labelcolor(FL_WHITE);
 
@@ -73,27 +75,28 @@ void WidgetInfo::TuneAppearance()
   helpers::TuneRhsButtons(btn_continue_);
 }
 
-namespace helpers {
-  
-void TuneLhsIcons(Fl_Widget* w)
+// CLASS HELPERS
+
+void helpers::TuneLhsIcons(Fl_Widget* w)
 {
   w->align(Fl_Align(264));
   w->labelcolor(FL_WHITE);
   w->labelsize(10);
 }
 
-void TuneRhsIcons(Fl_Widget* w)
+void helpers::TuneRhsIcons(Fl_Widget* w)
 {
   w->align(Fl_Align(292));
   w->labelcolor(FL_WHITE);
   w->labelsize(10);
 }
 
-void TuneRhsButtons(Fl_Widget* w)
+void helpers::TuneRhsButtons(Fl_Widget* w)
 {
   w->align(Fl_Align(256));  
 }
 
-}  // namespace helpers
-
 }  // namespace wumpus_game
+
+// Note #1 : width and height of widget which represents information is equal
+// zero since only this way this widgets can be arrange in this order

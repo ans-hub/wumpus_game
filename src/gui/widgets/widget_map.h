@@ -2,6 +2,9 @@
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
 // File: group widget represents map for main window
+//
+// This widget is the main widget, which is container for
+// drawed net map, room buttons, player and info widgets
 
 #ifndef WIDGET_MAP_H
 #define WIDGET_MAP_H
@@ -16,11 +19,11 @@
 
 #include "3rdparty/audio_out.h"
 
-#include "gui/images.h"
 #include "gui/widgets/widget_room.h"
 #include "gui/widgets/widget_netdraw.h"
 #include "gui/widgets/widget_player.h"
 #include "gui/widgets/widget_info.h"
+#include "gui/images.h"
 #include "config.h"
 
 namespace wumpus_game {
@@ -28,45 +31,44 @@ namespace wumpus_game {
 class WidgetMap : public Fl_Group
 {
 public:
-  using Marked = bool;
-  using Active = bool;
-  using Deimaged = bool;
+  using Player  = WidgetPlayer;
+  using Info    = WidgetInfo;
+  using Room    = std::unique_ptr<WidgetRoom>;
+  using VRooms  = std::vector<Room>;
+
   using CallbackFunc = void;
   using CommandFunc = void;
   
-  using VRooms = std::vector<WidgetRoom*>;
-  using VRoomsRef = const VRooms&;
-  using WPlayer = WidgetPlayer;
-  using RoomState = std::tuple<Marked,Active,Deimaged>;
-  using WRoomsState = std::vector<RoomState>;
-  
   WidgetMap(AudioOut&, Images&);
-  virtual ~WidgetMap();
+  virtual ~WidgetMap() { }
 
-  bool      IsReady() const { return ready_; }
-  Point     GetRoomCoords(int) const;
+  void    Redraw(int level);
+  void    MovePlayerInstantly(int to_room);
+  void    MovePlayerAnimated(int to_room);  
+  void    Deactivate(bool);
+  void    Activate();
 
-  void      Redraw(int);
-  void      MovePlayerInstantly(int);
-  void      MovePlayerAnimated(int);  
-  void      Deactivate(bool d);
-  void      Activate();
-  
-  void      SetCallback(CallbackFunc* cb) { callback_ = cb; }
-  void      SetCommand(CommandFunc* cmd) { command_ = cmd; }
+  // Getters and setters
 
-  WidgetInfo*     wdg_info_;
-  VRooms          wdg_rooms_;     // mess in var names@!
-  WidgetPlayer*   wdg_player_;
+  bool    IsReady() const { return ready_; }
+  Point   GetRoomCoords(int) const;
+  void    SetCallback(CallbackFunc* cb) { callback_ = cb; }
+  void    SetCommand(CommandFunc* cmd) { command_ = cmd; }
+
+  // Direct access widgets
+
+  Info*   wdg_info_;
+  VRooms  wdg_rooms_;
+  Player* wdg_player_;
 
 private:
-  WidgetNetdraw*  wdg_pathes_;
   CallbackFunc*   callback_;
   CommandFunc*    command_;
-  Trajectory      trajectory_;
-  WRoomsState     rooms_state_;
+  WidgetNetdraw*  wdg_pathes_;
+  Trajectory      trajectory_;    // needs for animating players movements
+  
   int             level_;
-  bool            ready_;
+  bool            ready_;         // flag to show users that animation is over
   Images&         images_;
 
   void ResizeGroup(int);
@@ -90,7 +92,7 @@ private:
 
 namespace helpers {
   
-  Point get_offset(Fl_Widget*);
+  Point GetOffset(Fl_Widget*);
 
 }  // namespace helpers
 

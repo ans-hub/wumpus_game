@@ -18,13 +18,15 @@ class GuiController : public mvc_set::Controller
 public:
   GuiController(Logic&, Windows&);
   ~GuiController() { }
+
   bool RunModel() override;
   void StopModel();
+
 private:
   Logic&        model_;
   Windows&      gui_;
 
-  // Commands used by gui through callbacks
+  // Commands for view used by gui through callbacks
 
   void CommandStart();
   void CommandContinue();
@@ -39,7 +41,7 @@ private:
   // Callbacks
 
   static void cb_start_button(void*, void*);
-  static void cb_next_button(void*, void*);
+  static void cb_skip_button(void*, void*);
   static void cb_rooms_button(void*, void*);
   static void cb_continue_button(void*, void*);
 };
@@ -48,5 +50,5 @@ private:
 
 #endif  // GUI_CONTROLLER_H
 
-// Note: controller sets callbacks which is based on the game logic. Callbacsk
+// Note: controller sets callbacks which is based on the game logic. Callbacks
 // that depends of managing windows sets in windows.o

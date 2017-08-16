@@ -1,7 +1,7 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: performs music playing in game (not events sounds)
+// File: performs background music playing in game (not events sounds)
 
 #ifndef MUSIC_H
 #define MUSIC_H

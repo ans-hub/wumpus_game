@@ -313,9 +313,12 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
 
     case 14 :
       params.start_angle_ = 0;
+      params.m_angle_offset_ = 0;
       params.o_rad_offset_ = 80;
-      helpers::ChangeMiddleAngle(params, step*2, step*2, 20);
-      helpers::ChangeMiddleRadius(params, step*2, step*2, 15);
+      params.is_m_is_circle_ = true;
+      params.line_type_ = 0;
+      params.line_width_ = 2;
+      helpers::ChangeMiddleRadius(params, step, step, 20);
       break;
       
     default :
@@ -326,7 +329,7 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
 // HELPERS
 
 // Changes angle offset of middle circle in Netdraw by range (+/-)
-// step_f - step forward, step_b - step back. Sometimes its needs to 
+// step_f - step forward, step_b - step back. Sometimes its useful to 
 // make step_b in double size, since some levels rotate total_angle forward
 
 void helpers::ChangeMiddleAngle(

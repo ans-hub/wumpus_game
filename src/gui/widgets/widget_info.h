@@ -6,6 +6,8 @@
 #ifndef WIDGET_INFO_H
 #define WIDGET_INFO_H
 
+#include <memory>
+
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
@@ -24,6 +26,7 @@ class WidgetInfo : public Fl_Group
 public:
   explicit WidgetInfo(Images&);
   virtual ~WidgetInfo() { }
+
   void Show() { show(); }
   void Hide() { hide(); }
   void Redraw(int level);
@@ -35,7 +38,7 @@ public:
   Fl_Box*     box_pits_;
   Fl_Box*     box_arrows_;
   Fl_Button*  btn_continue_;
-  Fl_Button*  btn_next_;  
+  Fl_Button*  btn_skip_;  
 
 private:
   void TuneAppearance();

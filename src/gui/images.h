@@ -25,7 +25,7 @@ struct Images
 
   Fl_Image* GetMainBackground(int level, int w, int h);
   Fl_Image* GetPlayerImage(PlayerState, int level);
-  Fl_Image* GetPlayerBg(int level);
+  Fl_Image* GetPlayerBackground(int level);
   Fl_Image* GetRoomImage(RoomState, int level);
   Fl_Image* GetInfoImages(InfoStuff, int level);
 

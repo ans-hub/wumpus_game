@@ -40,7 +40,7 @@ void WidgetPlayer::Redraw(int level)
 
   // Set player background
   
-  image(images_.GetPlayerBg(level_));
+  image(images_.GetPlayerBackground(level_));
 }
 
 void WidgetPlayer::SetState(State state)

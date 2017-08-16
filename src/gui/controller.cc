@@ -16,19 +16,26 @@ GuiController::GuiController(Logic& model, Windows& gui)
   SetLevelProcessingCallbacks();
 }
 
+// Saves pointer to the WidgetRoom callback function and its second
+// parametr (will be instance of GuiController). WidgetMap every level
+// recreates WidgetRoom instances and sets this callback to its.
+
 void GuiController::SetLogicCommandsCallbacks()
 {
   gui_.wdg_map_->SetCallback((void*)cb_rooms_button);
   gui_.wdg_map_->SetCommand((void*)this);
 }
 
+// Callbacks that represents level processingm, such as new level,
+// restart and others
+
 void GuiController::SetLevelProcessingCallbacks()
 {
   gui_.wnd_start_->btn_start_->callback(
     (Fl_Callback*)(cb_start_button), (void*)this
   );
-  gui_.wdg_info_->btn_next_->callback(
-    (Fl_Callback*)(cb_next_button), (void*)this
+  gui_.wdg_info_->btn_skip_->callback(
+    (Fl_Callback*)(cb_skip_button), (void*)this
   );
   gui_.wdg_info_->btn_continue_->callback(
     (Fl_Callback*)(cb_continue_button), (void*)this
@@ -82,14 +89,14 @@ void GuiController::cb_continue_button(void*, void* c)
   ((GuiController*)c)->CommandContinue();
 }
 
-void GuiController::cb_next_button(void*, void* c)
+void GuiController::cb_skip_button(void*, void* c)
 {
   ((GuiController*)c)->CommandLevel();  
 }
 
 void GuiController::cb_rooms_button(void* b, void* c)
 {
-  ((GuiController*)c)->CommandAction(((WidgetRoom*)b)->GetNum()); // called by WidgetRoom
+  ((GuiController*)c)->CommandAction(((WidgetRoom*)b)->GetNum());
 }
 
 }  // namespace wumpus_game

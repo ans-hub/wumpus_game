@@ -188,7 +188,7 @@ Fl_Image* Images::GetPlayerImage(PlayerState state, int level)
   }
 }
 
-Fl_Image* Images::GetPlayerBg(int level)
+Fl_Image* Images::GetPlayerBackground(int level)
 {
   if (level == 4 || level == 5 || level == 6)
     return img_player_uw_.get();
@@ -261,6 +261,8 @@ Fl_Image* Images::GetInfoImages(InfoStuff state, int level)
 }
 
 namespace helpers {
+
+// Only one way to resize image on fltk (1.3.4)
 
 void ResizeImage(Images::ImagePtr& i, int w, int h)
 {

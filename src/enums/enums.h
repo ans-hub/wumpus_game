@@ -1,13 +1,15 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: contains enum for messaging between model and view
+// File: contains enumerations
 
 #ifndef ENUMS_H
 #define ENUMS_H
 
 namespace wumpus_game {
 
+  // Used by observers and observable
+  
   enum class Event
   {
     MODEL_READY = 0,
@@ -23,6 +25,8 @@ namespace wumpus_game {
     PLAYER_DOES_MOVE,
     ONE_WUMP_KILLED
   };
+
+  // Used by WidgetPlayer
 
   enum class PlayerState
   {
@@ -40,12 +44,16 @@ namespace wumpus_game {
     UNKNOWN_STATE
   };
 
+  // Used by WidgetRoom
+
   enum class RoomState
   {
     ON,
     OFF,
     MARK
   };
+
+  // Used by WidgetInfo
 
   enum class InfoStuff
   {
