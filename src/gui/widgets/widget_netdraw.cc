@@ -30,7 +30,7 @@ WidgetNetdraw::WidgetNetdraw(double start_angle)
 
 void WidgetNetdraw::Redraw(int level)
 {
-  vxs_count_ = config::GetRoomsCount(level); // gets by Map too
+  vxs_count_ = config::GetRoomsCount(level);
   total_vxs_.resize(vxs_count_);
 
   int w = config::GetLevelWidth(level);

@@ -8,44 +8,44 @@
 namespace wumpus_game {
 
 WidgetMap::WidgetMap(AudioOut& audio, Images& images)
-  : Fl_Group{30, 90, 600, 600}    // here was a bug when parent()->w()...h()
+  : Fl_Group{30, 90, 600, 600}
   , wdg_info_  {new WidgetInfo(images)}
-  , wdg_rooms_ {}    // make WidgetRooms consists of WidgetRoom* elements
+  , wdg_rooms_ {}
   , wdg_player_{new WidgetPlayer(audio, images)}
   , wdg_pathes_{new WidgetNetdraw()}
   , trajectory_{}
   , level_{-1}
   , ready_{true}
-  , images_{images} // if wdg_rooms_ be a widget, this would be not necessary
+  , images_{images}
 {
   TuneAppearance();
   end();
-} 
-
-Point WidgetMap::GetRoomCoords(int room) const
-{
-  Point res{};
-  res.x_ = wdg_pathes_->x() + wdg_pathes_->GetVertexes()[room].x_;
-  res.y_ = wdg_pathes_->y() + wdg_pathes_->GetVertexes()[room].y_;
-  return res;
 }
+
+// INTERFACE REALISATION
+
+// Redraw all children in special order in depends of current level
 
 void WidgetMap::Redraw(int level)
 {
   level_ = level;
   begin();
-  ResizeGroup(level);
-  ClearRooms();
-  SetLinesAngles(level);
-  DrawLines(level);
-  DrawRooms(level);
-  wdg_player_->Redraw(level);
-  DrawPlayer();
-  SetRotateCallback();
-  SetRoomsCallback();
-  wdg_info_->Redraw(level);
+  
+  ResizeGroup(level_);
+  ChangeLinesParams(level_);
+  RedrawLines(level_);
+  RecreateRooms(level_);
+
+  wdg_player_->Redraw(level_);
+  RefreshPlayerPos();
+  wdg_info_->Redraw(level_);
+  helpers::MakeTop(wdg_player_, this);
+  
   end();
+  SetRotateCallback();
 }
+
+// Simple changes position of player widget
 
 void WidgetMap::MovePlayerInstantly(int to_room)
 {
@@ -55,14 +55,17 @@ void WidgetMap::MovePlayerInstantly(int to_room)
   wdg_player_->SetCurrRoom(to_room);
   wdg_player_->position(to.x_, to.y_);
   
-  // redraw();                 // when rotate - is this is not overhead?
   this->ready_ = true; 
 }
  
+// Just sets non-ready status, room destination and timeout callback,
+// which make all main work
+
 void WidgetMap::MovePlayerAnimated(int to_room)
 {
   this->ready_ = false;
-  wdg_player_->SetCurrRoom(to_room);
+
+  wdg_player_->SetCurrRoom(to_room);  // needs to track and rebuild trajectory
 
   Fl::add_timeout(
     config::GetPlayerAnimationSpeed(level_),
@@ -70,15 +73,122 @@ void WidgetMap::MovePlayerAnimated(int to_room)
   );
 }
 
-void WidgetMap::RefreshAnimateTrajectory()
-{
-  int room = wdg_player_->GetCurrRoom();
+// Activate all control elements on the widget
 
-  Point to = GetRoomCoords(room) - helpers::GetOffset(wdg_player_);
-  Point from (wdg_player_->x(), wdg_player_->y());
-  
-  trajectory_.Set(from, to, Trajectory::LINE, config::animation_step);
+void WidgetMap::Activate() {
+  for (auto& r : wdg_rooms_)  
+    r->activate();
 }
+
+// Deactivate all control elements on the widget
+
+void WidgetMap::Deactivate(bool b)
+{
+  for (auto& r : wdg_rooms_) {
+    r->UseDefaultDeimage(b);
+    r->deactivate();
+  }
+}
+
+// Returns current coordinates of room
+
+Point WidgetMap::GetRoomCoords(int room) const
+{
+  Point res{};
+  res.x_ = wdg_pathes_->x() + wdg_pathes_->GetVertexes()[room].x_;
+  res.y_ = wdg_pathes_->y() + wdg_pathes_->GetVertexes()[room].y_;
+  return res;
+}
+
+// REALISATION DETAILS
+
+// Resizes this group depends on width needs to place all level draw
+
+void WidgetMap::ResizeGroup(int level)
+{
+  int w = config::GetLevelWidth(level);
+  resize(30, 90, w, w);
+}
+
+// Creates rooms, place its on the widget, and sets callbacks, early
+// applied by controller
+
+void WidgetMap::RecreateRooms(int level)
+{
+  wdg_rooms_.clear();
+  int btn_size = config::room_btn_size;
+  int rooms = config::GetRoomsCount(level);
+  
+  for (int i = 0; i < rooms; ++i) {
+    Point coords = GetRoomCoords(i);
+    auto btn = std::make_unique<WidgetRoom>(
+      i,
+      level_,
+      images_,
+      coords.x_ - btn_size / 2,
+      coords.y_ - btn_size / 2,
+      btn_size,
+      btn_size
+    );
+
+    btn->callback((Fl_Callback*)this->callback_, this->command_);
+    
+    wdg_rooms_.push_back(std::move(btn));
+  }
+}
+
+// Changes position of the rooms when map is have been rotates
+
+void WidgetMap::RepositionRooms()
+{
+  int i{0};
+  int btn_size = config::room_btn_size;
+  
+  for (auto& r : wdg_rooms_) {
+    Point coords = GetRoomCoords(i);
+    r->position(
+      coords.x_ - btn_size / 2,
+      coords.y_ - btn_size / 2
+    );
+    ++i;
+  }
+}
+
+// Redraw player widget in depends of current room coordinates. Usually used
+// when room coordinates are changed, but player is in other place
+
+void WidgetMap::RefreshPlayerPos()
+{
+  if (ready_)
+    MovePlayerInstantly(wdg_player_->GetCurrRoom());
+}
+
+// Redraw WidgetNetdraw in depends of current level
+
+void WidgetMap::RedrawLines(int level)
+{
+  wdg_pathes_->Redraw(level);
+  wdg_pathes_->position(x(), y());
+}
+
+// Changes WidgetNetdraw parameters before next redrawing
+
+void WidgetMap::ChangeLinesParams(int level)
+{ 
+  auto& params = wdg_pathes_->GetParamsReference();
+  config::ChangeNetdrawParams(params, level);
+}
+
+// SERVICE FUNCTION REALISATION
+
+void WidgetMap::TuneAppearance()
+{
+  resizable(0);                 // forbid children resizing
+  box(FL_PLASTIC_UP_FRAME);
+}
+
+// Do next step in animation and rebuild trajectory coordinates in 
+// depends of current coordinates of destination room (if it rotate)
 
 void WidgetMap::cb_move_player_animated(void* w)
 {
@@ -105,121 +215,20 @@ void WidgetMap::cb_move_player_animated(void* w)
   this_->parent()->redraw();
 }
 
-void WidgetMap::RedrawCurrentByRotate()
+// Evaluate movement trajectory if player widget in depends of current
+// coordinates of current coordinates and destination
+
+void WidgetMap::RefreshAnimateTrajectory()
 {
-  SetLinesAngles(level_);
-  DrawLines(level_);
-  RepositionRooms();
-  SetRoomsCallback();
-  DrawPlayer();
-  remove(wdg_info_);
-  add(wdg_info_);
+  int room = wdg_player_->GetCurrRoom();
 
-  parent()->redraw();
-}
-
-void WidgetMap::SetLinesAngles(int level)
-{ 
-  auto& params = wdg_pathes_->GetParamsReference();
-  config::ChangeNetdrawParams(params, level);
-}
-
-void WidgetMap::Deactivate(bool d)
-{
-  for (auto& r : wdg_rooms_) {
-    r->SetDeimage(d);
-    r->deactivate();
-  }
-}
-
-void WidgetMap::Activate() {
-  for (auto& r : wdg_rooms_)  
-    r->activate();
-}
-
-// REALISATION DETAILS
-
-void WidgetMap::ResizeGroup(int level)
-{
-  int w = config::GetLevelWidth(level);
-  resize(30, 90, w, w);
-}
-
-void WidgetMap::DrawPlayer()
-{
-  if (ready_) MovePlayerInstantly(wdg_player_->GetCurrRoom());
-  remove(wdg_player_);    // needs for top level of wdg_player_
-  add(wdg_player_);
-}
-
-void WidgetMap::DrawLines(int level)
-{
-  wdg_pathes_->Redraw(level);
-  wdg_pathes_->position(x(), y());
-}
-
-void WidgetMap::DrawRooms(int level)
-{
-  int btn_size = config::room_btn_size;
-  int rooms = config::GetRoomsCount(level);
+  Point to = GetRoomCoords(room) - helpers::GetOffset(wdg_player_);
+  Point from (wdg_player_->x(), wdg_player_->y());
   
-  for (int i = 0; i < rooms; ++i) {
-    Point coords = GetRoomCoords(i);
-    auto btn = std::make_unique<WidgetRoom>(
-      i,
-      level_,
-      images_,
-      coords.x_ - btn_size / 2,
-      coords.y_ - btn_size / 2,
-      btn_size,
-      btn_size
-    );
-    wdg_rooms_.push_back(std::move(btn));
-  }
+  trajectory_.Set(from, to, Trajectory::LINE, config::animation_step);
 }
 
-void WidgetMap::RepositionRooms()
-{
-  int i{0};
-  int btn_size = config::room_btn_size;
-  
-  for (auto& r : wdg_rooms_) {
-    Point coords = GetRoomCoords(i);
-    r->position(
-      coords.x_ - btn_size / 2,
-      coords.y_ - btn_size / 2
-    );
-    ++i;
-  }
-}
-
-void WidgetMap::ClearRooms()
-{
-  wdg_rooms_.clear();
-  wdg_rooms_.resize(0);
-}
-
-void WidgetMap::SetRotateCallback()
-{
-  Fl::remove_timeout(cb_rotate_map, this);    // remove old if present
-  
-  double speed = config::GetRotateMapSpeed(level_);
-  if (speed)
-    Fl::add_timeout(speed, cb_rotate_map, this);
-}
-
-void WidgetMap::SetRoomsCallback()
-{
-  for (auto& b : wdg_rooms_) {
-    b->callback((Fl_Callback*)this->callback_, this->command_);
-  }  
-}
-
-void WidgetMap::TuneAppearance()
-{
-  resizable(0); // forbid resize children
-  box(FL_PLASTIC_UP_FRAME);
-}
+// Simple set again repeat timeout and call special redrawing member function
 
 void WidgetMap::cb_rotate_map(void* w)
 {
@@ -230,11 +239,45 @@ void WidgetMap::cb_rotate_map(void* w)
   Fl::repeat_timeout(speed, cb_rotate_map, w);
 }
 
+// Sets rotate callback. Usually used every time WidgetMap id redrawn to
+// new level
+
+void WidgetMap::SetRotateCallback()
+{
+  Fl::remove_timeout(cb_rotate_map, this);    // remove old if present
+  
+  double speed = config::GetRotateMapSpeed(level_);
+  if (speed)
+    Fl::add_timeout(speed, cb_rotate_map, this);
+}
+
+// Function called by callback
+
+void WidgetMap::RedrawCurrentByRotate()
+{
+  ChangeLinesParams(level_);
+  RedrawLines(level_);
+  RepositionRooms();
+  RefreshPlayerPos();
+  
+  helpers::MakeTop(wdg_player_, this);
+  helpers::MakeTop(wdg_info_, this);
+  
+  parent()->redraw();
+}
+
 namespace helpers {
 
 Point GetOffset(Fl_Widget* w)
 {
   return {w->w() / 2, w->h() / 2};
+}
+
+void MakeTop(Fl_Widget* w, Fl_Group* surface)
+{
+  surface->remove(w);
+  surface->add(w);
+
 }
 
 }  // namespace helpers

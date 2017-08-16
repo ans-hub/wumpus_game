@@ -138,9 +138,9 @@ void ShowLevel(Windows& gui, const Logic& model)
 void HideLevel(Windows& gui, const Logic& model)
 {
   if (model.GameOverCause() == Subject::ID::PLAYER)
-    gui.wdg_map_->Deactivate(true);
+    gui.wdg_map_->Deactivate(false);
   else
-    gui.wdg_map_->Deactivate(false);    
+    gui.wdg_map_->Deactivate(true);    
 }
 
 void ShowErrorRoom(Windows& gui)
@@ -232,7 +232,7 @@ void MarkRoomAsVisited(Windows& gui, const Logic& model, int room)
 {
   auto level = model.CurrentLevel();
   if (config::WhetherToMarkVisitedRooms(level))
-    gui.wdg_map_->wdg_rooms_[room]->SetMarked(true);
+    gui.wdg_map_->wdg_rooms_[room]->SetMarked();
 }
 
 }  // namespace helpers

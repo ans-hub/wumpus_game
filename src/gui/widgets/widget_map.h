@@ -3,8 +3,8 @@
 // Author: Anton Novoselov, 2017
 // File: group widget represents map for main window
 //
-// This widget is the main widget, which is container for
-// drawed net map, room buttons, player and info widgets
+// This widget is the main widget, which is container for drawed net map,
+// room buttons, player and info widgets
 
 #ifndef WIDGET_MAP_H
 #define WIDGET_MAP_H
@@ -45,54 +45,57 @@ public:
   void    Redraw(int level);
   void    MovePlayerInstantly(int to_room);
   void    MovePlayerAnimated(int to_room);  
-  void    Deactivate(bool);
-  void    Activate();
 
   // Getters and setters
 
+  void    Activate();
+  void    Deactivate(bool);
   bool    IsReady() const { return ready_; }
   Point   GetRoomCoords(int) const;
   void    SetCallback(CallbackFunc* cb) { callback_ = cb; }
   void    SetCommand(CommandFunc* cmd) { command_ = cmd; }
 
-  // Direct access widgets
+  // Direct access widgets (usually for gui view)
 
   Info*   wdg_info_;
   VRooms  wdg_rooms_;
   Player* wdg_player_;
 
 private:
-  CallbackFunc*   callback_;
-  CommandFunc*    command_;
   WidgetNetdraw*  wdg_pathes_;
+  CallbackFunc*   callback_;      // sets as callback and its parameter to
+  CommandFunc*    command_;       // WidgetRooms
   Trajectory      trajectory_;    // needs for animating players movements
   
   int             level_;
   bool            ready_;         // flag to show users that animation is over
   Images&         images_;
 
-  void ResizeGroup(int);
-  void DrawPlayer();
-  void DrawRooms(int);
-  void DrawLines(int);
-  void SetLinesAngles(int);
-  void RepositionRooms();  
-  void ClearRooms();
-  void SaveRoomsState();
-  void LoadRoomsState();
-  void RedrawCurrentByRotate();
-  void SetRotateCallback();
-  void SetRoomsCallback();
+  void ResizeGroup(int level);
+  void RecreateRooms(int level);
+  void RepositionRooms(); 
+  void RefreshPlayerPos();
+  void RedrawLines(int level);
+  void ChangeLinesParams(int level);
+
   void TuneAppearance();
   
-  void RefreshAnimateTrajectory();
+  // Functions to manage player animating
+
   static void cb_move_player_animated(void*);
+  void RefreshAnimateTrajectory();
+  
+  // Functions to manage map rotating
+
   static void cb_rotate_map(void*);
+  void SetRotateCallback();
+  void RedrawCurrentByRotate();
 };
 
 namespace helpers {
   
   Point GetOffset(Fl_Widget*);
+  void MakeTop(Fl_Widget*, Fl_Group*);
 
 }  // namespace helpers
 

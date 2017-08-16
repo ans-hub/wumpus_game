@@ -22,37 +22,24 @@ struct WidgetRoom : Fl_Button
     , num_{num}
     , level_{level}
     , marked_{value() ? true : false}
-    , deimaged_{false}
-    , images_{images}
-    , img_on_{images_.GetRoomImage(RoomState::ON, level_)}
-    , img_off_{images_.GetRoomImage(RoomState::OFF, level_)}
-    , img_mark_{images_.GetRoomImage(RoomState::MARK, level_)}
+    , img_on_{images.GetRoomImage(RoomState::ON, level_)}
+    , img_off_{images.GetRoomImage(RoomState::OFF, level_)}
+    , img_mark_{images.GetRoomImage(RoomState::MARK, level_)}
   {
     image(img_on_);
     deimage(img_off_);
     box(FL_NO_BOX);
   }
 
-  void SetDeimage(bool d)
-  {
-    d ? this->deimage(img_mark_) : this->deimage(img_off_);
-    deimaged_ = d;
-  }
-  
+  void UseDefaultDeimage(bool b) { b ? deimage(img_off_) : deimage(img_mark_); }  
   int  GetNum() const { return num_; }
-  bool IsDeimaged() const { return deimaged_; }
-  bool IsMarked() const { return marked_; }
-  void SetMarked(bool b) { marked_ = b; b ? image(img_mark_) : image(img_on_); }
-  bool IsActive() const { return active() ? true : false; }
-  void SetActive(bool b) { b ? activate() : deactivate(); }
+  void SetMarked() { image(img_mark_); }
 
 private:
   int       num_;
   int       level_;
   bool      marked_;
-  bool      deimaged_;
 
-  Images&   images_;
   Fl_Image* img_on_;
   Fl_Image* img_off_;
   Fl_Image* img_mark_;
