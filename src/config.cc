@@ -44,6 +44,9 @@ std::string config::GetPlayerSound(PlayerState type, int level)
         return "resources/sounds/bats_movement.mp3";
 
     case PlayerState::WALK : 
+    if (level == 4 || level == 5 || level == 6)
+      return "resources/sounds/player_walk_uw.mp3";
+    else
       return "resources/sounds/player_walk.wav";
 
     case PlayerState::SHOT : 
