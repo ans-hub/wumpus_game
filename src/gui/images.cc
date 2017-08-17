@@ -3,6 +3,10 @@
 // Author: Anton Novoselov, 2017
 // File: RAII struct managing image resources in game
 
+// This class based on convience that all raw pointers which are taken
+// from unique_ptrs by get(), they are not destroyed and not changed by
+// classes used its
+
 // Postfixes used in names of variables :
 //  cv - cave theme
 //  uw - underwater theme

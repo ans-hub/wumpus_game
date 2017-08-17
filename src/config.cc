@@ -25,7 +25,7 @@ std::string config::GetBackgroundMusic(int level)
     case 11 : case 12 : 
       return "resources/sounds/theme_broken_cpu.mp3";
 
-    case 13 : 
+    case 13 :
       return "resources/sounds/theme_last_battle.mp3";
 
     case 14 : 
@@ -88,8 +88,11 @@ std::string config::GetPlayerSound(PlayerState type, int level)
       else
         return "resources/sounds/wump_feels.wav";
 
-    case PlayerState::UNKNOWN_STATE : default : 
+    case PlayerState::UNKNOWN_STATE :
       return "resources/sounds/click.wav";
+    
+    case PlayerState::STAY : default :
+      return "resources/sounds/silence.wav";
   }
 }
 

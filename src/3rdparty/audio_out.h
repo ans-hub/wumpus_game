@@ -1,4 +1,4 @@
-// Package: bass_wrapper(v0.24)
+// Package: bass_wrapper(v0.25)
 // Description: https://github.com/ans-hub/bass_wrapper
 // Author: Anton Novoselov, 2017
 // File: class that represents wrapper to BASS audio library
@@ -35,8 +35,9 @@ public:
   VStrings  NowPlaying(bool only_repeated) const;
   
 private:
-  bool      inited_;    // flag to show is bass lib is inited
-  VSounds   loaded_;    // currently loaded samples in memory 
+  bool      inited_;        // flag to show is bass lib is inited
+  VSounds   loaded_;        // currently loaded samples in memory
+  int       channels_cnt_;  // sounds of sample playing at the same time
   
   Handle    FindLoaded(const FileName&) const;
   VHandles  GetLoadedChannels(const Handle&) const;
@@ -47,6 +48,8 @@ private:
 
 namespace audio_helpers {
   
+  constexpr int kChannelsCount = 5;   // default val for channels_cnt_;
+
   using FileName = AudioOut::FileName; 
   using SampleNfo = AudioOut::SampleNfo;
   using Handle = AudioOut::Handle;

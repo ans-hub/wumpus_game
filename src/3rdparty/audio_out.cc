@@ -1,4 +1,4 @@
-// Package: bass_wrapper(v0.24)
+// Package: bass_wrapper(v0.25)
 // Description: https://github.com/ans-hub/bass_wrapper
 // Author: Anton Novoselov, 2017
 // File: class that represents wrapper to BASS audio library
@@ -10,6 +10,7 @@ namespace wumpus_game {
 AudioOut::AudioOut()
   : inited_{false}
   , loaded_{ }
+  , channels_cnt_{audio_helpers::kChannelsCount}
 {
   if (BASS_Init(-1, 44100, BASS_DEVICE_DEFAULT, 0, 0))
     inited_ = true;
@@ -29,7 +30,7 @@ bool AudioOut::Play(const std::string& fname, bool repeat)
   if (!hndl) return false;
 
   hndl = BASS_SampleGetChannel(hndl, FALSE);
-  BASS_ChannelSetAttribute(hndl, BASS_ATTRIB_VOL,0.5f);
+  BASS_ChannelSetAttribute(hndl, BASS_ATTRIB_VOL, 0.5f);
 
   if (BASS_ChannelPlay(hndl, FALSE)) 
     return true;
@@ -80,8 +81,15 @@ AudioOut::VStrings AudioOut::NowPlaying(bool only_repeated) const
 AudioOut::Handle AudioOut::Load(const std::string& fname, bool repeat)
 {
   Handle hndl = FindLoaded(fname);
+
   if (!hndl) {
-    hndl = BASS_SampleLoad(FALSE, fname.c_str(), 0,0,3, repeat ? 4 : 1 );
+    DWORD flags;
+    if (repeat) 
+      flags = BASS_SAMPLE_LOOP;
+    else
+      flags = BASS_SAMPLE_8BITS + BASS_SAMPLE_OVER_POS;
+
+    hndl = BASS_SampleLoad(FALSE, fname.c_str(), 0,0,3, flags);
     loaded_.push_back(std::make_pair(fname, hndl));
   }
   return hndl;
