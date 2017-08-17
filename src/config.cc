@@ -8,7 +8,7 @@
 
 namespace wumpus_game {
 
-// AUDIO SETTINGS REALISATION
+// AUDIO SETTINGS
 
 std::string config::GetBackgroundMusic(int level)
 {
@@ -95,6 +95,55 @@ std::string config::GetPlayerSound(PlayerState type, int level)
       return "resources/sounds/silence.wav";
   }
 }
+
+// FORM_MAP SETTINGS
+
+std::string config::GetSceneName(int level)
+{
+  switch (level) {
+    case 1 : case 2 : case 3 : default :
+      return "In the Dark cave";
+    
+    case 4 : case 5 : case 6 :
+      return "Underwater hunt";
+
+    case 7 : case 8 : case 9 : case 10 :
+      return "Way to Sweet home";
+
+    case 11 : case 12 :
+      return "Broken teleport circuit";
+
+    case 13 :
+      return "Last battle";
+
+    case 14 :
+      return "Kitty-kitty...";
+  }
+}
+
+Fl_Color config::GetSceneColor(int level)
+{
+  switch (level) {
+    case 1 : case 2 : case 3 : default :
+      return 40;
+    
+    case 4 : case 5 : case 6 :
+      return 148;
+
+    case 7 : case 8 : case 9 : case 10 :
+      return 20;
+    
+    case 11 : case 12 :
+      return 32;
+  
+    case 13 :
+      return 44;
+  
+    case 14 :
+      return 44;    
+  }
+}
+
 
 // LOGIC SETTINGS
 
@@ -216,7 +265,10 @@ double config::GetPlayerAnimationSpeed(int level)
 
 // Pixels count to every animation rotate map tick
 
-double config::rotate_map_step = 0.3;
+double config::GetRotateMapStep(int)
+{
+  return 0.3;
+}
 
 double config::GetRotateMapSpeed(int level)
 {
@@ -262,7 +314,7 @@ bool config::WhetherToMarkVisitedRooms(int level)
 
 void config::ChangeNetdrawParams(NetdrawParams& params, int level)
 {
-  auto step = config::rotate_map_step;
+  auto step = config::GetRotateMapStep(level);
 
   switch (level) {
 

@@ -43,6 +43,15 @@ void FormMain::Redraw(int level)
   );
   box_cover_->image(bg);
 
+  // Change the name and color of the label
+  
+  auto scene_name = config::GetSceneName(level);
+  box_label_->copy_label(scene_name.c_str());
+
+  auto scene_color = config::GetSceneColor(level);
+  box_label_->color(scene_color);
+  box_label_->labelcolor(scene_color);
+
   wdg_map_->Redraw(level);
 }
 

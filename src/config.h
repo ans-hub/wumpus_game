@@ -10,6 +10,8 @@
 #include <string>
 #include <cmath>
 
+#include "FL/Enumerations.H"
+
 #include "3rdparty/rand_toolkit.h"
 
 #include "enums/enums.h"
@@ -23,6 +25,11 @@ namespace config {
 
   std::string   GetBackgroundMusic(int level = 1);
   std::string   GetPlayerSound(PlayerState, int level = 1);
+
+  // Form_main settings
+
+  std::string   GetSceneName(int level);
+  Fl_Color      GetSceneColor(int level);
 
   // Logic settings 
 
@@ -46,7 +53,7 @@ namespace config {
 
   extern int    animation_step;
   double        GetPlayerAnimationSpeed(int level);
-  extern double rotate_map_step;
+  double        GetRotateMapStep(int level);  
   double        GetRotateMapSpeed(int level);
   bool          WhetherToMarkVisitedRooms(int level);
   void          ChangeNetdrawParams(NetdrawParams&, int level);
