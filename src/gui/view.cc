@@ -100,19 +100,21 @@ namespace gui_helpers {
 
 void RefreshInfoWidget(Windows& gui, const Logic& model)
 {
-  auto level = std::to_string(model.CurrentLevel());
-  gui.wdg_info_->box_level_->copy_label(level.c_str());
+  auto level_num = std::to_string(model.CurrentLevel());
+  gui.wdg_info_->box_level_->copy_label(level_num.c_str());
 
-  auto wumps = std::to_string(model.GetLevel().WumpsCountLive());
+  const Level& level = model.GetLevel();
+
+  auto wumps = std::to_string(helpers::AliveSubjectsCount(level.wumps_));
   gui.wdg_info_->box_wumps_->copy_label(wumps.c_str());
 
-  auto bats = std::to_string(model.GetLevel().bats_.size());
+  auto bats = std::to_string(level.bats_.size());
   gui.wdg_info_->box_bats_->copy_label(bats.c_str());
 
-  auto pits = std::to_string(model.GetLevel().pits_.size());
+  auto pits = std::to_string(level.pits_.size());
   gui.wdg_info_->box_pits_->copy_label(pits.c_str());
 
-  auto arrows = std::to_string(model.GetLevel().player_->GetArrows());
+  auto arrows = std::to_string(level.player_->GetArrows());
   gui.wdg_info_->box_arrows_->copy_label(arrows.c_str());
 }
 

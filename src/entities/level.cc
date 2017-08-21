@@ -10,6 +10,7 @@ namespace wumpus_game {
 Level::Level()
   : cave_{}
   , player_{}
+  , guide_{}
   , wumps_{} 
   , bats_{}
   , pits_{} { }
@@ -17,12 +18,16 @@ Level::Level()
 Level::Level(int size, int arrows, int wumps, int bats, int pits)
   : cave_{}
   , player_{}
+  , guide_{}
   , wumps_{} 
   , bats_{}
   , pits_{}
 {
   cave_ = MapPtr {new Map{size}};
+
   player_ = PlayerPtr {new Player(cave_.get(), arrows)};
+  guide_ = GuidePtr {new Guide(cave_.get())};
+
   for (int i = 0; i < wumps; ++i)
     wumps_.push_back(WumpPtr {new Wump(cave_.get())});
   for (int i = 0; i < bats; ++i)
@@ -34,6 +39,7 @@ Level::Level(int size, int arrows, int wumps, int bats, int pits)
 Level::Level(Level&& old)
   : cave_{std::move(old.cave_)}
   , player_{std::move(old.player_)}
+  , guide_{std::move(old.guide_)}
   , wumps_{std::move(old.wumps_)}
   , bats_{std::move(old.bats_)}
   , pits_{std::move(old.pits_)} { }
@@ -42,19 +48,12 @@ Level& Level::operator=(Level&& old)
 {
   cave_.swap(old.cave_);
   player_ = std::move(old.player_);
+  guide_ = std::move(old.guide_);
   wumps_.swap(old.wumps_);
   bats_ = std::move(old.bats_);
   pits_ = std::move(old.pits_);
+  
   return *this;
 }
-
-int Level::WumpsCountLive() const
-{
-  int lives{0};
-  for (const auto& v : wumps_)
-    if (v->IsLive()) ++lives;
-  return lives;
-}
-
 
 }  // namespace wumpus_game

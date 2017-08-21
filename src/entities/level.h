@@ -14,6 +14,7 @@
 #include "entities/wump.h"
 #include "entities/bat.h"
 #include "entities/pit.h"
+#include "entities/guide.h"
 
 namespace wumpus_game {
 
@@ -21,6 +22,7 @@ struct Level
 {
   using MapPtr    = std::unique_ptr<Map>;
   using PlayerPtr = std::unique_ptr<Player>;
+  using GuidePtr  = std::unique_ptr<Guide>;
   using WumpPtr   = std::unique_ptr<Wump>;
   using BatPtr    = std::unique_ptr<Bat>;
   using PitPtr    = std::unique_ptr<Pit>;
@@ -31,18 +33,17 @@ struct Level
 
   MapPtr    cave_;
   PlayerPtr player_;
+  GuidePtr  guide_;
   WumpsVec  wumps_;
   BatsVec   bats_;
   PitsVec   pits_;
 
   Level();
-  Level(int, int, int, int, int);
+  Level(int sz, int arrows, int wumps, int bats, int pits);
   Level(const Level&) =delete;
   Level& operator=(const Level&) = delete;
   Level(Level&&);
   Level& operator=(Level&&);
-
-  int WumpsCountLive() const;
 };
 
 }  // namespace wumpus_game

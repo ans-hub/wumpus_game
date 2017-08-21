@@ -27,19 +27,20 @@ namespace helpers {
   void WorryNeighboringWumps(VWumpsPtr&, std::vector<int>&);
   bool KillOneWumpInRoom(VWumpsPtr&, int);
   bool IsInOneRoom(Subject*, Subject*);
+
   std::vector<Subject::ID> SubjectsInNeighboringRooms(int, Map*);
   std::string VintToString(const std::vector<int> &v, std::string delim = ",");
 
   template<class T>
-  int AliveSubjectsCount(std::vector<std::unique_ptr<T>>&);
-
+  int AliveSubjectsCount(const std::vector<std::unique_ptr<T>>&);
+  
   template<class T>
   int FindInVector(std::vector<T>, T);
 
   // Template functions realisation
-
+  
   template<class T>
-  int AliveSubjectsCount(std::vector<std::unique_ptr<T>>& subj)
+  int AliveSubjectsCount(const std::vector<std::unique_ptr<T>>& subj)
   {
     int result{0};
     for (const auto& s : subj) {
