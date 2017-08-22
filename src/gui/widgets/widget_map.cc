@@ -75,17 +75,16 @@ void WidgetMap::MovePlayerAnimated(int to_room)
 
 // Activate all control elements on the widget
 
-void WidgetMap::Activate() {
+void WidgetMap::ActivateRooms() {
   for (auto& r : wdg_rooms_)  
     r->activate();
 }
 
 // Deactivate all control elements on the widget
 
-void WidgetMap::Deactivate(bool b)
+void WidgetMap::DeactivateRooms()
 {
   for (auto& r : wdg_rooms_) {
-    r->UseDefaultDeimage(b);
     r->deactivate();
   }
 }

@@ -3,4 +3,5 @@ Make observer as link to the memeber function
 Realise scores
 Make sounds for child and choosing it from command line
 Optimize by increasing step amount of map rotating when speed is high
-Make exits
+Make exitsbug 1 - mark when gate
+bug 2 - rotate when restart level

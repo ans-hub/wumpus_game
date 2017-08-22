@@ -56,6 +56,8 @@ struct Images
   ImagePtr img_bats_cv_;
   ImagePtr img_bats_uw_;
   ImagePtr img_bats_bc_;
+  ImagePtr img_guide_closed_cv_;
+  ImagePtr img_level_win_cv_;
   ImagePtr img_kill_wump_cv_;
   ImagePtr img_kill_wump_bc_;
   ImagePtr img_kill_wump_hm_;
@@ -75,9 +77,10 @@ struct Images
 
   // WidgetRoom states
 
-  ImagePtr img_room_on_cv_;
-  ImagePtr img_room_off_cv_;
-  ImagePtr img_room_mark_cv_;
+  ImagePtr img_room_dark_cv_;
+  ImagePtr img_room_light_cv_;
+  ImagePtr img_room_gate_cv_;
+  ImagePtr img_room_guide_cv_;
 
   // WidgetInfo states
 

@@ -16,7 +16,7 @@ CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++14 -g \
 FLTKFLAGS = `fltk-config --use-images --ldflags`
 
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
-					level.o logic.o helpers.o cli_view.o \
+					guide.o level.o logic.o helpers.o cli_view.o \
 					cli_controller.o ai_controller.o gui_view.o gui_controller.o \
 					windows.o form_start.o form_help.o form_main.o widget_info.o \
 					widget_map.o widget_netdraw.o widget_player.o trajectory.o \
@@ -39,6 +39,9 @@ subject.o : $(ENT)subject.h $(ENT)subject.cc map.o helpers.o
 
 player.o : $(ENT)player.h $(ENT)player.cc subject.o helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)player.cc
+
+guide.o : $(ENT)guide.h $(ENT)guide.cc subject.o helpers.o
+	$(CC) $(CFLAGS) -c $(ENT)guide.cc
 
 enemy.o : $(ENT)enemy.h $(ENT)enemy.cc subject.o
 	$(CC) $(CFLAGS) -c $(ENT)enemy.cc	
@@ -109,7 +112,7 @@ cli_controller.o : $(CLI)controller.h $(CLI)controller.cc $(SRC)3rdparty/control
 ai_controller.o : $(AI)controller.h $(AI)controller.cc $(SRC)3rdparty/controller.h logic.o
 	$(CC) $(CFLAGS) -c $(AI)controller.cc -o ai_controller.o 
 
-helpers.o : $(ENT)helpers.h $(ENT)helpers.cc
+helpers.o : $(ENT)helpers.h $(ENT)helpers.cc wump.o map.o room.o subject.o
 	$(CC) $(CFLAGS) -c $(ENT)helpers.cc
 
 audio_out.o : $(AUD)audio_out.h $(AUD)audio_out.cc

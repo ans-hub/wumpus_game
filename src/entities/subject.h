@@ -17,14 +17,15 @@ struct Room;
 class Subject
 {
 public:
-  enum ID { // remake in Type
+  enum ID {
     UNKNOWN = 0,
     EMPTY,
     PLAYER,
     ENEMY,
     WUMP,
     PIT,
-    BAT
+    BAT,
+    GUIDE
   };
 
   typedef std::vector<ID> VSubjectsId;

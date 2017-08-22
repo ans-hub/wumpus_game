@@ -46,12 +46,16 @@ void Logic::Turn(int action, int room)
 {
   if (!game_over_cause_) {
     PlayerTurn(action, room);   // changes player_turn_
+    GuideTurn();
   }
   if (!player_turn_ && !game_over_cause_) {
       PitsTurn();     //
       BatsTurn();     // changes game_over_ and player_turn_  
       WumpsTurn();    // (may be wumps turn is first rather than batsturn?)
-    }
+  }
+  // if (!player_turn_ && !game_over_cause_) {
+  //   GuideTurn();
+  // }
   if (!game_over_cause_) {
     NotifyObservers(Event::READY_TO_INPUT);
   }
@@ -104,10 +108,6 @@ bool Logic::PlayerShot(int to_room)
     NotifyObservers(Event::ONE_WUMP_KILLED);
   }
 
-  if (helpers::AliveSubjectsCount(wumps) == 0) {
-    game_over_cause_ = Subject::PLAYER;
-    NotifyObservers(Event::GAME_OVER);
-  }
   return true;
 }
 
@@ -174,6 +174,28 @@ void Logic::PitsTurn()
       break;
     }
   }
+}
+
+void Logic::GuideTurn()
+{
+  auto& wumps  = level_.wumps_;
+  auto* player = level_.player_.get();
+  auto* guide = level_.guide_.get();
+
+  // Conditions to player win
+
+  bool meets_guide = helpers::IsInOneRoom(player, guide);
+  bool wumps_dead  = helpers::AliveSubjectsCount(wumps) == 0 ? true : false;
+
+  if (meets_guide) {
+    NotifyObservers(Event::MEETS_GUIDE);
+  }
+  
+  if (meets_guide && wumps_dead) {
+    game_over_cause_ = Subject::PLAYER;
+    NotifyObservers(Event::GAME_OVER);
+  }
+
 }
 
 }  // namespace wumpus_game

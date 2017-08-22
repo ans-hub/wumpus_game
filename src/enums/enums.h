@@ -23,7 +23,8 @@ namespace wumpus_game {
     MOVE_NOT_NEIGHBOR,
     PLAYER_DOES_SHOT,
     PLAYER_DOES_MOVE,
-    ONE_WUMP_KILLED
+    ONE_WUMP_KILLED,
+    MEETS_GUIDE
   };
 
   // Used by WidgetPlayer
@@ -36,7 +37,9 @@ namespace wumpus_game {
     MOVED_BY_BATS,
     KILLED_BY_WUMP,
     KILLED_BY_PITS,
+    MEETS_CLOSED_GUIDE,
     KILL_WUMP,
+    LEVEL_WIN,
     HAVENT_ARROWS,
     FEELS_WUMP,
     FEELS_BATS,
@@ -48,9 +51,10 @@ namespace wumpus_game {
 
   enum class RoomState
   {
-    ON,
-    OFF,
-    MARK
+    DARK,
+    LIGHT,
+    GATE,
+    GUIDE
   };
 
   // Used by WidgetInfo

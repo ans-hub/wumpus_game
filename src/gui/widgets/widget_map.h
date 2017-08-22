@@ -48,8 +48,8 @@ public:
 
   // Getters and setters
 
-  void    Activate();
-  void    Deactivate(bool);
+  void    ActivateRooms();
+  void    DeactivateRooms();
   bool    IsReady() const { return ready_; }
   Point   GetRoomCoords(int) const;
   void    SetCallback(CallbackFunc* cb) { callback_ = cb; }

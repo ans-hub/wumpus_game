@@ -87,6 +87,12 @@ std::string config::GetPlayerSound(PlayerState type, int level)
         return "resources/sounds/wump_feels_hm.wav";
       else
         return "resources/sounds/wump_feels.wav";
+    
+    case PlayerState::MEETS_CLOSED_GUIDE :
+      return "resources/sounds/player_guide_knock.wav";
+
+    case PlayerState::LEVEL_WIN :
+      return "resources/sounds/player_win.wav";
 
     case PlayerState::UNKNOWN_STATE :
       return "resources/sounds/click.wav";

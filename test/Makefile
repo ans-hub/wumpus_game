@@ -9,10 +9,10 @@ CLI = $(SRC)cli/
 ENM = $(SRC)enums/
 AI = $(SRC)ai/
 
-CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++11 -g -L $(SRC)3rdparty -lbass
+CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++14 -g -L $(SRC)3rdparty -lbass
 FLTKFLAGS = `fltk-config --use-images --ldflags`
 
-OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
+OBJECTS = map.o subject.o enemy.o room.o player.o guide.o bat.o pit.o wump.o \
 					level.o logic.o helpers.o cli_view.o cli_controller.o \
 					ai_controller.o config.o test_cases.o test_helpers.o
 
@@ -30,6 +30,9 @@ subject.o : $(ENT)subject.h $(ENT)subject.cc map.o helpers.o
 
 player.o : $(ENT)player.h $(ENT)player.cc subject.o helpers.o
 	$(CC) $(CFLAGS) -c $(ENT)player.cc
+
+guide.o : $(ENT)guide.h $(ENT)guide.cc subject.o helpers.o
+	$(CC) $(CFLAGS) -c $(ENT)guide.cc
 
 enemy.o : $(ENT)enemy.h $(ENT)enemy.cc subject.o
 	$(CC) $(CFLAGS) -c $(ENT)enemy.cc	

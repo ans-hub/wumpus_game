@@ -43,7 +43,7 @@ public:
 private:
   Level         level_;
   bool          player_turn_;
-  Subject::ID   game_over_cause_;
+  Subject::ID   game_over_cause_; // change to `state_` - GameOverPit, etc.
   int           curr_level_;
   Rooms         rooms_history_;
 
@@ -53,6 +53,7 @@ private:
   void WumpsTurn();
   void BatsTurn();
   void PitsTurn();
+  void GuideTurn();
 };
 
 }  // namespace wumpus_game

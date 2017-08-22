@@ -80,6 +80,10 @@ void GuiView::ExecuteEvent(Event msg, int room)
       gui_helpers::RefreshInfoWidget(gui_, model_);      
       break;    
     
+    case Event::MEETS_GUIDE :
+      gui_helpers::ShowGuidePosition(gui_, model_, room);
+      break;
+
     case Event::UNKNOWN_COMMAND :
     case Event::MOVE_NOT_NEIGHBOR :
     case Event::SHOT_NOT_NEIGHBOR :
@@ -134,15 +138,21 @@ void ShowLevel(Windows& gui, const Logic& model)
   
   gui.wnd_main_->show();
   gui.wnd_main_->Redraw(level);
-  gui.wdg_map_->Activate();
+  gui.wdg_map_->ActivateRooms();
 }
 
 void HideLevel(Windows& gui, const Logic& model)
 {
-  if (model.GameOverCause() == Subject::ID::PLAYER)
-    gui.wdg_map_->Deactivate(false);
+  gui.wdg_map_->DeactivateRooms();
+  
+  RoomState state {};
+  if (model.GameOverCause() == Subject::ID::PLAYER) 
+    state = RoomState::LIGHT;
   else
-    gui.wdg_map_->Deactivate(true);    
+    state = RoomState::GATE;
+  
+  for (auto& r : gui.wdg_map_->wdg_rooms_) 
+    r->SetDeimage(state);    
 }
 
 void ShowErrorRoom(Windows& gui)
@@ -208,7 +218,7 @@ void ShowGameOver(Windows& gui, const Logic& logic)
 {
   switch (logic.GameOverCause()) {
     case Logic::SubjectID::PLAYER :
-      gui.wdg_player_->SetState(PlayerState::KILL_WUMP);
+      gui.wdg_player_->SetState(PlayerState::LEVEL_WIN);
       break;
     case Logic::SubjectID::WUMP :
       gui.wdg_player_->SetState(PlayerState::KILLED_BY_WUMP);
@@ -230,11 +240,26 @@ void ShowKilledOneWump(Windows& gui)
   gui.wdg_player_->SetState(PlayerState::KILL_WUMP);
 }
 
+void ShowGuidePosition(Windows& gui, const Logic& model, int room)
+{
+  auto& wdg_room = gui.wdg_map_->wdg_rooms_[room];
+  wdg_room->SetImage(RoomState::GUIDE);
+  wdg_room->LockImage();
+  
+  if (model.GameOverCause() != Subject::ID::PLAYER)
+    gui.wdg_player_->SetState(PlayerState::MEETS_CLOSED_GUIDE);
+}
+
 void MarkRoomAsVisited(Windows& gui, const Logic& model, int room)
 {
   auto level = model.CurrentLevel();
-  if (config::WhetherToMarkVisitedRooms(level))
-    gui.wdg_map_->wdg_rooms_[room]->SetMarked();
+
+  if (config::WhetherToMarkVisitedRooms(level)) {
+    auto& wdg_room = gui.wdg_map_->wdg_rooms_[room];
+
+    wdg_room->SetImage(RoomState::LIGHT);
+    wdg_room->SwitchOn();
+  }
 }
 
 }  // namespace gui_helpers

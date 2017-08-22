@@ -48,6 +48,8 @@ Images::Images()
   , img_bats_cv_{std::make_unique<Image>("resources/images/player_bats.png")}  
   , img_bats_uw_{std::make_unique<Image>("resources/images/player_bats_uw.png")}  
   , img_bats_bc_{std::make_unique<Image>("resources/images/player_bats_bc.png")}  
+  , img_guide_closed_cv_{std::make_unique<Image>("resources/images/guide_closed.png")}
+  , img_level_win_cv_{std::make_unique<Image>("resources/images/level_win.png")}
   , img_kill_wump_cv_{std::make_unique<Image>("resources/images/wump_killed.png")}
   , img_kill_wump_bc_{std::make_unique<Image>("resources/images/wump_killed_bc.png")}
   , img_kill_wump_hm_{std::make_unique<Image>("resources/images/wump_killed_hm.png")}
@@ -67,9 +69,10 @@ Images::Images()
   
   // WidgetRoom states
 
-  , img_room_on_cv_{std::make_unique<Image>("resources/images/room_on.png")}
-  , img_room_off_cv_{std::make_unique<Image>("resources/images/room_off.png")}
-  , img_room_mark_cv_{std::make_unique<Image>("resources/images/room_mark.png")}
+  , img_room_dark_cv_{std::make_unique<Image>("resources/images/room_dark.png")}
+  , img_room_light_cv_{std::make_unique<Image>("resources/images/room_light.png")}
+  , img_room_gate_cv_{std::make_unique<Image>("resources/images/room_gate.png")}
+  , img_room_guide_cv_{std::make_unique<Image>("resources/images/room_guide.png")}
   
   // WidgetInfo states
 
@@ -168,8 +171,13 @@ Fl_Image* Images::GetPlayerImage(PlayerState state, int level)
         return img_dead_pits_bc_.get();
       else      
         return img_dead_pits_cv_.get();
-      
-    
+
+    case PlayerState::MEETS_CLOSED_GUIDE :  
+      return img_guide_closed_cv_.get();
+
+    case PlayerState::LEVEL_WIN :  
+      return img_level_win_cv_.get(); 
+
     case PlayerState::FEELS_WUMP :
       if (level == 14) 
         return img_feels_wumps_hm_.get();
@@ -209,11 +217,12 @@ Fl_Image* Images::GetPlayerBackground(int level)
 Fl_Image* Images::GetRoomImage(RoomState state, int)
 {
   switch (state) {
-    case RoomState::ON : return img_room_on_cv_.get();
-    case RoomState::OFF : return img_room_off_cv_.get();
-    case RoomState::MARK : return img_room_mark_cv_.get();
+    case RoomState::DARK : return img_room_dark_cv_.get();
+    case RoomState::LIGHT : return img_room_light_cv_.get();
+    case RoomState::GATE : return img_room_gate_cv_.get();
+    case RoomState::GUIDE : return img_room_guide_cv_.get();
   }
-  return img_room_on_cv_.get();
+  return img_room_dark_cv_.get();
 }
 
 Fl_Image* Images::GetInfoImages(InfoStuff state, int level)
