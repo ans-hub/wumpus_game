@@ -41,6 +41,7 @@ void GuiView::ExecuteEvent(Event msg, int room)
       gui_helpers::ShowLevel(gui_, model_);
       gui_helpers::DisableFormButtons(gui_);
       gui_helpers::ShowPlayerPositionInstantly(gui_, model_);
+      gui_helpers::ShowGuidePositionAtStart(gui_, model_);      
       gui_helpers::RefreshInfoWidget(gui_, model_);
       break;
 
@@ -59,11 +60,13 @@ void GuiView::ExecuteEvent(Event msg, int room)
     case Event::READY_TO_INPUT : 
       gui_helpers::ShowFeels(gui_, model_, room);
       gui_helpers::MarkRoomAsVisited(gui_, model_, room);
+      gui_helpers::RefreshGuidePosition(gui_, model_);            
       break;
 
     case Event::ONE_WUMP_KILLED :
       gui_helpers::ShowPlayerShot(gui_);    
       gui_helpers::ShowKilledOneWump(gui_);
+      gui_helpers::RefreshGuidePosition(gui_, model_);      
       gui_helpers::RefreshInfoWidget(gui_, model_);
       break;
 
@@ -81,7 +84,7 @@ void GuiView::ExecuteEvent(Event msg, int room)
       break;    
     
     case Event::MEETS_GUIDE :
-      gui_helpers::ShowGuidePosition(gui_, model_, room);
+      gui_helpers::ShowGuideMeets(gui_, model_, room);
       break;
 
     case Event::UNKNOWN_COMMAND :
@@ -240,12 +243,62 @@ void ShowKilledOneWump(Windows& gui)
   gui.wdg_player_->SetState(PlayerState::KILL_WUMP);
 }
 
-void ShowGuidePosition(Windows& gui, const Logic& model, int room)
+void ShowGuidePositionAtStart(Windows& gui, const Logic& model)
 {
-  auto& wdg_room = gui.wdg_map_->wdg_rooms_[room];
-  wdg_room->SetImage(RoomState::GUIDE);
-  wdg_room->LockImage();
+  auto level_num  = model.CurrentLevel();
+  auto guide_room = model.GetLevel().guide_->GetCurrRoomNum();
+
+  if (config::WhetherToShowGuide(level_num)) {
+    auto& wdg_room = gui.wdg_map_->wdg_rooms_[guide_room];
+
+    wdg_room->UnlockImage();
+    wdg_room->SetImage(RoomState::GUIDE_CLOSED);
+    wdg_room->LockImage();
+  }  
+}
+
+void RefreshGuidePosition(Windows& gui, const Logic& model)
+{
+  auto& level_ent = model.GetLevel();
   
+  if (!helpers::AliveSubjectsCount(level_ent.wumps_)) {
+
+    int room = level_ent.guide_->GetCurrRoomNum();  
+    auto& wdg_room = gui.wdg_map_->wdg_rooms_[room];
+    
+    if (wdg_room->IsLockedImage()){
+      wdg_room->UnlockImage();  
+      wdg_room->SetImage(RoomState::GUIDE_OPENED);
+      wdg_room->LockImage();
+    }
+  }
+  
+}
+
+void ShowGuidePosition(Windows& gui, const Logic& model, bool)
+{
+  auto  level_num = model.CurrentLevel();
+  auto& level_ent = model.GetLevel();
+
+  if (config::WhetherToShowGuide(level_num)) {
+
+    int room = level_ent.guide_->GetCurrRoomNum();
+    auto& wdg_room = gui.wdg_map_->wdg_rooms_[room];
+
+    wdg_room->UnlockImage();
+    if (!helpers::AliveSubjectsCount(level_ent.wumps_)  ) 
+      wdg_room->SetImage(RoomState::GUIDE_OPENED);    
+    else 
+      wdg_room->SetImage(RoomState::GUIDE_CLOSED);
+    wdg_room->LockImage();
+  }
+}
+
+void ShowGuideMeets(Windows& gui, const Logic& model, int room)
+{
+  gui.wdg_map_->wdg_rooms_[room]->SetImage(RoomState::GUIDE_CLOSED);
+  gui.wdg_map_->wdg_rooms_[room]->LockImage();  
+
   if (model.GameOverCause() != Subject::ID::PLAYER)
     gui.wdg_player_->SetState(PlayerState::MEETS_CLOSED_GUIDE);
 }

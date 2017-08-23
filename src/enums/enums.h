@@ -54,7 +54,8 @@ namespace wumpus_game {
     DARK,
     LIGHT,
     GATE,
-    GUIDE
+    GUIDE_OPENED,
+    GUIDE_CLOSED
   };
 
   // Used by WidgetInfo

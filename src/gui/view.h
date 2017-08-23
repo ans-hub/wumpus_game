@@ -67,7 +67,9 @@ namespace gui_helpers {
   void ShowFeels(Windows&, const Logic&, int);
   void ShowGameOver(Windows&, const Logic&);
   void ShowKilledOneWump(Windows&);
-  void ShowGuidePosition(Windows&, const Logic&, int room);
+  void ShowGuidePositionAtStart(Windows&, const Logic&);
+  void RefreshGuidePosition(Windows&, const Logic&);
+  void ShowGuideMeets(Windows&, const Logic&, int room);
   void MarkRoomAsVisited(Windows&, const Logic&, int room);
 
 }  // namespace gui_helpers

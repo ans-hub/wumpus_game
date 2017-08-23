@@ -49,6 +49,7 @@ Images::Images()
   , img_bats_uw_{std::make_unique<Image>("resources/images/player_bats_uw.png")}  
   , img_bats_bc_{std::make_unique<Image>("resources/images/player_bats_bc.png")}  
   , img_guide_closed_cv_{std::make_unique<Image>("resources/images/guide_closed.png")}
+  , img_guide_opened_cv_{std::make_unique<Image>("resources/images/guide_opened.png")}
   , img_level_win_cv_{std::make_unique<Image>("resources/images/level_win.png")}
   , img_kill_wump_cv_{std::make_unique<Image>("resources/images/wump_killed.png")}
   , img_kill_wump_bc_{std::make_unique<Image>("resources/images/wump_killed_bc.png")}
@@ -72,7 +73,8 @@ Images::Images()
   , img_room_dark_cv_{std::make_unique<Image>("resources/images/room_dark.png")}
   , img_room_light_cv_{std::make_unique<Image>("resources/images/room_light.png")}
   , img_room_gate_cv_{std::make_unique<Image>("resources/images/room_gate.png")}
-  , img_room_guide_cv_{std::make_unique<Image>("resources/images/room_guide.png")}
+  , img_room_guide_op_cv_{std::make_unique<Image>("resources/images/room_guide_op.png")}
+  , img_room_guide_cl_cv_{std::make_unique<Image>("resources/images/room_guide_cl.png")}
   
   // WidgetInfo states
 
@@ -220,7 +222,8 @@ Fl_Image* Images::GetRoomImage(RoomState state, int)
     case RoomState::DARK : return img_room_dark_cv_.get();
     case RoomState::LIGHT : return img_room_light_cv_.get();
     case RoomState::GATE : return img_room_gate_cv_.get();
-    case RoomState::GUIDE : return img_room_guide_cv_.get();
+    case RoomState::GUIDE_CLOSED : return img_room_guide_cl_cv_.get();
+    case RoomState::GUIDE_OPENED : return img_room_guide_op_cv_.get();
   }
   return img_room_dark_cv_.get();
 }

@@ -29,12 +29,13 @@ struct WidgetRoom : Fl_Button
     , level_{level}
     , marked_{value() ? true : false}
     , locked_{false}
-    , state_images_{}
+    , images_{}
   {
-    state_images_[State::DARK] = images.GetRoomImage(State::DARK, level_);
-    state_images_[State::LIGHT] = images.GetRoomImage(State::LIGHT, level_);
-    state_images_[State::GATE] = images.GetRoomImage(State::GATE, level_);
-    state_images_[State::GUIDE] = images.GetRoomImage(State::GUIDE, level_);
+    images_[State::DARK] = images.GetRoomImage(State::DARK, level_);
+    images_[State::LIGHT] = images.GetRoomImage(State::LIGHT, level_);
+    images_[State::GATE] = images.GetRoomImage(State::GATE, level_);
+    images_[State::GUIDE_OPENED] = images.GetRoomImage(State::GUIDE_OPENED, level_);
+    images_[State::GUIDE_CLOSED] = images.GetRoomImage(State::GUIDE_CLOSED, level_);
 
     SetImage(State::DARK);
     SetDeimage(State::GATE); 
@@ -42,21 +43,22 @@ struct WidgetRoom : Fl_Button
     box(FL_NO_BOX);
   }
   int  GetNum() const { return num_; }
-  void SetImage(State state) { if (!locked_) image(state_images_[state]); }
-  void SetDeimage(State state) { if (!locked_) deimage(state_images_[state]); }
+  void SetImage(State state) { if (!locked_) image(images_[state]); }
+  void SetDeimage(State state) { if (!locked_) deimage(images_[state]); }
 
   void SwitchOn() { value(1); }
   void SwitchOff() { value(0); }
 
   void LockImage() { locked_ = true; }
   void UnlockImage() { locked_ = false; }
+  bool IsLockedImage() { return locked_; }
 
 private:
   int       num_;
   int       level_;
   bool      marked_;
   bool      locked_;
-  StateMap  state_images_;
+  StateMap  images_;
 
   int handle(int) override;
 };

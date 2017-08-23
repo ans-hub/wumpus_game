@@ -41,7 +41,7 @@ namespace config {
   int           GetBatsCount(int level);
   int           GetPitsCount(int level);
   
-  // Widget_netdraw.h settings
+  // Widget_netdraw settings
   
   extern double edge_len;           // see terms inside widget_netdraw.h
   extern int    room_btn_size; 
@@ -56,6 +56,7 @@ namespace config {
   double        GetRotateMapStep(int level);  
   double        GetRotateMapSpeed(int level);
   bool          WhetherToMarkVisitedRooms(int level);
+  bool          WhetherToShowGuide(int level);
   void          ChangeNetdrawParams(NetdrawParams&, int level);
   
 }  // namespace config

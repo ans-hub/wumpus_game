@@ -314,6 +314,17 @@ bool config::WhetherToMarkVisitedRooms(int level)
   }
 }
 
+bool config::WhetherToShowGuide(int level)
+{
+  switch(level) {
+    case 1 : case 2 : case 3 : case 4 : case 14 :
+      return true;
+    default :
+      return false;
+  }
+}
+
+
 // Changes NetdrawParams& object (used by WidgetNetdraw) in depends of level
 // Called in every `rotate_map_step` seconds from WidgetMap to emulate rotating
 // of WidgetNetdraw
