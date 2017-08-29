@@ -3,11 +3,24 @@
 // Author: Anton Novoselov, 2017
 // File: RAII struct managing image resources in game
 
-// This class based on convience that all raw pointers which are taken
-// from unique_ptrs by get(), they are not destroyed and not changed by
-// classes used its
+// This class based on some conviences:
 
-// Postfixes used in names of variables :
+// - all raw pointers which are taken from unique_ptrs by get(), they are 
+//   not destroyed and not changed by classes used its. The first reason
+//   why I not return unique_ptr but return raw pointer is readable context
+//   in entities classes. The second reason is that this is not library.
+
+// - access to ptrs of Images is carried out through vector of vector since 
+//   complexity is constant. But in this case I need some conviences for
+//   guarantee that while access to items of vector I have not exceptions
+//   such as `out_of_range`. For this reasons I set convience, that all enums
+//   have last field `count`, each image vector is initialized by this value.
+//   All nested vectors are initialized by maximum scenes count. And the last
+//   convience is that base scene should have all values of enums in vectors,
+//   since if in the scene we have nullptr to image, we should use image of 
+//   base scene
+
+// Postfixes used in names of files :
 //  cv - cave theme
 //  uw - underwater theme
 //  dt - death town
@@ -20,260 +33,196 @@
 namespace wumpus_game {
 
 Images::Images()
-  
-  // FormMain background
+  : img_path_     {config::GetImagesPath()}
+  , wnd_main_     {static_cast<int>(Scene::count)}
+  , wdg_player_   { }
+  , wdg_player_bg_{static_cast<int>(Scene::count)}
+  , wdg_room_     { }
+  , wdg_info_     { }
+{
+  // Resizing vectors (see note #1 after code)
 
-  : img_cv_{std::make_unique<Image>("resources/images/cv_main.png")}
-  , img_uw_{std::make_unique<Image>("resources/images/uw_main.png")}
-  , img_dt_{std::make_unique<Image>("resources/images/dt_main.png")}
-  , img_bc_{std::make_unique<Image>("resources/images/bc_main.png")}
-  , img_lb_{std::make_unique<Image>("resources/images/lb_main.png")}
-  , img_hm_{std::make_unique<Image>("resources/images/hm_main.png")}
+  helpers::ResizeVector2d(
+    wdg_player_,
+    static_cast<int>(Scene::count),
+    static_cast<int>(PlayerState::count)
+  );
+
+  helpers::ResizeVector2d(
+    wdg_room_,
+    static_cast<int>(Scene::count),
+    static_cast<int>(RoomState::count)
+  );
+
+  helpers::ResizeVector2d(
+    wdg_info_,
+    static_cast<int>(Scene::count),
+    static_cast<int>(InfoStuff::count)
+  );
+
+  // FormMain background
+  
+  LoadImage(wnd_main_, Scene::CAVE, "cv_main.png"); 
+  LoadImage(wnd_main_, Scene::UNDERWATER, "uw_main.png"); 
+  LoadImage(wnd_main_, Scene::DEAD_TOWN, "dt_main.png"); 
+  LoadImage(wnd_main_, Scene::BROKEN_CPU, "bc_main.png"); 
+  LoadImage(wnd_main_, Scene::LAST_BATTLE, "lb_main.png"); 
+  LoadImage(wnd_main_, Scene::SWEET_HOME, "hm_main.png");
+  
+  // WidgetPlayer states
+
+  auto& player_scene_cv = wdg_player_[static_cast<int>(Scene::CAVE)];
+  
+  LoadImage(player_scene_cv, PlayerState::STAY, "player_stay.png");
+  LoadImage(player_scene_cv, PlayerState::SHOT, "player_shot.png");
+  LoadImage(player_scene_cv, PlayerState::WALK, "player_walk.png");
+  LoadImage(player_scene_cv, PlayerState::MOVED_BY_BATS, "player_bats.png");
+  LoadImage(player_scene_cv, PlayerState::MEETS_CLOSED_GUIDE, "guide_closed.png");
+  LoadImage(player_scene_cv, PlayerState::LEVEL_WIN, "level_win.png");
+  LoadImage(player_scene_cv, PlayerState::KILL_WUMP, "wump_killed.png");
+  LoadImage(player_scene_cv, PlayerState::HAVENT_ARROWS, "unknown_state.png");
+  LoadImage(player_scene_cv, PlayerState::UNKNOWN_STATE, "unknown_state.png");
+  LoadImage(player_scene_cv, PlayerState::KILLED_BY_WUMP, "player_dead_w.png");
+  LoadImage(player_scene_cv, PlayerState::KILLED_BY_PITS, "player_dead_p.png");
+  LoadImage(player_scene_cv, PlayerState::FEELS_WUMP, "feels_wumps.png");
+  LoadImage(player_scene_cv, PlayerState::FEELS_BATS, "feels_bats.png");
+  LoadImage(player_scene_cv, PlayerState::FEELS_PITS, "feels_pits.png");
+  
+  auto& player_scene_uw = wdg_player_[static_cast<int>(Scene::UNDERWATER)];
+  
+  LoadImage(player_scene_uw, PlayerState::MOVED_BY_BATS, "player_bats_uw.png");
+  LoadImage(player_scene_uw, PlayerState::FEELS_BATS, "feels_bats_uw.png");
+
+  auto& player_scene_bc = wdg_player_[static_cast<int>(Scene::BROKEN_CPU)];
+  
+  LoadImage(player_scene_bc, PlayerState::SHOT, "player_shot_bc.png");
+  LoadImage(player_scene_bc, PlayerState::MOVED_BY_BATS, "player_bats_bc.png");
+  LoadImage(player_scene_bc, PlayerState::KILL_WUMP, "wump_killed_bc.png");
+  LoadImage(player_scene_bc, PlayerState::KILLED_BY_PITS, "player_dead_p_bc.png");
+  LoadImage(player_scene_bc, PlayerState::FEELS_BATS, "feels_bats_bc.png");
+  LoadImage(player_scene_bc, PlayerState::FEELS_PITS, "feels_pits_bc.png");
+  
+  auto& player_scene_hm = wdg_player_[static_cast<int>(Scene::SWEET_HOME)];
+
+  LoadImage(player_scene_hm, PlayerState::WALK, "player_walk_hm.png");
+  LoadImage(player_scene_hm, PlayerState::KILL_WUMP, "wump_killed_hm.png");
+  LoadImage(player_scene_hm, PlayerState::FEELS_WUMP, "feels_wumps_hm.png");
   
   // WidgetPlayer background
   
-  , img_player_cv_{std::make_unique<Image>("resources/images/player_cv.png")}
-  , img_player_uw_{std::make_unique<Image>("resources/images/player_uw.png")}
-  , img_player_bc_{std::make_unique<Image>("resources/images/player_bc.png")}
-  , img_player_hm_{std::make_unique<Image>("resources/images/player_hm.png")}
-
-  // WidgetPlayer states
-  
-  , img_stay_cv_{std::make_unique<Image>("resources/images/player_stay.png")}
-  , img_shot_cv_{std::make_unique<Image>("resources/images/player_shot.png")}
-  , img_shot_bc_{std::make_unique<Image>("resources/images/player_shot_bc.png")}
-  , img_shot_lb_{std::make_unique<Image>("resources/images/player_shot_lb.png")}
-  , img_walk_cv_{std::make_unique<Image>("resources/images/player_walk.png")}
-  , img_walk_hm_{std::make_unique<Image>("resources/images/player_walk_hm.png")}
-  , img_bats_cv_{std::make_unique<Image>("resources/images/player_bats.png")}  
-  , img_bats_uw_{std::make_unique<Image>("resources/images/player_bats_uw.png")}  
-  , img_bats_bc_{std::make_unique<Image>("resources/images/player_bats_bc.png")}  
-  , img_guide_closed_cv_{std::make_unique<Image>("resources/images/guide_closed.png")}
-  , img_guide_opened_cv_{std::make_unique<Image>("resources/images/guide_opened.png")}
-  , img_level_win_cv_{std::make_unique<Image>("resources/images/level_win.png")}
-  , img_kill_wump_cv_{std::make_unique<Image>("resources/images/wump_killed.png")}
-  , img_kill_wump_bc_{std::make_unique<Image>("resources/images/wump_killed_bc.png")}
-  , img_kill_wump_hm_{std::make_unique<Image>("resources/images/wump_killed_hm.png")}
-  , img_no_arrows_cv_{std::make_unique<Image>("resources/images/unknown_state.png")}
-  , img_unknown_cv_{std::make_unique<Image>("resources/images/unknown_state.png")}
-  , img_dead_wump_cv_{std::make_unique<Image>("resources/images/player_dead_w.png")}
-  , img_dead_pits_cv_{std::make_unique<Image>("resources/images/player_dead_p.png")}
-  , img_dead_pits_bc_{std::make_unique<Image>("resources/images/player_dead_p_bc.png")}
-  , img_feels_box_cv_{std::make_unique<Image>("resources/images/feels_box.png")}
-  , img_feels_bats_cv_{std::make_unique<Image>("resources/images/feels_bats.png")}
-  , img_feels_bats_uw_{std::make_unique<Image>("resources/images/feels_bats_uw.png")}
-  , img_feels_bats_bc_{std::make_unique<Image>("resources/images/feels_bats_bc.png")}
-  , img_feels_pits_cv_{std::make_unique<Image>("resources/images/feels_pits.png")}
-  , img_feels_pits_bc_{std::make_unique<Image>("resources/images/feels_pits_bc.png")}
-  , img_feels_wumps_cv_{std::make_unique<Image>("resources/images/feels_wumps.png")}
-  , img_feels_wumps_hm_{std::make_unique<Image>("resources/images/feels_wumps_hm.png")}
+  LoadImage(wdg_player_bg_, Scene::CAVE, "player_cv.png"); 
+  LoadImage(wdg_player_bg_, Scene::UNDERWATER, "player_uw.png"); 
+  LoadImage(wdg_player_bg_, Scene::BROKEN_CPU, "player_bc.png"); 
+  LoadImage(wdg_player_bg_, Scene::SWEET_HOME, "player_hm.png"); 
   
   // WidgetRoom states
 
-  , img_room_dark_cv_{std::make_unique<Image>("resources/images/room_dark.png")}
-  , img_room_light_cv_{std::make_unique<Image>("resources/images/room_light.png")}
-  , img_room_gate_cv_{std::make_unique<Image>("resources/images/room_gate.png")}
-  , img_room_guide_op_cv_{std::make_unique<Image>("resources/images/room_guide_op.png")}
-  , img_room_guide_cl_cv_{std::make_unique<Image>("resources/images/room_guide_cl.png")}
+  auto& room_scene_cv = wdg_room_[static_cast<int>(Scene::CAVE)];
+  
+  LoadImage(room_scene_cv, RoomState::DARK, "room_dark.png"); 
+  LoadImage(room_scene_cv, RoomState::LIGHT, "room_light.png"); 
+  LoadImage(room_scene_cv, RoomState::GATE, "room_gate.png"); 
+  LoadImage(room_scene_cv, RoomState::GUIDE_OPENED, "room_guide_op.png"); 
+  LoadImage(room_scene_cv, RoomState::GUIDE_CLOSED, "room_guide_cl.png"); 
   
   // WidgetInfo states
 
-  , wdg_info_cover_cv_{std::make_unique<Image>("resources/images/info_bg.png")}
-  , wdg_info_level_cv_{std::make_unique<Image>("resources/images/info_level.png")}
-  , wdg_info_wumps_cv_{std::make_unique<Image>("resources/images/info_wumps.png")}
-  , wdg_info_wumps_hm_{std::make_unique<Image>("resources/images/info_wumps_hm.png")}
-  , wdg_info_bats_cv_{std::make_unique<Image>("resources/images/info_bats.png")}
-  , wdg_info_bats_uw_{std::make_unique<Image>("resources/images/info_bats_uw.png")}
-  , wdg_info_bats_bc_{std::make_unique<Image>("resources/images/info_bats_bc.png")}
-  , wdg_info_pits_cv_{std::make_unique<Image>("resources/images/info_pits.png")}
-  , wdg_info_pits_bc_{std::make_unique<Image>("resources/images/info_pits_bc.png")}
-  , wdg_info_arrows_cv_{std::make_unique<Image>("resources/images/info_arrows.png")}
-  , wdg_info_arrows_lb_{std::make_unique<Image>("resources/images/info_arrows_lb.png")}
-  , wdg_info_arrows_bc_{std::make_unique<Image>("resources/images/info_arrows_bc.png")}
-  , wdg_info_arrows_hm_{std::make_unique<Image>("resources/images/info_arrows_hm.png")}
-  , wdg_info_continue_cv_{std::make_unique<Image>("resources/images/info_continue.png")}
-  , wdg_info_continue_de_cv_{std::make_unique<Image>("resources/images/info_continue_de.png")}
-{ }
+  auto& info_scene_cv = wdg_info_[static_cast<int>(Scene::CAVE)];
+
+  LoadImage(info_scene_cv, InfoStuff::COVER, "info_bg.png"); 
+  LoadImage(info_scene_cv, InfoStuff::ARROWS, "info_arrows.png"); 
+  LoadImage(info_scene_cv, InfoStuff::LEVEL, "info_level.png"); 
+  LoadImage(info_scene_cv, InfoStuff::WUMPS, "info_wumps.png"); 
+  LoadImage(info_scene_cv, InfoStuff::BATS, "info_bats.png"); 
+  LoadImage(info_scene_cv, InfoStuff::PITS, "info_pits.png"); 
+  LoadImage(info_scene_cv, InfoStuff::CONTINUE_IMAGE, "info_continue.png"); 
+  LoadImage(info_scene_cv, InfoStuff::CONTINUE_DEIMAGE, "info_continue_de.png");
+  
+  auto& info_scene_uw = wdg_info_[static_cast<int>(Scene::UNDERWATER)];
+  
+  LoadImage(info_scene_uw, InfoStuff::BATS, "info_bats_uw.png");
+
+  auto& info_scene_bc = wdg_info_[static_cast<int>(Scene::BROKEN_CPU)];
+  
+  LoadImage(info_scene_bc, InfoStuff::BATS, "info_bats_bc.png");
+  LoadImage(info_scene_bc, InfoStuff::PITS, "info_pits_bc.png");
+  LoadImage(info_scene_bc, InfoStuff::ARROWS, "info_arrows_bc.png");
+  
+  auto& info_scene_lb = wdg_info_[static_cast<int>(Scene::LAST_BATTLE)];
+  
+  LoadImage(info_scene_lb, InfoStuff::ARROWS, "info_arrows_lb.png");
+
+  auto& info_scene_hm = wdg_info_[static_cast<int>(Scene::SWEET_HOME)];
+
+  LoadImage(info_scene_hm, InfoStuff::WUMPS, "info_wumps_hm.png");
+  LoadImage(info_scene_hm, InfoStuff::ARROWS, "info_arrows_hm.png");
+}
 
 Fl_Image* Images::GetMainBackground(int level, int w, int h)
 {
-  switch (level) {
-    case 1 : case 2 : case 3 : default :
-      helpers::ResizeImage(img_cv_, w, h);
-      return img_cv_.get();
-    case 4 : case 5 : case 6 :
-      helpers::ResizeImage(img_uw_, w, h);
-      return img_uw_.get();
-    case 7 : case 8 : case 9 : case 10 :
-      helpers::ResizeImage(img_dt_, w, h);
-      return img_dt_.get();
-    case 11 : case 12 :
-      helpers::ResizeImage(img_bc_, w, h);
-      return img_bc_.get();
-    case 13 :
-      helpers::ResizeImage(img_lb_, w, h);   
-      return img_lb_.get();
-    case 14 :
-      helpers::ResizeImage(img_hm_, w, h);   
-      return img_hm_.get();
+  auto scene = static_cast<int>(config::GetSceneType(level));
+  auto img   = wnd_main_[scene].get();
+
+  if (!img) {
+    scene = static_cast<int>(config::GetDefaultScene());
   }
-  return img_cv_.get();
+  helpers::ResizeImage(wnd_main_[scene], w, h);
+  return wnd_main_[scene].get();
 }
 
 Fl_Image* Images::GetPlayerImage(PlayerState state, int level)
 {
-  switch (state) {
-
-    case PlayerState::STAY : default :
-      return img_stay_cv_.get();
-    
-    case PlayerState::SHOT :
-      if (level == 11 || level == 12)
-        return img_shot_bc_.get();   
-      else if (level == 13) 
-        return img_shot_lb_.get();
-      else if (level == 14)
-        return img_walk_hm_.get();
-      else
-        return img_shot_cv_.get();
-    
-    case PlayerState::WALK :
-      if (level == 14) 
-        return img_walk_hm_.get();
-      else
-        return img_walk_cv_.get();
-    
-    case PlayerState::MOVED_BY_BATS :
-      if (level == 4 || level == 5 || level == 6)
-        return img_bats_uw_.get();
-      else if (level == 11 || level == 12)
-        return img_bats_bc_.get();
-      else
-        return img_bats_cv_.get();
-    
-    case PlayerState::KILL_WUMP : 
-      if (level == 11 || level == 12)
-        return img_kill_wump_bc_.get();              
-      else if (level == 14)
-        return img_kill_wump_hm_.get();
-      else 
-        return img_kill_wump_cv_.get();
-    
-    case PlayerState::HAVENT_ARROWS :
-      return img_no_arrows_cv_.get();
-    
-    case PlayerState::UNKNOWN_STATE :
-      return img_unknown_cv_.get();
-    
-    case PlayerState::KILLED_BY_WUMP :
-      return img_dead_wump_cv_.get();
-    
-    case PlayerState::KILLED_BY_PITS :
-      if (level == 11 || level == 12)
-        return img_dead_pits_bc_.get();
-      else      
-        return img_dead_pits_cv_.get();
-
-    case PlayerState::MEETS_CLOSED_GUIDE :  
-      return img_guide_closed_cv_.get();
-
-    case PlayerState::LEVEL_WIN :  
-      return img_level_win_cv_.get(); 
-
-    case PlayerState::FEELS_WUMP :
-      if (level == 14) 
-        return img_feels_wumps_hm_.get();
-      else
-        return img_feels_wumps_cv_.get();
-    
-    case PlayerState::FEELS_BATS :
-      if (level == 4 || level == 5 || level == 6)
-        return img_feels_bats_uw_.get();            
-      if (level == 11 || level == 12)
-        return img_feels_bats_bc_.get();
-      else
-        return img_feels_bats_cv_.get();
-    
-    case PlayerState::FEELS_PITS :
-      if (level == 11 || level == 12)
-        return img_feels_pits_bc_.get();
-      else
-        return img_feels_pits_cv_.get();
+  auto scene = static_cast<int>(config::GetSceneType(level));
+  auto action = static_cast<int>(state);
+  auto img   = wdg_player_[scene][action].get();
+  
+  if (img) 
+    return img;
+  else {
+    scene = static_cast<int>(config::GetDefaultScene());
+    return wdg_player_[scene][action].get();
   }
 }
 
 Fl_Image* Images::GetPlayerBackground(int level)
 {
-  if (level == 4 || level == 5 || level == 6)
-    return img_player_uw_.get();
+  auto scene = static_cast<int>(config::GetSceneType(level));
+  auto img   = wdg_player_bg_[scene].get();
 
-  if (level == 11 || level == 12)
-    return img_player_bc_.get();
-  
-  if (level == 14)
-    return img_player_hm_.get();
-  
-  return img_player_cv_.get();
+  if (img)
+    return img;
+  else {
+    scene = static_cast<int>(config::GetDefaultScene());
+    return wdg_player_bg_[scene].get();
+  }
 }
 
-Fl_Image* Images::GetRoomImage(RoomState state, int)
+Fl_Image* Images::GetRoomImage(RoomState state, int level)
 {
-  switch (state) {
-    case RoomState::DARK : return img_room_dark_cv_.get();
-    case RoomState::LIGHT : return img_room_light_cv_.get();
-    case RoomState::GATE : return img_room_gate_cv_.get();
-    case RoomState::GUIDE_CLOSED : return img_room_guide_cl_cv_.get();
-    case RoomState::GUIDE_OPENED : return img_room_guide_op_cv_.get();
+  auto scene = static_cast<int>(config::GetSceneType(level));
+  auto action = static_cast<int>(state);
+  auto img   = wdg_room_[scene][action].get();
+  
+  if (img) 
+    return img;
+  else {
+    scene = static_cast<int>(config::GetDefaultScene());
+    return wdg_room_[scene][action].get();
   }
-  return img_room_dark_cv_.get();
 }
 
 Fl_Image* Images::GetInfoImages(InfoStuff state, int level)
 {
-  switch (state) {
-    case InfoStuff::COVER :
-      return wdg_info_cover_cv_.get();
-
-    case InfoStuff::ARROWS :
-      if (level == 11 || level == 12)
-        return wdg_info_arrows_bc_.get(); 
-      if (level == 13)
-        return wdg_info_arrows_lb_.get();
-      else if (level == 14) 
-        return wdg_info_arrows_hm_.get();
-      else 
-        return wdg_info_arrows_cv_.get();     
-
-    case InfoStuff::PITS :
-      if (level == 11 || level == 12)
-        return wdg_info_pits_bc_.get();
-      else
-        return wdg_info_pits_cv_.get();
-    
-    case InfoStuff::BATS :
-      if (level == 4 || level == 5 || level == 6)
-        return wdg_info_bats_uw_.get();    
-      else if (level == 11 || level == 12)
-        return wdg_info_bats_bc_.get();
-      else
-        return wdg_info_bats_cv_.get();
-
-    case InfoStuff::WUMPS :
-      if (level == 14)
-        return wdg_info_wumps_hm_.get();
-      else
-        return wdg_info_wumps_cv_.get();
-    
-    case InfoStuff::LEVEL :
-      return wdg_info_level_cv_.get();
-    
-    case InfoStuff::CONTINUE_IMAGE :
-      return wdg_info_continue_cv_.get();
-    
-    case InfoStuff::CONTINUE_DEIMAGE :
-      return wdg_info_continue_de_cv_.get();
+  auto scene = static_cast<int>(config::GetSceneType(level));
+  auto action = static_cast<int>(state);
+  auto img   = wdg_info_[scene][action].get();
+  
+  if (img) 
+    return img;
+  else {
+    scene = static_cast<int>(config::GetDefaultScene());
+    return wdg_info_[scene][action].get();
   }
-  return wdg_info_cover_cv_.get();
 }
 
 namespace helpers {
@@ -288,6 +237,19 @@ void ResizeImage(Images::ImagePtr& i, int w, int h)
   delete old;
 }
 
+void ResizeVector2d(Images::Vector2d& v, int w, int h)
+{
+  v.resize(w);                  
+  for (auto& p : v) {
+    p.resize(h);
+  }
+}
+
+
 }  // namespace helpers
 
 }  // namespace wumpus_game
+
+// Note #1 : resizing Vector2d by helper function needs to prevent copy semantic
+// if initialize through initializer_list (since init_list not support move semantic,
+// but it needs to initialize vector by empty unique_ptrs)

@@ -7,12 +7,14 @@
 #define IMAGES_H
 
 #include <memory>
+#include <vector>
 
 #include <FL/Fl.H>
 #include <FL/Fl_Image.H>
 #include <FL/Fl_PNG_Image.H>
 
 #include "enums/enums.h"
+#include "config.h"
 
 namespace wumpus_game {
 
@@ -20,6 +22,8 @@ struct Images
 {
   using Image = Fl_PNG_Image;
   using ImagePtr = std::unique_ptr<Image>;
+  using Vector = std::vector<ImagePtr>;   // access by [scene]
+  using Vector2d = std::vector<Vector>;   // access by [scene][action]
 
   Images();
 
@@ -29,86 +33,34 @@ struct Images
   Fl_Image* GetRoomImage(RoomState, int level);
   Fl_Image* GetInfoImages(InfoStuff, int level);
 
-  // FormMain background
+private:
+  std::string img_path_;
 
-  ImagePtr img_cv_;
-  ImagePtr img_uw_;
-  ImagePtr img_dt_;
-  ImagePtr img_bc_;
-  ImagePtr img_lb_;
-  ImagePtr img_hm_;
-
-  // WidgetPlayer background
-
-  ImagePtr img_player_cv_;
-  ImagePtr img_player_uw_;
-  ImagePtr img_player_bc_;
-  ImagePtr img_player_hm_;
-
-  // WidgetPlayer states
-
-  ImagePtr img_stay_cv_;
-  ImagePtr img_shot_cv_;
-  ImagePtr img_shot_bc_;
-  ImagePtr img_shot_lb_;
-  ImagePtr img_walk_cv_;
-  ImagePtr img_walk_hm_;
-  ImagePtr img_bats_cv_;
-  ImagePtr img_bats_uw_;
-  ImagePtr img_bats_bc_;
-  ImagePtr img_guide_closed_cv_;
-  ImagePtr img_guide_opened_cv_;
-  ImagePtr img_level_win_cv_;
-  ImagePtr img_kill_wump_cv_;
-  ImagePtr img_kill_wump_bc_;
-  ImagePtr img_kill_wump_hm_;
-  ImagePtr img_no_arrows_cv_;
-  ImagePtr img_unknown_cv_;
-  ImagePtr img_dead_wump_cv_;
-  ImagePtr img_dead_pits_cv_;
-  ImagePtr img_dead_pits_bc_;
-  ImagePtr img_feels_box_cv_;
-  ImagePtr img_feels_bats_cv_;
-  ImagePtr img_feels_bats_uw_;
-  ImagePtr img_feels_bats_bc_;
-  ImagePtr img_feels_pits_cv_;
-  ImagePtr img_feels_pits_bc_;
-  ImagePtr img_feels_wumps_cv_;
-  ImagePtr img_feels_wumps_hm_;
-
-  // WidgetRoom states
-
-  ImagePtr img_room_dark_cv_;
-  ImagePtr img_room_light_cv_;
-  ImagePtr img_room_gate_cv_;
-  ImagePtr img_room_guide_op_cv_;
-  ImagePtr img_room_guide_cl_cv_;
-
-  // WidgetInfo states
-
-  ImagePtr wdg_info_cover_cv_;
-  ImagePtr wdg_info_level_cv_;
-  ImagePtr wdg_info_wumps_cv_;
-  ImagePtr wdg_info_wumps_hm_;
-  ImagePtr wdg_info_bats_cv_;
-  ImagePtr wdg_info_bats_uw_;
-  ImagePtr wdg_info_bats_bc_;
-  ImagePtr wdg_info_pits_cv_;
-  ImagePtr wdg_info_pits_bc_;
-  ImagePtr wdg_info_arrows_cv_;
-  ImagePtr wdg_info_arrows_lb_;
-  ImagePtr wdg_info_arrows_bc_;
-  ImagePtr wdg_info_arrows_hm_;
-  ImagePtr wdg_info_continue_cv_;
-  ImagePtr wdg_info_continue_de_cv_;
+  Vector    wnd_main_;
+  Vector2d  wdg_player_;
+  Vector    wdg_player_bg_;
+  Vector2d  wdg_room_;
+  Vector2d  wdg_info_;
+  
+  template <class T>
+  void LoadImage (Vector& v, T enums, std::string&& fname) // see note #1 after code
+  {
+    auto full_path = (img_path_ + fname);
+    v[static_cast<int>(enums)] = std::make_unique<Image>(full_path.c_str());
+  }   
 };
 
 namespace helpers {
 
   void ResizeImage(Images::ImagePtr&, int, int);
+  void ResizeVector2d(Images::Vector2d&, int, int);
 
 }  // namespace helpers
 
 }  // namespace wumpus_game
 
 #endif  // IMAGES_H
+
+// Note #1 : this is member funcion since I want have a readable constructor
+// This is not reduce perfomance since Images class is a singleton and adding
+// one member function is not reduce perfomance so much as in not singleton 
