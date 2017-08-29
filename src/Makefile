@@ -61,7 +61,7 @@ level.o : $(ENT)level.h $(ENT)level.cc map.o wump.o bat.o pit.o
 logic.o : $(ENT)logic.h $(ENT)logic.cc level.o $(ENM)enums.h $(SRC)3rdparty/observable.h config.o
 	$(CC) $(CFLAGS) -c $(ENT)logic.cc
 
-images.o : $(GUI)images.h $(GUI)images.cc $(ENM)enums.h
+images.o : $(GUI)images.h $(GUI)images.cc $(ENM)enums.h config.o
 	$(CC) $(CFLAGS) -c $(GUI)images.cc
 
 music.o : $(SRC)music/music.h $(SRC)music/music.cc $(ENM)enums.h config.o logic.o

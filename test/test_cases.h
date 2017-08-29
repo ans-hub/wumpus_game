@@ -15,6 +15,7 @@
 
 #include "3rdparty/test_toolkit.h"
 #include "3rdparty/rand_toolkit.h"
+#include "3rdparty/audio_out.h"
 
 #include "config.h"
 #include "entities/map.h"
@@ -30,6 +31,7 @@
 #include "entities/helpers.h"
 #include "test_helpers.h"
 #include "ai/controller.h"
+#include "gui/images.h"
 
 namespace wumpus_game {
 
@@ -101,6 +103,13 @@ namespace test_logic_behavior {
 namespace test_experiments {
 
   int experimental();
+
+}
+
+namespace test_leaks {
+
+  void images_class();
+  void audio_out_class();
 
 }
 

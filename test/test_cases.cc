@@ -631,4 +631,22 @@ namespace test_logic_behavior {
   
 }  // namespace test_logic_behavior
 
+namespace test_leaks {
+  
+void images_class()
+{
+  std::cerr << "Test create and destroy of Images instance" << '\n';  
+  Images img{};
+}
+  
+void audio_out_class()
+{
+  std::cerr << "Test create, using and destroy of AudioOut instance" << '\n';    
+  AudioOut audio{};
+  audio.Play("../src/resources/sounds/wump_killed.wav");
+  audio.Play("../src/resources/sounds/wump_killed.wav");
+ }
+  
+}  // namespace test_leaks
+
 }  // namespace wumpus_game

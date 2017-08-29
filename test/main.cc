@@ -33,6 +33,9 @@ int main()
   status += test_logic_behavior::init();
   status += test_logic_behavior::for_exceptions();
 
+  test_leaks::images_class();
+  test_leaks::audio_out_class();
+
   return status;
   
 }

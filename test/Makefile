@@ -3,7 +3,8 @@ CC = g++
 SRC = ../src/
 ENT = $(SRC)entities/
 CFG = $(SRC)settings/
-AUD = $(SRC)audio/
+GUI = $(SRC)gui/
+AUD = $(SRC)3rdparty/
 HLP = $(ENT)helpers/
 CLI = $(SRC)cli/
 ENM = $(SRC)enums/
@@ -13,8 +14,8 @@ CFLAGS = -I $(SRC) -ansi -pedantic-errors -Wall -Wextra -std=c++14 -g -L $(SRC)3
 FLTKFLAGS = `fltk-config --use-images --ldflags`
 
 OBJECTS = map.o subject.o enemy.o room.o player.o guide.o bat.o pit.o wump.o \
-					level.o logic.o helpers.o cli_view.o cli_controller.o \
-					ai_controller.o config.o test_cases.o test_helpers.o
+					level.o logic.o helpers.o cli_view.o cli_controller.o audio_out.o \
+					ai_controller.o config.o test_cases.o test_helpers.o images.o
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main.out
@@ -75,6 +76,12 @@ helpers.o : $(ENT)helpers.h $(ENT)helpers.cc
 
 config.o : $(SRC)config.h $(SRC)config.cc
 	$(CC) $(CFLAGS) -c $(SRC)config.cc
+
+images.o : $(GUI)images.h $(GUI)images.cc $(ENM)enums.h config.o
+	$(CC) $(CFLAGS) -c $(GUI)images.cc
+
+audio_out.o : $(AUD)audio_out.h $(AUD)audio_out.cc
+	$(CC) $(CFLAGS) -c $(AUD)audio_out.cc
 
 clean : 
 	rm ${OBJECTS} main.out
