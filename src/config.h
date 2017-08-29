@@ -26,6 +26,12 @@ namespace config {
   std::string   GetBackgroundMusic(int level = 1);
   std::string   GetPlayerSound(PlayerState, int level = 1);
 
+  // Images settings
+
+  std::string   GetImagesPath();
+  Scene         GetSceneType(int level);
+  Scene         GetDefaultScene();
+
   // Form_main settings
 
   std::string   GetSceneName(int level);

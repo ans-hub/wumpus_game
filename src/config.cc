@@ -102,6 +102,37 @@ std::string config::GetPlayerSound(PlayerState type, int level)
   }
 }
 
+// IMAGES SETTINGS
+
+std::string config::GetImagesPath()
+{
+  return "resources/images/";
+}
+
+Scene config::GetSceneType(int level)
+{
+  switch (level) {
+    case 1 : case 2 : case 3 : default :
+      return Scene::CAVE;
+    case 4 : case 5 : case 6 :
+      return Scene::UNDERWATER;
+    case 7 : case 8 : case 9 : case 10 :
+      return Scene::DEAD_TOWN;
+    case 11 : case 12 :
+      return Scene::BROKEN_CPU;
+    case 13 :
+      return Scene::LAST_BATTLE;
+    case 14 :
+      return Scene::SWEET_HOME;
+  }
+}
+
+Scene config::GetDefaultScene()
+{
+  return Scene::CAVE;
+}
+
+
 // FORM_MAP SETTINGS
 
 std::string config::GetSceneName(int level)
