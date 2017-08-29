@@ -8,6 +8,19 @@
 
 namespace wumpus_game {
 
+  // Used by config and images to determine scene type
+
+  enum class Scene
+  {
+    CAVE,
+    UNDERWATER,
+    DEAD_TOWN,
+    BROKEN_CPU,
+    LAST_BATTLE,
+    SWEET_HOME,
+    count
+  };
+  
   // Used by observers and observable
   
   enum class Event
@@ -44,7 +57,8 @@ namespace wumpus_game {
     FEELS_WUMP,
     FEELS_BATS,
     FEELS_PITS,
-    UNKNOWN_STATE
+    UNKNOWN_STATE,
+    count
   };
 
   // Used by WidgetRoom
@@ -55,7 +69,8 @@ namespace wumpus_game {
     LIGHT,
     GATE,
     GUIDE_OPENED,
-    GUIDE_CLOSED
+    GUIDE_CLOSED,
+    count
   };
 
   // Used by WidgetInfo
@@ -69,7 +84,8 @@ namespace wumpus_game {
     WUMPS,
     LEVEL,
     CONTINUE_IMAGE,
-    CONTINUE_DEIMAGE
+    CONTINUE_DEIMAGE,
+    count
   };
    
 }  // namespace wumpus_game
