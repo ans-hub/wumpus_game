@@ -23,7 +23,7 @@ OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 					scores.o config.o audio_out.o images.o math_helpers.o music.o
 
 release : $(OBJECTS) main.cc
-	$(CC) $(CFLAGS) -o2 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main.out
+	$(CC) $(CFLAGS) -o2 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main
 
 main.out : $(OBJECTS) main.cc
 	$(CC) $(CFLAGS) -o0 main.cc $(OBJECTS) $(FLTKFLAGS) $(SRC)3rdparty/libbass.so -o main.out
@@ -125,4 +125,4 @@ config.o : $(SRC)config.h $(SRC)config.cc
 	$(CC) $(CFLAGS) -c $(SRC)config.cc
 
 clean : 
-	rm ${OBJECTS} main.out main
+	rm ${OBJECTS} main.out
