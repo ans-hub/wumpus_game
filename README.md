@@ -2,19 +2,38 @@
 
 My educational implementation of the game ["Hunt the wumpus"](https://en.wikipedia.org/wiki/Hunt_the_Wumpus), invented by [Gregory Yob](https://en.wikipedia.org/wiki/Gregory_Yob) in 1972 or 1973. 
 
-## Historical game rules:
+## Game rules:
 
-1. The Labirint - 20 rooms connected to each others by tunnels. Every room has three tunnels to the neighbor rooms.
-2. The Player, the Wumpus, the Bats and the Bottomless pit are placed randomly in a different rooms.
-3. The Player feels presence of the Wumpus, the Bats and/or the Bottomless in the adjancet rooms. This feels recieves to the Player by the messages, but in which room the danger is hidden is unknown.
-4. The Bats - when the player goes in to the room with the Bats, the Bats carry the player in other randomly room. Feeling of the Bats is recieved to the Player by the message "I feel the wind".
-5. The Bottomless pit - when the player goes in to the room with the pit, he dies and the game is over. Feeling of the Bottomless pit is recieved to the Player by the message "I feel the cold".
-6. The Wumpus - the player must kill the Wumpus by shooting the adjacent room. If the Wumpus was not in that room where the Player was shooted, the Wumpus moved randomly to one of three rooms. Feeling of the Wumpus is recieved to the Player by the message "It`s smeels like Wumpus".
-7. Meeting of the Wumpus and the Player means dead of the Player.
+1. You are the Hunter starts in the dark cave with rooms. Somewhere here lives one or more Wumpuses - terrible monster.
+2. Your main goal is to kill all Wumpuses and return to home through the caves, underwater, dead city and some other places.
+3. On the way you will be trapper in danger of two types:
+  - things which move you from one room to another room (for example, The Bats);
+  - things that kill you (for example, The Bottomless pits "
+4. You have only the bow, the limited count of arrows on each level and the device that detects monsters and traps
+5. Meeting of the Wumpus and the Hunter means dead of the Hunter.
+6. Meeting with The Bats or similar things is means that you moved from meeting room to another one randomly.
+7. Meeting with the trap like The Bottomless Pit means dead of the Hunter.
+8. To leave the level, you should kill all Wumpuses, find the door and open it. At the first level the door is unhidden.
 
-## Addon rules to my implementation:
+<p align="center" width="60%"><img src="screenshot.png"></p>
 
-1. To enter new level you shall kill all Wumpuses.
+## Controls are:
+
+```
+LMB - move to room\n"
+RMB - shot into the room\n"
+MMB - mark/unmark the room\n";
+```
+
+## Install and run:
+
+1. Since I work under the Linux I have not tested this game under the Windows.
+2. To start the game you should do the next:
+```bash
+  $ cd src/
+  $ ./main
+```
+3. The game was tested on Ubuntu 16.04
 
 ## Technical notes:
 
