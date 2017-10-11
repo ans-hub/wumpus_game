@@ -50,15 +50,17 @@ void FormHelp::TuneAppearance()
 void FormHelp::FillOutput() const
 {
   std::stringstream sst{};
-  sst << "You are in the dark cave with rooms. Somewhere here lives "
-      << "one or more Wumpuses. You have the bow and arrows. Find and kill all"
-      << "Wumpus! And be aware about presence of other danger things - the Bats "
-      << "and the Bottomless pits\n\n"; 
-  sst << "If the Wumpus in the one of the neighboring rooms, you feels its."
-      << "When you feels the wind it means that the Bats are near. And if you"
-      << "feel the cold its means that the Bottomless Pit is near\n\n";
-  sst << "Left mouse button - move to room\n";
-  sst << "Right mouse button - shot into the room\n";
+  sst << "You are the Hunter starts in the dark cave with rooms. Somewhere here "
+      << "lives one or more Wumpuses. Your main goal is to kill all Wumpuses and "
+      << "return to home through the caves, underwater, dead city and some other places. "
+      << "Be aware about presence of other danger things - the Bats, Bottomless pits "
+      << "and other traps\n\n";
+  sst << "You have only the bow, the arrows and the device that detects monsters and "
+      << "traps\n\n";
+  sst << "Controls:\n"
+      << "LMB - move to room\n"
+      << "RMB - shot into the room\n"
+      << "MMB - mark/unmark the room\n";
   output_->text("");
   output_->append(sst.str().c_str());
 }
