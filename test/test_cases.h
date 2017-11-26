@@ -30,7 +30,7 @@
 #include "entities/logic.h"
 #include "entities/helpers.h"
 #include "test_helpers.h"
-#include "ai/controller.h"
+#include "ai/ai_controller.h"
 #include "gui/images.h"
 
 namespace wumpus_game {

@@ -8,3 +8,6 @@
 
 # Objects
 *.o
+*.obj
+*.d
+*.dep
