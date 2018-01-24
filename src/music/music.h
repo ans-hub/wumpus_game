@@ -12,7 +12,7 @@
 #include <FL/Fl.H>
 
 #include "3rdparty/observer.h"
-#include "3rdparty/audio_out.h"
+#include "3rdparty/audio/audio_out.h"
 
 #include "entities/logic.h"
 #include "enums/enums.h"

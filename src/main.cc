@@ -6,7 +6,7 @@
 #include <iostream>
 
 #include "3rdparty/rand_toolkit.h"
-#include "3rdparty/audio_out.h"
+#include "3rdparty/audio/audio_out.h"
 
 #include "entities/logic.h"
 #include "ai/ai_controller.h"

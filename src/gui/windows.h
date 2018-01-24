@@ -10,7 +10,7 @@
 
 #include "FL/fl_ask.H"
 
-#include "3rdparty/audio_out.h"
+#include "3rdparty/audio/audio_out.h"
 
 #include "gui/images.h"
 #include "gui/forms/form_start.h"

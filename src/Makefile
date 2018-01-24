@@ -5,7 +5,9 @@
 # Directories of the game
 
 ROOTDIR = ./
-LIBDIR = $(ROOTDIR)3rdparty/
+LIBAUDIO = $(ROOTDIR)3rdparty/audio/
+LIBFLAGS = -L $(LIBAUDIO) -L /usr/local/lib/
+LDFLAGS = -laudio -lbass
 
 WDGDIR = $(ROOTDIR)gui/widgets/
 ENTDIR = $(ROOTDIR)entities/
@@ -17,12 +19,10 @@ GUIHLP = $(GUIDIR)helpers/
 FRMDIR = $(GUIDIR)forms/
 HLPDIR = $(ENTDIR)helpers/
 SCRDIR = $(ROOTDIR)scores/
-AUDDIR = $(ROOTDIR)3rdparty/
 MSCDIR = $(ROOTDIR)music/
 
 VPATH = $(WDGDIR):$(CLIDIR):$(ENTDIR):$(CFGDIR):$(AIDIR):$(GUIDIR):\
-				$(FRMDIR):$(HLPDIR):$(ENDDIR):$(GUIHLP):$(SCRDIR):$(AUDDIR):\
-				$(MSCDIR)
+				$(FRMDIR):$(HLPDIR):$(ENDDIR):$(GUIHLP):$(SCRDIR):$(MSCDIR)
 
 ##############################################################################
 
@@ -30,18 +30,17 @@ VPATH = $(WDGDIR):$(CLIDIR):$(ENTDIR):$(CFGDIR):$(AIDIR):$(GUIDIR):\
 
 SRCFILES = $(wildcard *.cc)
 CXX = g++
-CXXFLAGS = -I $(ROOTDIR) -L $(LIBDIR) -lbass -ansi -pedantic -Wall -Wextra -std=c++14
+CXXFLAGS = -I $(ROOTDIR) $(LIBFLAGS) $(LDFLAGS) -ansi -pedantic -Wall -Wextra -std=c++14
 CXXFLAGS += -MP -MD		# MD - only internal, MMD - with system
 DBGFLAGS = -ggdb3 -DDEBUG -O0
 RLSFLAGS = -O2
 FLTKFLAGS = `fltk-config --use-images --ldflags`
-BASSLIB = $(ROOTDIR)3rdparty/libbass.so
 OBJECTS = map.o subject.o enemy.o room.o player.o bat.o pit.o wump.o \
 					guide.o level.o logic.o helpers.o cli_view.o \
 					cli_controller.o ai_controller.o gui_view.o gui_controller.o \
 					windows.o form_start.o form_help.o form_main.o widget_info.o \
 					widget_map.o widget_netdraw.o widget_player.o trajectory.o \
-					scores.o config.o audio_out.o images.o math_helpers.o music.o
+					scores.o config.o images.o math_helpers.o music.o
 
 ##############################################################################
 
@@ -61,10 +60,12 @@ else
 endif
 
 wumpus : main.cc $(OBJECTS) 
-	$(CXX) $(CXXFLAGS) $(RLSFLAGS) $< $(OBJECTS) $(FLTKFLAGS) $(BASSLIB) -o $@
+	make -C $(LIBAUDIO)
+	$(CXX) $(CXXFLAGS) $(RLSFLAGS) $< $(OBJECTS) $(FLTKFLAGS) $(LDFLAGS) -o $@
 
 debug : main.cc $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(DBGFLAGS) $< $(OBJECTS) $(FLTKFLAGS) $(BASSLIB) -o wumpus_$@
+	make debug -C $(LIBAUDIO)
+	$(CXX) $(CXXFLAGS) $(DBGFLAGS) $< $(OBJECTS) $(FLTKFLAGS) $(LDFLAGS) -o wumpus_$@
 
 test-release : $(OBJECTS)
 
@@ -79,4 +80,6 @@ test-debug : $(OBJECTS)
 # Cleans the garbage
 
 clean :
+	rm -rf gmon.out		# profiler out
 	rm -f wumpus wumpus_debug *.d *.o
+	make clean -C $(LIBAUDIO)

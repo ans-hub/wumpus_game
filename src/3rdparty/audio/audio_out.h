@@ -1,6 +1,6 @@
-// Package: bass_wrapper(v0.25)
+// Package: bass_wrapper(v0.27)
 // Description: https://github.com/ans-hub/bass_wrapper
-// Author: Anton Novoselov, 2017
+// Author: Anton Novoselov, 2017-2018
 // File: class that represents wrapper to BASS audio library
 
 // BASS Library docs placed here: https://www.un4seen.com/doc/
@@ -8,6 +8,7 @@
 #ifndef AUDIO_OUT_H
 #define AUDIO_OUT_H
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include <memory>
@@ -44,7 +45,8 @@ private:
   bool      IsChannelsPlayingNow(const VHandles&) const;     
   bool      StopPlayingImmediately(const Handle&);
   bool      RemoveLoopFromSample(const Handle&);
-};
+
+}; // class AudioOut
 
 namespace audio_helpers {
   
@@ -60,6 +62,7 @@ namespace audio_helpers {
   bool      IsRepeatedSample(const Handle&);
   SampleNfo GetSampleInfo(const Handle&);
   bool      SetSampleInfo(const Handle&, SampleNfo&);
+  bool      PrintBassError();
 
 }  // namespace audio_helpers
 

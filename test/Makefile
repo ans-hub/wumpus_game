@@ -5,7 +5,9 @@
 # Directories of the game
 
 ROOTDIR = ../src/
-LIBDIR = $(ROOTDIR)3rdparty/
+LIBAUDIO = $(ROOTDIR)3rdparty/audio/
+LIBFLAGS = -L $(LIBAUDIO) -L /usr/local/lib/
+LDFLAGS = -laudio -lbass
 
 ##############################################################################
 
@@ -13,12 +15,11 @@ LIBDIR = $(ROOTDIR)3rdparty/
 
 SRCFILES = $(wildcard *.cc)
 CXX = g++
-CXXFLAGS = -I $(ROOTDIR) -L $(LIBDIR) -lbass -ansi -pedantic -Wall -Wextra -std=c++14
+CXXFLAGS = -I $(ROOTDIR) $(LIBFLAGS) $(LDFLAGS) -ansi -pedantic -Wall -Wextra -std=c++14
 CXXFLAGS += -MP -MD		# MD - only internal, MMD - with system
 DBGFLAGS = -ggdb3 -DDEBUG -O0
 RLSFLAGS = -O2
 FLTKFLAGS = `fltk-config --use-images --ldflags`
-BASSLIB = $(ROOTDIR)3rdparty/libbass.so
 VPATH = $(ROOTDIR)
 OBJECTS = test_cases.o test_helpers.o $(shell ls $(ROOTDIR)*.o)
 
@@ -27,12 +28,14 @@ OBJECTS = test_cases.o test_helpers.o $(shell ls $(ROOTDIR)*.o)
 # Builds the game with OBJECTS
 
 test : main.cc $(OBJECTS)
+	make -C $(LIBAUDIO)
 	make -C $(ROOTDIR) test-release
-	$(CXX) $(CXXFLAGS) $(RLSFLAGS) $< $(OBJECTS) $(FLTKFLAGS) $(BASSLIB) -o $@
+	$(CXX) $(CXXFLAGS) $(RLSFLAGS) $< $(OBJECTS) $(FLTKFLAGS) $(LDFLAGS) -o $@
 
 debug : main.cc $(OBJECTS)
+	make debug -C $(LIBAUDIO)
 	make -C $(ROOTDIR) test-debug
-	$(CXX) $(CXXFLAGS) $(DBGFLAGS) $< $(OBJECTS) $(FLTKFLAGS) $(BASSLIB) -o test_$@
+	$(CXX) $(CXXFLAGS) $(DBGFLAGS) $< $(OBJECTS) $(FLTKFLAGS) $(LDFLAGS) -o test_$@
 
 ifeq ($(MAKECMDGOALS), debug)
 %.o : %.cc %.h
@@ -53,3 +56,4 @@ endif
 clean :
 	rm -f *.out *.d *.o $(ROOTDIR)*.a $(ROOTDIR)*.d $(ROOTDIR)*.o
 	rm -f test test_debug *.d *.o ~*.tmp
+	make clean -C $(LIBAUDIO)

@@ -16,7 +16,7 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
 
-#include "3rdparty/audio_out.h"
+#include "3rdparty/audio/audio_out.h"
 
 #include "gui/images.h"
 #include "gui/widgets/widget_map.h"
