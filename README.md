@@ -25,15 +25,36 @@ RMB - shot into the room\n"
 MMB - mark/unmark the room\n";
 ```
 
-## Install and run:
+## Install
 
-1. Since I work under the Linux I have not tested this game under the Windows.
-2. To start the game you should do the next:
+### Check dependicies:
+
+Following packages should be installed (example given under Ubuntu 17.10):
+
 ```bash
-  $ cd src/
-  $ ./main
+ $ sudo apt install libfltk1.3-dev
 ```
-3. The game was tested on Ubuntu 16.04
+
+### Install `libbass.so` audio library (for audio module):
+
+```bash
+  $ wget http://us.un4seen.com/files/bass24-linux.zip
+  $ unzip bass24-linux.zip -d tmp/
+  $ sudo cp tmp/x64/libbass.so /usr/local/lib/  # for 32-bit - tmp/libbass.so
+  $ sudo chmod a+rx /usr/local/lib/libbass.so
+  $ sudo ldconfig
+  $ rm -rf tmp/ bass24-linux.zip
+```
+
+P.S.: if something goes wrong while downloading bass audio library, then the best way is to use [direct link](https://www.un4seen.com/bass.html) for downloading library
+
+### Finish the installation:
+
+```bash
+  $ git clone https://github.com/ans-hub/wumpus_game
+  $ cd wumpus_game/src/
+  $ make
+```
 
 ## Technical notes:
 
