@@ -6,8 +6,9 @@
 #ifndef WIDGET_NETDRAW_H
 #define WIDGET_NETDRAW_H
 
-#include <vector>
+#include <iostream>
 #include <sstream>
+#include <vector>
 #include <cmath>
 
 #include <FL/Fl.H>
@@ -47,7 +48,7 @@ private:
   
   Point     center_;
   
-  void FillAllVertexes();
+  void FillAllVertices();
   void draw() override;
 };
 
@@ -55,7 +56,7 @@ namespace wdg_helpers {
 
   using VPoints = std::vector<Point>;
 
-  VPoints GetPolyVertexes(double, double, double, double, double);
+  VPoints GetPolyVertices(double, double, double, double, double);
   bool    FillVectorByAnother(VPoints&, const VPoints&, double, double);
   void    DrawPoints(const VPoints&, WidgetNetdraw*, int);
   void    DrawPoly(const VPoints&, WidgetNetdraw*);
