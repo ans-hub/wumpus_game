@@ -366,7 +366,7 @@ void config::ChangeNetdrawParams(NetdrawParams& params, int level)
 
   switch (level) {
 
-    case 3 : case 4 : case 5 :
+    case 4 : case 5 :
       params.start_angle_ += step;
       break;
 
