@@ -11,3 +11,6 @@
 *.obj
 *.d
 *.dep
+
+# Videos
+*.mp4

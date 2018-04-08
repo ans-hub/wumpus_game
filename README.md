@@ -15,7 +15,9 @@ My educational implementation of the game ["Hunt the wumpus"](https://en.wikiped
 7. Meeting with the trap like The Bottomless Pit means dead of the Hunter.
 8. To leave the level, you should kill all Wumpuses, find the door and open it. At the first level the door is unhidden.
 
-<p align="center" width="60%"><img src="screenshot.png"></p>
+## Gameplay video on youtube:
+
+<p align="center" width="60%"><a href="https://youtu.be/L6cQTQEMzes"><img src="screenshot.png"></a></p>
 
 ## Controls are:
 
