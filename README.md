@@ -17,7 +17,7 @@ My educational implementation of the game ["Hunt the wumpus"](https://en.wikiped
 
 ## Gameplay video on youtube:
 
-<p align="center" width="60%"><a href="https://youtu.be/L6cQTQEMzes"><img src="screenshot.png"></a></p>
+<p align="center" width="60%"><a href="https://youtu.be/8MtrtkYhbKU"><img src="screenshot.png"></a></p>
 
 ## Controls are:
 

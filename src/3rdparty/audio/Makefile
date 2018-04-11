@@ -9,7 +9,7 @@ SRCFILES = $(wildcard *.cc)
 CXX = g++
 CXXFLAGS = -I $(SRCDIR) -ansi -pedantic -Wall -Wextra -std=c++14 
 CXXFLAGS += -MP -MMD
-DBGFLAGS = -ggdb3 -DDEBUG -O0 -pg -no-pie
+DBGFLAGS = -ggdb3 -DDEBUG -O0
 RLSFLAGS = -O2
 
 ##############################################################################

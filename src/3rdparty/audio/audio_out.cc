@@ -12,7 +12,7 @@ AudioOut::AudioOut()
   , loaded_{ }
   , channels_cnt_{audio_helpers::kChannelsCount}
 {
-  if (BASS_Init(-1, 44100, BASS_DEVICE_DEFAULT, 0, 0))
+  if (BASS_Init(1, 44100, BASS_DEVICE_8BITS, 0, 0))
     inited_ = true;
   else
     audio_helpers::PrintBassError();
@@ -22,7 +22,7 @@ AudioOut::~AudioOut()
 {
   for (auto& a : loaded_)
     BASS_SampleFree(a.second);
-  if (!inited_)
+  if (inited_)
     BASS_Free();
 }
 
