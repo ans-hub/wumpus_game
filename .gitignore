@@ -1,7 +1,6 @@
 # Ignore all files
 
 *
-!*/
 
 # Unignore common source files
 
@@ -18,6 +17,7 @@
 
 # Unignore sounds
 
+!*.wav
 !*.mp3
 !*.ogg
 
