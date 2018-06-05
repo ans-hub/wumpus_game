@@ -1,16 +1,28 @@
-# Executables
-*.out
-*.app
+# Ignore all files
 
-# Temporary
-*.tmp
-*.ghc
+*
+!*/
 
-# Objects
-*.o
-*.obj
-*.d
-*.dep
+# Unignore common source files
 
-# Videos
-*.mp4
+!*.h
+!*.cc
+!*.c
+!*.asm
+
+# Unignore common image files
+
+!*.bmp
+!*.jpg
+!*.png
+
+# Unignore sounds
+
+!*.mp3
+!*.ogg
+
+# Unignore other
+
+!CMakeLists.txt
+!*.md
+!LICENSE
