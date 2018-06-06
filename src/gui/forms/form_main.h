@@ -29,6 +29,8 @@ class Windows;
 class FormMain : public Fl_Double_Window
 {
 public:
+  using AudioOut = anshub::AudioOut;
+
   FormMain(Images&, AudioOut&);
   virtual ~FormMain() { }
   

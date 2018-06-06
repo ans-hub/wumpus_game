@@ -27,6 +27,7 @@ void start_random_generator()
 int main()
 {
   using namespace wumpus_game;
+  using AudioOut = anshub::AudioOut;
   
   Logic         logic     {};
   AudioOut      audio_out {};

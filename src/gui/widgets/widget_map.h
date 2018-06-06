@@ -31,10 +31,11 @@ namespace wumpus_game {
 class WidgetMap : public Fl_Group
 {
 public:
-  using Player  = WidgetPlayer;
-  using Info    = WidgetInfo;
-  using Room    = std::unique_ptr<WidgetRoom>;
-  using VRooms  = std::vector<Room>;
+  using Player   = WidgetPlayer;
+  using Info     = WidgetInfo;
+  using Room     = std::unique_ptr<WidgetRoom>;
+  using VRooms   = std::vector<Room>;
+  using AudioOut = anshub::AudioOut;
 
   using CallbackFunc = void;
   using CommandFunc = void;

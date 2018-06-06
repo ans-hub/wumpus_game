@@ -24,6 +24,7 @@ class Music : public mvc_set::Observer<Event>
 {
 public:
   using Events = std::queue<Event>;
+  using AudioOut = anshub::AudioOut;
 
   Music(const Logic&, AudioOut&);
   ~Music() { }
@@ -41,6 +42,7 @@ private:
 };
 
 namespace music_helpers {
+  using AudioOut = anshub::AudioOut;
 
   void PlayMainMusic(AudioOut&);
   void PlayBackgroundMusic(AudioOut&, const Logic&);

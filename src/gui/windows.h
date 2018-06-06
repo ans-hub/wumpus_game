@@ -25,6 +25,8 @@ namespace wumpus_game {
 class Windows
 {
 public:
+  using AudioOut = anshub::AudioOut;
+
   Windows(Images&, AudioOut&);
   ~Windows();
 

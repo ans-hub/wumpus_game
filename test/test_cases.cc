@@ -642,7 +642,7 @@ void images_class()
 void audio_out_class()
 {
   std::cerr << "Test create, using and destroy of AudioOut instance" << '\n';    
-  AudioOut audio{};
+  anshub::AudioOut audio{};
   audio.Play("../src/resources/sounds/wump_killed.wav");
   audio.Play("../src/resources/sounds/wump_killed.wav");
  }

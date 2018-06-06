@@ -57,10 +57,10 @@ void music_helpers::PlayBackgroundMusic(AudioOut& audio, const Logic& model)
 {
   auto level = model.CurrentLevel();
   auto level_music = config::GetBackgroundMusic(level);
-  bool is_playing = audio_helpers::IsNowPlaying(audio, level_music);
+  bool is_playing = anshub::audio_helpers::IsNowPlaying(audio, level_music);
   
   if (!is_playing) {
-    audio_helpers::StopAllNowPlaying(audio, false);
+    anshub::audio_helpers::StopAllNowPlaying(audio, false);
     audio.Play(level_music);
   }
 }

@@ -27,6 +27,7 @@ class WidgetPlayer : public Fl_Group
 {
 public:
   using State = PlayerState;
+  using AudioOut = anshub::AudioOut;
 
   WidgetPlayer(AudioOut&, Images&);
   virtual ~WidgetPlayer() { }
