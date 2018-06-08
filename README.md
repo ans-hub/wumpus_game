@@ -27,36 +27,78 @@ RMB - shot into the room\n"
 MMB - mark/unmark the room\n";
 ```
 
-## Install
+## Installation under the Windows
 
-### Check dependicies:
+1. Download game to paricular directory and tune build dir
 
-Following packages should be installed (example given under Ubuntu 17.10):
 
-```bash
- $ sudo apt install libfltk1.3-dev
+* download game and unpack it to, i.e., "c:/wump/"
+* create directory "build" in "c:/wump/"
+* go to "CMake -> Change CMake Settings"
+* change `buildRoot` to preffered, i.e. `c:\\wump\\build\\`
+
+`Linux:`
+
+* clone git repository to preffered dir (i.e. "~/wump/")
+* make dir "build" inside "~/wump"
+
+### Dependicies:
+
+Game has following dependicies:
+* game`s gui based on `FLTK` library
+* game`s audio output is provided by `audio_out` library (wrapper to Bass library)
+
+### Install FLTK:
+
+Standart installation of game is provided by `cmake`. Thus to install game using`cmake` we should install `FLTK` library by `cmake` too (since only by this install type we would have all necessary files for `cmake`).
+
+1. Download latest `FLTK` release from (fltk`s site)[http://www.fltk.org/software.php]
+2. Install:
+
+`Linux:`
+```
+  # ...after unpacking downloaded archive
+  $ cd build		# created at previous step
+  $ cmake ../
+  $ make
+  # ...move built directory to preffered (i.e. ~/libs/fltk_1.3.4)
+```
+`Windows:`
+```
+  ... unpack to directory, i.e. "c:/fltk_1.3.4"
+  ... make directory "build" inside
+  Open -> Folder -> "c:/fltk_1.3.4"
+  CMake->Build All
+  ... after build have been completed
+  ... move built directory (usually from ~/HOME_DIR/CMakeBuilds/..hash..) to preffered
+  ... i.e. "c:/fltk_1.3.4/"
 ```
 
-### Install `libbass.so` audio library (for audio module):
+### Install BASS:
 
+`Linux:`
 ```bash
   $ wget http://us.un4seen.com/files/bass24-linux.zip
   $ unzip bass24-linux.zip -d tmp/
-  $ sudo cp tmp/x64/libbass.so /usr/local/lib/  # for 32-bit - tmp/libbass.so
+  $ sudo cp tmp/mp3free/libbass.so /usr/local/lib/
   $ sudo chmod a+rx /usr/local/lib/libbass.so
   $ sudo ldconfig
   $ rm -rf tmp/ bass24-linux.zip
 ```
 
-P.S.: if something goes wrong while downloading bass audio library, then the best way is to use [direct link](https://www.un4seen.com/bass.html) for downloading library
-
-### Finish the installation:
-
-```bash
-  $ git clone https://github.com/ans-hub/wumpus_game
-  $ cd wumpus_game/src/
-  $ make
+`Windows:`
 ```
+  Download archive from http://www.un4seen.com/download.php?bass24
+  Unpack bass.dll and c/bass.lib to the root of build directory
+```  
+
+### Build game
+
+`Windows:`
+
+* go to "CMake -> Change CMake Settings"
+* add to `cmakeCommandArgs` directory which contains build of FLTK i.e. "cmakeCommandArgs": "-DFLTK_DIR:PATH=\"c:/fltk-1.3.4/build/\"",
+cmake ../ -DFLTK_DIR:PATH="~/projects/cpp/_libs/fltk-1.3/build"
 
 ## Technical notes:
 
