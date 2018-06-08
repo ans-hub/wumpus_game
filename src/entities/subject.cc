@@ -23,7 +23,12 @@ Subject::Subject(Subject&& old)
   : dead_{old.dead_}
   , type_{old.type_}
   , curr_room_{old.curr_room_}
-  , cave_{old.cave_} { }
+  , cave_{old.cave_}
+{
+  old.CheckOut();
+  old.curr_room_ = nullptr;
+  old.cave_ = nullptr;
+}
 
 Subject& Subject::operator=(Subject&& old)
 {
@@ -31,6 +36,9 @@ Subject& Subject::operator=(Subject&& old)
   this->type_ = old.type_;
   this->curr_room_ = old.curr_room_;
   this->cave_ = old.cave_;
+  old.CheckOut();
+  old.curr_room_ = nullptr;
+  old.cave_ = nullptr;
   return *this;
 }
 
@@ -104,10 +112,12 @@ void Subject::CheckIn()
 
 void Subject::CheckOut()
 {
-  std::vector<Subject*>& p = curr_room_->subjects_;
-  p.erase (
-    std::remove (p.begin(), p.end(), this), p.end()
-  );
+  if (curr_room_) {
+	std::vector<Subject*>& p = curr_room_->subjects_;
+	p.erase (
+	  std::remove (p.begin(), p.end(), this), p.end()
+	);
+  }
 }
 
 }  // namespace wumpus_game

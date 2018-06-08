@@ -46,6 +46,10 @@ Map::Map(Map&& old)
   old.base_ = 0;
   old.size_ = 0;
   rooms_.swap(old.rooms_);
+  
+  // Note: here we should find all subjects in rooms and change address of
+  // cave but we can`t to this step without full code refactoring due to
+  // looped links between map-room-subject
 }
 
 Map& Map::operator=(Map&& old)
