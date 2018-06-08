@@ -1,6 +1,7 @@
 # Ignore all files
 
 *
+!*/
 
 # Unignore common source files
 
@@ -26,3 +27,7 @@
 !CMakeLists.txt
 !*.md
 !LICENSE
+
+# Ignore particular directiries
+
+*build/
