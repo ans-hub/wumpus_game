@@ -28,6 +28,11 @@
 !*.md
 !LICENSE
 
+# Unignore *.exe and *.dll in bin/ dir
+
+!*.exe
+!*.dll
+
 # Ignore particular directiries
 
 *build/
