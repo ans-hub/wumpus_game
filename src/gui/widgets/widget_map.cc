@@ -159,7 +159,7 @@ void WidgetMap::RepositionRooms()
 void WidgetMap::RefreshPlayerPos()
 {
   auto room = wdg_player_->GetCurrRoom();
-  if (room > 0 && room < wdg_pathes_->GetVertexes().size() && ready_)
+  if (room >= 0 && room < wdg_pathes_->GetVertexes().size() && ready_)
     MovePlayerInstantly(room);
 }
 
