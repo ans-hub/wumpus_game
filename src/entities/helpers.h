@@ -37,7 +37,7 @@ namespace helpers {
   template<class T>
   int FindInVector(std::vector<T>, T);
 
-  // Template functions realisation
+  // Template functions implementation
   
   template<class T>
   int AliveSubjectsCount(const std::vector<std::unique_ptr<T>>& subj)

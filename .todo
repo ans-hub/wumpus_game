@@ -1,7 +1,7 @@
-Enums in different files
-Make observer as link to the memeber function
-Realise scores
-Make sounds for child and choosing it from command line
-Optimize by increasing step amount of map rotating when speed is high
-Make exitsbug 1 - mark when gate
-bug 2 - rotate when restart level
+* Enums in different files
+* Make observer as link to the memeber function
+* Implement scores
+* Make sounds for child and choosing it from command line
+* Optimize by increasing step amount of map rotating when speed is high
+* bug 1 - mark when gate for exit
+* bug 2 - rotate when restart level

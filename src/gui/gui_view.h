@@ -3,10 +3,9 @@
 // Author: Anton Novoselov, 2017
 // File: gui view of game logic
 
-// Short work principle : GuiView as derived class from Observer is push
-// recieved events into the queue. Extracting events from queue is executed
-// by timer callback function every n mseconds. This callback sets in
-// constructor.
+// GuiView as derived class from Observer push recieved events into the queue.
+// Extracting events from queue is executed by timer callback function every n
+// mseconds. This callback set in constructor.
 //
 // Callback function calls member function, which checks, if system is ready
 // thus events can be processed. This feature need for cases, for example,
@@ -44,9 +43,9 @@ private:
   Windows&        gui_;
   Events          events_;
   
-  bool IncomingNotify(Event) override;    // register event
-  void ProcessNextEvent();                // get event from queue
-  void ExecuteEvent(Event, int);          // execute concrete event
+  bool IncomingNotify(Event) override;
+  void ProcessNextEvent();
+  void ExecuteEvent(Event, int);
 
   static void cb_process_next_event(void*);
 };

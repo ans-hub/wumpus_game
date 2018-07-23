@@ -20,7 +20,6 @@ namespace test_helpers {
   int find_person_in_cave(Map*, Subject*);
   std::vector<Subject*> neighboring_subjects(Subject&, Map*);
 
-
 }  // namespace test_helpers
 
 }  // namespace wumpus_game

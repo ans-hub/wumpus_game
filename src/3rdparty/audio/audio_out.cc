@@ -30,12 +30,8 @@ AudioOut::~AudioOut()
     BASS_Free();
 }
 
-// Plays the sample (with loading its before)
-
 bool AudioOut::Play(const std::string& fname, bool repeat)
 {
-  // Try to load stream (may be loaded already)
-  
   Handle hndl = FindLoaded(fname);
 
   if (!hndl && !(hndl = Load(fname, repeat)))
@@ -93,17 +89,11 @@ AudioOut::VStrings AudioOut::NowPlaying(bool only_repeated) const
   return res;
 }
 
-// Loads sample by filename, saves to loaded_ vector and return its handle
-
 AudioOut::Handle AudioOut::Load(const std::string& fname, bool repeat)
 {
-  // Check if already loaded
-
   Handle hndl = FindLoaded(fname);
   if (hndl)
     return audio_helpers::PrintGeneralError(fname + String(" already loaded"));    
-
-  // Create new sample
 
   DWORD flags {};
   if (repeat) 
@@ -111,8 +101,6 @@ AudioOut::Handle AudioOut::Load(const std::string& fname, bool repeat)
   else
     flags = BASS_SAMPLE_8BITS + BASS_SAMPLE_OVER_POS;
   hndl = BASS_SampleLoad(FALSE, fname.c_str(), 0,0,3, flags);
-
-  // Add sample to container
 
   if (!hndl)
     return audio_helpers::PrintBassError("BASS_SampleLoad");
@@ -131,8 +119,6 @@ AudioOut::Handle AudioOut::FindLoaded(const std::string& fname) const
     if (l.first == fname) return l.second;
   return 0;
 }
-
-// Gets vector of handles to all loaded channels of sample
 
 AudioOut::VHandles AudioOut::GetLoadedChannels(const Handle& hndl) const
 {
@@ -156,8 +142,6 @@ AudioOut::VHandles AudioOut::GetLoadedChannels(const Handle& hndl) const
   return res;
 }
 
-// Returns true if at least one channel is playing now
-
 bool AudioOut::IsChannelsPlayingNow(const VHandles& handles) const
 {
   for (const auto& h : handles) {
@@ -167,8 +151,6 @@ bool AudioOut::IsChannelsPlayingNow(const VHandles& handles) const
   return false;
 }
 
-// Stop playback of given sample immediately
-
 bool AudioOut::StopPlayingImmediately(const Handle& hndl)
 {
   HCHANNEL ch = BASS_SampleGetChannel(hndl, FALSE);    
@@ -176,12 +158,9 @@ bool AudioOut::StopPlayingImmediately(const Handle& hndl)
   return BASS_SampleStop(hndl);
 }
 
-// Stop playback after end of playing sample and change loop flag 
-
 bool AudioOut::RemoveLoopFromSample(const Handle& hndl)
 {
   if (!audio_helpers::IsRepeatedSample(hndl)) 
-    // return StopPlayingImmediately(hndl);
     return false;
   
   auto channels_hndls = GetLoadedChannels(hndl);
@@ -193,8 +172,6 @@ bool AudioOut::RemoveLoopFromSample(const Handle& hndl)
   }
   return false;
 }
-
-// HELPERS
 
 bool audio_helpers::IsNowPlaying(const AudioOut& audio, const std::string& fname)
 {
@@ -216,8 +193,6 @@ bool audio_helpers::StopAllNowPlaying(AudioOut& audio, bool only_repeated)
   }
   return result;
 }
-
-// Returns true if given sample is looped
 
 bool audio_helpers::IsRepeatedSample(const Handle& hndl)
 {

@@ -10,7 +10,7 @@ namespace wumpus_game {
 Windows::Windows(Images& images, AudioOut& audio)
   : images_{images}
   , audio_{audio}
-  , wnd_start_{ new FormStart(images_) }    // see note #1 after code
+  , wnd_start_{ new FormStart(images_) }
   , wnd_help_{ new FormHelp(images_) }
   , wnd_main_{ new FormMain(images_, audio_) }
   , wdg_map_ { wnd_main_->wdg_map_ }
@@ -81,8 +81,3 @@ void Windows::cb_close_wnd_main_(void*, void* w)
 }
 
 }  // namespace wumpus_game
-
-// Note #1 : main reason to set audio through constructor is that audio is
-// stored as reference. Since it is changable through object life time, here is
-// just one right way to do this - send it throught constructors. The second way 
-// is make pointers, but it would entail unnecessary checking inside classes 

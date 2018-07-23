@@ -1,7 +1,7 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: helpers that perform calculations from linear algebra and other
+// File: math helpers
 
 #ifndef MATH_HELPERS_H
 #define MATH_HELPERS_H

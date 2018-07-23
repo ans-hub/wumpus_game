@@ -19,7 +19,6 @@ void WorryNeighboringWumps(VWumpsPtr& wumps, std::vector<int>& neighbors)
 
 bool KillOneWumpInRoom(VWumpsPtr& wumps, int room)
 {
-  // remake to more pretty
   bool kill{false};
   for (auto it = wumps.begin(); it != wumps.end();) {
     if (it->get()->GetCurrRoomNum() == room) {

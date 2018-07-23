@@ -3,9 +3,6 @@
 // Author: Anton Novoselov, 2017
 // File: interface for test-cases of wumpus_game
 //
-// Note: some testing functions which have returned values, ruturns not
-// bool but int since we needs be consistence with behavor of main().
-// Returns values of main() will be used in automated tests. 
 
 #ifndef TEST_CASES_H
 #define TEST_CASES_H

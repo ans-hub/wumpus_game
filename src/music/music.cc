@@ -15,7 +15,8 @@ Music::Music(const Logic& model, AudioOut& audio)
   music_helpers::PreloadBackgroundMusic(audio_);
   music_helpers::PlayMainMusic(audio_);
   
-  Fl::add_timeout(0.02, cb_process_next_event, this);
+  double k_timeout = 0.02;
+  Fl::add_timeout(k_timeout, cb_process_next_event, this);
 }
 
 bool Music::IncomingNotify(Event msg)
@@ -44,8 +45,6 @@ void Music::cb_process_next_event(void* m)
   ((Music*)m)->ProcessNextEvent();
   Fl::repeat_timeout(0.02, cb_process_next_event, m);
 }
-
-// CLASS HELPERS
 
 void music_helpers::PlayMainMusic(AudioOut& audio)
 {

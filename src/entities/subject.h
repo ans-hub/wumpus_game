@@ -38,7 +38,7 @@ public:
   Subject(Subject&&);
   Subject& operator=(Subject&&);
 
-  bool    Move(int, std::string&);     // see note #1 after code
+  bool    Move(int, std::string&);
   bool    Teleport(int, std::string&);
   bool    MoveRandom();
   bool    TeleportRandom();
@@ -50,11 +50,11 @@ public:
   bool    IsLive() { return !dead_; }
 
 protected:
-  void    CheckIn();    // see note #2 after code
+  void    CheckIn();
   void    CheckOut();
 
   bool    dead_;
-  ID      type_;        // see note #3 after code
+  ID      type_;
   Room*   curr_room_;
   Map*    cave_;
 };
@@ -62,13 +62,3 @@ protected:
 }  // namespace wumpus_game
 
 #endif  // SUBJECT_H
-
-// Interface notes:
-//
-// #1 : msg contains the reason why Move() and Teleport() returns true
-// or false values
-//
-// #2 : performing check-in and check-out of subject in the room its
-// stayed by placing/removing its pointer to the container of current room instance
-//
-// #3 : needs to define a subject type, setted in ctors of derived classes 

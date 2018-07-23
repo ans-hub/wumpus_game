@@ -12,7 +12,8 @@ GuiView::GuiView(const Logic& model, Windows& gui)
   , gui_{gui}
   , events_{}
 {
-  Fl::add_timeout(0.02, cb_process_next_event, this);
+  double k_timeout = 0.02;
+  Fl::add_timeout(k_timout, cb_process_next_event, this);
 }
 
 bool GuiView::IncomingNotify(Event msg)

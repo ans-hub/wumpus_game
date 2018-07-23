@@ -57,9 +57,6 @@ std::vector<Subject*> neighboring_subjects(Subject& subj, Map* map)
   return result;
 }
 
-
-
-
 }  // namespace helpers
 
 }  // namespace wumpus_game

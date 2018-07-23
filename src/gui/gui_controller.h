@@ -51,4 +51,4 @@ private:
 #endif  // GUI_CONTROLLER_H
 
 // Note: controller sets callbacks which is based on the game logic. Callbacks
-// that depends of managing windows sets in windows.o
+// that depends of managing windows are set in windows.o

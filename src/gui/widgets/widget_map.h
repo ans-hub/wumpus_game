@@ -81,7 +81,7 @@ private:
 
   void TuneAppearance();
   
-  // Functions to manage player animating
+  // Functions to manage player animation
 
   static void cb_move_player_animated(void*);
   void RefreshAnimateTrajectory();

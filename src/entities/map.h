@@ -1,7 +1,7 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: interface to the Map class
+// File: interface to the Map
 
 #ifndef MAP_H
 #define MAP_H

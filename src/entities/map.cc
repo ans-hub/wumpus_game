@@ -1,22 +1,8 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: implementation of the Map class
+// File: implementation of the Map
 //
-// Note #1 : Implementation of map based on directed graph with the
-// degree of valency of all vertexes equal 3 (every vertex is connected by
-// edges with 3 other vertex. In meaning of this app the Map is the
-// Graph, the Rooms are vertexes and the tunnels are edges, the size is the
-// Rooms count in the Map, the `base of dodecahedron` - is the number of its
-// inner edges, needs to build plane projections through formulas.
-//
-// Note #2 : Connecting of the Rooms is auto-processed and based on plane
-// projection of regular dodecahedron using Schlegel diagram.  Neighbors
-// Rooms are called as "left", "right" and "back". As you can see at the
-// plane projection, here are presence three main pathes, called "center",
-// "outer" and "inner". Center path consists of `base number`*2 rooms, outer
-// and inner pathes consists of `base number` rooms each others. Scheme of
-// connecting see in the /src/graph.jpg.
 
 #include "map.h"
 
@@ -24,11 +10,11 @@ namespace wumpus_game {
 
 Map::Map(int base)
   : base_{base}
-  , size_{base*4}   // replace to constexpr
+  , size_{base*4}   // todo: magic
   , rooms_{}
 {
-  CreateRooms();    // create graph (see note #1)
-  ConnectRooms();   // connect vertexes of graph (see note #2)
+  CreateRooms();
+  ConnectRooms();
 }
 
 Map::~Map()
@@ -46,10 +32,6 @@ Map::Map(Map&& old)
   old.base_ = 0;
   old.size_ = 0;
   rooms_.swap(old.rooms_);
-  
-  // Note: here we should find all subjects in rooms and change address of
-  // cave but we can`t to this step without full code refactoring due to
-  // looped links between map-room-subject
 }
 
 Map& Map::operator=(Map&& old)
@@ -63,9 +45,6 @@ Map& Map::operator=(Map&& old)
   return *this;
 }
 
-
-// Creates some new rooms and store its pointers 
-
 void Map::CreateRooms()
 {
   rooms_.reserve(size_);
@@ -74,16 +53,12 @@ void Map::CreateRooms()
   }
 }
 
-// Connects the rooms stored in vector
-
 void Map::ConnectRooms()
 {
   int halfsize = size_/2;
   Room* left_neighbor = nullptr;
   Room* right_neighbor = nullptr;
 
-  // Connect rooms placed on center, outer and inner pathes
-  
   for (int k = 0; k < halfsize; ++k) {
     if (k%2) {
       left_neighbor = &*rooms_[halfsize+k];
@@ -98,7 +73,7 @@ void Map::ConnectRooms()
     rooms_[k]->right_ = right_neighbor;
     left_neighbor->back_ = rooms_[k];
     if (k != halfsize-1) {
-      right_neighbor->back_ = rooms_[k];  // setted already when k was eq 0
+      right_neighbor->back_ = rooms_[k];  // set already when k was eq 0
     }
   }
 
@@ -130,7 +105,7 @@ Room* Map::GetRoom(int num) const
   return num >= size_ ? nullptr : rooms_[num];
 }
 
-// NON-MEMBER FUNCTIONS
+// HELPERS
 
 std::ostream& operator<<(std::ostream& oss, const Map& cave)
 {
@@ -142,8 +117,6 @@ std::ostream& operator<<(std::ostream& oss, const Map& cave)
   }
   return oss;
 }
-
-// Returns neighbor room numbers 
 
 std::vector<int> map_helpers::GetNeighboringRooms(int room_num, Map* cave)
 {

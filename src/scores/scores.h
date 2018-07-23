@@ -1,7 +1,7 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: class that represents sounds in game
+// File: represents scores in game
 
 #ifndef SCORES_H
 #define SCORES_H

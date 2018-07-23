@@ -8,8 +8,6 @@
 
 namespace wumpus_game {
 
-  // Used by config and images to determine scene type
-
   enum class Scene
   {
     CAVE,
@@ -20,8 +18,6 @@ namespace wumpus_game {
     SWEET_HOME,
     count
   };
-  
-  // Used by observers and observable
   
   enum class Event
   {
@@ -39,8 +35,6 @@ namespace wumpus_game {
     ONE_WUMP_KILLED,
     MEETS_GUIDE
   };
-
-  // Used by WidgetPlayer
 
   enum class PlayerState
   {
@@ -61,8 +55,6 @@ namespace wumpus_game {
     count
   };
 
-  // Used by WidgetRoom
-
   enum class RoomState
   {
     DARK,
@@ -72,8 +64,6 @@ namespace wumpus_game {
     GUIDE_CLOSED,
     count
   };
-
-  // Used by WidgetInfo
 
   enum class InfoStuff
   {

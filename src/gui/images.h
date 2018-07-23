@@ -22,8 +22,8 @@ struct Images
 {
   using Image = Fl_PNG_Image;
   using ImagePtr = std::unique_ptr<Image>;
-  using Vector = std::vector<ImagePtr>;   // access by [scene]
-  using Vector2d = std::vector<Vector>;   // access by [scene][action]
+  using Vector = std::vector<ImagePtr>;
+  using Vector2d = std::vector<Vector>;
 
   Images();
 
@@ -43,7 +43,7 @@ private:
   Vector2d  wdg_info_;
   
   template <class T>
-  void LoadImage (Vector& v, T enums, std::string&& fname) // see note #1 after code
+  void LoadImage(Vector& v, T enums, std::string&& fname)
   {
     auto full_path = (img_path_ + fname);
     v[static_cast<int>(enums)] = std::make_unique<Image>(full_path.c_str());
@@ -60,7 +60,3 @@ namespace helpers {
 }  // namespace wumpus_game
 
 #endif  // IMAGES_H
-
-// Note #1 : this is member funcion since I want have a readable constructor
-// This is not reduce perfomance since Images class is a singleton and adding
-// one member function is not reduce perfomance so much as in not singleton 

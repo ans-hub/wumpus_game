@@ -39,9 +39,4 @@ int main()
   return status; 
 }
 
-// Note #1 : now I have understood why I couldn`t pass map move semantics early.
-// This is because when the map was moved, subjects has old map address. Due to
-// incorrect design I can`t change map address of each subject without full
-// refactoring (cycle links between map-room-subject). In this case I have been
-// avoided move semantic for map. Test of player move sematic was avoided too
-// since its based on map move semantic.
+// Note #1 : disabled, need to redesign

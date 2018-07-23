@@ -64,7 +64,6 @@ namespace wdg_helpers {
   void    DrawEdges(const VPoints&, WidgetNetdraw*);
   void    DrawDigits(const VPoints&, WidgetNetdraw*);
   
-
 }  // namespace wdg_helpers
 
 }  // namespace wumpus_game

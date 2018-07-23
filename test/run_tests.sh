@@ -3,9 +3,6 @@
 # run_tests.sh - is performing runs some unit tests in auto mode, 
 # including memchecking (usually using `valgrind`), and showing results
 # in depending of return code of tested application and memcheck app.
-#
-# Project: https://github.com/ans-hub/test_toolkit
-# Version: 0.22
 #__________________________________________________________________
 
 

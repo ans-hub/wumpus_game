@@ -84,8 +84,6 @@ void WidgetPlayer::ShowFeels(bool wump, bool bats, bool pits)
   redraw();
 }
 
-// PRIVATE REALISATION
-
 void WidgetPlayer::TuneAppearance()
 {
   resizable(0);

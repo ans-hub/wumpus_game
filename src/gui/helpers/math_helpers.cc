@@ -1,7 +1,7 @@
 // Package: wumpus_game (v0.9)
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
-// File: helpers that perform calculations from linear algebra and other
+// File: linal math helpers
 
 #include "math_helpers.h"
 
@@ -14,14 +14,14 @@ double math_helpers::GetPi()
   return std::atan(1)*4;
 }
 
-// Define vector coordinates
+// Defines vector coordinates
 
 Point math_helpers::EvalVectorCoordinates(const Point& a, const Point& b)
 {
   return {b.x_-a.x_, b.y_-a.y_};
 }
 
-// Define vector length
+// Defines vector length
 
 double math_helpers::EvalVectorLength(const Point& a, const Point& b)
 {
@@ -29,18 +29,17 @@ double math_helpers::EvalVectorLength(const Point& a, const Point& b)
   return std::sqrt(v.x_*v.x_ + v.y_*v.y_);
 }
 
-// Get point lies on the vector
+// Gets point lies on the vector
 
 Point math_helpers::GetPointOnVector(const Point& a, const Point& b, double part)
 {
   return a + part*(b-a);
 }
 
-// Fill vector with points lies on the line in reversed order
+// Fills vector with points lies on the line in reversed order
 // without coord which is `from`
 
-std::vector<Point> math_helpers::BuildLineTrajectory(
-  const Point& from, const Point& to, int step)
+std::vector<Point> math_helpers::BuildLineTrajectory(const Point& from, const Point& to, int step)
 {
   double len = EvalVectorLength(from, to);
   int steps = len/step;
@@ -53,21 +52,19 @@ std::vector<Point> math_helpers::BuildLineTrajectory(
     v[steps-i] = p;
   }
   v[0] = to;
-  if (v.size() != 1) v.pop_back();   // remove current from coord
+  if (v.size() != 1)
+    v.pop_back();
 
   return v;
 }
 
-// Fill vector with points lies on the curve in reversed order
-// https://learn.javascript.ru/bezier
+// Fills vector with points lies on the curve in reversed order
 
-std::vector<Point> math_helpers::BuildBezierTrajectory(
-  const Point& from, const Point& to, int step)
+std::vector<Point> math_helpers::BuildBezierTrajectory(const Point& from, const Point& to, int step)
 {
   double len = EvalVectorLength(from, to);
   int steps = len/step;
 
-  
   std::vector<Point> v(steps+1);
 
   return v;

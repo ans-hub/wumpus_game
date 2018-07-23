@@ -22,9 +22,7 @@ WidgetMap::WidgetMap(AudioOut& audio, Images& images)
   end();
 }
 
-// INTERFACE REALISATION
-
-// Redraw all children in special order in depends of current level
+// Redraws all children in special order in depends of current level
 
 void WidgetMap::Redraw(int level)
 {
@@ -73,14 +71,14 @@ void WidgetMap::MovePlayerAnimated(int to_room)
   );
 }
 
-// Activate all control elements on the widget
+// Activates all control elements on the widget
 
 void WidgetMap::ActivateRooms() {
   for (auto& r : wdg_rooms_)  
     r->activate();
 }
 
-// Deactivate all control elements on the widget
+// Deactivates all control elements on the widget
 
 void WidgetMap::DeactivateRooms()
 {
@@ -98,8 +96,6 @@ Point WidgetMap::GetRoomCoords(int room) const
   res.y_ = wdg_pathes_->y() + wdg_pathes_->GetVertexes()[room].y_;
   return res;
 }
-
-// REALISATION DETAILS
 
 // Resizes this group depends on width needs to place all level draw
 
@@ -163,7 +159,7 @@ void WidgetMap::RefreshPlayerPos()
     MovePlayerInstantly(room);
 }
 
-// Redraw WidgetNetdraw in depends of current level
+// Redraws WidgetNetdraw in depends of current level
 
 void WidgetMap::RedrawLines(int level)
 {
@@ -178,8 +174,6 @@ void WidgetMap::ChangeLinesParams(int level)
   auto& params = wdg_pathes_->GetParamsReference();
   config::ChangeNetdrawParams(params, level);
 }
-
-// SERVICE FUNCTION REALISATION
 
 void WidgetMap::TuneAppearance()
 {

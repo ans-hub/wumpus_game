@@ -1,8 +1,3 @@
-// Package: test_toolkit (v0.34)
-// Description: https://github.com/ans-hub/test_toolkit
-// Author: Anton Novoselov, 2017
-// File: interface and implementation of test_toolkit
-
 #ifndef TEST_TOOLKIT_H
 #define TEST_TOOLKIT_H
 

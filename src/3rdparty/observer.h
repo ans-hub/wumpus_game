@@ -1,3 +1,4 @@
+// Novoselov Ans @ 2017
 // observer.h
 
 #ifndef MVC_OBSERVER_H

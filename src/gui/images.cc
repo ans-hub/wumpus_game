@@ -3,22 +3,7 @@
 // Author: Anton Novoselov, 2017
 // File: RAII struct managing image resources in game
 
-// This class based on some conviences:
-
-// - all raw pointers which are taken from unique_ptrs by get(), they are 
-//   not destroyed and not changed by classes used its. The first reason
-//   why I not return unique_ptr but return raw pointer is readable context
-//   in entities classes. The second reason is that this is not library.
-
-// - access to ptrs of Images is carried out through vector of vector since 
-//   complexity is constant. But in this case I need some conviences for
-//   guarantee that while access to items of vector I have not exceptions
-//   such as `out_of_range`. For this reasons I set convience, that all enums
-//   have last field `count`, each image vector is initialized by this value.
-//   All nested vectors are initialized by maximum scenes count. And the last
-//   convience is that base scene should have all values of enums in vectors,
-//   since if in the scene we have nullptr to image, we should use image of 
-//   base scene
+// Let's keep it simple and load some files by hands
 
 // Postfixes used in names of files :
 //  cv - cave theme
@@ -245,11 +230,6 @@ void ResizeVector2d(Images::Vector2d& v, int w, int h)
   }
 }
 
-
 }  // namespace helpers
 
 }  // namespace wumpus_game
-
-// Note #1 : resizing Vector2d by helper function needs to prevent copy semantic
-// if initialize through initializer_list (since init_list not support move semantic,
-// but it needs to initialize vector by empty unique_ptrs)

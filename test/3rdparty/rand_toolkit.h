@@ -1,8 +1,3 @@
-// Package: rand_toolkit (v1.01)
-// Description: https://github.com/ans-hub/test_toolkit
-// Author: Anton Novoselov, 2017
-// File: interface and implementation of rand_toolkit    
-
 #ifndef RAND_TOOLKIT_H
 #define RAND_TOOLKIT_H
 

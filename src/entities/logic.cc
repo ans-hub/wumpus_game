@@ -45,17 +45,14 @@ void Logic::NewLevel(unsigned int num)
 void Logic::Turn(int action, int room)
 {
   if (!game_over_cause_) {
-    PlayerTurn(action, room);   // changes player_turn_
+    PlayerTurn(action, room);
     GuideTurn();
   }
   if (!player_turn_ && !game_over_cause_) {
-      PitsTurn();     //
-      BatsTurn();     // changes game_over_ and player_turn_  
-      WumpsTurn();    // (may be wumps turn is first rather than batsturn?)
+      PitsTurn();
+      BatsTurn();
+      WumpsTurn();
   }
-  // if (!player_turn_ && !game_over_cause_) {
-  //   GuideTurn();
-  // }
   if (!game_over_cause_) {
     NotifyObservers(Event::READY_TO_INPUT);
   }

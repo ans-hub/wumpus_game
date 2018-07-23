@@ -34,9 +34,9 @@ private:
   AudioOut&     audio_;
   Events        events_;
   
-  bool IncomingNotify(Event) override;    // register event
-  void ProcessNextEvent();                // get event from queue
-  void ExecuteEvent(Event);               // execute concrete event
+  bool IncomingNotify(Event) override;
+  void ProcessNextEvent();
+  void ExecuteEvent(Event);
 
   static void cb_process_next_event(void*);
 };

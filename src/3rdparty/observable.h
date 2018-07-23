@@ -1,3 +1,4 @@
+// Novoselov Ans @ 2017
 // observable.h
 
 #ifndef MVC_OBSERVABLE_H
@@ -14,7 +15,6 @@ namespace mvc_set {
 template<class...T>
 class Observable
 {
-  // typedef Observer<T...> Observer;
   using WrapObserver = std::reference_wrapper<Observer<T...>>;
   std::vector<WrapObserver> observers_;
 public:
@@ -26,8 +26,6 @@ protected:
   Observable(const Observable&) =delete;
   Observable& operator=(const Observable&) =delete;
 };
-
-// REALISATION
 
 template<class...T>
 void Observable<T...>::RegisterObserver(Observer<T...>& o)

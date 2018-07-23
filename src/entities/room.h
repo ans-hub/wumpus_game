@@ -14,7 +14,7 @@ class Subject;
 
 struct Room
 {
-  typedef std::vector<Subject*> VSubjects;  // see note #1 after code
+  typedef std::vector<Subject*> VSubjects;
 
   Room() : Room(int()) { }
   explicit Room(int num)
@@ -34,16 +34,9 @@ struct Room
   Room*     left_;
   Room*     right_;
   Room*     back_;
-  VSubjects subjects_;   // see note #2 after code
+  VSubjects subjects_;
 };
 
 }  // namespace wumpus_game
 
 #endif  // ROOM_H
-
-// Implementation notes:
-//
-// #1: slicing. More right way to do this data member private, and
-// implement interface to push and pop elements
-//
-// #2: contains subjects are currently placed in this room

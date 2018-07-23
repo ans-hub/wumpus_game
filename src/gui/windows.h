@@ -36,7 +36,7 @@ public:
   // Resources
   
   Images&       images_;
-  AudioOut&     audio_;     // see note #3 after code
+  AudioOut&     audio_;
 
   // Form of all game
 
@@ -67,12 +67,3 @@ private:
 // Note #1 : Windows sets callbacks that not depends on game logic,
 // but only based on the appearance logic. Callbacks based on game
 // logic sets in the GuiController
-
-// Note #2 : Reason of separating media.h and windows.h was in logic,
-// that controller needs to have as member windows.h, to sets callbacks
-// to some gui elements. If media.h and windows.h would be as one class,
-// this would be a mess, since controller shouldn`t know about view.
-
-// Note #3 : However audio_ data member is not needed, AudioOut entitie
-// needs only to set its as data member of some form and widgets. But
-// if I delete it here as data member, the code reader may be confused.

@@ -1,3 +1,4 @@
+// Novoselov Ans @ 2017
 // controller.h
 
 #ifndef CONTROLLER_H

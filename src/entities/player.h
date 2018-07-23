@@ -20,7 +20,7 @@ public:
   Player& operator=(Player&&);
   
   bool        Shot();
-  VSubjectsId Feels() const;   // remove, better use helpers
+  VSubjectsId Feels() const;   // todo: remove, better use helpers
   int GetArrows() const { return arrows_; }
 private:
   int arrows_;

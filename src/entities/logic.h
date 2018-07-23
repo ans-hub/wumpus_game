@@ -26,14 +26,10 @@ public:
   Logic();
   Logic(const Logic&) =delete;
 
-  // Main control functions
-
   void NewLevel();
   void NewLevel(unsigned int num);
   void Turn(int, int);
   
-  // Getters and setters
-
   bool GameOver() const { return (game_over_cause_ != Subject::UNKNOWN); }
   Subject::ID GameOverCause() const { return game_over_cause_; }
   int CurrentLevel() const { return curr_level_; }
@@ -43,7 +39,7 @@ public:
 private:
   Level         level_;
   bool          player_turn_;
-  Subject::ID   game_over_cause_; // change to `state_` - GameOverPit, etc.
+  Subject::ID   game_over_cause_;
   int           curr_level_;
   Rooms         rooms_history_;
 
@@ -58,4 +54,4 @@ private:
 
 }  // namespace wumpus_game
 
-#endif  // LOGIC_Р
+#endif  // LOGIC_H

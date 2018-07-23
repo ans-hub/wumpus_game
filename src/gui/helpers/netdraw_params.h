@@ -2,7 +2,6 @@
 // Description: https://github.com/ans-hub/wumpus_game
 // Author: Anton Novoselov, 2017
 // File: helper struct represents parameters of draw net in WidgetNetdraw
-// Contains default parametrs, may be changed in config.cc
 
 #ifndef NETDRAW_PARAMS_H
 #define NETDRAW_PARAMS_H
